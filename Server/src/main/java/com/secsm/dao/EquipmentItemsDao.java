@@ -33,7 +33,7 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 	}
 	
 	public List<EquipmentItemsInfo> selectAll(){
-		return jdbcTemplate.query("select * from duty",
+		return jdbcTemplate.query("select * from duty",lfwn
 				new RowMapper<EquipmentItemsInfo>() {
 					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new EquipmentItemsInfo(resultSet.getInt("id"), resultSet.getString("dytyDate")
