@@ -2,6 +2,7 @@ package com.secsm.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -13,7 +14,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.secsm.idao.EquipmentItemsIDao;
 import com.secsm.info.DutyInfo;
-import com.secsm.info.EquipmentItemsInfo;
 
 public class EquipmentItemsDao implements EquipmentItemsIDao {
 	private static final Logger logger = LoggerFactory.getLogger(EquipmentItemsDao.class);
@@ -29,29 +29,49 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 	}
 
 	public void create(){
-		jdbcTemplate.update("insert info equipment_items (dutyDate, accountId1, accountId2, accountId3)");
+		jdbcTemplate.update("insert info duty (dutyDate, accountId1, accountId2, accountId3)");
 	}
 	
-	public List<EquipmentItemsInfo> selectAll(){
-		return jdbcTemplate.query("select * from duty",lfwn
-				new RowMapper<EquipmentItemsInfo>() {
-					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new EquipmentItemsInfo(resultSet.getInt("id"), resultSet.getString("dytyDate")
+	public List<DutyInfo> selectAll(){
+		return jdbcTemplate.query("select * from duty",
+				new RowMapper<DutyInfo>() {
+					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
 								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
 								, resultSet.getInt("accountId3"));
 					}
 				});
 	}
 	
-	public List<DutyInfo> select(){
-		
+	public List<DutyInfo> select(int id){
+		return jdbcTemplate.query("select * from duty where id = ?", new Object[id],
+				new RowMapper<DutyInfo>() {
+					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
+								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
+								, resultSet.getInt("accountId3"));
+					}
+				});
 	}
 	
-	public void delete(){
-		
+	// TODO 날짜 Where 문 채우
+	public List<DutyInfo> select(Timestamp date){
+		return jdbcTemplate.query("select * from duty where dutyDate = ?",
+				new RowMapper<DutyInfo>() {
+					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
+								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
+								, resultSet.getInt("accountId3"));
+					}
+				});
+	}
+	
+	
+	public void delete(int id){
+		jdbcTemplate.update("delete from duty where id = ?", new Object[id]);
 	}
 	
 	public void deleteAll(){
-		
+		jdbcTemplate.update("delete from duty");
 	}
 }

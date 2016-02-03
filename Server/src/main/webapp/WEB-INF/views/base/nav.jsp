@@ -296,8 +296,8 @@
 					<a id="livingDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">생활<b class="caret"></b></a>
 					
 					<ul class="dropdown-menu" role="menu" aria-labelledby="livingDrop">
-						<li role="presentation"><a role="menuitem" href="attendance">출석</a></li>
-						<li role="presentation"><a role="menuitem" href="duty">당직</a></li>
+						<li role="presentation"><a role="menuitem" href="/Secsm/attendance">출석</a></li>
+						<li role="presentation"><a role="menuitem" href="/Secsm/duty">당직</a></li>
 					</ul>
 				</li>
 
@@ -305,8 +305,8 @@
 					<a id="projectDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">교육<b class="caret"></b></a>
 					
 					<ul class="dropdown-menu" role="menu" aria-labelledby="projectDrop">
-						<li role="presentation"><a role="menuitem" href="project">프로젝트</a></li>
-						<li role="presentation"><a role="menuitem" href="question">설문</a></li>
+						<li role="presentation"><a role="menuitem" href="/Secsm/project">프로젝트</a></li>
+						<li role="presentation"><a role="menuitem" href="/Secsm/question">설문</a></li>
 					</ul>
 				</li>
 				
@@ -314,8 +314,8 @@
 					<a id="equipmentDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">기자제<b class="caret"></b></a>
 						
 					<ul class="dropdown-menu" role="menu" aria-labelledby="equipmentDrop">
-						<li role="presentation"><a role="menuitem" href="book">도서</a></li>
-						<li role="presentation"><a role="menuitem" href="equipment">장비</a></li>
+						<li role="presentation"><a role="menuitem" href="/Secsm/book">도서</a></li>
+						<li role="presentation"><a role="menuitem" href="/Secsm/equipment">장비</a></li>
 					</ul>
 				</li>
 				
@@ -323,7 +323,7 @@
 					<a id="pxDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">PX<b class="caret"></b></a>
 						
 					<ul class="dropdown-menu" role="menu" aria-labelledby="pxDrop">
-						<li role="presentation"><a role="menuitem" href="px">PX</a></li>
+						<li role="presentation"><a role="menuitem" href="/Secsm/px">PX</a></li>
 					</ul>
 				</li>
 				

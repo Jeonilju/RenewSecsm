@@ -28,17 +28,9 @@ public class ProjectDao implements ProjectIDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 	
-	public List<ProjectInfo> create(String name, String summary, String discription, String pl, String teamMember, Timestamp startDate, Timestamp endDate){
-		return jdbcTemplate.query("select * from project", new Object[] {  },
-				new RowMapper<ProjectInfo>() {
-					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
-								resultSet.getString("summary"), resultSet.getString("description"),
-								resultSet.getString("pl"), resultSet.getString("activityb_name"),
-								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
-								resultSet.getTimestamp("regDate"));
-					}
-				});
+	public void create(String name, String summary, String discription, String pl, String teamMember, Timestamp startDate, Timestamp endDate){
+		jdbcTemplate.update("insert into project (Name, Summary, Description, PL, Team1, StartDate, EndDate) VALUES (?, ?, ?, ?, ?, ?, ?);"
+				, new Object[] {name, summary, discription, pl, teamMember, startDate, endDate});
 	}
 
 	public List<ProjectInfo> selectAll(){
@@ -47,7 +39,20 @@ public class ProjectDao implements ProjectIDao {
 					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("summary"), resultSet.getString("description"),
-								resultSet.getString("pl"), resultSet.getString("activityb_name"),
+								resultSet.getString("pl"), resultSet.getString("team1"),
+								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
+								resultSet.getTimestamp("regDate"));
+					}
+				});
+	}
+	
+	public List<ProjectInfo> selectByPage(int page, int count){
+		return jdbcTemplate.query("select * from project order by id limit ?, ?", new Object[] { page, count },
+				new RowMapper<ProjectInfo>() {
+					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
+								resultSet.getString("summary"), resultSet.getString("description"),
+								resultSet.getString("pl"), resultSet.getString("team1"),
 								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
 								resultSet.getTimestamp("regDate"));
 					}
@@ -60,11 +65,39 @@ public class ProjectDao implements ProjectIDao {
 					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("summary"), resultSet.getString("description"),
-								resultSet.getString("pl"), resultSet.getString("activityb_name"),
+								resultSet.getString("pl"), resultSet.getString("team1"),
 								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
 								resultSet.getTimestamp("regDate"));
 					}
 				});
+	}
+	
+	public ProjectInfo selectById(int id){
+		List<ProjectInfo> result = jdbcTemplate.query("select * from project where id = ?", new Object[] { id },
+				new RowMapper<ProjectInfo>() {
+					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
+								resultSet.getString("summary"), resultSet.getString("description"),
+								resultSet.getString("pl"), resultSet.getString("team1"),
+								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
+								resultSet.getTimestamp("regDate"));
+					}
+				});
+		
+		if(result.size() == 1){
+			// 정상
+			return result.get(0);
+		}
+		else if(result.size() < 1){
+			// 없는 프로젝트
+			logger.error("알수없는 프로젝트 아이디");
+			return null;
+		}
+		else{
+			// 있을수 없는일
+			logger.error("프로젝트 아이디 중복");
+			return result.get(0);
+		}
 	}
 	
 	public void updateProject(int id, String name, String summary, String description, String pl, String teamMember, Timestamp startDate, Timestamp endDate){

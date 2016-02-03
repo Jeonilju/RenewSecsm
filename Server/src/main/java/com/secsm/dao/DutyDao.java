@@ -29,8 +29,9 @@ public class DutyDao implements DutyIDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 	
-	public void create(){
-		jdbcTemplate.update("insert info duty (dutyDate, accountId1, accountId2, accountId3)");
+	public void create(DutyInfo info){
+		jdbcTemplate.update("insert info duty (dutyDate, accountId1, accountId2, accountId3) values (?, ?, ?, ?)"
+				, new Object[]{info.getDutyDate(), info.getAccountId1(), info.getAccountId2(), info.getAccountId3()});
 	}
 	
 	public List<DutyInfo> selectAll(){

@@ -1,5 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <%@page import="com.secsm.info.ProjectInfo"%>
+<%@page import="com.secsm.conf.*"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page pageEncoding="utf-8" %>
 
@@ -10,7 +11,18 @@
 		<jsp:include page="base/header.jsp" flush="false" />
     	<title>Project</title>
     	
+    	<script type="text/javascript" src="/Secsm/resources/js/bootstrap-datepicker.js"></script>
+    	
     	<script type="text/javascript">
+    		
+    		// DatePicker 설정
+			$(function() 
+				{
+					$("#createProjectStartDate").datepicker();
+					$("#createProjectEndDate").datepicker();
+				}
+			);
+
     	
     		// 프로젝트 등록 다이얼로그
     		function createProject(){
@@ -22,40 +34,26 @@
 			    			"createProjectStartDate" + "=" + $("#createProjectStartDate").val() + "&" + 
     						"createProjectEndDate" + "="+ $("#createProjectEndDate").val();
     			$.ajax({
-    				url : "/api_createProject",
+    				url : "/Secsm/api_createProject",
     				type : "POST",
     				data : param,
     				cache : false,
     				async : false,
     				dataType : "text",
     		
-    				success : function(response) {								
-    					if(response=='1')
+    				success : function(response) {	
+    					alert(response);
+    					if(response=='200')
     					{
-    						loginsuccess();
-    					}
-    					else if(response=='0')
-    					{
-    						alert("이메일이 존재하지 않습니다.");
-    					}
-    					else if(response=='3')
-    					{
-    						alert("비밀번호가 틀렸습니다.");
-    					}
-    					else if(response=='email')
-    					{
-    						alert("이메일이 너무 깁니다.");
-    					}
-    					else if(response=='password')
-    					{
-    						alert("비밀번호가 너무 깁니다.");
+    						alert("프로젝트가 생성되었습니다!");
+    						location.reload();
     					}
     					else
     					{
+    						alert("프로젝트를 생성할 수 없습니다.");
     						return false;
     					}	
     					
-    					//alert(check);
     				},
     				error : function(request, status, error) {
     					if (request.status != '0') {
@@ -64,6 +62,11 @@
     				}
     		
     			});
+    		}
+    		
+    		function showDetailProject(projectId){
+    			location.replace("/Secsm/detailProject/" + projectId);
+//s    			location.href("/Secsm/detailProject/" + projectId);
     		}
     	</script>
     	
@@ -81,64 +84,93 @@
 				<h1> Project </h1>
 			</div>
 			
-			<div>
+			<div class="pull-right">
 				<button type="button" class="btn" data-toggle="modal" data-target="#createProjectModal" style="margin: 5px;">프로젝트 등록</button>
 			</div>
 			
-			<jsp:include page="base/foot.jsp" flush="false" />
+			<table class="table table-hover">
+			    <thead>
+			      <tr>
+			        <th>No.</th>
+			        <th>프로젝트 명</th>
+			        <th>기간</th>
+			        <th>PL</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+					<%
+						for (ProjectInfo info : projectList){
+							out.println("<tr style=\"cursor:pointer;\" onClick=\"showDetailProject(" + info.getId() + ")\">");
+							out.println("<td>" + info.getId() + "</td>");
+							out.println("<td>" + info.getName() + "</td>");
+							out.println("<td>" + Util.getTimestempStr(info.getStartDate()) 
+										+ " ~ " + Util.getTimestempStr(info.getEndDate()) + "</td>");
+							out.println("<td>" + info.getPl() + "</td>");
+							out.println("</tr>");
+						}
+					%>
+				</tbody>
+			</table>
+			
+			<div>
+				<button type="button" class="button" >이전</button>
+				<button type="button" class="button" >다음</button>
+			</div>
+			
 		</div>	
 
-		<!-- 프로젝트 생성 모달 -->
-		<div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<form name="createProjectForm" id="createProjectForm" action="/api_createProject">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title" id="SignInModalLabel">프로젝트 등록</h4>
+		<jsp:include page="base/foot.jsp" flush="false" />
+	</body>
+
+	<!-- 프로젝트 생성 모달 -->
+	<div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form name="createProjectForm" id="createProjectForm" action="/api_createProject">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="SignInModalLabel">프로젝트 등록</h4>
+					</div>
+					
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="createProjectName" cond="">프로젝트 명</label> 
+							<input name="createProjectName" id="createProjectName" type="text" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label for="createProjectSummary" cond="">요약</label> 
+							<textarea name="createProjectSummary" id="createProjectSummary" rows="4" cols="50" class="form-control"></textarea>
+						</div>
+						<div class="form-group">
+							<label for="createProjectDiscription" cond="">내용</label> 
+							<textarea name="createProjectDiscription" id="createProjectDiscription" rows="4" cols="50" class="form-control"></textarea>
+						</div>
+						<div class="form-group">
+							<label for="createProjectPL" cond="">PL</label> 
+							<input name="createProjectPL" id="createProjectPL" type="text" class="form-control" style="width: 30%"/>
+						</div>
+						<div class="form-group">
+							<label for="createProjectTeam" cond="">팀원</label> 
+							<input name="createProjectTeam" id="createProjectTeam" type="text" class="form-control" style="width: 70%"/>
+						</div>
+						<div class="form-group">
+							<label for="createProjectStartDate" cond="">시작일</label> 
+							<input name="createProjectStartDate" id="createProjectStartDate" type="text" class="form-control" style="width: 30%"/>
+						</div>
+						<div class="form-group">
+							<label for="createProjectEndDate" cond="">완료일</label> 
+							<input name="createProjectEndDate" id="createProjectEndDate" type="text" class="form-control" style="width: 30%"/>
 						</div>
 						
-						<div class="modal-body">
-							<div class="form-group">
-								<label for="createProjectName" cond="">프로젝트 명</label> 
-								<input name="createProjectName" id="createProjectName" type="text" class="form-control" />
-							</div>
-							<div class="form-group">
-								<label for="createProjectSummary" cond="">요약</label> 
-								<input name="createProjectSummary" id="createProjectSummary" type="text" class="form-control"/>
-							</div>
-							<div class="form-group">
-								<label for="createProjectDiscription" cond="">내용</label> 
-								<input name="createProjectDiscription" id="createProjectDiscription" type="text" class="form-control"/>
-							</div>
-							<div class="form-group">
-								<label for="createProjectPL" cond="">PL</label> 
-								<input name="createProjectPL" id="createProjectPL" type="text" class="form-control"/>
-							</div>
-							<div class="form-group">
-								<label for="createProjectTeam" cond="">팀원</label> 
-								<input name="createProjectTeam" id="createProjectTeam" type="text" class="form-control"/>
-							</div>
-							<div class="form-group">
-								<label for="createProjectStartDate" cond="">시작일</label> 
-								<input name="createProjectStartDate" id="createProjectStartDate" type="text" class="form-control"/>
-							</div>
-							<div class="form-group">
-								<label for="createProjectEndDate" cond="">완료일</label> 
-								<input name="createProjectEndDate" id="createProjectEndDate" type="text" class="form-control"/>
-							</div>
-							
-							
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-							<button type="button" class="btn btn-primary" onclick='createProject()'>등록</button>
-						</div>
-					</form>
-				</div>
-				<!-- /.modal-content -->
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-primary" onclick='createProject()'>등록</button>
+					</div>
+				</form>
 			</div>
+			<!-- /.modal-content -->
 		</div>
+	</div>
 
-</body>
 </html>

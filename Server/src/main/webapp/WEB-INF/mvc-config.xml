@@ -53,6 +53,10 @@
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>
 	
+	<beans:bean id="EquipmentCategoryDao" class="com.secsm.dao.EquipmentCategoryDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
 	<beans:bean id="EquipmentItemsDao" class="com.secsm.dao.EquipmentItemsDao">
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>
@@ -86,6 +90,10 @@
 	</beans:bean>
 	
 	<beans:bean id="ProjectDao" class="com.secsm.dao.ProjectDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="PxCategoryDao" class="com.secsm.dao.PxCategoryDao">
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>
 	
