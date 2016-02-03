@@ -1,4 +1,11 @@
 <%@ page pageEncoding="utf-8" %>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.secsm.info.*"%>
+
+<%
+	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
+%>
+
 
 <script type="text/javascript">
 	
@@ -18,16 +25,19 @@
 		
 		success : function(response) {	
 			alert(response);
-			if(response=='200')
+			if(response=='0')
 			{
-				alert("프로젝트가 생성되었습니다!");
-				location.reload();
+				// 정상 구매
+				alert('정상 구매되었습니다.');
 			}
-			else
+			else if(response == '1')
 			{
-				alert("프로젝트를 생성할 수 없습니다.");
-				return false;
+				// 해당 상품 없음
+				alert('해당 상품이 존재하지 않습니다.');
 			}	
+			else{
+				alert('알수없음');
+			}
 			
 		},
 		error : function(request, status, error) {
@@ -41,7 +51,7 @@
 	
 	$("#etItemCode").keyup(function(event){
 	    if(event.keyCode == 13){
-	        $("#id_of_button").click();
+	    	buyItem();
 	    }
 	});
 
@@ -63,7 +73,7 @@
 							내 잔액 : 
 						</div>
 						<div class="col-md-3">    
-							<label>20000원</label>
+							<label><%=accountInfo.getPxAmount() %> 원</label>
 						</div>
 					</div>
 					

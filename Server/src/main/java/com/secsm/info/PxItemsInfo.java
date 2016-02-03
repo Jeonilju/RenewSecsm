@@ -8,6 +8,16 @@ public class PxItemsInfo {
 	private int price;
 	private String description;
 	private int count;
+	
+	public PxItemsInfo(int id, String name, String code, int price, String description, int count) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.code = code;
+		this.price = price;
+		this.description = description;
+		this.count = count;
+	}
 	public int getId() {
 		return id;
 	}

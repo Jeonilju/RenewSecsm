@@ -28,7 +28,7 @@ public class EquipmentCategoryDao {
 	}
 
 	public void create(EquipmentCategoryInfo info){
-		jdbcTemplate.update("insert info equipment_category (name, isBook) values (?, ?)", new Object[] {info.getName(), info.getIsBook()});
+		jdbcTemplate.update("insert into equipment_category (name, isBook) values (?, ?)", new Object[] {info.getName(), info.getIsBook()});
 	}
 	
 	public List<EquipmentCategoryInfo> selectAll(){

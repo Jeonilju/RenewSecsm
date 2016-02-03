@@ -8,8 +8,53 @@ public class PxLogInfo {
 	private int accountId;
 	private int pxItemsId;
 	private Timestamp regDate;
+	
+	// 0: 구매, 1: 환불
 	private int type;
 	private int count;
+	
+	private String name;
+	private int price;
+	
+	public PxLogInfo(int id, int accountId, int pxItemsId, Timestamp regDate, int type, int count) {
+		super();
+		this.id = id;
+		this.accountId = accountId;
+		this.pxItemsId = pxItemsId;
+		this.regDate = regDate;
+		this.type = type;
+		this.count = count;
+	}
+	
+	public PxLogInfo(int id, int accountId, int pxItemsId, Timestamp regDate, int type, int count, String name,
+			int price) {
+		super();
+		this.id = id;
+		this.accountId = accountId;
+		this.pxItemsId = pxItemsId;
+		this.regDate = regDate;
+		this.type = type;
+		this.count = count;
+		this.name = name;
+		this.price = price;
+	}
+
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
 	public int getId() {
 		return id;
 	}

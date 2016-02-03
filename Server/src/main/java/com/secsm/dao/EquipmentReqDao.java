@@ -28,7 +28,7 @@ public class EquipmentReqDao implements EquipmentReqIDao {
 	}
 
 	public void create(int accountId, String title, String context){
-		jdbcTemplate.update("insert info equipment_req (accountId, title, context, status) valuse (?, ?, ?, ?)"
+		jdbcTemplate.update("insert into equipment_req (accountId, title, context, status) valuse (?, ?, ?, ?)"
 				, new Object[]{accountId, title, context, 0});
 	}
 	

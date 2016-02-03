@@ -16,12 +16,10 @@ public class Util {
 		java.util.Date mDate = new java.util.Date(year, month, day);
 		Timestamp result = new Timestamp(mDate.getTime());
 		
-
 		System.out.println("year: " + year);
 		System.out.println("month: " + month);
 		System.out.println("day: " + day);
 		
-
 		System.out.println("변환된 시간1: " + mDate.toString());
 		
 		System.out.println("변환된 시간2: " + result.toString());

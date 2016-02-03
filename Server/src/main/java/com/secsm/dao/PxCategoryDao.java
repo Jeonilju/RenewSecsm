@@ -27,7 +27,7 @@ public class PxCategoryDao {
 	}
 
 	public void create(PxCategoryInfo info){
-		jdbcTemplate.update("insert info px_category (name) values (?)", new Object[] {info.getName()});
+		jdbcTemplate.update("insert into px_category (name) values (?)", new Object[] {info.getName()});
 	}
 	
 	public List<PxCategoryInfo> selectAll(){

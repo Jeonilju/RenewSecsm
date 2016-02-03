@@ -29,7 +29,7 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 	}
 
 	public void create(int id, String code, String name, int type, int count, int status, String description){
-		jdbcTemplate.update("insert info equipment_items (id, code, name, type, count, status, description) values (?,?,?,?,?,?,?)"
+		jdbcTemplate.update("insert into equipment_items (id, code, name, type, count, status, description) values (?,?,?,?,?,?,?)"
 				, new Object[] {id, code, name, type, count, status, description});
 	}
 	

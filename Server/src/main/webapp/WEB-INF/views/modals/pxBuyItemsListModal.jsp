@@ -1,4 +1,12 @@
+<%@page import="com.secsm.conf.Util"%>
+<%@page import="com.secsm.info.PxLogInfo"%>
 <%@ page pageEncoding="utf-8" %>
+<%@page import="com.secsm.info.PxReqInfo"%>
+<%@page import="java.util.List"%>
+
+<%
+	List<PxLogInfo> pxLogList = (List<PxLogInfo>)request.getAttribute("pxLogList");
+%>
 
 <!-- 내역 조회 -->
 <div class="modal fade" id="pxBuyItemsListModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -19,24 +27,17 @@
 				      </tr>
 				    </thead>
 				    <tbody>
-				      <tr>
-				        <td>16.01.22</td>
-				        <td>콜라</td>
-				        <td>2</td>
-				        <td>2000</td>
-				      </tr>
-				      <tr>
-				        <td>16.01.22</td>
-				        <td>콜라</td>
-				        <td>2</td>
-				        <td>2000</td>
-				      </tr>
-				      <tr>
-				        <td>16.01.22</td>
-				        <td>콜라</td>
-				        <td>2</td>
-				        <td>2000</td>
-				      </tr>
+				    	<%
+				    		for(PxLogInfo info : pxLogList){
+				    			out.print("<tr>");
+				    			out.print("<td>" + Util.getTimestempStr(info.getRegDate()) + "</td>");
+				    			out.print("<td>" + (info.getName()) + "</td>");
+				    			out.print("<td>" + (info.getCount()) + "</td>");
+				    			out.print("<td>" + (info.getPrice()) + "</td>");
+				    			out.print("</tr>");
+				    		}
+				    	
+				    	%>
 				    </tbody>
 				  </table>
 			</div>
