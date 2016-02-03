@@ -17,7 +17,9 @@ import com.secsm.info.AccountInfo;
 
 public class AccountDao implements AccountIDao {
 	private static final Logger logger = LoggerFactory.getLogger(AccountDao.class);
-
+	
+	private int temp;
+	
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 
