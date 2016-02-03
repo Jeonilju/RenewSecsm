@@ -2,6 +2,11 @@ package com.secsm.conf;
 
 import java.sql.Timestamp;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import com.secsm.info.AccountInfo;
+
 public class Util {
 
 	public static Timestamp getTimestamp(String date){
@@ -29,5 +34,12 @@ public class Util {
 			return "" + (time.getYear() + 1900) + "." + (time.getMonth() + 1) + "." + time.getDate();
 		else
 			return "????";
+	}
+	
+	public static AccountInfo getLoginedUser(HttpServletRequest request){
+		HttpSession session = request.getSession();
+		AccountInfo member = (AccountInfo) session.getAttribute("currentmember");
+		
+		return member;
 	}
 }

@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.secsm.conf.Util;
 import com.secsm.dao.AccountDao;
 import com.secsm.info.AccountInfo;
 
@@ -27,45 +29,53 @@ public class SecsmController {
 	public String MainController_index(HttpServletRequest request) {
 		logger.info("index Page");
 
+		AccountInfo info = Util.getLoginedUser(request);
+		if(info == null){
+			// 비로그인 
+			
+		}
+		else{
+			// 로그인
+			
+		}
+		
 		return "index";
 	}
 	
-	/** 로그인 설정 */
-	@RequestMapping(value = "/login_db", method = RequestMethod.POST)
+	/** 로그인  */
+	@RequestMapping(value = "/api_login", method = RequestMethod.POST)
 	@ResponseBody
-	public String login(HttpServletRequest request) {
-
+	public String MainController_api_login(HttpServletRequest request
+			, @RequestParam("login_email") String login_email
+			, @RequestParam("login_password") String login_password) {
+		logger.info("api_login");
+		
 		String result = "0";
 
-		logger.info("User Login");
-
-		String email = request.getParameter("Signin_email");
-		String password = request.getParameter("Signin_password");
-
-		if(email.length()>50)
+		if(login_email.length() > 50)
 			return "email";
-		if(password.length()>16)
+		else if(login_password.length() > 16)
 			return "password";
 		
 		// 세션 객체 생성
 		HttpSession session = request.getSession();
-
-		List<AccountInfo> data = accountDao.select(email);
+		List<AccountInfo> accountList = accountDao.select(login_email);
 
 		// 이메일이 존재하지 않을 때
-		if (data == null || data.isEmpty()) {
-			result = "0"; // no email
-		} else {
-			if (data.get(0).getPw().equals(password)) // password unequal
+		if (accountList == null || accountList.isEmpty()) {
+			result = "email not found"; // no email
+		} 
+		else {
+			if (accountList.get(0).getPw().equals(login_password)) // password unequal
 			{
-				result = "1";
-
-				session.setAttribute("currentmember", data.get(0));
+				result = "200";
+				session.setAttribute("currentmember", accountList.get(0));
 			} else {
-				result = "0";
+				result = "password is woung";
 			}
 		}
-
+		
 		return result;
 	}
+	
 }

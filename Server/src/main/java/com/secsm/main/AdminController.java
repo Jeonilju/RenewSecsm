@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.secsm.dao.AccountDao;
+import com.secsm.info.AccountInfo;
 
 @Controller
 public class AdminController {
@@ -23,6 +24,14 @@ public class AdminController {
 	public String AdminController_index(HttpServletRequest request){
 		logger.info("admin Page");
 		
-		return "admin";
+		AccountInfo info = com.secsm.conf.Util.getLoginedUser(request);
+		if(info != null){
+			if(info.getGrade() == 0){
+				// 권한 있음
+				return "admin";
+			}
+		}
+		
+		return "index";
 	}
 }

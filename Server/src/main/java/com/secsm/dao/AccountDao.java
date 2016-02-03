@@ -44,7 +44,7 @@ public class AccountDao implements AccountIDao {
 	}
 
 	public List<AccountInfo> select(String email) {
-		return jdbcTemplate.query("select * from activity_log where project_key = ?", new Object[] { email },
+		return jdbcTemplate.query("select * from account where email = ?", new Object[] { email },
 				new RowMapper<AccountInfo>() {
 					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
