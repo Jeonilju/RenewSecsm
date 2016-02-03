@@ -40,20 +40,29 @@ public class AccountDao implements AccountIDao {
 					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("email"), resultSet.getString("pw"),
-								resultSet.getString("phone"), resultSet.getInt("grade"));
+								resultSet.getString("phone"), resultSet.getInt("grade")
+								, resultSet.getInt("Px_amount"));
 					}
 				});
 	}
 
 	public List<AccountInfo> select(String email) {
-		return jdbcTemplate.query("select * from activity_log where project_key = ?", new Object[] { email },
+		return jdbcTemplate.query("select * from account where email = ?", new Object[] { email },
 				new RowMapper<AccountInfo>() {
 					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("email"), resultSet.getString("pw"),
-								resultSet.getString("phone"), resultSet.getInt("grade"));
+								resultSet.getString("phone"), resultSet.getInt("grade")
+								, resultSet.getInt("Px_amount"));
 					}
 				});
+	}
+	
+	public void usePxAmount(int id, int price){
+		jdbcTemplate.update("update account set "
+				+ " Px_amount = Px_amount - ?"
+			+ " where id = ?", 
+			new Object[]  { price, id});
 	}
 	
 	public void updateAccount(AccountInfo info){
@@ -62,9 +71,10 @@ public class AccountDao implements AccountIDao {
 				+ " email = ?,"
 				+ " pw = ?,"
 				+ " phone = ?,"
+				+ " Px_amount = ?,"
 				+ " grade = ?"
 			+ " where id = ?", 
-			new Object[]  { info.getName(), info.getEmail(), info.getPw(), info.getPhone(), info.getGrade(), info.getId() });
+			new Object[]  { info.getName(), info.getEmail(), info.getPw(), info.getPhone(), info.getPxAmount(), info.getGrade(), info.getId() });
 	}
 	
 	public void setGrade(int id, int grade){

@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.secsm.idao.PxItemsIDao;
-import com.secsm.info.DutyInfo;
+import com.secsm.info.PxItemsInfo;
 import com.secsm.info.PxItemsInfo;
 
 public class PxItemsDao implements PxItemsIDao {
@@ -28,38 +28,67 @@ public class PxItemsDao implements PxItemsIDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
-	public void create(PxItemsInfo info){
-		jdbcTemplate.update("insert info px_items (name, code, price, description, count) values (?, ?, ?, ?, ?)"
-				, new Object[] {info.getName(), info.getCode(), info.getPrice(), info.getDescription(), info.getCount()});
+	public void create(String name, String code, int price, String description, int count){
+		jdbcTemplate.update("insert into px_items (name, code, price, description, count) values (?, ?, ?, ?, ?)"
+				, new Object[] {name, code, price, description, count});
 	}
 	
-	public List<DutyInfo> selectAll(){
-		return jdbcTemplate.query("select * from duty",
-				new RowMapper<DutyInfo>() {
-					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
-								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
-								, resultSet.getInt("accountId3"));
+	public List<PxItemsInfo> selectAll(){
+		return jdbcTemplate.query("select * from px_items",
+				new RowMapper<PxItemsInfo>() {
+					public PxItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new PxItemsInfo(resultSet.getInt("id"), resultSet.getString("Name")
+								, resultSet.getString("Code"), resultSet.getInt("Price")
+								, resultSet.getString("Description"), resultSet.getInt("Count"));
 					}
 				});
 	}
 	
-	public List<DutyInfo> select(int id){
-		return jdbcTemplate.query("select * from duty where id = ?", new Object[id],
-				new RowMapper<DutyInfo>() {
-					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
-								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
-								, resultSet.getInt("accountId3"));
+	public List<PxItemsInfo> selectByCode(String code){
+		return jdbcTemplate.query("select * from px_items where code = ?", new Object[]{code},
+				new RowMapper<PxItemsInfo>() {
+					public PxItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new PxItemsInfo(resultSet.getInt("id"), resultSet.getString("Name")
+								, resultSet.getString("Code"), resultSet.getInt("Price")
+								, resultSet.getString("Description"), resultSet.getInt("Count"));
 					}
 				});
+	}
+	
+	public List<PxItemsInfo> selectByName(String name){
+		return jdbcTemplate.query("select * from px_items where name = ?", new Object[]{name},
+				new RowMapper<PxItemsInfo>() {
+					public PxItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new PxItemsInfo(resultSet.getInt("id"), resultSet.getString("Name")
+								, resultSet.getString("Code"), resultSet.getInt("Price")
+								, resultSet.getString("Description"), resultSet.getInt("Count"));
+					}
+				});
+	}
+	
+	public List<PxItemsInfo> select(int id){
+		return jdbcTemplate.query("select * from px_items where id = ?", new Object[]{id},
+				new RowMapper<PxItemsInfo>() {
+					public PxItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new PxItemsInfo(resultSet.getInt("id"), resultSet.getString("Name")
+								, resultSet.getString("Code"), resultSet.getInt("Price")
+								, resultSet.getString("Description"), resultSet.getInt("Count"));
+					}
+				});
+	}
+	
+	public void useItems(int id, int count){
+		jdbcTemplate.update("update px_items set "
+				+ " Count = Count - ?"
+			+ " where id = ?", 
+			new Object[]  { count, id});
 	}
 	
 	public void delete(int id){
-		jdbcTemplate.update("delete from duty where id = ?", new Object[id]);
+		jdbcTemplate.update("delete from px_items where id = ?", new Object[] {id});
 	}
 	
 	public void deleteAll(){
-		jdbcTemplate.update("delete from duty");
+		jdbcTemplate.update("delete from px_items");
 	}
 }

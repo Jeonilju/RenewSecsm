@@ -2,6 +2,11 @@ package com.secsm.conf;
 
 import java.sql.Timestamp;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import com.secsm.info.AccountInfo;
+
 public class Util {
 
 	public static Timestamp getTimestamp(String date){
@@ -11,12 +16,10 @@ public class Util {
 		java.util.Date mDate = new java.util.Date(year, month, day);
 		Timestamp result = new Timestamp(mDate.getTime());
 		
-
 		System.out.println("year: " + year);
 		System.out.println("month: " + month);
 		System.out.println("day: " + day);
 		
-
 		System.out.println("변환된 시간1: " + mDate.toString());
 		
 		System.out.println("변환된 시간2: " + result.toString());
@@ -29,5 +32,12 @@ public class Util {
 			return "" + (time.getYear() + 1900) + "." + (time.getMonth() + 1) + "." + time.getDate();
 		else
 			return "????";
+	}
+	
+	public static AccountInfo getLoginedUser(HttpServletRequest request){
+		HttpSession session = request.getSession();
+		AccountInfo member = (AccountInfo) session.getAttribute("currentmember");
+		
+		return member;
 	}
 }

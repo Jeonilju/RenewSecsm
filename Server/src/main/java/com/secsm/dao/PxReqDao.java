@@ -12,7 +12,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.secsm.idao.PxReqIDao;
-import com.secsm.info.DutyInfo;
+import com.secsm.info.PxReqInfo;
+import com.secsm.info.PxReqInfo;
 
 public class PxReqDao implements PxReqIDao {
 	private static final Logger logger = LoggerFactory.getLogger(PxReqDao.class);
@@ -26,37 +27,38 @@ public class PxReqDao implements PxReqIDao {
 		logger.info("Updated DataSource ---> " + ds);
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
-	public void create(){
-		jdbcTemplate.update("insert info duty (dutyDate, accountId1, accountId2, accountId3)");
+	public void create(int accountId, String title, String context){
+		jdbcTemplate.update("insert into px_req (Account_id, title, context, status) values (?, ?, ?, ?)" 
+				, new Object[] {accountId, title, context, 0});
 	}
 	
-	public List<DutyInfo> selectAll(){
-		return jdbcTemplate.query("select * from duty",
-				new RowMapper<DutyInfo>() {
-					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
-								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
-								, resultSet.getInt("accountId3"));
+	public List<PxReqInfo> selectAll(){
+		return jdbcTemplate.query("select * from px_req",
+				new RowMapper<PxReqInfo>() {
+					public PxReqInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new PxReqInfo(resultSet.getInt("id"), resultSet.getInt("Account_id")
+								, resultSet.getString("Title"), resultSet.getString("Context")
+								, resultSet.getTimestamp("RegDate"), resultSet.getInt("Status"));
 					}
 				});
 	}
 	
-	public List<DutyInfo> select(int id){
-		return jdbcTemplate.query("select * from duty where id = ?", new Object[id],
-				new RowMapper<DutyInfo>() {
-					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
-								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
-								, resultSet.getInt("accountId3"));
+	public List<PxReqInfo> select(int id){
+		return jdbcTemplate.query("select * from px_req where id = ?", new Object[]{id},
+				new RowMapper<PxReqInfo>() {
+					public PxReqInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new PxReqInfo(resultSet.getInt("id"), resultSet.getInt("Account_id")
+								, resultSet.getString("Title"), resultSet.getString("Context")
+								, resultSet.getTimestamp("RegDate"), resultSet.getInt("Status"));
 					}
 				});
 	}
 	
 	public void delete(int id){
-		jdbcTemplate.update("delete from duty where id = ?", new Object[id]);
+		jdbcTemplate.update("delete from px_req where id = ?", new Object[] {id});
 	}
 	
 	public void deleteAll(){
-		jdbcTemplate.update("delete from duty");
+		jdbcTemplate.update("delete from px_req");
 	}
 }

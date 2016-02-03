@@ -73,22 +73,6 @@
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>
 	
-	<beans:bean id="PMSDao" class="com.secsm.dao.PMSDao">
-		<beans:property name="dataSource" ref="dataSource" />
-	</beans:bean>
-	
-	<beans:bean id="PresentationDao" class="com.secsm.dao.PresentationDao">
-		<beans:property name="dataSource" ref="dataSource" />
-	</beans:bean>
-	
-	<beans:bean id="PresentationAttendenceDao" class="com.secsm.dao.PresentationAttendenceDao">
-		<beans:property name="dataSource" ref="dataSource" />
-	</beans:bean>
-	
-	<beans:bean id="PresentationDateDao" class="com.secsm.dao.PresentationDateDao">
-		<beans:property name="dataSource" ref="dataSource" />
-	</beans:bean>
-	
 	<beans:bean id="ProjectDao" class="com.secsm.dao.ProjectDao">
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>

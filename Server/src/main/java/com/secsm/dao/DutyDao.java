@@ -30,7 +30,7 @@ public class DutyDao implements DutyIDao {
 	}
 	
 	public void create(DutyInfo info){
-		jdbcTemplate.update("insert info duty (dutyDate, accountId1, accountId2, accountId3) values (?, ?, ?, ?)"
+		jdbcTemplate.update("insert into duty (dutyDate, accountId1, accountId2, accountId3) values (?, ?, ?, ?)"
 				, new Object[]{info.getDutyDate(), info.getAccountId1(), info.getAccountId2(), info.getAccountId3()});
 	}
 	

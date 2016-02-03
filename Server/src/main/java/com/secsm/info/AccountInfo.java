@@ -6,21 +6,42 @@ public class AccountInfo {
 	private String email;
 	private String pw;
 	private String phone;
+	
+	/**
+	 * 사용자 권한
+	 * 0: 최고관리자
+	 * 1: 
+	 * 2: 
+	 * 3: 
+	 * 4: 
+	 * 5: PX 부장
+	 * 6: 
+	 * 7: 
+	 * */
 	private int grade;
+	private int pxAmount;
 	
-	public AccountInfo(){
-		
-	}
-	
-	public AccountInfo(int id, String name, String email, String pw, String phone, int grade){
+	public AccountInfo(int id, String name, String email, String pw, String phone, int grade, int pxAmount){
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.pw = pw;
 		this.phone = phone;
 		this.grade = grade;
+		this.pxAmount = pxAmount;
 	}
 	
+	
+	public int getPxAmount() {
+		return pxAmount;
+	}
+
+
+	public void setPxAmount(int pxAmount) {
+		this.pxAmount = pxAmount;
+	}
+
+
 	public int getId() {
 		return id;
 	}

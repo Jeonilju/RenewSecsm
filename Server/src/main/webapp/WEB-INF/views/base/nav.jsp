@@ -165,8 +165,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">
-						Close</button>											
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>											
 					<button type="button"  class="btn btn-primary" onclick="signup_db()">Sign Up</button>
 						
 				</div>
@@ -255,8 +254,8 @@
 							class="form-control" placeholder="Email Address" />
 					</div>
 					<div class="form-group">
-						<label for="user_id" cond="">Password</label> <input name="Signin_password"
-							id="Signin_password" type="password" required cond="" class="form-control"
+						<label for="user_id" cond="">Password</label> 
+						<input name="Signin_password" id="Signin_password" type="password" required cond="" class="form-control"
 							placeholder="Password" onkeydown='onEnterSignIn()' />
 					</div>
 				</div>

@@ -10,6 +10,16 @@ public class PxReqInfo {
 	private String context;
 	private Timestamp regDate;
 	private int status;
+	
+	public PxReqInfo(int id, int accountId, String title, String context, Timestamp regDate, int status) {
+		super();
+		this.id = id;
+		this.accountId = accountId;
+		this.title = title;
+		this.context = context;
+		this.regDate = regDate;
+		this.status = status;
+	}
 	public int getId() {
 		return id;
 	}

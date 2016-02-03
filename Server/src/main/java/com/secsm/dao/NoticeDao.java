@@ -28,7 +28,7 @@ public class NoticeDao implements NoticeIDao {
 	}
 	
 	public void create(){
-		jdbcTemplate.update("insert info duty (dutyDate, accountId1, accountId2, accountId3)");
+		jdbcTemplate.update("insert into duty (dutyDate, accountId1, accountId2, accountId3)");
 	}
 	
 	public List<DutyInfo> selectAll(){
