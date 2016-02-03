@@ -50,8 +50,6 @@ public class PXController {
 	public String PXController_buyItem(){
 		logger.info("api_pxBuyItem");
 		
-		
-		
 		return "";
 	}
 	

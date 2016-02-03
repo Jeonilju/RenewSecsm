@@ -3,6 +3,40 @@
 	pageEncoding="UTF-8"%>
 <html lang="en">
 
+<script type="text/javascript">
+
+	function login(){
+		
+		var param = "login_email" + "=" + $("#loginID").val() + "&" + 
+				"login_password" + "="+ $("#loginPW").val();
+		$.ajax({
+		url : "/Secsm/api_login",
+		type : "POST",
+		data : param,
+		cache : false,
+		async : false,
+		dataType : "text",
+		
+		success : function(response) {	
+			alert(response);
+			if(response=='200')
+			{
+				location.replace("/Secsm/attendance");
+			}
+			
+		},
+		error : function(request, status, error) {
+			if (request.status != '0') {
+				alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+			}
+		}
+		
+		});
+		
+	}
+
+</script>
+
 <!-- Header -->
 <header>
 	<jsp:include page="base/header.jsp" flush="false" />
@@ -11,15 +45,19 @@
 			<div class="col-lg-12">
 				<img src="./resources/image/profile3.png" width="150" height="150">
 				<div class="intro-text">
-					<span class="name" style="font-size: 3em;">Secsm 2016</span> 
+					<span class="name" style="font-size: 3em; margin: 30px;">Secsm 2016</span> 
 					
-					<br/>
-					<label>ID</label>
-					<input type="text">
+					<div class="form-inline" style="padding:3px">
+							<label for="loginID"  class="form-inline" style="width: 140px;">ID</label> 
+							<input name="loginID" id="loginID" type="text" class="form-control" style="width:300px"/>
+						<br>
+					</div>
+					<div class="form-inline" style="padding:3px">
+						<label for="loginPW" style="width: 140px;">Password</label>
+						<input name="loginPW" id="loginPW" type="password" style="width:300px" class="form-control" />
+					</div>
 					
-					<br/>
-					<label>PW</label>
-					<input type="text">
+					<button type="button" class="btn" style="width:300px; margin: 30px;" onclick="login();">Login</button>											
 					
 				</div>
 			</div>

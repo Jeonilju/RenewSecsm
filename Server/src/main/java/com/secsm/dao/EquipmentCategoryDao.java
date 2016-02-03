@@ -42,7 +42,7 @@ public class EquipmentCategoryDao {
 	}
 	
 	public List<EquipmentCategoryInfo> selectById(int id){
-		return jdbcTemplate.query("select * from equipment_category where id = ?", new Object[id],
+		return jdbcTemplate.query("select * from equipment_category where id = ?", new Object[] {id},
 				new RowMapper<EquipmentCategoryInfo>() {
 					public EquipmentCategoryInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new EquipmentCategoryInfo(resultSet.getInt("id"), resultSet.getString("name")
@@ -52,7 +52,7 @@ public class EquipmentCategoryDao {
 	}
 	
 	public List<EquipmentCategoryInfo> selectIsBook(int isBook){
-		return jdbcTemplate.query("select * from equipment_category where isBook = ?", new Object[isBook],
+		return jdbcTemplate.query("select * from equipment_category where isBook=?", new Object[] {isBook},
 				new RowMapper<EquipmentCategoryInfo>() {
 					public EquipmentCategoryInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new EquipmentCategoryInfo(resultSet.getInt("id"), resultSet.getString("name")
@@ -63,7 +63,7 @@ public class EquipmentCategoryDao {
 	
 	
 	public void delete(int id){
-		jdbcTemplate.update("delete from equipment_category where id = ?", new Object[id]);
+		jdbcTemplate.update("delete from equipment_category where id = ?", new Object[] {id});
 	}
 	
 	public void deleteAll(){
