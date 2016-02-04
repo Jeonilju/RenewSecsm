@@ -51,7 +51,10 @@ public class SecsmController {
 		logger.info("api_login");
 		
 		String result = "0";
-
+		login_email = "cho31250@gmail.com";
+		login_password = "as1231";
+		
+		
 		if(login_email.length() > 50)
 			return "email";
 		else if(login_password.length() > 16)

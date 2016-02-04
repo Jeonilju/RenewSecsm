@@ -36,7 +36,6 @@
 					count = 1;
 					email = $("#email").val();
 					alert("아이디가 중복이 되지 않습니다. 쓰셔도 됩니다.")
-					
 				}
 				else
 				{
@@ -192,7 +191,7 @@
 			async : false,
 			dataType : "text",
 	
-			success : function(response) {								
+			success : function(response) {
 				if(response=='1')
 				{
 					loginsuccess();
