@@ -9,6 +9,7 @@
 		
 		var param = "login_email" + "=" + $("#loginID").val() + "&" + 
 				"login_password" + "="+ $("#loginPW").val();
+		
 		$.ajax({
 		url : "/Secsm/api_login",
 		type : "POST",
@@ -43,9 +44,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<img src="./resources/image/profile3.png" width="150" height="150">
+				<img src="./resources/image/Logo.jpg" width="330" height="280">
 				<div class="intro-text">
-					<span class="name" style="font-size: 3em; margin: 30px;">Secsm 2016</span> 
+					<span class="name" style="font-size: 3em; margin: 20px;">Secsm 2016</span> 
 					
 					<div class="form-inline" style="padding:3px">
 							<label for="loginID"  class="form-inline" style="width: 140px;">ID</label> 

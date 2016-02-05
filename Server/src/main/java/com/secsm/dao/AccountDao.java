@@ -17,7 +17,9 @@ import com.secsm.info.AccountInfo;
 
 public class AccountDao implements AccountIDao {
 	private static final Logger logger = LoggerFactory.getLogger(AccountDao.class);
-
+	
+	private int temp;
+	
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 
@@ -59,6 +61,13 @@ public class AccountDao implements AccountIDao {
 	public void usePxAmount(int id, int price){
 		jdbcTemplate.update("update account set "
 				+ " Px_amount = Px_amount - ?"
+			+ " where id = ?", 
+			new Object[]  { price, id});
+	}
+	
+	public void refund_usePxAmount(int id, int price){
+		jdbcTemplate.update("update account set "
+				+ " Px_amount = Px_amount + ?"
 			+ " where id = ?", 
 			new Object[]  { price, id});
 	}

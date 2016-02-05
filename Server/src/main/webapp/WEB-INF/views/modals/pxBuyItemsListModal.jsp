@@ -6,6 +6,7 @@
 
 <%
 	List<PxLogInfo> pxLogList = (List<PxLogInfo>)request.getAttribute("pxLogList");
+	int num = pxLogList.size(); 		//Total count
 %>
 
 <!-- 내역 조회 -->
@@ -16,6 +17,44 @@
 				<h4 class="modal-title" id="SignInModalLabel">내역 조회</h4>
 			</div>
 			
+			<script>
+					function refund(idx) {
+						var param = $("#idx").val()
+					
+						$.ajax({
+							url : "/Secsm/Refund_px_items",
+							type : "POST",
+							data : param,
+							cache : false,
+							async : false,
+							dataType : "text",
+							
+							success : function(response) {	
+		    					alert(response);
+		    					if(response=='200')
+		    					{
+		    						alert("환불되었습니다!");
+		    						location.reload();
+		    					}
+		    					else
+		    					{
+		    						alert("환불할 수 없습니다.");
+		    						return false;
+		    					}	
+		    					
+		    				},
+							error : function(request, status, error) {
+								if (request.status != '0') {
+									alert("code : " + request.status + "\r\nmessage : "
+											+ request.reponseText + "\r\nerror : " + error);
+								}
+							}
+					
+						});
+					}
+			</script>
+
+
 			<div class="modal-body">
 				<table class="table table-hover">
 				    <thead>
@@ -34,9 +73,9 @@
 				    			out.print("<td>" + (info.getName()) + "</td>");
 				    			out.print("<td>" + (info.getCount()) + "</td>");
 				    			out.print("<td>" + (info.getPrice()) + "</td>");
+				    			out.print("<td>"+"<button type = 'button' class='btn btn-default' id = 'refund' onclick = 'refund("+ info.getId()+");'>환불</button>"+"</td>");
 				    			out.print("</tr>");
 				    		}
-				    	
 				    	%>
 				    </tbody>
 				  </table>
@@ -48,3 +87,4 @@
 		<!-- /.modal-content -->
 	</div>
 </div>
+
