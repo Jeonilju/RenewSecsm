@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.secsm.conf.Util;
 import com.secsm.dao.EquipmentCategoryDao;
 import com.secsm.dao.EquipmentItemsDao;
@@ -77,21 +78,22 @@ public class EquipmentController {
 			, @RequestParam("searchEquipmentContent") String searchEquipmentContent) {
 		logger.info("api Search Equipment");
 		
-		List<EquipmentItemsInfo> equipmentItemsList = equipmentItemsDao.select(searchEquipmentType, searchEquipmentContent);
+		List<EquipmentItemsInfo> equipmentItemsList = equipmentItemsDao.selectByCategory(searchEquipmentType, searchEquipmentContent);
 		
-		JSONObject jsonObj = new JSONObject();
-		// TODO Json 으로 변경하여 보내기
-		return "200";
+		Gson gson = new Gson();
+		logger.info(gson.toJson(equipmentItemsList));
+		return gson.toJson(equipmentItemsList);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/api_applyEquipment", method = RequestMethod.POST)
 	public String EquipmentController_applyEquipment(HttpServletRequest request
+			, @RequestParam("applyEquipmentType") int applyEquipmentType
 			, @RequestParam("applyEquipmentContent") String applyEquipmentContent) {
 		logger.info("api Apply Equipment");
 		
 		AccountInfo info = Util.getLoginedUser(request);
-		int result = equipmentItemsDao.apply(applyEquipmentContent);
+		int result = equipmentItemsDao.apply(info.getId(), applyEquipmentType, applyEquipmentContent);
 		
 		if(result == 0){
 			return "대여";
@@ -100,6 +102,7 @@ public class EquipmentController {
 			return "반납";
 		}
 		else{
+			logger.info("재대로 처리 안됨");
 			return "??";
 		}
 	}
@@ -121,4 +124,19 @@ public class EquipmentController {
 		return "";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/api_addEquipment", method = RequestMethod.POST)
+	public String EquipmentController_addEquipment(HttpServletRequest request
+			, @RequestParam("addEquipmentName") String addEquipmentName
+			, @RequestParam("addEquipmentCode") String addEquipmentCode
+			, @RequestParam("addEquipmentCount") int addEquipmentCount
+			, @RequestParam("addEquipmentType") int addEquipmentType
+			, @RequestParam("addEquipmentContent") String addEquipmentContent) {
+		logger.info("api add Equipment");
+		
+		equipmentItemsDao.create(addEquipmentCode, addEquipmentName, addEquipmentType, addEquipmentCount, addEquipmentContent);
+		
+		
+		return "200";
+	}
 }	

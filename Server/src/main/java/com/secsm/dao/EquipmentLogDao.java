@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.secsm.idao.EquipmentLogIDao;
-import com.secsm.info.DutyInfo;
+import com.secsm.info.EquipmentLogInfo;
 
 public class EquipmentLogDao implements EquipmentLogIDao {
 	private static final Logger logger = LoggerFactory.getLogger(EquipmentLogDao.class);
@@ -28,37 +28,84 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
-	public void create(){
-		jdbcTemplate.update("insert into duty (dutyDate, accountId1, accountId2, accountId3)");
+	public void create(int accountId, int equipmentItemId, int type, Timestamp startDate, Timestamp endDate, int status){
+		jdbcTemplate.update("insert into equipment_log (Account_id, type, Equipment_itmes_id, StartDate, EndDate, status) values (?, ?, ?, ?, ?, ?)"
+				, new Object[] {accountId, type, equipmentItemId, startDate, endDate, status});
 	}
 	
-	public List<DutyInfo> selectAll(){
-		return jdbcTemplate.query("select * from duty",
-				new RowMapper<DutyInfo>() {
-					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
-								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
-								, resultSet.getInt("accountId3"));
+	public List<EquipmentLogInfo> selectAll(){
+		return jdbcTemplate.query("select * from equipment_log",
+				new RowMapper<EquipmentLogInfo>() {
+					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentLogInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
+								, resultSet.getTimestamp("regDate"), resultSet.getInt("type")
+								, resultSet.getInt("Equipment_itmes_id"), resultSet.getTimestamp("startDate")
+								, resultSet.getTimestamp("endDate"), resultSet.getInt("status"));
 					}
 				});
 	}
 	
-	public List<DutyInfo> select(int id){
-		return jdbcTemplate.query("select * from duty where id = ?", new Object[id],
-				new RowMapper<DutyInfo>() {
-					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
-								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
-								, resultSet.getInt("accountId3"));
+	public List<EquipmentLogInfo> selectByAccountId(int accountId){
+		return jdbcTemplate.query("select * from equipment_log where account_id = ?", new Object[] {accountId},
+				new RowMapper<EquipmentLogInfo>() {
+					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentLogInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
+								, resultSet.getTimestamp("regDate"), resultSet.getInt("type")
+								, resultSet.getInt("Equipment_itmes_id"), resultSet.getTimestamp("startDate")
+								, resultSet.getTimestamp("endDate"), resultSet.getInt("status"));
 					}
 				});
+	}
+	
+	public List<EquipmentLogInfo> selectByEquipmentId(int Equipment_itmes_id){
+		return jdbcTemplate.query("select * from equipment_log where Equipment_itmes_id = ?", new Object[] {Equipment_itmes_id},
+				new RowMapper<EquipmentLogInfo>() {
+					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentLogInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
+								, resultSet.getTimestamp("regDate"), resultSet.getInt("type")
+								, resultSet.getInt("Equipment_itmes_id"), resultSet.getTimestamp("startDate")
+								, resultSet.getTimestamp("endDate"), resultSet.getInt("status"));
+					}
+				});
+	}
+	
+	public List<EquipmentLogInfo> selectById(int id){
+		return jdbcTemplate.query("select * from equipment_log where id = ?", new Object[] {id},
+				new RowMapper<EquipmentLogInfo>() {
+					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentLogInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
+								, resultSet.getTimestamp("regDate"), resultSet.getInt("type")
+								, resultSet.getInt("Equipment_itmes_id"), resultSet.getTimestamp("startDate")
+								, resultSet.getTimestamp("endDate"), resultSet.getInt("status"));
+					}
+				});
+	}
+	
+	public List<EquipmentLogInfo> selectForApply(int accountId, int equipmentId){
+		return jdbcTemplate.query("select * from equipment_log where account_id = ? and Equipment_items_id = ? order by regDate DESC", new Object[] {accountId, equipmentId},
+				new RowMapper<EquipmentLogInfo>() {
+					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentLogInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
+								, resultSet.getTimestamp("regDate"), resultSet.getInt("type")
+								, resultSet.getInt("Equipment_itmes_id"), resultSet.getTimestamp("startDate")
+								, resultSet.getTimestamp("endDate"), resultSet.getInt("status"));
+					}
+				});
+	}
+	
+	public void setStatue(int accountId, int equipmentItemId, int status){
+		jdbcTemplate.update("update equipment_log set "
+				+ " status =  ?,"
+			+ " where Account_id = ?"
+			+ " and Equipment_itmes_id = ?", 
+			new Object[]  { status, accountId, equipmentItemId });
 	}
 	
 	public void delete(int id){
-		jdbcTemplate.update("delete from duty where id = ?", new Object[id]);
+		jdbcTemplate.update("delete from equipment_log where id = ?", new Object[]{id});
 	}
 	
 	public void deleteAll(){
-		jdbcTemplate.update("delete from duty");
+		jdbcTemplate.update("delete from equipment_log");
 	}
 }
