@@ -22,7 +22,8 @@
 			alert(response);
 			if(response=='200')
 			{
-				location.replace("/Secsm/attendance");
+				//location.replace("/Secsm/attendance");
+				window.location.reload(true);
 			}
 			
 		},
@@ -32,6 +33,12 @@
 			}
 		}
 		
+		});
+	
+		$("#loginPW").keyup(function(event){
+		    if(event.keyCode == 13){
+		    	addItem();
+		    }
 		});
 		
 	}

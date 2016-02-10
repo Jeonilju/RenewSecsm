@@ -45,6 +45,26 @@
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>
 	
+	<beans:bean id="AnswerChoiceDao" class="com.secsm.dao.AnswerChoiceDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="AnswerDateDao" class="com.secsm.dao.AnswerDateDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="AnswerEssayDao" class="com.secsm.dao.AnswerEssayDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="AnswerScoreDao" class="com.secsm.dao.AnswerScoreDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="AnswerTimeDao" class="com.secsm.dao.AnswerTimeDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
 	<beans:bean id="AttendanceDao" class="com.secsm.dao.AttendanceDao">
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>
@@ -90,6 +110,30 @@
 	</beans:bean>
 	
 	<beans:bean id="PxReqDao" class="com.secsm.dao.PxReqDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="QuestionDao" class="com.secsm.dao.QuestionDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="QuestionChoiceDao" class="com.secsm.dao.QuestionChoiceDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="QuestionDateDao" class="com.secsm.dao.QuestionDateDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="QuestionEssayDao" class="com.secsm.dao.QuestionEssayDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="QuestionScoreDao" class="com.secsm.dao.QuestionScoreDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="QuestionTimeDao" class="com.secsm.dao.QuestionTimeDao">
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>
 
