@@ -47,13 +47,14 @@ CREATE TABLE `equipment_items` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Code` varchar(50) DEFAULT NULL,
   `Name` varchar(50) DEFAULT NULL,
-  `Type` int(11) DEFAULT NULL,
+  `Type` int(11) NOT NULL DEFAULT '-1',
   `RegDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `Count` int(11) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
+  `Count` int(11) NOT NULL DEFAULT '0',
+  `status` int(11) NOT NULL DEFAULT '0',
   `Description` text,
+  `totalCount` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='도서 및 장비';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='도서 및 장비';
 
 CREATE TABLE `equipment_log` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -63,6 +64,7 @@ CREATE TABLE `equipment_log` (
   `Equipment_itmes_id` int(11) DEFAULT NULL,
   `StartDate` timestamp NULL DEFAULT NULL,
   `EndDate` timestamp NULL DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   KEY `equipment_log_account_id_idx` (`Account_id`),
   KEY `equipment_log_equipment_items_id_idx` (`Equipment_itmes_id`),
@@ -150,3 +152,5 @@ CREATE TABLE `px_req` (
   KEY `px_req_account_id_idx` (`Account_id`),
   CONSTRAINT `px_req_account_id` FOREIGN KEY (`Account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='px 상품 요청';
+
+
