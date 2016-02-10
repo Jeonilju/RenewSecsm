@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,6 +23,8 @@ public class PxLogDao implements PxLogIDao {
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 
+	private SessionFactory sessionFactory;
+	
 	public void setDataSource(DataSource ds) {
 		dataSource = ds;
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -54,6 +59,7 @@ public class PxLogDao implements PxLogIDao {
 	}
 	
 	public List<PxLogInfo> selectByAccountId(int id){
+		
 		return jdbcTemplate.query("select * from px_log as log, px_items as item where log.Account_id = ? AND item.id = log.px_items_id"
 				+ "", new Object[] {id},
 				new RowMapper<PxLogInfo>() {
@@ -66,6 +72,12 @@ public class PxLogDao implements PxLogIDao {
 				});
 	}
 	
+	
+	public int total_list_num(){
+		int rowCount = jdbcTemplate.queryForInt("select count(*) from px_log");
+		return rowCount;
+		
+	}
 	public void delete(int id){
 		jdbcTemplate.update("delete from px_log where id = ?", new Object[] {id});
 	}

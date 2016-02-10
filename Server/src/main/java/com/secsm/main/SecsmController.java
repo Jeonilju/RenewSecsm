@@ -63,8 +63,8 @@ public class SecsmController {
 			, @RequestParam("login_password") String login_password) {
 		logger.info("api_login");
 		
-		String result = "0";
-
+		String result = "";
+		
 		if(login_email.length() > 50)
 			return "email";
 		else if(login_password.length() > 16)
@@ -77,7 +77,7 @@ public class SecsmController {
 		// 이메일이 존재하지 않을 때
 		if (accountList == null || accountList.isEmpty()) {
 			result = "email not found"; // no email
-		} 
+		}
 		else {
 			if (accountList.get(0).getPw().equals(login_password)) // password unequal
 			{

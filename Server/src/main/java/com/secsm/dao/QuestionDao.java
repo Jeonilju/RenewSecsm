@@ -29,9 +29,16 @@ public class QuestionDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
-	public void create(int accountId, String title, String content, Timestamp startDate, Timestamp endDate){
+	public int create(int accountId, String title, String content, Timestamp startDate, Timestamp endDate){
 		jdbcTemplate.update("insert into question (accountId, title, content, startDate, endDate) values (?, ?, ?, ?, ?)"
 				, new Object[] {accountId, title, content, startDate, endDate});
+		
+		int questionId = jdbcTemplate.queryForInt("select id from question where "
+				+ "accountId = '" + accountId + " and " 
+				+ "title = '" + title + " and " 
+				+ "content = '" + content + "';");
+		
+		return questionId;
 	}
 	
 	public List<QuestionInfo> selectAll(){

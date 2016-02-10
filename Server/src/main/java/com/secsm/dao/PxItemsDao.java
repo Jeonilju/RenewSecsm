@@ -84,6 +84,14 @@ public class PxItemsDao implements PxItemsIDao {
 			new Object[]  { count, id});
 	}
 	
+	
+	public void refund_useItems(int id, int count){
+		jdbcTemplate.update("update px_items set "
+				+ " Count = Count + ?"
+			+ " where id = ?", 
+			new Object[]  { count, id});
+	}
+	
 	public void delete(int id){
 		jdbcTemplate.update("delete from px_items where id = ?", new Object[] {id});
 	}

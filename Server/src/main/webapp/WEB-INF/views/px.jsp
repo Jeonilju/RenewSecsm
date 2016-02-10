@@ -34,10 +34,12 @@
     		}
     		
     		function onLoad(){
-    			if(<%=accountInfo%> == null){
-    				location.replace("/Secsm/index");
-    			}
-    		}
+    			<%
+					if(accountInfo == null){
+						out.println("location.replace(\"/Secsm/index\");");
+					}
+				%>
+			}
     		
     	</script>
     	

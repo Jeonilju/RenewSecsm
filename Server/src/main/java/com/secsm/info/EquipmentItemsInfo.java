@@ -10,21 +10,29 @@ public class EquipmentItemsInfo {
 	private int type;
 	private Timestamp regDate;
 	private int count;
+	private int totalCount;
 	private int status;
 	private String description;
 	
-	public EquipmentItemsInfo(int id, String code, String name, int type, Timestamp regDate, int count, int status,
-			String description) {
+	public EquipmentItemsInfo(int id, String code, String name, int type, Timestamp regDate, int count, int totalCount,
+			int status, String description) {
+		super();
 		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.type = type;
 		this.regDate = regDate;
 		this.count = count;
+		this.totalCount = totalCount;
 		this.status = status;
 		this.description = description;
 	}
-	
+	public int getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
+	}
 	public int getId() {
 		return id;
 	}

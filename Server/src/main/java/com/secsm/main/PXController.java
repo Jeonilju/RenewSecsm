@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -110,6 +111,23 @@ public class PXController {
 			return "2";
 		}
 	}
+
+	/** PX 환불 신청 */
+	@RequestMapping(value = "/Refund_px_items", method = RequestMethod.POST)
+	public String Refind_Px_Items(HttpServletRequest request
+			, @RequestParam("idx") int idx){
+		
+		logger.info("process_refund");
+		AccountInfo info = Util.getLoginedUser(request);
+		
+		List<PxItemsInfo> result = new ArrayList<PxItemsInfo>();
+		result = pxItemsDao.select(idx);
+		accountDao.refund_usePxAmount(idx, result.get(0).getPrice());
+		pxLogDao.delete(idx);
+		pxItemsDao.refund_useItems(idx, 1);
+		
+		return "200";
+	}
 	
 	/** 구매 내역 조회 */
 	@ResponseBody
@@ -120,9 +138,39 @@ public class PXController {
 		
 		AccountInfo info = Util.getLoginedUser(request);
 		List<PxLogInfo> pxLogList = pxLogDao.selectByAccountId(info.getId());
-		
+		int rowCount = pxLogDao.total_list_num();
+		System.out.println(rowCount);
 		return JSONArray.toJSONString(pxLogList);
 	}
+	
+	@RequestMapping(value = "/paging", method = RequestMethod.GET)
+	public String Paging(@RequestParam int pageNum, Model model){
+	
+		int Page_size = 10;
+		int Page_max_count =10;
+		int TotalCount = pxLogDao.total_list_num();		//전체 글 개수
+		int pageTotalCount = (TotalCount/Page_size);			//전체 페이지 계산
+		int startPage = (pageNum/Page_max_count) * Page_max_count + 1;
+		
+		int endPage;
+		
+		if(pageTotalCount - (startPage-1) < Page_max_count){
+			endPage = (startPage) + (pageTotalCount% Page_max_count);
+		}
+		else{
+			endPage = (startPage-1) + Page_max_count;
+		}
+		
+		model.addAttribute("pageNum", pageNum); //선택한 글번호 전송
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("pageTotalCount", pageTotalCount);
+		model.addAttribute("pageMaxCount", Page_max_count);
+		
+		return "/modals/pxBuyItemsListModal";
+		
+	}
+	
 	
 	/** PX 상품 신청 */
 	@ResponseBody

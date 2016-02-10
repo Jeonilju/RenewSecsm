@@ -11,6 +11,26 @@ public class EquipmentLogInfo {
 	private int equipmentItemsId;
 	private Timestamp startDate;
 	private Timestamp endDate;
+	private int status;
+	
+	public EquipmentLogInfo(int id, int accountId, Timestamp regDate, int type, int equipmentItemsId,
+			Timestamp startDate, Timestamp endDate, int status) {
+		super();
+		this.id = id;
+		this.accountId = accountId;
+		this.regDate = regDate;
+		this.type = type;
+		this.equipmentItemsId = equipmentItemsId;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.status = status;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
 	public int getId() {
 		return id;
 	}
