@@ -6,7 +6,7 @@ public class AccountInfo {
 	private String email;
 	private String pw;
 	private String phone;
-	
+	private int gender;
 	/**
 	 * 사용자 권한
 	 * 0: 최고관리자
@@ -21,7 +21,7 @@ public class AccountInfo {
 	private int grade;
 	private int pxAmount;
 	
-	public AccountInfo(int id, String name, String email, String pw, String phone, int grade, int pxAmount){
+	public AccountInfo(int id, String name, String email, String pw, String phone, int grade, int pxAmount, int gender){
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -29,6 +29,7 @@ public class AccountInfo {
 		this.phone = phone;
 		this.grade = grade;
 		this.pxAmount = pxAmount;
+		this.gender = gender;
 	}
 	
 	
@@ -78,6 +79,12 @@ public class AccountInfo {
 	public void setGrade(int grade) {
 		this.grade = grade;
 	}
-	
-	
+
+	public int getGender() {
+		return gender;
+	}
+
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
 }

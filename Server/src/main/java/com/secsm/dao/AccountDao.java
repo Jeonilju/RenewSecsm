@@ -2,7 +2,6 @@ package com.secsm.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -17,8 +16,6 @@ import com.secsm.info.AccountInfo;
 
 public class AccountDao implements AccountIDao {
 	private static final Logger logger = LoggerFactory.getLogger(AccountDao.class);
-	
-	private int temp;
 	
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
@@ -41,7 +38,7 @@ public class AccountDao implements AccountIDao {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
-								, resultSet.getInt("Px_amount"));
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"));
 					}
 				});
 	}
@@ -53,7 +50,7 @@ public class AccountDao implements AccountIDao {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
-								, resultSet.getInt("Px_amount"));
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"));
 					}
 				});
 	}

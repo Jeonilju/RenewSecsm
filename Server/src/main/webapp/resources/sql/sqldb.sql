@@ -6,9 +6,11 @@ CREATE TABLE `account` (
   `Px_amount` int(11) DEFAULT '0',
   `Phone` varchar(45) NOT NULL,
   `Grade` int(11) DEFAULT NULL,
+  `gender` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='사용자 정보';
+
 
 CREATE TABLE `answer_choice` (
   `id` int(11) NOT NULL,
