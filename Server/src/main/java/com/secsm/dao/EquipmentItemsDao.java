@@ -67,6 +67,36 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 				});
 	}
 		
+	
+	/** 도서 리스트 반환 */
+	public List<EquipmentItemsInfo> selectByBook(String name){
+		// TODO 도서 리스트 반환
+		String querey = "";
+		
+		return jdbcTemplate.query("select * from equipment_items where and name = ?", new Object[]{name},
+				new RowMapper<EquipmentItemsInfo>() {
+					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentItemsInfo(resultSet.getInt("id"), resultSet.getString("code")
+								, resultSet.getString("name"), resultSet.getInt("Type")
+								, resultSet.getTimestamp("regDate"), resultSet.getInt("count")
+								, resultSet.getInt("status"), resultSet.getString("description"));					}
+				});
+	}
+	
+	/** 장비 리스트 반환 */
+	public List<EquipmentItemsInfo> selectByEquipment(String name){
+		// TODO 장비 리스트 반환
+
+		return jdbcTemplate.query("select * from equipment_items where name = ?", new Object[]{name},
+				new RowMapper<EquipmentItemsInfo>() {
+					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentItemsInfo(resultSet.getInt("id"), resultSet.getString("code")
+								, resultSet.getString("name"), resultSet.getInt("Type")
+								, resultSet.getTimestamp("regDate"), resultSet.getInt("count")
+								, resultSet.getInt("status"), resultSet.getString("description"));					}
+				});
+	}
+
 	/** 대여 혹은 반납 
 	 * @return 0이면 대여 1이면 반납
 	 * */

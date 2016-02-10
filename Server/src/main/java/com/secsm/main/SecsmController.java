@@ -25,6 +25,21 @@ public class SecsmController {
 	@Autowired
 	private AccountDao accountDao;
 	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String MainController_main(HttpServletRequest request) {
+		logger.info("index Page");
+
+		AccountInfo info = Util.getLoginedUser(request);
+		if(info == null){
+			// 비로그인 
+			return "index";
+		}
+		else{
+			// 로그인
+			return "attendance";
+		}
+	}
+	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String MainController_index(HttpServletRequest request) {
 		logger.info("index Page");
@@ -32,14 +47,12 @@ public class SecsmController {
 		AccountInfo info = Util.getLoginedUser(request);
 		if(info == null){
 			// 비로그인 
-			
+			return "index";
 		}
 		else{
 			// 로그인
-			
+			return "attendance";
 		}
-		
-		return "index";
 	}
 	
 	/** 로그인  */

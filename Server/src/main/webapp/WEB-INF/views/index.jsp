@@ -21,7 +21,8 @@
 			alert(response);
 			if(response=='200')
 			{
-				location.replace("/Secsm/attendance");
+				//location.replace("/Secsm/attendance");
+				location.refresh();
 			}
 			
 		},

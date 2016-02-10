@@ -2,6 +2,7 @@ package com.secsm.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -12,7 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.secsm.info.DutyInfo;
+import com.secsm.info.QuestionInfo;
 
 @Repository
 public class QuestionDao {
@@ -27,37 +28,41 @@ public class QuestionDao {
 		logger.info("Updated DataSource ---> " + ds);
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
-	public void create(){
-		jdbcTemplate.update("insert into duty (dutyDate, accountId1, accountId2, accountId3)");
+
+	public void create(int accountId, String title, String content, Timestamp startDate, Timestamp endDate){
+		jdbcTemplate.update("insert into question (accountId, title, content, startDate, endDate) values (?, ?, ?, ?, ?)"
+				, new Object[] {accountId, title, content, startDate, endDate});
 	}
 	
-	public List<DutyInfo> selectAll(){
-		return jdbcTemplate.query("select * from duty",
-				new RowMapper<DutyInfo>() {
-					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
-								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
-								, resultSet.getInt("accountId3"));
+	public List<QuestionInfo> selectAll(){
+		return jdbcTemplate.query("select * from question",
+				new RowMapper<QuestionInfo>() {
+					public QuestionInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new QuestionInfo(resultSet.getInt("id"), resultSet.getInt("accountId")
+								, resultSet.getString("title"), resultSet.getString("content")
+								, resultSet.getTimestamp("regDate"), resultSet.getTimestamp("startDate")
+								, resultSet.getTimestamp("endDate"));
 					}
 				});
 	}
 	
-	public List<DutyInfo> select(int id){
-		return jdbcTemplate.query("select * from duty where id = ?", new Object[id],
-				new RowMapper<DutyInfo>() {
-					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
-								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
-								, resultSet.getInt("accountId3"));
+	public List<QuestionInfo> select(int id){
+		return jdbcTemplate.query("select * from question where id = ?", new Object[] {id},
+				new RowMapper<QuestionInfo>() {
+					public QuestionInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new QuestionInfo(resultSet.getInt("id"), resultSet.getInt("accountId")
+								, resultSet.getString("title"), resultSet.getString("content")
+								, resultSet.getTimestamp("regDate"), resultSet.getTimestamp("startDate")
+								, resultSet.getTimestamp("endDate"));
 					}
 				});
 	}
 	
 	public void delete(int id){
-		jdbcTemplate.update("delete from duty where id = ?", new Object[id]);
+		jdbcTemplate.update("delete from question where id = ?", new Object[] {id});
 	}
 	
 	public void deleteAll(){
-		jdbcTemplate.update("delete from duty");
+		jdbcTemplate.update("delete from question");
 	}
 }

@@ -2,7 +2,6 @@ package com.secsm.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -27,8 +26,8 @@ public class EquipmentCategoryDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
-	public void create(EquipmentCategoryInfo info){
-		jdbcTemplate.update("insert into equipment_category (name, isBook) values (?, ?)", new Object[] {info.getName(), info.getIsBook()});
+	public void create(String name, int isBook){
+		jdbcTemplate.update("insert into equipment_category (name, isBook) values (?, ?)", new Object[] {name, isBook});
 	}
 	
 	public List<EquipmentCategoryInfo> selectAll(){

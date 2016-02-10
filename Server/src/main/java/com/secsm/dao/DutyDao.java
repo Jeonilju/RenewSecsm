@@ -46,7 +46,7 @@ public class DutyDao implements DutyIDao {
 	}
 	
 	public List<DutyInfo> select(int id){
-		return jdbcTemplate.query("select * from duty where id = ?", new Object[id],
+		return jdbcTemplate.query("select * from duty where id = ?", new Object[]{id},
 				new RowMapper<DutyInfo>() {
 					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
@@ -58,7 +58,7 @@ public class DutyDao implements DutyIDao {
 	
 	// TODO 날짜 Where 문 채우
 	public List<DutyInfo> select(Timestamp date){
-		return jdbcTemplate.query("select * from duty where dutyDate = ?",
+		return jdbcTemplate.query("select * from duty where dutyDate = ?", new Object[]{date}, 
 				new RowMapper<DutyInfo>() {
 					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
@@ -68,9 +68,8 @@ public class DutyDao implements DutyIDao {
 				});
 	}
 	
-	
 	public void delete(int id){
-		jdbcTemplate.update("delete from duty where id = ?", new Object[id]);
+		jdbcTemplate.update("delete from duty where id = ?", new Object[] {id});
 	}
 	
 	public void deleteAll(){
