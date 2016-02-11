@@ -39,6 +39,7 @@ public class PxCategoryDao {
 				});
 	}
 	
+
 	public List<PxCategoryInfo> selectById(int id){
 		return jdbcTemplate.query("select * from px_category where id = ?", new Object[id],
 				new RowMapper<PxCategoryInfo>() {

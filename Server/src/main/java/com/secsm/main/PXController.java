@@ -112,6 +112,22 @@ public class PXController {
 		}
 	}
 	
+	/** PX 금액 확인 */
+	@ResponseBody
+	@RequestMapping(value = "/api_GetPxAmount", method = RequestMethod.POST)
+	public int PXController_getPxamount(HttpServletRequest request){
+		logger.info("api_PxGetAmount");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		if(info == null){
+			return 0;
+		}
+		
+		int amount = accountDao.CheckAmount(info.getId());
+		
+		return amount;
+	}
+	
 	/** 금액 충전 */
 	@ResponseBody
 	@RequestMapping(value = "/api_Charge_Money", method = RequestMethod.POST)
@@ -161,6 +177,7 @@ public class PXController {
 		System.out.println(rowCount);
 		return JSONArray.toJSONString(pxLogList);
 	}
+	
 	
 	@RequestMapping(value = "/paging", method = RequestMethod.GET)
 	public String Paging(@RequestParam int pageNum, Model model){

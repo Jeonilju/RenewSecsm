@@ -55,6 +55,7 @@
 				<div class="intro-text">
 					<span class="name" style="font-size: 3em; margin: 20px;">Secsm 2016</span> 
 					
+					<form>
 					<div class="form-inline" style="padding:3px">
 							<label for="loginID"  class="form-inline" style="width: 140px;">ID</label> 
 							<input name="loginID" id="loginID" type="text" class="form-control" style="width:300px"/>
@@ -64,9 +65,8 @@
 						<label for="loginPW" style="width: 140px;">Password</label>
 						<input name="loginPW" id="loginPW" type="password" style="width:300px" class="form-control" />
 					</div>
-					
-					<button type="button" class="btn" style="width:300px; margin: 30px;" onclick="login();">Login</button>											
-					
+						<input type="submit" value = "Login"class="btn" style="width:300px; margin: 30px;" onclick="login();"></input>										
+					</form>
 				</div>
 			</div>
 		</div>
