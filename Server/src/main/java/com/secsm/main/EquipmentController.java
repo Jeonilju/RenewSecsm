@@ -1,5 +1,6 @@
 package com.secsm.main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,6 @@ import com.google.gson.Gson;
 import com.secsm.conf.Util;
 import com.secsm.dao.EquipmentCategoryDao;
 import com.secsm.dao.EquipmentItemsDao;
-import com.secsm.dao.EquipmentLogDao;
 import com.secsm.dao.EquipmentReqDao;
 import com.secsm.info.AccountInfo;
 import com.secsm.info.EquipmentCategoryInfo;
@@ -35,19 +35,19 @@ public class EquipmentController {
 
 	@Autowired
 	private EquipmentItemsDao equipmentItemsDao;
-	
-	@Autowired
-	private EquipmentLogDao equipmentLogDao;
 
 	@Autowired
 	private EquipmentReqDao equipmentReqDao;
-	
 	
 	@RequestMapping(value = "/equipment", method = RequestMethod.GET)
 	public String MainController_equipment_index(HttpServletRequest request) {
 		logger.info("equipment Page");
 
 		AccountInfo info = Util.getLoginedUser(request);
+		if(info == null){
+			return "index";
+		}
+		
 		List<EquipmentCategoryInfo> equipmentCategoryList  = equipmentCategoryDao.selectIsBook(0);
 		
 		request.setAttribute("accountInfo", info);
@@ -70,6 +70,32 @@ public class EquipmentController {
 			return "book";
 		}
 	}
+///////////////////////////////////////////////////////////////////////////
+////////////////										  /////////////////
+////////////////				Common APIs				  /////////////////
+////////////////										  /////////////////
+///////////////////////////////////////////////////////////////////////////
+
+	/** 기자제 카테고리 추가 */
+	@ResponseBody
+	@RequestMapping(value = "/api_addEquipmentCategory", method = RequestMethod.POST)
+	public String EquipmentController_addEquipmentCategory(HttpServletRequest request
+			, @RequestParam("categotyName") String categotyName
+			, @RequestParam("categotyIsBook") int categotyIsBook) {
+		logger.info("api add Equipment Category");
+		equipmentCategoryDao.create(categotyName, categotyIsBook);
+		
+		return "200";
+	}
+	
+	
+	
+///////////////////////////////////////////////////////////////////////////
+////////////////										  /////////////////
+////////////////				Equipment APIs			  /////////////////
+////////////////										  /////////////////
+///////////////////////////////////////////////////////////////////////////
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "/api_searchEquipment", method = RequestMethod.POST)
@@ -121,6 +147,79 @@ public class EquipmentController {
 		
 		equipmentReqDao.create(info.getId(), reqEquipmentTitle, reqEquipmentContent);
 		
+		return "";
+	}
+	
+///////////////////////////////////////////////////////////////////////////
+////////////////										  /////////////////
+////////////////				Book APIs				  /////////////////
+////////////////										  /////////////////
+///////////////////////////////////////////////////////////////////////////
+
+	/** 도서 검색 */
+	@ResponseBody
+	@RequestMapping(value = "/api_searchBook", method = RequestMethod.POST)
+	public String EquipmentController_searchBook(HttpServletRequest request,
+			@RequestParam("searchBookType") int searchBookType,
+			@RequestParam("searchBookContent") String searchBookContent) {
+		logger.info("api Search Book");
+
+		List<EquipmentItemsInfo> equipmentItemsList = new ArrayList<EquipmentItemsInfo>();
+		
+		// TODO selectByBook 메소드를 이용하도록 변경
+		
+		if(searchBookType != 0){
+			// 카테고리 검색
+			equipmentItemsList.addAll(equipmentItemsDao.selectByBook(searchBookContent));
+		}
+		else{
+			// 전체검색
+			
+			// 책에 관련된 카테고리 전부르 얻어옴
+			List<EquipmentCategoryInfo> equipmentCategoryList = equipmentCategoryDao.selectIsBook(1);
+			equipmentItemsList.addAll(equipmentItemsDao.selectByBook(searchBookContent));
+		}
+
+		Gson obj = new Gson();
+		String result = obj.toJson(equipmentItemsList);
+		
+		return result;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/api_applyBook", method = RequestMethod.POST)
+	public String EquipmentController_applyBook(HttpServletRequest request
+			, @RequestParam("applyEquipmentType") int applyEquipmentType
+			, @RequestParam("applyBookContent") String applyEquipmentContent) {
+		logger.info("api Apply Book");
+
+		AccountInfo info = Util.getLoginedUser(request);
+		int result = equipmentItemsDao.apply(info.getId(),applyEquipmentType, applyEquipmentContent);
+
+		if (result == 0) {
+			return "대여";
+		} else if (result == 1) {
+			return "반납";
+		} else {
+			return "??";
+		}
+	}
+
+	/** 도서 신청 */
+	@ResponseBody
+	@RequestMapping(value = "/api_reqBook", method = RequestMethod.POST)
+	public String EquipmentController_reqBook(HttpServletRequest request,
+			@RequestParam("reqEquipmentTitle") String reqEquipmentTitle,
+			@RequestParam("reqEquipmentContent") String reqEquipmentContent) {
+		logger.info("api req Equipment");
+
+		AccountInfo info = Util.getLoginedUser(request);
+		if (info == null) {
+			return "401";
+		}
+
+		equipmentReqDao.create(info.getId(), reqEquipmentTitle, reqEquipmentContent);
+
 		return "";
 	}
 	

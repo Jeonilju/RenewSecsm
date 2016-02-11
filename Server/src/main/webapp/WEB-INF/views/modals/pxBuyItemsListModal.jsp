@@ -4,22 +4,16 @@
 <%@page import="com.secsm.info.PxReqInfo"%>
 <%@page import="java.util.List"%>
 
+
 <%
 	List<PxLogInfo> pxLogList = (List<PxLogInfo>)request.getAttribute("pxLogList");
-	int num = pxLogList.size(); 		//Total count
 %>
 
-<!-- 내역 조회 -->
-<div class="modal fade" id="pxBuyItemsListModal" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" id="SignInModalLabel">내역 조회</h4>
-			</div>
-			
-			<script>
+<script type="text/javascript">
+
 					function refund(idx) {
-						var param = $("#idx").val()
+						alert(idx);
+						var param = "idx" + "=" + $("#idx").val();
 					
 						$.ajax({
 							url : "/Secsm/Refund_px_items",
@@ -39,7 +33,7 @@
 		    					else
 		    					{
 		    						alert("환불할 수 없습니다.");
-		    						return false;
+		    						
 		    					}	
 		    					
 		    				},
@@ -49,11 +43,18 @@
 											+ request.reponseText + "\r\nerror : " + error);
 								}
 							}
-					
 						});
 					}
-			</script>
-
+</script>
+			
+<!-- 내역 조회 -->
+<div class="modal fade" id="pxBuyItemsListModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="SignInModalLabel">내역 조회</h4>
+			</div>
+			
 
 			<div class="modal-body">
 				<table class="table table-hover">

@@ -29,6 +29,7 @@
 			{
 				// 정상 구매
 				alert('정상 구매되었습니다.');
+				window.location.reload(true);
 			}
 			else if(response == '1')
 			{
@@ -49,12 +50,55 @@
 		});
 	}
 	
+	function charge_Money(){
+		var param = "money" + "=" + $("#charge_money").val();
+		
+		$.ajax({
+			url : "/Secsm/api_Charge_Money",
+			type : "POST",
+			data : param,
+			cache : false,
+			async : false,
+			dataType : "text",
+			
+			success : function(response) {	
+				alert(response);
+				if(response=='0')
+				{
+					// 충전완료
+					alert('충전되었습니다.');
+				}
+				else if(response == '1')
+				{
+					// 해당 상품 없음
+					alert('실패하였습니다.');
+				}	
+				else{
+					alert('알수없음');
+				}
+				
+			},
+			error : function(request, status, error) {
+				if (request.status != '0') {
+					alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+				}
+			}
+			
+		});
+		
+		
+	}
+	
 	$("#etItemCode").keyup(function(event){
 	    if(event.keyCode == 13){
 	    	buyItem();
 	    }
 	});
-
+	
+	//환불
+	function RefundItem(){
+		
+	}
 </script>
 
 <!-- 상품 구매 모달 -->
@@ -75,6 +119,15 @@
 						<div class="col-md-3">    
 							<label><%=accountInfo.getPxAmount() %> 원</label>
 						</div>
+						
+
+						<div class="col-md-6">
+							<input id="charge_money" name="charge_money" type="text" style="width: 30%">
+						</div>
+						<div class="col-md-3">
+							<button type="button" class="btn btn-default" onclick="charge_Money();"> 충전 </button>
+						</div>
+			
 					</div>
 					
 					<div class="row-fluid" style="margin: 20px">
@@ -91,6 +144,7 @@
 							<button type="button" class="btn btn-default" onclick="buyItem();"> 승인 </button>
 						</div>
 					</div>
+					
 					
 					<div style="height: 40px;"></div>
 				</div>

@@ -87,8 +87,37 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 		}
 	}
 
-	public List<EquipmentItemsInfo> selectByType(int type, String name){
+	/** 도서 리스트 반환 */
+	public List<EquipmentItemsInfo> selectByBook(String name){
+		// TODO 도서 리스트 반환
+		String querey = "select * from equipment_items where name = ?";
 		
+		return jdbcTemplate.query("select * from equipment_items where name = ?", new Object[]{name},
+				new RowMapper<EquipmentItemsInfo>() {
+					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentItemsInfo(resultSet.getInt("id"), resultSet.getString("code")
+								, resultSet.getString("name"), resultSet.getInt("Type")
+								, resultSet.getTimestamp("regDate"), resultSet.getInt("count"), resultSet.getInt("totalCount")
+								, resultSet.getInt("status"), resultSet.getString("description"));					}
+				});
+	}
+	
+	/** 장비 리스트 반환 */
+	public List<EquipmentItemsInfo> selectByEquipment(String name){
+		// TODO 장비 리스트 반환
+
+		return jdbcTemplate.query("select * from equipment_items where name = ?", new Object[]{name},
+				new RowMapper<EquipmentItemsInfo>() {
+					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentItemsInfo(resultSet.getInt("id"), resultSet.getString("code")
+								, resultSet.getString("name"), resultSet.getInt("Type")
+								, resultSet.getTimestamp("regDate"), resultSet.getInt("count"), resultSet.getInt("totalCount")
+								, resultSet.getInt("status"), resultSet.getString("description"));					}
+				});
+	}
+	
+	/** 바코드 또는 이름으로 검색 */
+	public List<EquipmentItemsInfo> selectByType(int type, String name){
 		if(type == 0){
 			// 바코드
 			return jdbcTemplate.query("select * from equipment_items where code ?", new Object[]{name},
@@ -117,7 +146,6 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 		}
 	}
 
-	
 	/** 대여 혹은 반납 
 	 * @return 0이면 대여 1이면 반납
 	 * */
