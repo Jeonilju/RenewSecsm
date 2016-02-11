@@ -6,11 +6,16 @@
 	
 	// 아이템 구매
 	function addQuestion(){
-		var param = "pxItemsName" + "=" + $("#pxItemsName").val() + "&" + 
-					"pxItemsCode" + "=" + $("#pxItemsCode").val() + "&" +
-					"pxItemsPrice" + "=" + $("#pxItemsPrice").val() + "&" +
-					"pxItemsDescription" + "=" + $("#pxItemsDescription").val() + "&" +
-					"pxItemsCount" + "="+ $("#pxItemsCount").val();
+		
+		$('#questionsTable tr').each(function() {
+		    var customerId = $(this).find(".customerIDCell").html();    
+		 });
+		
+		var param = "questionAddTitle" + "=" + $("#questionAddTitle").val() + "&" + 
+					"questionAddContent" + "=" + $("#questionAddContent").val() + "&" +
+					"questionAddStartDate" + "=" + $("#questionAddStartDate").val() + "&" +
+					"questionAddEndDate" + "=" + $("#questionAddEndDate").val() + "&" +
+					"questionAddQuestions" + "="+ $("#questionAddQuestions").val();
 
 		$.ajax({
 		url : "/Secsm/api_questionAdd",
@@ -40,12 +45,6 @@
 		
 		});
 	}
-	
-	$("#etItemCode").keyup(function(event){
-	    if(event.keyCode == 13){
-	    	addItem();
-	    }
-	});
 	
 	$(function() {
 		$('#btn-add-choice').click(function() {
@@ -94,31 +93,6 @@
         });
     });
 
-	function insertQuestionTable(){
-			
-			for(var index = 0;index < jsonArr.length;index++){
-				var data = jsonArr[index];
-				var tableRef = document.getElementById('pxReqTable').getElementsByTagName('tbody')[0];
-	
-				// Insert a row in the table at the last row
-				var newRow   = tableRef.insertRow(tableRef.rows.length);
-	
-				// Insert a cell in the row at index 0
-				var newCell1  = newRow.insertCell(0);
-				var newCell2  = newRow.insertCell(1);
-				var newCell3  = newRow.insertCell(2);
-				var newCell4  = newRow.insertCell(3);
-	
-				// Append a text node to the cell
-				var newText  = document.createTextNode('New row')
-				newCell1.appendChild(document.createTextNode(data.id));
-				newCell2.appendChild(document.createTextNode(data.title));
-				newCell3.appendChild(document.createTextNode(data.context));
-				newCell4.appendChild(document.createTextNode(data.status));
-			}
-		}
-	
-	
 </script>
 
 <div class="modal fade" id="questionAddModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -160,7 +134,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick="addItem();">등록</button>
+					<button type="button" class="btn btn-default" onclick="addQuestion();">등록</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</form>
