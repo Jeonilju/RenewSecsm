@@ -4,7 +4,6 @@
 
 <script type="text/javascript">
 	
-	// 아이템 구매
 	function addQuestion(){
 		var param = "pxItemsName" + "=" + $("#pxItemsName").val() + "&" + 
 					"pxItemsCode" + "=" + $("#pxItemsCode").val() + "&" +
