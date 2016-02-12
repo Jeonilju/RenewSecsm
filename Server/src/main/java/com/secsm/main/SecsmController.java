@@ -45,12 +45,14 @@ public class SecsmController {
 		logger.info("index Page");
 
 		AccountInfo info = Util.getLoginedUser(request);
+		logger.info("ok");
 		if(info == null){
 			// 비로그인 
 			return "index";
 		}
 		else{
 			// 로그인
+			logger.info("ddddd");
 			return "attendance";
 		}
 	}

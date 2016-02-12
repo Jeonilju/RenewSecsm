@@ -112,6 +112,20 @@ public class PXController {
 		}
 	}
 	
+	/** 상품 신청 승인 */
+	@ResponseBody
+	@RequestMapping(value = "/api_Accept", method = RequestMethod.POST)
+	public String PXController_Accept(HttpServletRequest request
+			, @RequestParam("id") int id){
+		logger.info("api_Accept");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		
+	//	pxReqDao.Accept(id);
+		
+		return "200";
+	}
+	
 	/** PX 금액 확인 */
 	@ResponseBody
 	@RequestMapping(value = "/api_GetPxAmount", method = RequestMethod.POST)
