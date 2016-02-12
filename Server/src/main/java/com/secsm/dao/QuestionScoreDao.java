@@ -38,7 +38,7 @@ public class QuestionScoreDao {
 				new RowMapper<QuestionScoreInfo>() {
 					public QuestionScoreInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new QuestionScoreInfo(resultSet.getInt("id"), resultSet.getInt("question_id")
-								, resultSet.getString("problom"));
+								, resultSet.getString("problom"), resultSet.getTimestamp("regDate"));
 					}
 				});
 	}
@@ -48,7 +48,7 @@ public class QuestionScoreDao {
 				new RowMapper<QuestionScoreInfo>() {
 					public QuestionScoreInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new QuestionScoreInfo(resultSet.getInt("id"), resultSet.getInt("question_id")
-								, resultSet.getString("problom"));
+								, resultSet.getString("problom"), resultSet.getTimestamp("regDate"));
 					}
 				});
 	}

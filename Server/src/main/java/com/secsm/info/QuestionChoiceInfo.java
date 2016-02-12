@@ -1,5 +1,7 @@
 package com.secsm.info;
 
+import java.sql.Timestamp;
+
 public class QuestionChoiceInfo {
 
 	private int id;
@@ -10,7 +12,9 @@ public class QuestionChoiceInfo {
 	private String p3;
 	private String p4;
 	private String p5;
-	public QuestionChoiceInfo(int id, int questionID, String problom, String p1, String p2, String p3, String p4, String p5) {
+	private Timestamp regDate;
+	
+	public QuestionChoiceInfo(int id, int questionID, String problom, String p1, String p2, String p3, String p4, String p5, Timestamp regDate) {
 		super();
 		this.id = id;
 		this.problom = problom;
@@ -20,6 +24,7 @@ public class QuestionChoiceInfo {
 		this.p3 = p3;
 		this.p4 = p4;
 		this.p5 = p5;
+		this.regDate = regDate;
 	}
 	public int getId() {
 		return id;
@@ -68,5 +73,11 @@ public class QuestionChoiceInfo {
 	}
 	public void setP5(String p5) {
 		this.p5 = p5;
+	}
+	public Timestamp getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(Timestamp regDate) {
+		this.regDate = regDate;
 	}
 }

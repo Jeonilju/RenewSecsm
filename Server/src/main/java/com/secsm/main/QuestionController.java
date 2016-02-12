@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.secsm.conf.Util;
 import com.secsm.dao.*;
 import com.secsm.info.*;
@@ -95,8 +96,60 @@ public class QuestionController {
 			Timestamp endDate = Util.getTimestamp(questionAddEndDate);
 			
 			int questionId =questionDao.create(info.getId(), questionAddTitle, questionAddContent, startDate, endDate);
-		
+			
+			
 		}		
 		return "200";
+	}
+	
+	/** 설문지 조회 */
+	@ResponseBody
+	@RequestMapping(value = "/api_questionGet", method = RequestMethod.GET)
+	public String QuestionController_getQuestion(HttpServletRequest request, HttpServletResponse response 
+			, @RequestParam("id") int id) {
+		logger.info("api get Question");
+		
+		QuestionInfo info = questionDao.selectById(id);
+		Gson gson = new Gson();
+		return gson.toJson(info);
+	}
+	
+	/** 설문지 결과 조회 */
+	@ResponseBody
+	@RequestMapping(value = "/api_questionResult", method = RequestMethod.GET)
+	public String QuestionController_resultQuestion(HttpServletRequest request, HttpServletResponse response 
+			, @RequestParam("id") int id) {
+		logger.info("api result Question");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		
+		if(info == null){
+			// 비로그인
+			
+		}
+		else{
+			// 로그인
+			QuestionInfo questionInfo = questionDao.selectById(id);
+			int questionId = questionInfo.getId();
+			int questionAccountId = questionInfo.getAccountId();
+			
+			if(info.getId() == questionAccountId) {
+				// 자신이 올린 설문
+				answerChoiceDao.selectByQuestionId(questionId);
+				answerDateDao.selectByQuestionId(questionId);
+				answerEssayDao.selectByQuestionId(questionId);
+				answerScoreDao.selectByQuestionId(questionId);
+				answerTimeDao.selectByQuestionId(questionId);
+				
+				
+			}
+			else{
+				// 다른사람이 올린 설문
+				
+			}
+		}
+		
+		Gson gson = new Gson();
+		return gson.toJson(info);
 	}
 }

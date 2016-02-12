@@ -38,7 +38,7 @@ public class QuestionDateDao {
 				new RowMapper<QuestionDateInfo>() {
 					public QuestionDateInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new QuestionDateInfo(resultSet.getInt("id"), resultSet.getInt("question_id")
-								, resultSet.getString("problom"));
+								, resultSet.getString("problom"), resultSet.getTimestamp("regDate"));
 					}
 				});
 	}
@@ -48,7 +48,7 @@ public class QuestionDateDao {
 				new RowMapper<QuestionDateInfo>() {
 					public QuestionDateInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new QuestionDateInfo(resultSet.getInt("id"), resultSet.getInt("question_id")
-								, resultSet.getString("problom"));
+								, resultSet.getString("problom"), resultSet.getTimestamp("regDate"));
 					}
 				});
 	}

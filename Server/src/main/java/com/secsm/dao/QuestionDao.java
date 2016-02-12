@@ -65,6 +65,32 @@ public class QuestionDao {
 				});
 	}
 	
+	public QuestionInfo selectById(int id){
+		
+		List<QuestionInfo> result = jdbcTemplate.query("select * from question where id = ?", new Object[] {id},
+				new RowMapper<QuestionInfo>() {
+			public QuestionInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+				return new QuestionInfo(resultSet.getInt("id"), resultSet.getInt("accountId")
+						, resultSet.getString("title"), resultSet.getString("content")
+						, resultSet.getTimestamp("regDate"), resultSet.getTimestamp("startDate")
+						, resultSet.getTimestamp("endDate"));
+			}
+		});
+		
+		if(result.size() == 1){
+			return result.get(0);
+		}
+		else if(result.size() > 1){
+			// 1개 이상의 중복된 id를 같는 question 존재
+			logger.error("중복된 id 존재");
+			return result.get(0);
+		}
+		else{
+			// 해당하는 id를 갖는 question 없음
+			return null;
+		}
+	}
+	
 	public void delete(int id){
 		jdbcTemplate.update("delete from question where id = ?", new Object[] {id});
 	}

@@ -40,7 +40,8 @@ public class QuestionChoiceDao {
 						return new QuestionChoiceInfo(resultSet.getInt("id") , resultSet.getInt("question_id")
 								, resultSet.getString("problom"), resultSet.getString("content")
 								, resultSet.getString("regDate"), resultSet.getString("startDate")
-								, resultSet.getString("endDate"), resultSet.getString("endDate"));
+								, resultSet.getString("endDate"), resultSet.getString("endDate")
+								, resultSet.getTimestamp("regDate"));
 					}
 				});
 	}
@@ -52,7 +53,8 @@ public class QuestionChoiceDao {
 						return new QuestionChoiceInfo(resultSet.getInt("id") , resultSet.getInt("question_id")
 								, resultSet.getString("problom"), resultSet.getString("content")
 								, resultSet.getString("regDate"), resultSet.getString("startDate")
-								, resultSet.getString("endDate"), resultSet.getString("endDate"));
+								, resultSet.getString("endDate"), resultSet.getString("endDate")
+								, resultSet.getTimestamp("regDate"));
 					}
 				});
 	}

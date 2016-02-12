@@ -52,7 +52,17 @@ public class AnswerScoreDao {
 					}
 				});
 	}
-	
+
+	public List<AnswerScoreInfo> selectByQuestionId(int question_id){
+		return jdbcTemplate.query("select * from answer_score where question_id = ?", new Object[] {question_id},
+				new RowMapper<AnswerScoreInfo>() {
+					public AnswerScoreInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AnswerScoreInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
+								, resultSet.getInt("question_id"), resultSet.getInt("answer"));
+					}
+				});
+	}
+
 	public void delete(int id){
 		jdbcTemplate.update("delete from answer_score where id = ?", new Object[] {id});
 	}

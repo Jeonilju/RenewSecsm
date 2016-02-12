@@ -38,7 +38,7 @@ public class QuestionEssayDao {
 				new RowMapper<QuestionEssayInfo>() {
 					public QuestionEssayInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new QuestionEssayInfo(resultSet.getInt("id"), resultSet.getInt("question_id")
-								, resultSet.getString("problom"));
+								, resultSet.getString("problom"), resultSet.getTimestamp("regDate"));
 					}
 				});
 	}
@@ -48,7 +48,7 @@ public class QuestionEssayDao {
 				new RowMapper<QuestionEssayInfo>() {
 					public QuestionEssayInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new QuestionEssayInfo(resultSet.getInt("id"), resultSet.getInt("question_id")
-								, resultSet.getString("problom"));
+								, resultSet.getString("problom"), resultSet.getTimestamp("regDate"));
 					}
 				});
 	}

@@ -1,15 +1,19 @@
 package com.secsm.info;
 
+import java.sql.Timestamp;
+
 public class QuestionScoreInfo {
 
 	private int id;
 	private int questionId;
 	private String problom;
-	public QuestionScoreInfo(int id, int questionId, String problom) {
+	private Timestamp regDate;
+	public QuestionScoreInfo(int id, int questionId, String problom, Timestamp regDate) {
 		super();
 		this.id = id;
 		this.questionId = questionId;
 		this.problom = problom;
+		this.regDate = regDate;
 	}
 	public int getId() {
 		return id;
@@ -28,5 +32,11 @@ public class QuestionScoreInfo {
 	}
 	public void setProblom(String problom) {
 		this.problom = problom;
+	}
+	public Timestamp getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(Timestamp regDate) {
+		this.regDate = regDate;
 	}
 }

@@ -54,6 +54,16 @@ public class AnswerTimeDao {
 				});
 	}
 	
+	public List<AnswerTimeInfo> selectByQuestionId(int question_id){
+		return jdbcTemplate.query("select * from answer_time where question_id = ?", new Object[] {question_id},
+				new RowMapper<AnswerTimeInfo>() {
+					public AnswerTimeInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AnswerTimeInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
+								, resultSet.getInt("question_id"), resultSet.getTimestamp("answer"));
+					}
+				});
+	}
+	
 	public void delete(int id){
 		jdbcTemplate.update("delete from answer_time where id = ?", new Object[] {id});
 	}

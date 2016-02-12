@@ -111,13 +111,32 @@ public class PXController {
 			return "2";
 		}
 	}
-
+	
+	/** 금액 충전 */
+	@ResponseBody
+	@RequestMapping(value = "/api_Charge_Money", method = RequestMethod.POST)
+	public String PXController_Charge(HttpServletRequest request
+			, @RequestParam("money") int money){
+		logger.info("api_Charge_money");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		if(info == null){
+			return "index";
+		}
+		
+		accountDao.refund_usePxAmount(info.getId(),money);
+		return "0";
+		
+	}
+	
+	
 	/** PX 환불 신청 */
+	@ResponseBody
 	@RequestMapping(value = "/Refund_px_items", method = RequestMethod.POST)
 	public String Refind_Px_Items(HttpServletRequest request
 			, @RequestParam("idx") int idx){
 		
-		logger.info("process_refund");
+		logger.info("api_process_refund");
 		AccountInfo info = Util.getLoginedUser(request);
 		
 		List<PxItemsInfo> result = new ArrayList<PxItemsInfo>();
