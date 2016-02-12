@@ -58,6 +58,10 @@ public class AccountDao implements AccountIDao {
 				});
 	}
 	
+	
+	public int CheckAmount(int id){
+		return jdbcTemplate.queryForInt("select Px_amount from account where id = ?", new Object[]{ id });
+	}
 	public void usePxAmount(int id, int price){
 		jdbcTemplate.update("update account set "
 				+ " Px_amount = Px_amount - ?"

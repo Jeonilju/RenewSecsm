@@ -1,11 +1,16 @@
 <%@ page pageEncoding="utf-8" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.secsm.info.*"%>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.js"> </script>
+ <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"> </script>
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+ 
+ <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/autoComplete.js"></script>
+
 
 <%
 	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
 %>
-
 
 <script type="text/javascript">
 	
@@ -95,6 +100,39 @@
 	    }
 	});
 	
+	//금액확인
+	function getPxAmount(){
+		
+		$.ajax({
+		url : "/Secsm/api_GetPxAmount",
+		type : "POST",
+		data : false,
+		cache : false,
+		async : false,
+		dataType : "text",
+		
+		success : function(response) {	
+			alert(response);
+			if(response==0)
+			{
+				alert('실패');
+				
+			}
+			else{
+				alert(response);
+				amount = document.getElementById(response);
+			}
+			
+		},
+		error : function(request, status, error) {
+			if (request.status != '0') {
+				alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+			}
+		}
+		
+		});
+	}
+	
 	//환불
 	function RefundItem(){
 		
@@ -111,23 +149,24 @@
 				</div>
 				<div class="modal-body" >
 					<div class="row-fluid" style="">
-						<div class="col-md-6">    
+						<div class="col-md-6">
 						</div>
 						<div class="col-md-3">
 							내 잔액 : 
 						</div>
 						<div class="col-md-3">    
-							<label><%=accountInfo.getPxAmount() %> 원</label>
+				<!--  		<label><%=accountInfo.getPxAmount() %> 원</label>  -->	
+					<!--			<script>getPxAmount()</script>
+								<label id = "amount ">원</label>  -->
+							<button type="button" class="btn btn-default" onclick="getPxAmount();"> 금액확인</button>	
 						</div>
 						
-
 						<div class="col-md-6">
 							<input id="charge_money" name="charge_money" type="text" style="width: 30%">
 						</div>
 						<div class="col-md-3">
 							<button type="button" class="btn btn-default" onclick="charge_Money();"> 충전 </button>
 						</div>
-			
 					</div>
 					
 					<div class="row-fluid" style="margin: 20px">
@@ -137,14 +176,13 @@
 								<option value="1"> 상품 명 </option>
 							</select>
 						</div>
-						<div class="col-md-6">
+						<div id = "box2" class="col-md-6">
 							<input id="etItemCode" name="etItemCode" type="text" style="width: 100%">
 						</div>
 						<div class="col-md-3">
 							<button type="button" class="btn btn-default" onclick="buyItem();"> 승인 </button>
 						</div>
 					</div>
-					
 					
 					<div style="height: 40px;"></div>
 				</div>

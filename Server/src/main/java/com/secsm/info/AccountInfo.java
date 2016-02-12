@@ -36,11 +36,9 @@ public class AccountInfo {
 		return pxAmount;
 	}
 
-
 	public void setPxAmount(int pxAmount) {
 		this.pxAmount = pxAmount;
 	}
-
 
 	public int getId() {
 		return id;
