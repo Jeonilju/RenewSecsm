@@ -152,4 +152,55 @@ public class QuestionController {
 		Gson gson = new Gson();
 		return gson.toJson(info);
 	}
+	
+	/**객관식 양식 */
+	@ResponseBody
+	@RequestMapping(value = "/api_questionGetChoice", method = RequestMethod.GET)
+	public String QuestionController_questionGetChoice(HttpServletRequest request, HttpServletResponse response) {
+		logger.info("api questionGetChoice");
+		String result = "";
+		
+		return result;
+	}
+	
+	/** 주관식 양식 */
+	@ResponseBody
+	@RequestMapping(value = "/api_questionGetEssay", method = RequestMethod.GET)
+	public String QuestionController_questionGetEssay(HttpServletRequest request, HttpServletResponse response) {
+		logger.info("api questionGetEssay");
+		String result = "";
+		
+		return result;
+	}
+	
+	/** 점수 양식 */
+	@ResponseBody
+	@RequestMapping(value = "/api_questionGetScore", method = RequestMethod.GET)
+	public String QuestionController_questionGetScore(HttpServletRequest request, HttpServletResponse response) {
+		logger.info("api questionGetScore");
+		String result = "";
+		
+		return result;
+	}
+	
+	/** 시간 양식 */
+	@ResponseBody
+	@RequestMapping(value = "/api_questionGetTime", method = RequestMethod.GET)
+	public String QuestionController_questionGetTime(HttpServletRequest request, HttpServletResponse response) {
+		logger.info("api questionGetTime");
+		String result = "";
+		
+		return result;
+	}
+	
+	/**날짜 양식 */
+	@ResponseBody
+	@RequestMapping(value = "/api_questionGetDate", method = RequestMethod.GET)
+	public String QuestionController_questionGetDate(HttpServletRequest request, HttpServletResponse response) {
+		logger.info("api questionGetDate");
+		String result = "";
+		
+		return result;
+	}
+	
 }
