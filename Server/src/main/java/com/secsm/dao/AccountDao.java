@@ -55,6 +55,35 @@ public class AccountDao implements AccountIDao {
 				});
 	}
 	
+	//Duty 구현할때 사용
+	public List<AccountInfo> selectDuty(String name) {
+		return jdbcTemplate.query("select * from account where name = ?", new Object[] { name },
+				new RowMapper<AccountInfo>() {
+					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
+								resultSet.getString("email"), resultSet.getString("pw"),
+								resultSet.getString("phone"), resultSet.getInt("grade")
+								, resultSet.getInt("Px_amount"));
+					}
+				});
+	}
+	
+	//Duty 구현할때 사용
+	public List<AccountInfo> selectAllException(String query) {
+		return jdbcTemplate.query("select * from account where" + query + " order by name asc", new Object[] {  },
+				new RowMapper<AccountInfo>() {
+					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
+								resultSet.getString("email"), resultSet.getString("pw"),
+								resultSet.getString("phone"), resultSet.getInt("grade")
+								, resultSet.getInt("Px_amount"));
+					}
+				});
+	}
+	
+	public int CheckAmount(int id){
+		return jdbcTemplate.queryForInt("select Px_amount from account where id = ?", new Object[]{ id });
+	}
 	public void usePxAmount(int id, int price){
 		jdbcTemplate.update("update account set "
 				+ " Px_amount = Px_amount - ?"
@@ -63,6 +92,8 @@ public class AccountDao implements AccountIDao {
 	}
 	
 	public void refund_usePxAmount(int id, int price){
+		System.out.println(id);
+		System.out.println(price);
 		jdbcTemplate.update("update account set "
 				+ " Px_amount = Px_amount + ?"
 			+ " where id = ?", 

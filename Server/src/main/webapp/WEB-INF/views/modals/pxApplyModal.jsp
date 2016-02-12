@@ -144,8 +144,13 @@
 									out.println("<td>" + info.getId() + "</td>");
 									out.println("<td>" + info.getTitle() + "</td>");
 									out.println("<td>" + info.getContext() + "</td>");
-									out.println("<td>" + info.getStatus() + "</td>");
+									if(info.getStatus() == 0)
+										out.println("<td>" + "승인 중" + "</td>");
+									else if((info.getStatus() == 1)){
+										out.println("<td>" + "승인" + "</td>");
+									}
 									out.println("</tr>");
+									
 								}
 							%>
 						</tbody>

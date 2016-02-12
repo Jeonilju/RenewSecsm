@@ -112,6 +112,36 @@ public class PXController {
 		}
 	}
 	
+	/** 상품 신청 승인 */
+	@ResponseBody
+	@RequestMapping(value = "/api_Accept", method = RequestMethod.POST)
+	public String PXController_Accept(HttpServletRequest request
+			, @RequestParam("id") int id){
+		logger.info("api_Accept");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		
+	//	pxReqDao.Accept(id);
+		
+		return "200";
+	}
+	
+	/** PX 금액 확인 */
+	@ResponseBody
+	@RequestMapping(value = "/api_GetPxAmount", method = RequestMethod.POST)
+	public int PXController_getPxamount(HttpServletRequest request){
+		logger.info("api_PxGetAmount");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		if(info == null){
+			return 0;
+		}
+		
+		int amount = accountDao.CheckAmount(info.getId());
+		
+		return amount;
+	}
+	
 	/** 금액 충전 */
 	@ResponseBody
 	@RequestMapping(value = "/api_Charge_Money", method = RequestMethod.POST)
@@ -139,13 +169,21 @@ public class PXController {
 		logger.info("api_process_refund");
 		AccountInfo info = Util.getLoginedUser(request);
 		
-		List<PxItemsInfo> result = new ArrayList<PxItemsInfo>();
-		result = pxItemsDao.select(idx);
-		accountDao.refund_usePxAmount(idx, result.get(0).getPrice());
-		pxLogDao.delete(idx);
-		pxItemsDao.refund_useItems(idx, 1);
+		List<PxLogInfo> result = pxLogDao.selectById(idx);
+		List<PxItemsInfo> result1 = pxItemsDao.select(result.get(0).getPxItemsId());
 		
-		return "200";
+		if(result.size() == 1){
+			// 정상
+			accountDao.refund_usePxAmount(result.get(0).getAccountId(), result1.get(0).getPrice());
+			pxLogDao.delete(idx);
+			pxItemsDao.refund_useItems(result.get(0).getPxItemsId(), 1);
+			return "200";
+
+		}
+		else{
+			// 비정상
+			return "440";
+		}
 	}
 	
 	/** 구매 내역 조회 */
@@ -161,6 +199,7 @@ public class PXController {
 		System.out.println(rowCount);
 		return JSONArray.toJSONString(pxLogList);
 	}
+	
 	
 	@RequestMapping(value = "/paging", method = RequestMethod.GET)
 	public String Paging(@RequestParam int pageNum, Model model){
@@ -211,13 +250,32 @@ public class PXController {
 	public String PXController_api_applyReqList(HttpServletRequest request){
 		logger.info("api_applyReqList");
 		
-		List<PxReqInfo> pxReqList = pxReqDao.selectAll();
-		Gson gson = new Gson();
-		String result = gson.toJson(pxReqList);
+		AccountInfo info = Util.getLoginedUser(request);
+		List<PxReqInfo> pxReqList = null;
+		if(info.getGrade() == 5 || info.getGrade() == 0){
+			// PX 부장 및 관리자
+			logger.info("pxReq_administer");
+			pxReqList = pxReqDao.selectAll();
+			Gson gson = new Gson();
+			String result = gson.toJson(pxReqList);
+			
+			logger.info(result);
+			
+			return result;
+		}
+		else{
+			// 일반회원
+			logger.info("pxReq_member");
+			pxReqList = pxReqDao.select(info.getId());
+			Gson gson = new Gson();
+			String result = gson.toJson(pxReqList);
+			
+			logger.info(result);
+			
+			return result;
+		}
 		
-		logger.info(result);
 		
-		return result;
 	}
 	
 	/** PX 상품 추가 */
@@ -235,6 +293,5 @@ public class PXController {
 		
 		return "200";
 	}
-	
 	
 }

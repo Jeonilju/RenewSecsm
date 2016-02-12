@@ -12,8 +12,7 @@
 <script type="text/javascript">
 
 					function refund(idx) {
-						alert(idx);
-						var param = "idx" + "=" + $("#idx").val();
+						var param = "idx" + "=" + idx; 
 					
 						$.ajax({
 							url : "/Secsm/Refund_px_items",
@@ -28,7 +27,7 @@
 		    					if(response=='200')
 		    					{
 		    						alert("환불되었습니다!");
-		    						location.reload();
+		    						
 		    					}
 		    					else
 		    					{
@@ -74,7 +73,7 @@
 				    			out.print("<td>" + (info.getName()) + "</td>");
 				    			out.print("<td>" + (info.getCount()) + "</td>");
 				    			out.print("<td>" + (info.getPrice()) + "</td>");
-				    			out.print("<td>"+"<button type = 'button' class='btn btn-default' id = 'refund' onclick = 'refund("+ info.getId()+");'>환불</button>"+"</td>");
+				    			out.print("<td>"+"<button type = 'button' class='btn btn-default' id ='refund' onclick = 'refund("+ info.getId()+");'>환불</button>"+"</td>");
 				    			out.print("</tr>");
 				    		}
 				    	%>

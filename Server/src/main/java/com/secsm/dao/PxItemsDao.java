@@ -92,6 +92,8 @@ public class PxItemsDao implements PxItemsIDao {
 			new Object[]  { count, id});
 	}
 	
+	
+	
 	public void delete(int id){
 		jdbcTemplate.update("delete from px_items where id = ?", new Object[] {id});
 	}
