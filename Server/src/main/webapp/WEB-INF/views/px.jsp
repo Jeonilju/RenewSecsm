@@ -55,10 +55,13 @@
 			<div class="row-fluid">
 					<button type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsModal" >상품 구매</button>
 					<button type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsListModal" >내역 조회</button>
-					<button type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxApplyModal" >상품 요청</button>
 					<%
 						if(accountInfo.getGrade() == 5 || accountInfo.getGrade() == 0){
+							out.println("<button type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxApplyModal2\" >상품 요청</button>");
 							out.println("<button type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxAddModal\" >상품 추가</button>");
+						}
+						else{
+							out.println("<button type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxApplyModal\" >상품 요청</button>");
 						}
 					%>
 			</div>
@@ -71,4 +74,5 @@
 	<jsp:include page="modals/pxBuyItemsListModal.jsp" flush="false" />
 	<jsp:include page="modals/pxApplyModal.jsp" flush="false" />
 	<jsp:include page="modals/pxAddModal.jsp" flush="false" />
+	<jsp:include page="modals/pxApplyModal2.jsp" flush="false" />
 </html>

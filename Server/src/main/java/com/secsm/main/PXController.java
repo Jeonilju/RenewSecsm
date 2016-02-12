@@ -228,13 +228,32 @@ public class PXController {
 	public String PXController_api_applyReqList(HttpServletRequest request){
 		logger.info("api_applyReqList");
 		
-		List<PxReqInfo> pxReqList = pxReqDao.selectAll();
-		Gson gson = new Gson();
-		String result = gson.toJson(pxReqList);
+		AccountInfo info = Util.getLoginedUser(request);
+		List<PxReqInfo> pxReqList = null;
+		if(info.getGrade() == 5 || info.getGrade() == 0){
+			// PX 부장 및 관리자
+			logger.info("pxReq_administer");
+			pxReqList = pxReqDao.selectAll();
+			Gson gson = new Gson();
+			String result = gson.toJson(pxReqList);
+			
+			logger.info(result);
+			
+			return result;
+		}
+		else{
+			// 일반회원
+			logger.info("pxReq_member");
+			pxReqList = pxReqDao.select(info.getId());
+			Gson gson = new Gson();
+			String result = gson.toJson(pxReqList);
+			
+			logger.info(result);
+			
+			return result;
+		}
 		
-		logger.info(result);
 		
-		return result;
 	}
 	
 	/** PX 상품 추가 */
@@ -252,6 +271,5 @@ public class PXController {
 		
 		return "200";
 	}
-	
 	
 }

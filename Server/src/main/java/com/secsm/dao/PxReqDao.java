@@ -27,6 +27,7 @@ public class PxReqDao implements PxReqIDao {
 		logger.info("Updated DataSource ---> " + ds);
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
+	
 	public void create(int accountId, String title, String context){
 		jdbcTemplate.update("insert into px_req (Account_id, title, context, status) values (?, ?, ?, ?)" 
 				, new Object[] {accountId, title, context, 0});
@@ -44,7 +45,7 @@ public class PxReqDao implements PxReqIDao {
 	}
 	
 	public List<PxReqInfo> select(int id){
-		return jdbcTemplate.query("select * from px_req where id = ?", new Object[]{id},
+		return jdbcTemplate.query("select * from px_req where Account_id = ?", new Object[]{id},
 				new RowMapper<PxReqInfo>() {
 					public PxReqInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new PxReqInfo(resultSet.getInt("id"), resultSet.getInt("Account_id")
