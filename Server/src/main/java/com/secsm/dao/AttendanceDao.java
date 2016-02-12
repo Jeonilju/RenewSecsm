@@ -42,20 +42,21 @@ public class AttendanceDao implements AttendanceIDao {
 	}
 
 	public List<AttendanceInfo> select(int accountId){
-		return jdbcTemplate.query("select * from attendance where accountId = ?", new Object[] { accountId },
+		return jdbcTemplate.query("select * from attendance where account_Id = ?", new Object[] { accountId },
 				new RowMapper<AttendanceInfo>() {
 					public AttendanceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new AttendanceInfo(resultSet.getInt("accountId"), resultSet.getTimestamp("regDate"));
+						return new AttendanceInfo(resultSet.getInt("account_Id"), resultSet.getTimestamp("regDate"));
 					}
 				});
 		
 	}
 	
-	public List<AttendanceInfo> selectTime(Timestamp startDate, Timestamp endDate){
-		return jdbcTemplate.query("select * from attendance where regDate >  ? AND regDate < ?", new Object[] { startDate, endDate },
+	public List<AttendanceInfo> selectTime(int accountId,Timestamp startDate, Timestamp endDate){
+		return jdbcTemplate.query("select * from attendance where account_Id = ? AND regDate >=  ? AND regDate < ?", 
+				new Object[] { accountId, startDate, endDate },
 				new RowMapper<AttendanceInfo>() {
 					public AttendanceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new AttendanceInfo(resultSet.getInt("accountId"), resultSet.getTimestamp("regDate"));
+						return new AttendanceInfo(resultSet.getInt("account_Id"), resultSet.getTimestamp("regDate"));
 					}
 				});
 		
