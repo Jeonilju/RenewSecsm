@@ -41,6 +41,9 @@
 				%>
 			}
     		
+    		
+    		
+    		
     	</script>
     	
 	</head>
@@ -53,7 +56,7 @@
 			</div>
 			
 			<div class="row-fluid">
-					<button type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsModal" >상품 구매</button>
+					<button onclick = "getPxAmount();" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsModal" >상품 구매</button>
 					<button type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsListModal" >내역 조회</button>
 					<%
 						if(accountInfo.getGrade() == 5 || accountInfo.getGrade() == 0){
@@ -69,7 +72,6 @@
 		<jsp:include page="base/foot.jsp" flush="false" />
 		
 	</body>
-
 	<jsp:include page="modals/pxBuyItemsModal.jsp" flush="false" />
 	<jsp:include page="modals/pxBuyItemsListModal.jsp" flush="false" />
 	<jsp:include page="modals/pxApplyModal.jsp" flush="false" />

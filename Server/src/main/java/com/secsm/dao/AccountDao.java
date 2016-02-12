@@ -95,6 +95,8 @@ public class AccountDao implements AccountIDao {
 	}
 	
 	public void refund_usePxAmount(int id, int price){
+		System.out.println(id);
+		System.out.println(price);
 		jdbcTemplate.update("update account set "
 				+ " Px_amount = Px_amount + ?"
 			+ " where id = ?", 

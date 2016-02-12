@@ -67,7 +67,7 @@
 			dataType : "text",
 			
 			success : function(response) {	
-				alert(response);
+		//		alert(response);
 				if(response=='0')
 				{
 					// 충전완료
@@ -112,17 +112,18 @@
 		dataType : "text",
 		
 		success : function(response) {	
-			alert(response);
+		//	alert(response);
 			if(response==0)
 			{
 				alert('실패');
 				
 			}
 			else{
-				alert(response);
-				amount = document.getElementById(response);
+			//	alert(response);
+				var amount = document.getElementById("amount");
+				amount.innerHTML = response + "원";
 			}
-			
+
 		},
 		error : function(request, status, error) {
 			if (request.status != '0') {
@@ -156,16 +157,16 @@
 						</div>
 						<div class="col-md-3">    
 				<!--  		<label><%=accountInfo.getPxAmount() %> 원</label>  -->	
-					<!--			<script>getPxAmount()</script>
-								<label id = "amount ">원</label>  -->
-							<button type="button" class="btn btn-default" onclick="getPxAmount();"> 금액확인</button>	
+					<!--			<script>getPxAmount()</script>-->
+								<label id = "amount"></label>  
+						
 						</div>
 						
 						<div class="col-md-6">
 							<input id="charge_money" name="charge_money" type="text" style="width: 30%">
 						</div>
 						<div class="col-md-3">
-							<button type="button" class="btn btn-default" onclick="charge_Money();"> 충전 </button>
+							<button type="button" class="btn btn-default" onclick="charge_Money();getPxAmount();"> 충전 </button>
 						</div>
 					</div>
 					
@@ -180,7 +181,7 @@
 							<input id="etItemCode" name="etItemCode" type="text" style="width: 100%">
 						</div>
 						<div class="col-md-3">
-							<button type="button" class="btn btn-default" onclick="buyItem();"> 승인 </button>
+							<button type="button" class="btn btn-default" onclick="buyItem();getPxAmount();"> 승인 </button>
 						</div>
 					</div>
 					
