@@ -155,13 +155,20 @@ public class PXController {
 		logger.info("api_process_refund");
 		AccountInfo info = Util.getLoginedUser(request);
 		
-		List<PxItemsInfo> result = new ArrayList<PxItemsInfo>();
-		result = pxItemsDao.select(idx);
-		accountDao.refund_usePxAmount(idx, result.get(0).getPrice());
-		pxLogDao.delete(idx);
-		pxItemsDao.refund_useItems(idx, 1);
-		
-		return "200";
+		List<PxLogInfo> result = pxLogDao.selectById(idx);
+		if(result.size() == 1){
+			// 정상
+			accountDao.refund_usePxAmount(idx, result.get(0).getPrice());
+			pxLogDao.delete(idx);
+			pxItemsDao.refund_useItems(result.get(0).getPxItemsId(), 1);
+			
+			return "200";
+
+		}
+		else{
+			// 비정상
+			return "440";
+		}
 	}
 	
 	/** 구매 내역 조회 */
