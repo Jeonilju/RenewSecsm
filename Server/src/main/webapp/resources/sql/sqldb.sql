@@ -279,3 +279,53 @@ CREATE TABLE `answer_time` (
   CONSTRAINT `account_answer_time` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `answer_time_id` FOREIGN KEY (`question_id`) REFERENCES `question_time` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='시간 답';
+
+CREATE TABLE `book_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='도서 카테고리';
+
+CREATE TABLE `book_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `regDate` timestamp NULL DEFAULT NULL,
+  `count` int(11) DEFAULT NULL,
+  `totalCount` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `book_category_items_idx` (`type`),
+  CONSTRAINT `book_category_items` FOREIGN KEY (`type`) REFERENCES `book_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='도서';
+
+CREATE TABLE `book_log` (
+  `id` int(11) NOT NULL,
+  `account_id` int(11) DEFAULT NULL,
+  `regDate` timestamp NULL DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `book_items_id` int(11) DEFAULT NULL,
+  `book_logcol` varchar(45) DEFAULT NULL,
+  `startDate` timestamp NULL DEFAULT NULL,
+  `endDate` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `account_book_id_idx` (`account_id`),
+  KEY `book_items_id_idx` (`book_items_id`),
+  CONSTRAINT `account_book_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `book_items_id` FOREIGN KEY (`book_items_id`) REFERENCES `book_items` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `book_req` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) DEFAULT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `content` text,
+  `regdate` timestamp NULL DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `account_book_log_id_idx` (`account_id`),
+  CONSTRAINT `account_book_log_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
