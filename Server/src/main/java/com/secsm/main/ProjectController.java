@@ -101,16 +101,18 @@ public class ProjectController {
  			, @RequestParam("createProjectStartDate") String startDate
  			, @RequestParam("createProjectEndDate") String endDate) {
 		logger.info("api_createProject");
-
-//		try{
-			projectDao.create(name, summary, discription, pl, teamMember, Util.getTimestamp(startDate), Util.getTimestamp(endDate));
-//		}catch(Exception e){
-//			logger.error("project 등록 실패");
-//			return "500";
-//		}
+		projectDao.create(name, summary, discription, pl, teamMember, Util.getTimestamp(startDate), Util.getTimestamp(endDate));
 		
 		return "200";
 	}
-
 	
+	@ResponseBody
+	@RequestMapping(value = "/api_setProjectStatus", method = RequestMethod.POST)
+	public String ProjectController_index(HttpServletRequest request
+			, @RequestParam("projectId") String projectId
+ 			, @RequestParam("status") String status) {
+		logger.info("api_setProjectStatus");
+		
+		return "200";
+	}
 }

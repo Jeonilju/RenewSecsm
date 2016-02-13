@@ -70,6 +70,23 @@ public class EquipmentController {
 			return "book";
 		}
 	}
+	
+	@RequestMapping(value = "/equipmentReqExcel", method = RequestMethod.GET)
+	public String EquipmentController_ReqExcel(HttpServletRequest request) {
+		logger.info("equipmentReqExcel");
+		AccountInfo info = Util.getLoginedUser(request);
+		
+		if(info.getGrade() == 0 || 
+				info.getGrade() == 5){
+			// 장비부장 권한
+			request.setAttribute("equipmentReqList", equipmentReqDao.selectAll());
+			return "equipmentExcel";
+		}
+		else{
+			// TODO 권한 없음
+			return "index";
+		}
+	}
 ///////////////////////////////////////////////////////////////////////////
 ////////////////										  /////////////////
 ////////////////				Common APIs				  /////////////////

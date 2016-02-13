@@ -14,6 +14,39 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<jsp:include page="base/header.jsp" flush="false" />
     	<title><%=info.getName() %></title>
+    	
+    	<script type="text/javascript">
+    	
+    		function setPorjectStatus(status){
+    			var param = "projectId" + "=" + $("#pxItemsName").val() + "&" + 
+							"status" + "="+ $("#pxItemsCount").val();
+			
+				$.ajax({
+				url : "/Secsm/api_setProjectStatus",
+				type : "POST",
+				data : param,
+				cache : false,
+				async : false,
+				dataType : "text",
+				
+				success : function(response) {	
+					if(response=='200')
+					{
+					}
+					else{
+					}
+				},
+				error : function(request, status, error) {
+					if (request.status != '0') {
+						alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+					}
+				}
+				
+				});
+    		}
+    		
+    	</script>
+    	
 	</head>
 	<jsp:include page="base/nav.jsp" flush="true" />
 	<body>
@@ -42,9 +75,22 @@
 				PL: <%= info.getPl() %>
 				팀원: <%= info.getTeam() %>
 			</div>
+			
+		</div>
 
-		<jsp:include page="base/foot.jsp" flush="false" />
-
-		</div>	
+		<div>
+			<button type="button" class="btn" style="margin: 5px;">문서 등록</button>
+			<button type="button" class="btn" style="margin: 5px;">프로젝트 수정</button>
+			<button type="button" class="btn" style="margin: 5px;">프로젝트 삭제</button>
+		</div>
+		
+		<div>
+			<button type="button" class="btn" style="margin: 5px;" onclick="setPorjectStatus(1);">프로젝트 승인</button>
+			<button type="button" class="btn" style="margin: 5px;" onclick="setPorjectStatus(-1);">프로젝트 드랍</button>
+			<button type="button" class="btn" style="margin: 5px;" onclick="setPorjectStatus(2);">프로젝트 완료</button>
+		</div>
+		
+		
+		<jsp:include page="base/foot.jsp" flush="false" />	
 	</body>
 </html>

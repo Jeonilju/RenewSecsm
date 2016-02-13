@@ -390,4 +390,18 @@ CREATE TABLE `book_req` (
   CONSTRAINT `account_book_log_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `secsm`.`attach` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `projectId` INT NULL,
+  `path` VARCHAR(256) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `project_attach_id_idx` (`projectId` ASC),
+  CONSTRAINT `project_attach_id`
+    FOREIGN KEY (`projectId`)
+    REFERENCES `secsm`.`project` (`ID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+COMMENT = '첨부파일 목록';
 
+ALTER TABLE `secsm`.`attach` 
+ADD COLUMN `name` VARCHAR(100) NULL AFTER `path`;
