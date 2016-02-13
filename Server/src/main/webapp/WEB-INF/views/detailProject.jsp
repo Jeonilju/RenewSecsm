@@ -6,6 +6,7 @@
 
 <%
 	ProjectInfo info = (ProjectInfo) request.getAttribute("projectInfo");
+	ArrayList<AttachInfo> attachList = (ArrayList<AttachInfo>) request.getAttribute("attachList");
 %>
 
 <html>
@@ -18,8 +19,8 @@
     	<script type="text/javascript">
     	
     		function setPorjectStatus(status){
-    			var param = "projectId" + "=" + $("#pxItemsName").val() + "&" + 
-							"status" + "="+ $("#pxItemsCount").val();
+    			var param = "projectId" + "=" + $("#projectId").val() + "&" + 
+							"status" + "="+ status;
 			
 				$.ajax({
 				url : "/Secsm/api_setProjectStatus",
@@ -32,8 +33,10 @@
 				success : function(response) {	
 					if(response=='200')
 					{
+						alert("변경되었습니다.");
 					}
 					else{
+						alert("반영되지 않았습니다.");
 					}
 				},
 				error : function(request, status, error) {
@@ -45,6 +48,27 @@
 				});
     		}
     		
+    		function FileDownloadClick(filename)
+			{
+		    	var method = "post";  //method 부분은 입력안하면 자동으로 post가 된다.
+		    	var form = document.createElement("form");
+			    
+		    	if(filename == "")
+			    	return;
+		    	
+		    	form.setAttribute("method", "post");
+		    	form.setAttribute("action", "/Secsm/FileDownload");
+			    
+		    	var hiddenField = document.createElement("input");
+		    	hiddenField.setAttribute("type", "hidden");
+		    	hiddenField.setAttribute("name", "filename");
+		    	hiddenField.setAttribute("value", filename);
+		    	form.appendChild(hiddenField);
+			        
+		    	document.body.appendChild(form);
+		   		form.submit();
+			}
+    		
     	</script>
     	
 	</head>
@@ -52,6 +76,7 @@
 	<body>
 
 		<div class="container body-content" style="margin-top: 150px">
+			<input id="projectId" name="projectId" type="text" style="display: none;" value="<%=info.getId()%>">
 			<div class="row-fluid">
 				<h1> <%=info.getName() %> </h1>
 			</div>
@@ -75,11 +100,37 @@
 				PL: <%= info.getPl() %>
 				팀원: <%= info.getTeam() %>
 			</div>
-			
+			<div class="row-fluid">
+				PL: <%= info.getPl() %>
+				팀원: <%= info.getTeam() %>
+			</div>
+			<div class="row-fluid">
+				첨부파일
+				<table>
+					<thead>
+						<tr>
+							<th>No.</th>
+							<th>Tag</th>
+							<th>Attach</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%
+							for (AttachInfo attachInfo : attachList){
+								out.println("<tr>");
+								out.println("<td>" + attachInfo.getId() + "</td>");
+								out.println("<td>" + attachInfo.getTag() + "</td>");
+								out.println("<td style=\"cursor:pointer;\" onclick=\"FileDownloadClick('" + attachInfo.getName() + "');\">" + attachInfo.getName() + "</td>");
+								out.println("</tr>");
+							}
+						%>
+					</tbody>
+				</table>
+			</div>
 		</div>
 
 		<div>
-			<button type="button" class="btn" style="margin: 5px;">문서 등록</button>
+			<button type="button" class="btn" data-toggle="modal" data-target="#projectAddAttach" style="margin: 5px;">문서 등록</button>
 			<button type="button" class="btn" style="margin: 5px;">프로젝트 수정</button>
 			<button type="button" class="btn" style="margin: 5px;">프로젝트 삭제</button>
 		</div>
@@ -91,6 +142,7 @@
 		</div>
 		
 		
-		<jsp:include page="base/foot.jsp" flush="false" />	
+		<jsp:include page="base/foot.jsp" flush="false" />
+		<jsp:include page="modals/projectAddAttachModal.jsp" flush="false"/>
 	</body>
 </html>

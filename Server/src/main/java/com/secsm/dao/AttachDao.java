@@ -29,9 +29,9 @@ public class AttachDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
-	public void create(int projectId, String path){
-		jdbcTemplate.update("insert into attach (project_id, path) values (?, ?)"
-				, new Object[] {projectId, path});
+	public void create(int projectId, String path, String tag, String name){
+		jdbcTemplate.update("insert into attach (project_id, path, tag, name) values (?, ?, ?, ?)"
+				, new Object[] {projectId, path, tag, name});
 	}
 	
 	public List<AttachInfo> selectAll(){
@@ -39,7 +39,8 @@ public class AttachDao {
 				new RowMapper<AttachInfo>() {
 					public AttachInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AttachInfo(resultSet.getInt("id"), resultSet.getInt("project_id")
-								, resultSet.getString("path"));
+								, resultSet.getString("path"), resultSet.getString("tag")
+								, resultSet.getString("name"));
 					}
 				});
 	}
@@ -49,7 +50,8 @@ public class AttachDao {
 					new RowMapper<AttachInfo>() {
 				public AttachInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 					return new AttachInfo(resultSet.getInt("id"), resultSet.getInt("project_id")
-							, resultSet.getString("path"));
+							, resultSet.getString("path"), resultSet.getString("tag")
+							, resultSet.getString("name"));
 				}
 			});
 	}
@@ -59,7 +61,8 @@ public class AttachDao {
 					new RowMapper<AttachInfo>() {
 				public AttachInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 					return new AttachInfo(resultSet.getInt("id"), resultSet.getInt("project_id")
-							, resultSet.getString("path"));
+							, resultSet.getString("path"), resultSet.getString("tag")
+							, resultSet.getString("name"));
 				}
 			});
 	}

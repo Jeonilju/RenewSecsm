@@ -76,7 +76,11 @@ public class EquipmentController {
 		logger.info("equipmentReqExcel");
 		AccountInfo info = Util.getLoginedUser(request);
 		
-		if(info.getGrade() == 0 || 
+		if(info == null){
+			// 비로그인
+			return "index";
+		}
+		else if(info.getGrade() == 0 || 
 				info.getGrade() == 5){
 			// 장비부장 권한
 			request.setAttribute("equipmentReqList", equipmentReqDao.selectAll());

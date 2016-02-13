@@ -95,6 +95,7 @@
 			        <th>프로젝트 명</th>
 			        <th>기간</th>
 			        <th>PL</th>
+			        <th>상태</th>
 			      </tr>
 			    </thead>
 			    <tbody>
@@ -106,6 +107,28 @@
 							out.println("<td>" + Util.getTimestempStr(info.getStartDate()) 
 										+ " ~ " + Util.getTimestempStr(info.getEndDate()) + "</td>");
 							out.println("<td>" + info.getPl() + "</td>");
+							
+							if(info.getStatus() == 0){
+								// 시작단계
+								out.println("<td>" + "미승인" + "</td>");
+							}
+							else if(info.getStatus() == 1){
+								// 완료					
+								out.println("<td>" + "진행중" + "</td>");
+							}
+							else if(info.getStatus() == 2){
+								// 완료					
+								out.println("<td>" + "완료" + "</td>");
+							}
+							else if(info.getStatus() == -1){
+								// 드랍
+								out.println("<td>" + "드랍" + "</td>");
+							}
+							else{
+								// 알수없음
+								out.println("<td>" + "알수없음" + "</td>");
+							}
+							
 							out.println("</tr>");
 						}
 					%>

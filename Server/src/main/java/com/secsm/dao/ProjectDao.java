@@ -100,17 +100,25 @@ public class ProjectDao implements ProjectIDao {
 		}
 	}
 	
-	public void updateProject(int id, String name, String summary, String description, String pl, String teamMember, Timestamp startDate, Timestamp endDate){
+	public void updateProject(int id, String name, String summary, String description, String pl, String teamMember, int status, Timestamp startDate, Timestamp endDate){
 		jdbcTemplate.update("update project set "
 				+ "name = ?,"
 				+ " summary = ?,"
 				+ " description = ?,"
 				+ " pl = ?,"
 				+ " team = ?,"
+				+ " status = ?,"
 				+ " startDate = ?,"
 				+ " endDate = ?"
 			+ " where id = ?", 
-			new Object[]  { name, summary, description, pl, teamMember, startDate, endDate , id});
+			new Object[]  { name, summary, description, pl, teamMember, status, startDate, endDate , id});
+	}
+	
+	public void setStatus(int id, int status){
+		jdbcTemplate.update("update project set "
+				+ " status = ?"
+			+ " where id=?", 
+			new Object[]  { status, id});
 	}
 	
 	public void delete(int id){

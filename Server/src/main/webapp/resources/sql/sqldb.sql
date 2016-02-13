@@ -405,3 +405,17 @@ COMMENT = '첨부파일 목록';
 
 ALTER TABLE `secsm`.`attach` 
 ADD COLUMN `name` VARCHAR(100) NULL AFTER `path`;
+
+ALTER TABLE `secsm`.`attach` 
+ADD COLUMN `tag` VARCHAR(100) NULL AFTER `name`;
+
+ALTER TABLE `secsm`.`attach` 
+DROP FOREIGN KEY `project_attach_id`;
+ALTER TABLE `secsm`.`attach` 
+CHANGE COLUMN `projectId` `project_id` INT(11) NULL DEFAULT NULL ;
+ALTER TABLE `secsm`.`attach` 
+ADD CONSTRAINT `project_attach_id`
+  FOREIGN KEY (`project_id`)
+  REFERENCES `secsm`.`project` (`ID`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
