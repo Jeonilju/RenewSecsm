@@ -13,8 +13,6 @@ CREATE TABLE `account` (
   UNIQUE KEY `ID_UNIQUE` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='사용자 정보';
 
-<<<<<<< HEAD
-
 CREATE TABLE `answer_choice` (
   `id` int(11) NOT NULL,
   `question_id` int(11) DEFAULT NULL,
@@ -74,8 +72,6 @@ CREATE TABLE `answer_time` (
   CONSTRAINT `account_answer_time` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `answer_time_id` FOREIGN KEY (`question_id`) REFERENCES `question_time` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='시간 답';
-=======
->>>>>>> 079e70ba9615346b19df1c0675c29d4a831cbb4a
 
 CREATE TABLE `attendance` (
   `Account_id` int(11) DEFAULT NULL,
@@ -171,8 +167,10 @@ CREATE TABLE `project` (
   `Summary` varchar(100) DEFAULT NULL,
   `Description` varchar(200) DEFAULT NULL,
   `RegDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='프로젝트';
+
 
 CREATE TABLE `px_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

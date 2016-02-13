@@ -29,8 +29,8 @@ public class ProjectDao implements ProjectIDao {
 	}
 	
 	public void create(String name, String summary, String discription, String pl, String teamMember, Timestamp startDate, Timestamp endDate){
-		jdbcTemplate.update("insert into project (Name, Summary, Description, PL, Team1, StartDate, EndDate) VALUES (?, ?, ?, ?, ?, ?, ?);"
-				, new Object[] {name, summary, discription, pl, teamMember, startDate, endDate});
+		jdbcTemplate.update("insert into project (Name, Summary, Description, PL, Team1, status, StartDate, EndDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+				, new Object[] {name, summary, discription, pl, teamMember, 0, startDate, endDate});
 	}
 
 	public List<ProjectInfo> selectAll(){
@@ -39,7 +39,7 @@ public class ProjectDao implements ProjectIDao {
 					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("summary"), resultSet.getString("description"),
-								resultSet.getString("pl"), resultSet.getString("team1"),
+								resultSet.getString("pl"), resultSet.getString("team1"), resultSet.getInt("status"), 
 								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
 								resultSet.getTimestamp("regDate"));
 					}
@@ -52,7 +52,7 @@ public class ProjectDao implements ProjectIDao {
 					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("summary"), resultSet.getString("description"),
-								resultSet.getString("pl"), resultSet.getString("team1"),
+								resultSet.getString("pl"), resultSet.getString("team1"), resultSet.getInt("status"), 
 								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
 								resultSet.getTimestamp("regDate"));
 					}
@@ -65,7 +65,7 @@ public class ProjectDao implements ProjectIDao {
 					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("summary"), resultSet.getString("description"),
-								resultSet.getString("pl"), resultSet.getString("team1"),
+								resultSet.getString("pl"), resultSet.getString("team1"), resultSet.getInt("status"), 
 								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
 								resultSet.getTimestamp("regDate"));
 					}
@@ -78,7 +78,7 @@ public class ProjectDao implements ProjectIDao {
 					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("summary"), resultSet.getString("description"),
-								resultSet.getString("pl"), resultSet.getString("team1"),
+								resultSet.getString("pl"), resultSet.getString("team1"), resultSet.getInt("status"), 
 								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
 								resultSet.getTimestamp("regDate"));
 					}
