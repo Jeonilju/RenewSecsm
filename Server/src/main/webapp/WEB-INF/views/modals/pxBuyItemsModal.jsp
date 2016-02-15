@@ -10,6 +10,7 @@
 
 <%
 	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
+	String[] resultList;
 %>
 
 <script type="text/javascript">
@@ -34,7 +35,9 @@
 			{
 				// 정상 구매
 				alert('정상 구매되었습니다.');
-				window.location.reload(true);
+				
+			//	window.location.reload(true);
+			
 			}
 			else if(response == '1')
 			{
@@ -55,85 +58,14 @@
 		});
 	}
 	
-	function charge_Money(){
-		var param = "money" + "=" + $("#charge_money").val();
-		
-		$.ajax({
-			url : "/Secsm/api_Charge_Money",
-			type : "POST",
-			data : param,
-			cache : false,
-			async : false,
-			dataType : "text",
-			
-			success : function(response) {	
-		//		alert(response);
-				if(response=='0')
-				{
-					// 충전완료
-					alert('충전되었습니다.');
-				}
-				else if(response == '1')
-				{
-					// 해당 상품 없음
-					alert('실패하였습니다.');
-				}	
-				else{
-					alert('알수없음');
-				}
-				
-			},
-			error : function(request, status, error) {
-				if (request.status != '0') {
-					alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-				}
-			}
-			
-		});
-		
-		
-	}
-	
+
 	$("#etItemCode").keyup(function(event){
 	    if(event.keyCode == 13){
 	    	buyItem();
 	    }
 	});
 	
-	//금액확인
-	function getPxAmount(){
-		
-		$.ajax({
-		url : "/Secsm/api_GetPxAmount",
-		type : "POST",
-		data : false,
-		cache : false,
-		async : false,
-		dataType : "text",
-		
-		success : function(response) {	
-		//	alert(response);
-			if(response==0)
-			{
-				alert('실패');
-				
-			}
-			else{
-			//	alert(response);
-				var amount = document.getElementById("amount");
-				amount.innerHTML = response + "원";
-			}
 
-		},
-		error : function(request, status, error) {
-			if (request.status != '0') {
-				alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-			}
-		}
-		
-		});
-	}
-	
 	//환불
 	function RefundItem(){
 		
@@ -156,17 +88,7 @@
 							내 잔액 : 
 						</div>
 						<div class="col-md-3">    
-				<!--  		<label><%=accountInfo.getPxAmount() %> 원</label>  -->	
-					<!--			<script>getPxAmount()</script>-->
-								<label id = "amount"></label>  
-						
-						</div>
-						
-						<div class="col-md-6">
-							<input id="charge_money" name="charge_money" type="text" style="width: 30%">
-						</div>
-						<div class="col-md-3">
-							<button type="button" class="btn btn-default" onclick="charge_Money();getPxAmount();"> 충전 </button>
+								<label id = "amount"></label>  	
 						</div>
 					</div>
 					
@@ -181,7 +103,7 @@
 							<input id="etItemCode" name="etItemCode" type="text" style="width: 100%">
 						</div>
 						<div class="col-md-3">
-							<button type="button" class="btn btn-default" onclick="buyItem();getPxAmount();"> 승인 </button>
+							<button type="button" class="btn btn-default" onclick="buyItem();getPxAmount();"> 구매 </button>
 						</div>
 					</div>
 					

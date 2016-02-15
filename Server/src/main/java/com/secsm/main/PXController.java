@@ -186,18 +186,40 @@ public class PXController {
 		}
 	}
 	
+	/** PX 상품 신청 리스트 조회 */
+	@ResponseBody
+	@RequestMapping(value = "/api_applyReqList", method = RequestMethod.POST)
+	public String PXController_api_applyReqList(HttpServletRequest request){
+		logger.info("api_applyReqList");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+
+		List<PxReqInfo> pxReqList = pxReqDao.selectAll();
+		Gson gson = new Gson();
+		String result = gson.toJson(pxReqList);
+			
+		logger.info(result);
+			
+		return result;
+		
+	}
+	
 	/** 구매 내역 조회 */
 	@ResponseBody
 	@RequestMapping(value = "/api_getPxLog", method = RequestMethod.POST)
-	public String PXController_logItem(HttpServletRequest request
-			, @RequestParam("logCount") int logCount){
+	public String PXController_logItem(HttpServletRequest request)
+	{
 		logger.info("api_getPxLog");
 		
 		AccountInfo info = Util.getLoginedUser(request);
+		System.out.println(info.getId());
 		List<PxLogInfo> pxLogList = pxLogDao.selectByAccountId(info.getId());
-		int rowCount = pxLogDao.total_list_num();
-		System.out.println(rowCount);
-		return JSONArray.toJSONString(pxLogList);
+		
+		Gson gson = new Gson();
+		String result = gson.toJson(pxLogList);
+		logger.info(result);
+		
+		return result;
 	}
 	
 	
@@ -244,39 +266,7 @@ public class PXController {
 		return "200";
 	}
 	
-	/** PX 상품 신청 리스트 조회 */
-	@ResponseBody
-	@RequestMapping(value = "/api_applyReqList", method = RequestMethod.POST)
-	public String PXController_api_applyReqList(HttpServletRequest request){
-		logger.info("api_applyReqList");
-		
-		AccountInfo info = Util.getLoginedUser(request);
-		List<PxReqInfo> pxReqList = null;
-		if(info.getGrade() == 5 || info.getGrade() == 0){
-			// PX 부장 및 관리자
-			logger.info("pxReq_administer");
-			pxReqList = pxReqDao.selectAll();
-			Gson gson = new Gson();
-			String result = gson.toJson(pxReqList);
-			
-			logger.info(result);
-			
-			return result;
-		}
-		else{
-			// 일반회원
-			logger.info("pxReq_member");
-			pxReqList = pxReqDao.select(info.getId());
-			Gson gson = new Gson();
-			String result = gson.toJson(pxReqList);
-			
-			logger.info(result);
-			
-			return result;
-		}
-		
-		
-	}
+	
 	
 	/** PX 상품 추가 */
 	@ResponseBody

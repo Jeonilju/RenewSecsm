@@ -124,7 +124,7 @@
 			
 			<div class="modal-body">
 			
-				<button id="swapBtn" name="swapBtn" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn();">상품 요청</button>
+			<button id="swapBtn" name="swapBtn" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn();">상품 요청</button>
 			
 				<!-- 상품 요청 리스트-->
 				<div id="pxReqDivList" name="pxReqDivList" style="display: ;">
@@ -141,6 +141,7 @@
 							<%
 								for (PxReqInfo info : pxReqList){
 									out.println("<tr style=\"cursor:pointer;\" onClick=\"showDetailProject(" + info.getId() + ")\">");
+									out.println("<tr>");
 									out.println("<td>" + info.getId() + "</td>");
 									out.println("<td>" + info.getTitle() + "</td>");
 									out.println("<td>" + info.getContext() + "</td>");
@@ -161,10 +162,10 @@
 				<!-- 상품 요청 form -->
 				<div id="pxReqDivForm" name="pxReqDivForm" style="display: none;">
 					제목
-					<input type="text" id="pxApplyTitle" name="pxApplyTitle">
+					<input type="text" id="pxApplyTitle" class = "form-control" name="pxApplyTitle">
 					
 					내용
-					<input type="text" id="pxApplyContent" name="pxApplyContent">
+					<input type="text" id="pxApplyContent" class = "form-control" name="pxApplyContent">
 				</div>
 			</div>
 			<div class="modal-footer">
