@@ -100,6 +100,7 @@ public class PXController {
 			accountDao.usePxAmount(info.getId(), result.get(0).getPrice());
 			pxLogDao.create(info.getId(), result.get(0).getId(), 0, 1);
 			pxItemsDao.useItems(result.get(0).getId(), 1);
+			
 			return "0";
 		}
 		else if(result.size() < 1){
@@ -222,6 +223,27 @@ public class PXController {
 		return result;
 	}
 	
+	/** Semi 구매 내역 조회 */
+	@ResponseBody
+	@RequestMapping(value = "/api_current_buyList", method = RequestMethod.POST)
+	public String PXController_Semi_list(HttpServletRequest request,
+			 @RequestParam("num") int num)
+	{
+		logger.info("api_semi_getPxLog");
+		
+		System.out.println(num);
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		System.out.println(info.getId());
+		List<PxLogInfo> pxLogList = pxLogDao.selectBydate(num);
+		
+		Gson gson = new Gson();
+		String result = gson.toJson(pxLogList);
+		logger.info(result);
+		
+		return result;
+	}
+
 	
 	@RequestMapping(value = "/paging", method = RequestMethod.GET)
 	public String Paging(@RequestParam int pageNum, Model model){

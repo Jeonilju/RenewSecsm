@@ -72,6 +72,17 @@ public class PxLogDao implements PxLogIDao {
 				});
 	}
 	
+	public List<PxLogInfo> selectBydate(int num){
+		
+		return jdbcTemplate.query("select * from px_log order by regdate desc limit ?", new Object[] {num},
+				new RowMapper<PxLogInfo>() {
+					public PxLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new PxLogInfo(resultSet.getInt("id"), resultSet.getInt("Account_id")
+								, resultSet.getInt("Px_Items_id"), resultSet.getTimestamp("RegDate")
+								, resultSet.getInt("Type"), resultSet.getInt("Count"));
+					}
+				});
+	}
 	
 	public int total_list_num(){
 		int rowCount = jdbcTemplate.queryForInt("select count(*) from px_log");
