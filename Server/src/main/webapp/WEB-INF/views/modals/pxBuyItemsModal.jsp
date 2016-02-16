@@ -13,8 +13,8 @@
 %>
 
 <script type="text/javascript">
-	var num = 1;
-	
+
+	var num = 0;
 	//상품 검색
 	
 	// 아이템 구매
@@ -36,8 +36,9 @@
 			{
 				// 정상 구매 by 바코드
 				alert('정상 구매되었습니다.');
-				semi_List(num);
 				num++;
+				semi_List(num);
+				
 			}
 			else if(response == '1')
 			{
@@ -108,9 +109,13 @@
 			button.setAttribute('type','button');
 			button.setAttribute('class','btn btn-default');
 			button.setAttribute('value','환불');
-			button.setAttribute('OnClick','refund(' +data.id + ')');
+			button.setAttribute('OnClick','refund(' +data.id + ',1);getPxAmount();');
 			newCell5.appendChild(button);
 		}
+	}
+	
+	function end(){
+		num=0;
 	}
 	
 	$("#etItemCode").keyup(function(event){
@@ -177,10 +182,8 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-					<script>
-						num = 1;
-					</script>
+					<button onclick= "end()" type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					
 				</div>
 				
 			</form>

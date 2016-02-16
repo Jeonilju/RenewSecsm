@@ -11,9 +11,9 @@
 
 <script type="text/javascript">
 
-					function refund(idx) {
-						var param = "idx" + "=" + idx; 
-					
+					function refund(idx,chk) {
+						var param = "idx" + "=" + idx;
+						
 						$.ajax({
 							url : "/Secsm/Refund_px_items",
 							type : "POST",
@@ -27,8 +27,13 @@
 		    					if(response=='200')
 		    					{
 		    						alert("환불되었습니다!");
-		    						log_detail();
-		    						//window.location.reload(true);
+		    						if(chk==0){
+		    							log_detail();
+		    						}
+		    						else if(chk == 1){
+		    							num--;
+		    							semi_List(num);
+		    						}
 		    					}
 		    					else
 		    					{
@@ -96,7 +101,7 @@
 							button.setAttribute('type','button');
 							button.setAttribute('class','btn btn-default');
 							button.setAttribute('value','환불');
-							button.setAttribute('OnClick','refund(' +data.id + ')');
+							button.setAttribute('OnClick','refund(' +data.id + ',0)');
 							newCell5.appendChild(button);
 							
 							
