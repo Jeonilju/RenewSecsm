@@ -236,11 +236,12 @@ public class PXController {
 		AccountInfo info = Util.getLoginedUser(request);
 		System.out.println(info.getId());
 		List<PxLogInfo> pxLogList = pxLogDao.selectBydate(num);
-		
+		int id = pxLogList.get(0).getPxItemsId();
+		List<PxItemsInfo> pxItemList =pxItemsDao.select(id);
+		pxLogList.get(0).setName(pxItemList.get(0).getName());
 		Gson gson = new Gson();
 		String result = gson.toJson(pxLogList);
 		logger.info(result);
-		
 		return result;
 	}
 

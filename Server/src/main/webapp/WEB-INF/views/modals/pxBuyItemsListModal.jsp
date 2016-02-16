@@ -84,9 +84,7 @@
 							var newCell3  = newRow.insertCell(2);
 							var newCell4  = newRow.insertCell(3);
 							var newCell5  = newRow.insertCell(4);
-				//			<? 
-							
-				//			?>
+				
 							// Append a text node to the cell
 							var newText  = document.createTextNode('New row')
 							newCell1.appendChild(document.createTextNode(data.regdate));
