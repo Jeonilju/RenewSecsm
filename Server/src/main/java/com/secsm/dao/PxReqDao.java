@@ -55,9 +55,16 @@ public class PxReqDao implements PxReqIDao {
 				});
 	}
 	
+	public void accept_item(int id){
+		jdbcTemplate.update("update px_req set" + "Status = 1" + "where id = ?",
+				new Object[]{ id });
+	}
+	
 	public void Accept(int id){
-		jdbcTemplate.update("update px_req set"
-				+ "Status = '1' " + "where id = ?", new Object[]{ id});
+		jdbcTemplate.update("update px_req set "
+				+ " status = status + 1"
+			+ " where id = ?", 
+			new Object[]  { id});
 	}
 	
 	public void delete(int id){

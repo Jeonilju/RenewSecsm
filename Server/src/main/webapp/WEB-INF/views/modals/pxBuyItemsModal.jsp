@@ -10,6 +10,7 @@
 <%
 	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
 	PxItemsInfo pxiteminfo = (PxItemsInfo) request.getAttribute("pxiteminfo");
+	
 %>
 
 <script type="text/javascript">
@@ -80,6 +81,7 @@
 		}
 		});
 	}
+	
 	function insertBuyListTable(jsonArr){
 		
 		document.getElementById('pxCurrentbuyTbody').innerHTML = "";	// 기존 테이블에 있는 내용 초기화
