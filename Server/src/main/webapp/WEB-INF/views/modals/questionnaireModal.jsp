@@ -1,6 +1,9 @@
-<%@ page pageEncoding="utf-8" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.secsm.info.*"%>
+<%@ page pageEncoding="utf-8" %>
+<%@ page contentType="text/html; charset=utf-8" %>
+<% request.setCharacterEncoding("utf-8"); %>
+<% response.setContentType("text/html; charset=utf-8"); %>
 
 <script type="text/javascript" src="/Secsm/resources/js/bootstrap-datepicker.js"></script>
 

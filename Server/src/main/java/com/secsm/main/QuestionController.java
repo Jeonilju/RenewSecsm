@@ -1,5 +1,7 @@
 package com.secsm.main;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,7 +99,7 @@ public class QuestionController {
 		}
 	}
 	
-	/** 설문 추가 */
+	/** 설문 생성 */
 	@ResponseBody
 	@RequestMapping(value = "/api_questionAdd", method = RequestMethod.POST)
 	public String QuestionController_addQuestion(HttpServletRequest request, HttpServletResponse response 
@@ -139,28 +141,36 @@ public class QuestionController {
 		return "200";
 	}
 	
+	/** 설문지 항목 생성 */
 	private void createQuestionContents(ArrayList<QuestionContentInfo> questionContentList, int questionId){
+		
+		logger.debug("설문지 ID: " + questionId);
 		
 		for(QuestionContentInfo info : questionContentList){
 			switch (info.qType) {
 			case 0:
 				// 객관식
+				logger.debug("객관식 생성: " + info.qTitle);
 				questionChoiceDao.create(questionId, info.qTitle, info.q1, info.q2, info.q3, info.q4, info.q5);
 				break;
 			case 1:
 				// 주관식
+				logger.debug("주관식 생성: " + info.qTitle);
 				questionEssayDao.create(questionId, info.qTitle);
 				break;
 			case 2:
 				// 날짜
+				logger.debug("날짜 생성: " + info.qTitle);
 				questionDateDao.create(questionId, info.qTitle);
 				break;
 			case 3:
 				// 시간
+				logger.debug("시간 생성: " + info.qTitle);
 				questionTimeDao.create(questionId, info.qTitle);
 				break;
 			case 4:
 				// 점수
+				logger.debug("점수 생성: " + info.qTitle);
 				questionScoreDao.create(questionId, info.qTitle);
 				break;
 			default:
@@ -174,15 +184,21 @@ public class QuestionController {
 	@RequestMapping(value = "/api_questionGet", method = RequestMethod.GET)
 	public String QuestionController_getQuestion(HttpServletRequest request, HttpServletResponse response 
 			, @RequestParam("id") int id) {
-		logger.info("api get Question");
+		logger.info("api get Question (설문지 조회)");
 		
 		QuestionInfo info = questionDao.selectById(id);
 		ArrayList<QuestionContentInfo> totalQuestionList = new ArrayList<QuestionContentInfo>();
 		List<QuestionChoiceInfo> choiceList = questionChoiceDao.selectByQuestionId(info.getId());
 		List<QuestionEssayInfo> essayList = questionEssayDao.selectByQuestionId(info.getId());
-		List<QuestionTimeInfo> timeList = questionTimeDao.selectByQuestionId(info.getId());
 		List<QuestionDateInfo> dateList = questionDateDao.selectByQuestionId(info.getId());
+		List<QuestionTimeInfo> timeList = questionTimeDao.selectByQuestionId(info.getId());
 		List<QuestionScoreInfo> scoreList = questionScoreDao.selectByQuestionId(info.getId());
+
+		logger.debug("객관식수: " + choiceList.size());
+		logger.debug("주관식수: " + essayList.size());
+		logger.debug("날짜수: " + dateList.size());
+		logger.debug("시간수: " + timeList.size());
+		logger.debug("점수수: " + scoreList.size());
 		
 		for(QuestionChoiceInfo qInfo : choiceList){
 			QuestionContentInfo newQuestion = new QuestionContentInfo();
@@ -201,15 +217,7 @@ public class QuestionController {
 		for(QuestionEssayInfo qInfo : essayList){
 			QuestionContentInfo newQuestion = new QuestionContentInfo();
 			newQuestion.id = qInfo.getId();
-			newQuestion.qType = 0;
-			newQuestion.qTitle = qInfo.getProblom();
-			totalQuestionList.add(newQuestion);
-		}
-
-		for(QuestionTimeInfo qInfo : timeList){
-			QuestionContentInfo newQuestion = new QuestionContentInfo();
-			newQuestion.id = qInfo.getId();
-			newQuestion.qType = 0;
+			newQuestion.qType = 1;
 			newQuestion.qTitle = qInfo.getProblom();
 			totalQuestionList.add(newQuestion);
 		}
@@ -217,7 +225,15 @@ public class QuestionController {
 		for(QuestionDateInfo qInfo : dateList){
 			QuestionContentInfo newQuestion = new QuestionContentInfo();
 			newQuestion.id = qInfo.getId();
-			newQuestion.qType = 0;
+			newQuestion.qType = 2;
+			newQuestion.qTitle = qInfo.getProblom();
+			totalQuestionList.add(newQuestion);
+		}
+		
+		for(QuestionTimeInfo qInfo : timeList){
+			QuestionContentInfo newQuestion = new QuestionContentInfo();
+			newQuestion.id = qInfo.getId();
+			newQuestion.qType = 3;
 			newQuestion.qTitle = qInfo.getProblom();
 			totalQuestionList.add(newQuestion);
 		}
@@ -225,15 +241,26 @@ public class QuestionController {
 		for(QuestionScoreInfo qInfo : scoreList){
 			QuestionContentInfo newQuestion = new QuestionContentInfo();
 			newQuestion.id = qInfo.getId();
-			newQuestion.qType = 0;
+			newQuestion.qType = 4;
 			newQuestion.qTitle = qInfo.getProblom();
 			totalQuestionList.add(newQuestion);
 		}
-
 		Collections.sort(totalQuestionList);
 		
+		QuestionContentInfo newQuestion = new QuestionContentInfo();
+		newQuestion.qTitle = info.getTitle();
+		newQuestion.qContent = info.getContent();
+		totalQuestionList.add(0, newQuestion);
+		
 		Gson gson = new Gson();
-		return gson.toJson(totalQuestionList);
+		String result = gson.toJson(totalQuestionList);
+		logger.info(result);
+		try {
+			URLEncoder.encode(result , "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	/** 설문지 결과 조회 */
@@ -274,6 +301,17 @@ public class QuestionController {
 		Gson gson = new Gson();
 		return gson.toJson(info);
 	}
+	
+	/**설문 응답 */
+	@ResponseBody
+	@RequestMapping(value = "/api_questionRespons", method = RequestMethod.GET)
+	public String QuestionController_responsQuestion(HttpServletRequest request, HttpServletResponse response) {
+		logger.info("api_questionRespons");
+		String result = "";
+		
+		return result;
+	}
+	
 	
 	/**객관식 양식 */
 	@ResponseBody
