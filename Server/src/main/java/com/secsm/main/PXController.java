@@ -98,7 +98,7 @@ public class PXController {
 		if(result.size() == 1){
 			// 정상
 			accountDao.usePxAmount(info.getId(), result.get(0).getPrice());
-			pxLogDao.create(info.getId(), result.get(0).getId(), 0, 1);
+			pxLogDao.create(info.getId(), result.get(0).getId(), 0, 1,result.get(0).getName(),result.get(0).getPrice());
 			pxItemsDao.useItems(result.get(0).getId(), 1);
 			
 			return "0";
@@ -117,12 +117,11 @@ public class PXController {
 	@ResponseBody
 	@RequestMapping(value = "/api_Accept", method = RequestMethod.POST)
 	public String PXController_Accept(HttpServletRequest request
-			, @RequestParam("id") int id){
+			, @RequestParam("idx") int idx){
 		logger.info("api_Accept");
-		
+		System.out.println(idx);
 		AccountInfo info = Util.getLoginedUser(request);
-		
-	//	pxReqDao.Accept(id);
+		pxReqDao.Accept(idx);
 		
 		return "200";
 	}
@@ -187,6 +186,19 @@ public class PXController {
 		}
 	}
 	
+	/** PX 환불 신청 */
+	@ResponseBody
+	@RequestMapping(value = "/api_Delete_req_list", method = RequestMethod.POST)
+	public String Delete_PxReq_list(HttpServletRequest request
+			, @RequestParam("idx") int idx){
+		
+		logger.info("api_process_refund");
+		AccountInfo info = Util.getLoginedUser(request);
+		
+		pxReqDao.delete(idx);
+		return "200";
+	}
+	
 	/** PX 상품 신청 리스트 조회 */
 	@ResponseBody
 	@RequestMapping(value = "/api_applyReqList", method = RequestMethod.POST)
@@ -236,15 +248,15 @@ public class PXController {
 		AccountInfo info = Util.getLoginedUser(request);
 		System.out.println(info.getId());
 		List<PxLogInfo> pxLogList = pxLogDao.selectBydate(num);
-		
+	//	int id = pxLogList.get(0).getPxItemsId();
+	//	List<PxItemsInfo> pxItemList =pxItemsDao.select(id);
+	//	pxLogList.get(0).setName(pxItemList.get(0).getName());
 		Gson gson = new Gson();
 		String result = gson.toJson(pxLogList);
 		logger.info(result);
-		
 		return result;
 	}
 
-	
 	@RequestMapping(value = "/paging", method = RequestMethod.GET)
 	public String Paging(@RequestParam int pageNum, Model model){
 	

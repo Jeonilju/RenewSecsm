@@ -73,19 +73,33 @@
 
 			// Insert a row in the table at the last row
 			var newRow   = tableRef.insertRow(tableRef.rows.length);
-
+			 
 			// Insert a cell in the row at index 0
 			var newCell1  = newRow.insertCell(0);
 			var newCell2  = newRow.insertCell(1);
 			var newCell3  = newRow.insertCell(2);
 			var newCell4  = newRow.insertCell(3);
-
+			var newCell5  = newRow.insertCell(4);
+			
 			// Append a text node to the cell
 			var newText  = document.createTextNode('New row')
 			newCell1.appendChild(document.createTextNode(data.id));
 			newCell2.appendChild(document.createTextNode(data.title));
 			newCell3.appendChild(document.createTextNode(data.context));
-			newCell4.appendChild(document.createTextNode(data.status));
+			
+			if(data.status == 0 ){
+				newCell4.appendChild(document.createTextNode('승인 중'));
+				
+			}
+			else{
+				newCell4.appendChild(document.createTextNode('승인완료'));
+				var button = document.createElement('input');
+				button.setAttribute('type','button');
+				button.setAttribute('class','btn btn-default');
+				button.setAttribute('value','삭제');
+				button.setAttribute('OnClick','DeleteReqlist('+ data.id+ ',1)');
+				newCell5.appendChild(button);
+			}
 		}
 	}
 	
@@ -139,20 +153,7 @@
 					    </thead>
 					    <tbody id="pxReqTbody">
 							<%
-								for (PxReqInfo info : pxReqList){
-									out.println("<tr style=\"cursor:pointer;\" onClick=\"showDetailProject(" + info.getId() + ")\">");
-									out.println("<tr>");
-									out.println("<td>" + info.getId() + "</td>");
-									out.println("<td>" + info.getTitle() + "</td>");
-									out.println("<td>" + info.getContext() + "</td>");
-									if(info.getStatus() == 0)
-										out.println("<td>" + "승인 중" + "</td>");
-									else if((info.getStatus() == 1)){
-										out.println("<td>" + "승인" + "</td>");
-									}
-									out.println("</tr>");
-									
-								}
+							
 							%>
 						</tbody>
 					</table>

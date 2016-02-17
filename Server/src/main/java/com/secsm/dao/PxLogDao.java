@@ -31,9 +31,9 @@ public class PxLogDao implements PxLogIDao {
 		logger.info("Updated DataSource ---> " + ds);
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
-	public void create(int accountId, int pxItemsId, int type, int count){
-		jdbcTemplate.update("insert into px_log (Account_id, Px_Items_id, Type, Count) values (?, ?, ?, ?)"
-				, new Object[] {accountId, pxItemsId, type, count});
+	public void create(int accountId, int pxItemsId, int type, int count,String name, int price){
+		jdbcTemplate.update("insert into px_log (Account_id, Px_Items_id, Type, Count,Name,price) values (?, ?, ?, ?,?,?)"
+				, new Object[] {accountId, pxItemsId, type, count,name,price});
 	}
 	
 	public List<PxLogInfo> selectAll(){
@@ -79,7 +79,7 @@ public class PxLogDao implements PxLogIDao {
 					public PxLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new PxLogInfo(resultSet.getInt("id"), resultSet.getInt("Account_id")
 								, resultSet.getInt("Px_Items_id"), resultSet.getTimestamp("RegDate")
-								, resultSet.getInt("Type"), resultSet.getInt("Count"));
+								, resultSet.getInt("Type"), resultSet.getInt("Count"), resultSet.getString("Name"),resultSet.getInt("price"));
 					}
 				});
 	}

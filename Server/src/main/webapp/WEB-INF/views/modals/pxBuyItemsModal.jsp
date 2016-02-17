@@ -10,16 +10,20 @@
 <%
 	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
 	PxItemsInfo pxiteminfo = (PxItemsInfo) request.getAttribute("pxiteminfo");
+	
 %>
 
 <script type="text/javascript">
-	var num = 1;
+
+	var num = 0;
+	//상품 검색
+	
 	// 아이템 구매
 	function buyItem(){
 		var param = "type" + "=" + $("#slItemType").val() + "&" + 
 					"code" + "=" + $("#etItemCode").val() + "&" + 
 					"isForcibly" + "="+ "0";
-
+		
 		$.ajax({
 		url : "/Secsm/api_pxBuyItem",
 		type : "POST",
@@ -33,8 +37,9 @@
 			{
 				// 정상 구매 by 바코드
 				alert('정상 구매되었습니다.');
-				semi_List(num);
 				num++;
+				semi_List(num);
+				
 			}
 			else if(response == '1')
 			{
@@ -44,7 +49,6 @@
 			else{
 				alert('알수없음');
 			}
-			
 		},
 		error : function(request, status, error) {
 			if (request.status != '0') {
@@ -76,8 +80,8 @@
 			}
 		}
 		});
-
 	}
+	
 	function insertBuyListTable(jsonArr){
 		
 		document.getElementById('pxCurrentbuyTbody').innerHTML = "";	// 기존 테이블에 있는 내용 초기화
@@ -95,9 +99,7 @@
 			var newCell3  = newRow.insertCell(2);
 			var newCell4  = newRow.insertCell(3);
 			var newCell5  = newRow.insertCell(4);
-//			<? 
-			
-//			?>
+
 			// Append a text node to the cell
 			var newText  = document.createTextNode('New row')
 			newCell1.appendChild(document.createTextNode(data.regdate));
@@ -109,11 +111,13 @@
 			button.setAttribute('type','button');
 			button.setAttribute('class','btn btn-default');
 			button.setAttribute('value','환불');
-			button.setAttribute('OnClick','refund(' +data.id + ')');
+			button.setAttribute('OnClick','refund(' +data.id + ',1);getPxAmount();');
 			newCell5.appendChild(button);
-			
-			
 		}
+	}
+	
+	function end(){
+		num=0;
 	}
 	
 	$("#etItemCode").keyup(function(event){
@@ -155,7 +159,7 @@
 							<input id="etItemCode" name="etItemCode" type="text" style="width: 100%">
 						</div>
 						<div class="col-md-3">
-							<button type="button" class="btn btn-default" onclick="buyItem();getPxAmount();"> 구매 </button>
+							<button type="button" class="btn btn-default" onclick="buyItem();getPxAmount();"> 검색 </button>
 						</div>
 					</div>
 					
@@ -180,10 +184,8 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-					<script>
-						num = 1;
-					</script>
+					<button onclick= "end()" type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					
 				</div>
 				
 			</form>
