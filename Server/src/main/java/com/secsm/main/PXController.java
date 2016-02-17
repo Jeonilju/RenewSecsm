@@ -145,7 +145,6 @@ public class PXController {
 		
 	}
 	
-	
 	/** PX 환불 신청 */
 	@ResponseBody
 	@RequestMapping(value = "/Refund_px_items", method = RequestMethod.POST)
