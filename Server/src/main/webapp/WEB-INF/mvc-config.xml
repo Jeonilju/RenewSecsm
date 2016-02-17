@@ -136,6 +136,23 @@
 	<beans:bean id="QuestionTimeDao" class="com.secsm.dao.QuestionTimeDao">
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>
+	
+	<beans:bean id="BookReqDao" class="com.secsm.dao.BookReqDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="BookItemsDao" class="com.secsm.dao.BookItemsDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="BookLogDao" class="com.secsm.dao.BookLogDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="BookCategoryDao" class="com.secsm.dao.BookCategoryDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
 
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 	<interceptors>

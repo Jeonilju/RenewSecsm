@@ -1,68 +1,338 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<%@page import="com.secsm.conf.*"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page pageEncoding="utf-8" %>
+<%@page import="com.secsm.info.BookItemsInfo"%>
+<%@page import="com.secsm.info.BookCategoryInfo"%>
+<%@page import="com.secsm.info.AccountInfo"%>
 
 <html>
 	<head>
 		<!-- Encoding -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<jsp:include page="base/header.jsp" flush="false" />
-    	<title>Book</title>
+    	<title>Project</title>
+    	
+    	<%AccountInfo member = Util.getLoginedUser(request);%>
+    	
+    	<script type="text/javascript" src="/Secsm/resources/js/bootstrap-datepicker.js"></script>
     	
     	<script type="text/javascript">
+    		
+    		var grade = <%=member.getGrade()%>;
     	
-    		function showSearch(){
-    			var divSearch = document.getElementById("divSearch");
-    			var divRental = document.getElementById("divRental");
-    			var divApply = document.getElementById("divApply");
+    		$(document).ready(function(){
+    			if(grade==0 || grade==4){
+    				$('.adminButton').css('display', 'block'); 
+    			}
     			
-    			divSearch.style.display = "";
-    			divRental.style.display = "none";
-    			divApply.style.display = "none";
+    	   		$("#searchOptionWrap").css({"margin-top":"15px","margin-left":"5px","margin-right":"5px"});
+    	   		$(window).keydown(function(event){
+    	   		    if(event.keyCode == 13) {
+    	   		      event.preventDefault();
+    	   		      return false;
+    	   		    }
+    	   		}); 	   		
+    		});
+    		
+    		function recentLog(){
+    			$('#allLog').removeAttr("checked");
+    			$('select[name=logOption]').val(0);
+    			$("#logSearch").val("");
+    			logBook();
     		}
     		
-    		function showRental(){
-    			var divSearch = document.getElementById("divSearch");
-    			var divRental = document.getElementById("divRental");
-    			var divApply = document.getElementById("divApply");
-    			
-    			divSearch.style.display = "none";
-    			divRental.style.display = "";
-    			divApply.style.display = "none";
+    		function rent(id){
+    			$('#rentId').val(id);
     		}
     		
-    		function showApply(){
-    			var divSearch = document.getElementById("divSearch");
-    			var divRental = document.getElementById("divRental");
-    			var divApply = document.getElementById("divApply");
-    			
-    			divSearch.style.display = "none";
-    			divRental.style.display = "none";
-    			divApply.style.display = "";
+    		function noRent(id){
+    			$('#allLog').removeAttr("checked");
+    			$('select[name=logOption]').val(1);
+    			$("#logSearch").val(id);
+    			logBook();
     		}
-    	    		
+    		
+    		function bookSearch(){
+				
+    			var param = {searchOption: $(':radio[name="searchOption"]:checked').val(), 
+    						searchCategory: $("#searchCategory option:selected").val(), 
+    						searchKeyword: $("#searchKeyword").val()};
+
+    			$.ajax({
+    			url : "/Secsm/api_bookSearch",
+    			type : "POST",
+    			data : param,
+    			cache : false,
+    			async : false,
+    			dataType : "text",
+    			
+    			success : function(response) {	
+    				if(response=='401')
+    				{
+    					alert("로그인을 하세요.");
+    					location.reload();
+    				}
+    				if(response=='402')
+    				{
+    					alert("해당 카테고리가 존재하지 않습니다.");
+    					location.reload();
+    				}
+    				else
+    				{
+    					var obj = JSON.parse(response);
+    					var tableContent = '<tbody>';
+    					var i;
+    					for(i=0;i<Object.keys(obj).length;i++){
+    						tableContent = tableContent + '<tr>'
+    										+ '<td class="col-md-1">' + obj[i].id + '</td>'
+    										+ '<td class="col-md-1">' + '<button type="button" class="btn btn-info" onclick="goImage(\'' + obj[i].imageURL
+    										+ '\');" data-toggle="modal" data-target="#bookImageModal">보기</button> </td>';
+    						if(grade==0 ||grade==4){
+    							tableContent = tableContent + '<td class="col-md-5" style="cursor:pointer;" onClick="modifyBook(' + obj[i].id + ')" data-toggle="modal" data-target="#bookModifyModal">' + obj[i].name + '</td>';
+    						}
+    						else {
+    							tableContent = tableContent + '<td class="col-md-5">' + obj[i].name + '</td>';
+    						}
+    						
+    						tableContent = tableContent	+ '<td class="col-md-2">' + obj[i].publisher + '</td>'
+    										+ '<td class="col-md-1">' + obj[i].author + '</td>'
+    										+ '<td class="col-md-1">' + obj[i].count + '/' + obj[i].totalCount + '</td>';
+
+    						if(obj[i].count=='0'){
+    							tableContent = tableContent + '<td class="col-md-1">' + '<button type="button" class="btn btn-danger" onclick="noRent('
+												+ obj[i].id + ');" data-toggle="modal" data-target="#bookLogModal">대여불가</button>' + '</td> </tr>';
+    						}
+    						else{
+    							tableContent = tableContent + '<td class="col-md-1">' + '<button type="button" class="btn btn-success" onclick="rent('
+								+ obj[i].id + ');" data-toggle="modal" data-target="#bookLogModal">대여가능</button>' + '</td> </tr>';
+    						}
+    					}
+    					tableContent = tableContent + '</tbody>';
+    					var tableHeader = '<thead> <tr> <th class="col-md-1">No.</th> <th class="col-md-1">이미지</th> <th class="col-md-5">도서명</th>' +
+				        				'<th class="col-md-2">출판사</th> <th class="col-md-1">저자</th> <th class="col-md-1">수량</th> <th class="col-md-1">대여</th> </tr> </thead>';
+    				    var table = tableHeader + tableContent;
+    				    
+    					$("#mainTable").html(table);
+    				}
+    			},
+    			error : function(request, status, error) {
+    				if (request.status != '0') {
+    					alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+    				}
+    			}
+    			
+    			});
+    		}
+    		
+    		function modifyBook(id){
+    			var param = {searchId: id};
+    			$('#modifyId').val(id);
+    			
+    			$.ajax({
+        			url : "/Secsm/api_bookSearchForModify",
+        			type : "POST",
+        			data : param,
+        			cache : false,
+        			async : false,
+        			dataType : "text",
+        			
+        			success : function(response) {	
+        				if(response=='401')
+        				{
+        					alert("로그인을 하세요.");
+        					location.reload();
+        				}
+        				else if(response=='402')
+        				{
+        					alert("해당 책정보가 없습니다.");
+        					location.reload();
+        				}
+        				else
+        				{
+        					var obj = JSON.parse(response);
+        					
+        					$("#modifyCode").val(obj[0].code);
+        					$("#modifyTitle").val(obj[0].name);
+        					$("#modifyPublisher").val(obj[0].publisher);
+        					$("#modifyAuthor").val(obj[0].author);
+        					$("#modifyImageURL").val(obj[0].imageURL);
+        					$("#modifyCount").val(obj[0].totalCount);
+        					$('select[name=modifyType]').val(parseInt(obj[0].type));
+        				}
+        			},
+        			error : function(request, status, error) {
+        				if (request.status != '0') {
+        					alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+        				}
+        			}
+        			
+        			});
+    		}
+    		
+    		$(document).keyup(function(event){
+    			if(event.keyCode != 13){
+    			
+    			}
+    			else if($('#bookAddModal').is(':visible')){
+    		    	addBook();
+    		    }
+    		    else if($('#bookCategoryModal').is(':visible')){
+    		    	addCategory();
+    		    }
+    		    else if($('#bookLogModal').is(':visible')){
+    		    	logBook();
+    		    }
+    		    else if($('#bookModifyModal').is(':visible')){
+    		    	modifyReq();
+    		    }
+    		    else if($('#bookRentModal').is(':visible')){
+    		    	rentBook();
+    		    }
+    		    else if($('#bookReqListModal').is(':visible')){
+    		    	reqList();
+    		    }
+    		    else if($('#bookRequestModal').is(':visible')){
+    		    	requestBook();
+    		    }
+    		    else{
+    		    	bookSearch();
+    		    }
+    		});
+
+    		
     	</script>
     	
+    	<style>
+    		#searchKeyword{
+    			margin-top:6px;
+    			width: 300px;
+    		}
+    		#category{
+    			margin-top:6px;
+    		}
+    		.datepicker{z-index:1151 !important;}
+    		
+    		td{
+    			word-break:break-all;
+    		}
+    		
+    		.adminButton{
+				display:none;
+			}
+		}
+			
+    	</style>
 	</head>
+	
+	<%
+		ArrayList<BookItemsInfo> bookItemsList = (ArrayList<BookItemsInfo>) request.getAttribute("bookItemsList");
+		ArrayList<BookCategoryInfo> bookCategory = (ArrayList<BookCategoryInfo>) request.getAttribute("bookCategory");
+	%>
+	
 	<jsp:include page="base/nav.jsp" flush="true" />
 	<body>
 
 		<div class="container body-content" style="margin-top: 150px">
-			<div class="row-fluid">
-				<h1> 도서 </h1>
+			<div class="row">
+				<h1> Book </h1>
 			</div>
-			<div class="row-fluid">
-				<ul >
-					<li role="presentation"><a role="menuitem" >도서 검색</a></li>
-					<li role="presentation"><a role="menuitem" href="bookRental">대여 및 반납</a></li>
-					<li role="presentation"><a role="menuitem" href="bookApply">도서 요청</a></li>
-				</ul>
-			
+			<div class="row">
+				<div class="pull-right">
+					<button type="button" class="btn" data-toggle="modal" data-target="#bookRequestModal" style="margin: 5px; margin-right: 0px;">도서신청</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn" onclick="bookSearch();" style="margin: 5px;">검색</button>
+				</div>
+				<div class="pull-right">
+					<input type="text" class="form-control" id="searchKeyword">
+				</div>
+				<div class="pull-right">
+					<select class="form-control" name="searchCategory" id="searchCategory" style="width:10em; margin-top:6px">
+              			<%
+              				for (BookCategoryInfo info : bookCategory){
+              					out.println("<option>" + info.getName() + "</option>");
+              				}
+              			%>
+         			 </select>
+         		</div>
+         		<div class="pull-right" id="searchOptionWrap">
+					<label for="searchOption"><input type="radio" name="searchOption" value="0" checked>도서명</label>
+					<label for="searchOption"><input type="radio" name="searchOption" value="1" >코드</label>
+					<label for="searchOption"><input type="radio" name="searchOption" value="2" >ID</label>
+				</div>
+         		<div class="pull-right">
+					<button type="button" class="btn adminButton" data-toggle="modal" data-target="#bookCategoryModal" style="margin: 5px;">추가/삭제</button>
+				</div>
 			</div>
-			
-			<jsp:include page="base/foot.jsp" flush="false" />
+			<div class="row">
+			<div class="pull-right">
+				<table class="table table-hover" id="mainTable" style="table-layout:fixed;">
+			    <thead>
+			      <tr>
+			      	<th class="col-md-1">No.</th>
+			      	<th class="col-md-1">이미지</th>
+			        <th class="col-md-5">도서명</th>
+			        <th class="col-md-2">출판사</th>
+			        <th class="col-md-1">저자</th>
+			        <th class="col-md-1">수량</th>
+			        <th class="col-md-1">대여</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+					<%
+						for (BookItemsInfo info : bookItemsList){
+							out.println("<tr>");
+							out.println("<td class=\"col-md-1\">" + info.getId() + "</td>");
+							out.println("<td class=\"col-md-1\"> <button type=\"button\" class=\"btn btn-info\" onclick=\"" 
+										+ "goImage('" + info.getImageURL() +"');\" data-toggle=\"modal\" data-target=\"#bookImageModal\">보기</button> </td>");
+							if(member.getGrade()==0 || member.getGrade()==4){
+								out.println("<td class=\"col-md-5\" style=\"cursor:pointer;\" onClick=\"modifyBook(" + info.getId() + ")\" data-toggle=\"modal\" data-target=\"#bookModifyModal\">" + info.getName() + "</td>");
+							}
+							else{
+								out.println("<td class=\"col-md-5\">" + info.getName() + "</td>");
+							}
+							out.println("<td class=\"col-md-2\">" + info.getPublisher() + "</td>");
+							out.println("<td class=\"col-md-1\">" + info.getAuthor() + "</td>");
+							out.println("<td class=\"col-md-1\">" + info.getCount() + "/" + info.getTotalCount() + "</td>");
+							if(info.getCount()==0)
+								out.println("<td class=\"col-md-1\">" + "<button type=\"button\" class=\"btn btn-danger\" onclick=\"noRent("
+										+ info.getId() + ")\" data-toggle=\"modal\" data-target=\"#bookLogModal\">대여불가</button>" + "</td>");
+							else
+								out.println("<td class=\"col-md-1\">" + "<button type=\"button\" class=\"btn btn-success\" onclick=\"rent("
+										+ info.getId() + ")\" data-toggle=\"modal\" data-target=\"#bookRentModal\">대여가능</button>" + "</td>");
+								
+							out.println("</tr>");
+						}
+					%>
+				</tbody>
+			</table>
+			</div>
+			</div>
+			<div class="row">
+				<div class="pull-right">
+					<button type="button" class="btn" data-toggle="modal" data-target="#bookLogModal" onclick="recentLog();" style="margin: 5px; margin-right:0px;">대여로그</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn adminButton" data-toggle="modal" data-target="#bookAddModal" style="margin: 5px;">도서등록</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn adminButton" data-toggle="modal" data-target="#bookReqListModal" style="margin: 5px;">신청목록</button>
+				</div>
+			</div>
 		</div>	
+		
 
+		<jsp:include page="base/foot.jsp" flush="false" />
+	</body>
+	
+	<jsp:include page="modals/bookModifyModal.jsp" flush="false" />
+	<jsp:include page="modals/bookImageModal.jsp" flush="false" />
+	<jsp:include page="modals/bookCategoryModal.jsp" flush="false" />
+	<jsp:include page="modals/bookLogModal.jsp" flush="false" />
+	<jsp:include page="modals/bookRentModal.jsp" flush="false" />
+	<jsp:include page="modals/bookRequestModal.jsp" flush="false" />
+	<jsp:include page="modals/bookAddModal.jsp" flush="false" />
+	<jsp:include page="modals/bookReqListModal.jsp" flush="false" />
 
-</body>
 </html>

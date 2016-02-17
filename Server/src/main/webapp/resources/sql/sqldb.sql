@@ -290,6 +290,9 @@ CREATE TABLE `book_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(50) DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
+  `publisher` varchar(50) DEFAULT NULL,
+  `author` varchar(50) DEFAULT NULL,
+  `imageURL` varchar(100) DEFAULT NULL,
   `type` int(11) DEFAULT NULL,
   `regDate` timestamp NULL DEFAULT NULL,
   `count` int(11) DEFAULT NULL,
@@ -300,12 +303,9 @@ CREATE TABLE `book_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='도서';
 
 CREATE TABLE `book_log` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) DEFAULT NULL,
-  `regDate` timestamp NULL DEFAULT NULL,
-  `type` int(11) DEFAULT NULL,
   `book_items_id` int(11) DEFAULT NULL,
-  `book_logcol` varchar(45) DEFAULT NULL,
   `startDate` timestamp NULL DEFAULT NULL,
   `endDate` timestamp NULL DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
@@ -320,12 +320,14 @@ CREATE TABLE `book_req` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) DEFAULT NULL,
   `title` varchar(100) DEFAULT NULL,
-  `content` text,
+  `publisher` varchar(50) DEFAULT NULL,
+  `author` varchar(50) DEFAULT NULL,
+  `link` varchar(100) DEFAULT NULL,
+  `imageURL` varchar(100) DEFAULT NULL,
+  `pay` int(20) DEFAULT NULL,
   `regdate` timestamp NULL DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `account_book_log_id_idx` (`account_id`),
   CONSTRAINT `account_book_log_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 

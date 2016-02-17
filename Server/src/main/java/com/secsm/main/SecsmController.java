@@ -36,7 +36,8 @@ public class SecsmController {
 		}
 		else{
 			// 로그인
-			return "attendance";
+			request.setAttribute("isLogined", true);
+			return "index";
 		}
 	}
 	
@@ -45,12 +46,14 @@ public class SecsmController {
 		logger.info("index Page");
 
 		AccountInfo info = Util.getLoginedUser(request);
+		logger.info("1");
 		if(info == null){
 			// 비로그인 
 			return "index";
 		}
 		else{
 			// 로그인
+			logger.info("2");
 			return "attendance";
 		}
 	}

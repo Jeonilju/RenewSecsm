@@ -64,7 +64,6 @@
     	
     	<script type="text/javascript">
     	   	
-    		var insertSuccess = 0;
     		var grade = <%=member.getGrade()%>;
     	
 	    	function eventInsert(title ,date){
@@ -140,7 +139,7 @@
     			var info = '<%=obj%>';
     			var obj = JSON.parse(info);
     			
-   				if(grade == 0) $('#createDuty').css('display', 'block'); 
+   				if(grade==0 || grade==3) $('#createDuty').css('display', 'block'); 
     			
     			$('#calendar').fullCalendar({
     				header : {

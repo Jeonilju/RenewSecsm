@@ -175,7 +175,11 @@ public class PXController {
 		List<PxLogInfo> pxLogList = pxLogDao.selectByAccountId(info.getId());
 		int rowCount = pxLogDao.total_list_num();
 		System.out.println(rowCount);
-		return JSONArray.toJSONString(pxLogList);
+		
+		Gson gson = new Gson();
+		String result = gson.toJson(pxLogList);
+		
+		return result;
 	}
 	
 	
