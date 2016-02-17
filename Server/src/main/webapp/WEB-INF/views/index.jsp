@@ -3,6 +3,14 @@
 	pageEncoding="UTF-8"%>
 <html lang="en">
 
+<%
+	
+	if(request.getAttribute("isLogined") == null){
+		out.println("location.replace(\"/Secsm/attendance\")");
+	}
+
+%>
+
 <script type="text/javascript">
 
 	function login(){

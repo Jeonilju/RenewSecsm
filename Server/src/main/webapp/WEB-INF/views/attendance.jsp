@@ -25,16 +25,27 @@
 
 <%
     ArrayList<AttendanceInfo> attendanceList = (ArrayList<AttendanceInfo>) request.getAttribute("AttendanceInfo");
+<<<<<<< HEAD
+	String obj = "[";
+	if(attendanceList.size()!=0){
+=======
 	
 	String obj = "[";	
 	if(attendanceList != null){
+>>>>>>> 9adebf25fcf7b1f7f23cdeb13179bc160722a8bc
 		for (AttendanceInfo info : attendanceList) {
 			obj = obj +"{\"start\":\"" + info.getRegDate() + "\","
 				+"\"className\":\"attendance\",\"borderColor\":\"white\",\"allDay\":\"false\"},";	
 		}
 		obj = obj.substring(0, obj.length()-1); 
+<<<<<<< HEAD
+		obj += "]";
+	}
+	else obj ="[]";
+=======
 	}
 	obj += "]";
+>>>>>>> 9adebf25fcf7b1f7f23cdeb13179bc160722a8bc
 %>
 
 <%
@@ -51,6 +62,7 @@
 	$(document).ready(function() {
 		var info = '<%=obj%>';
 		var obj = JSON.parse(info);
+		var date = new Date();
 		
 		$('#calendar').fullCalendar({
 			header : {
@@ -67,7 +79,7 @@
 		
 		
 	    $('#plot1').jqplot([[[<%=rate[month1-1]%>,<%=month1%>+'월'],[null,null]]], {
-	        	title:'이번달 출석률(2.6일 기준)',
+	        	title:'이번달 출석률(' + (date.getMonth()+1) + '.' + date.getDate() + '일 기준)',
 	    		seriesDefaults: {
 				    renderer:$.jqplot.BarRenderer,
 				    rendererOptions: {

@@ -1,11 +1,11 @@
 <%@ page pageEncoding="utf-8" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.secsm.info.*"%>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.js"> </script>
- <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"> </script>
- <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
- 
- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/autoComplete.js"></script>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
 
 <%
 	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
@@ -16,6 +16,7 @@
 <script type="text/javascript">
 
 	var num = 0;
+
 	//상품 검색
 	
 	// 아이템 구매
@@ -120,11 +121,52 @@
 		num=0;
 	}
 	
+	function auto_list(){
+		
+		$.ajax({
+			url : "/Secsm/api_px_Autocomplete",
+			type : "POST",
+			data : "",
+			cache : false,
+			async : false,
+			dataType : "text",
+
+			success : function(response) {
+				var arr=JSON.parse(response);
+				complete(arr)
+			},
+			error : function(request, status, error) {
+				if (request.status != '0') {
+					alert("codeaa : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+				}
+			}
+			
+			});
+		
+	}
+	
+	function complete(jsonArr){
+		
+		var arr1 = new Array();
+		for(var index = 0;index < jsonArr.length;index++){
+			var data = jsonArr[index];
+			arr1.push(data.name);
+		}
+		
+		$( "#etItemCode" ).autocomplete({
+	          source: arr1
+	  });
+
+
+	}
+	
+
 	$("#etItemCode").keyup(function(event){
 	    if(event.keyCode == 13){
 	    	buyItem();
 	    }
 	});
+	
 	
 </script>
 
@@ -156,7 +198,7 @@
 							</select>
 						</div>
 						<div id = "box2" class="col-md-6">
-							<input id="etItemCode" name="etItemCode" type="text" style="width: 100%">
+							<input id="etItemCode" name="etItemCode" type="text" onkeypress = "auto_list();" style="width: 100%">
 						</div>
 						<div class="col-md-3">
 							<button type="button" class="btn btn-default" onclick="buyItem();getPxAmount();"> 검색 </button>

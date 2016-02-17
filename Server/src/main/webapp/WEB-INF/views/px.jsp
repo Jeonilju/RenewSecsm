@@ -56,7 +56,7 @@
 			</div>
 			
 			<div class="row-fluid">
-					<button onclick = "getPxAmount();semi_List(0)" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsModal" >상품 구매</button>
+					<button onclick = "getPxAmount();semi_List(0);" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsModal" >상품 구매</button>
 					<button onclick = "log_detail();" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsListModal" >내역 조회</button>
 					<%
 						if(accountInfo.getGrade() == 5 || accountInfo.getGrade() == 0){

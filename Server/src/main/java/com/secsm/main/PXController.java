@@ -78,7 +78,7 @@ public class PXController {
 			, @RequestParam("type") int type
 			, @RequestParam("code") String code){
 		logger.info("api_pxBuyItem");
-		
+		System.out.println(code);
 		AccountInfo info = Util.getLoginedUser(request);
 		if(info == null){
 			return "index";
@@ -112,6 +112,8 @@ public class PXController {
 			return "2";
 		}
 	}
+	
+
 	
 	/** 상품 신청 승인 */
 	@ResponseBody
@@ -217,6 +219,19 @@ public class PXController {
 		
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/api_px_Autocomplete", method = RequestMethod.POST)
+	public String PXController_Px_Auto(HttpServletRequest request){
+	
+		List<PxItemsInfo> px_autoList = pxItemsDao.selectAll();
+		Gson gson = new Gson();
+		String result = gson.toJson(px_autoList);
+			
+		logger.info(result);
+		
+		return result;
+	}
+	
 	/** 구매 내역 조회 */
 	@ResponseBody
 	@RequestMapping(value = "/api_getPxLog", method = RequestMethod.POST)
@@ -227,10 +242,18 @@ public class PXController {
 		AccountInfo info = Util.getLoginedUser(request);
 		System.out.println(info.getId());
 		List<PxLogInfo> pxLogList = pxLogDao.selectByAccountId(info.getId());
+<<<<<<< HEAD
+		int rowCount = pxLogDao.total_list_num();
+		System.out.println(rowCount);
+		
+		Gson gson = new Gson();
+		String result = gson.toJson(pxLogList);
+=======
 		
 		Gson gson = new Gson();
 		String result = gson.toJson(pxLogList);
 		logger.info(result);
+>>>>>>> 9adebf25fcf7b1f7f23cdeb13179bc160722a8bc
 		
 		return result;
 	}
