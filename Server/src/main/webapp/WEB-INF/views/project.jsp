@@ -1,8 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<%@page import="com.secsm.info.AccountInfo"%>
 <%@page import="com.secsm.info.ProjectInfo"%>
 <%@page import="com.secsm.conf.*"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page pageEncoding="utf-8" %>
+
+<%
+	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
+%>
 
 <html>
 	<head>
@@ -30,6 +35,7 @@
 			    			"createProjectSummary" + "=" + $("#createProjectSummary").val() + "&" + 
 			    			"createProjectDiscription" + "=" + $("#createProjectDiscription").val() + "&" + 
 			    			"createProjectPL" + "=" + $("#createProjectPL").val() + "&" + 
+			    			"createProjectPL_id" + "=" + $("#createProjectPL_id").val() + "&" + 
 			    			"createProjectTeam" + "=" + $("#createProjectTeam").val() + "&" + 
 			    			"createProjectStartDate" + "=" + $("#createProjectStartDate").val() + "&" + 
     						"createProjectEndDate" + "="+ $("#createProjectEndDate").val();
@@ -66,7 +72,6 @@
     		
     		function showDetailProject(projectId){
     			location.replace("/Secsm/detailProject/" + projectId);
-//s    			location.href("/Secsm/detailProject/" + projectId);
     		}
     	</script>
     	
@@ -184,6 +189,8 @@
 							<label for="createProjectEndDate" cond="">완료일</label> 
 							<input name="createProjectEndDate" id="createProjectEndDate" type="text" class="form-control" style="width: 30%"/>
 						</div>
+						
+						<input name="createProjectPL_id" id="createProjectPL_id" type="text" style="display: none;" value="<%=accountInfo.getId() %>"/>
 						
 					</div>
 					<div class="modal-footer">

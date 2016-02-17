@@ -5,6 +5,7 @@
 <%@ page pageEncoding="utf-8" %>
 
 <%
+	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
 	ProjectInfo info = (ProjectInfo) request.getAttribute("projectInfo");
 	ArrayList<AttachInfo> attachList = (ArrayList<AttachInfo>) request.getAttribute("attachList");
 %>
@@ -129,13 +130,23 @@
 			</div>
 		</div>
 
-		<div>
+		<div style="display: <% 
+			if(accountInfo.getId() == 0)
+				out.print("");
+			else
+				out.print("none");
+			%>;">
 			<button type="button" class="btn" data-toggle="modal" data-target="#projectAddAttach" style="margin: 5px;">문서 등록</button>
-			<button type="button" class="btn" style="margin: 5px;">프로젝트 수정</button>
+			<button type="button" class="btn" style="margin: 5px;" data-toggle="modal" data-target="#projectUpdate">프로젝트 수정</button>
 			<button type="button" class="btn" style="margin: 5px;">프로젝트 삭제</button>
 		</div>
 		
-		<div>
+		<div style="display: <% 
+			if(accountInfo.getGrade() == 0 || accountInfo.getGrade() == 1)
+				out.print("");
+			else
+				out.print("none");
+			%>;">
 			<button type="button" class="btn" style="margin: 5px;" onclick="setPorjectStatus(1);">프로젝트 승인</button>
 			<button type="button" class="btn" style="margin: 5px;" onclick="setPorjectStatus(-1);">프로젝트 드랍</button>
 			<button type="button" class="btn" style="margin: 5px;" onclick="setPorjectStatus(2);">프로젝트 완료</button>

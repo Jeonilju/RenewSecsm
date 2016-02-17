@@ -419,3 +419,44 @@ ADD CONSTRAINT `project_attach_id`
   REFERENCES `secsm`.`project` (`ID`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
+
+  
+ALTER TABLE `secsm`.`question_time` 
+ADD COLUMN `regDate` TIMESTAMP NULL AFTER `problom`;
+
+ALTER TABLE `secsm`.`question_score` 
+ADD COLUMN `regDate` TIMESTAMP NULL AFTER `problom`;
+
+ALTER TABLE `secsm`.`question_essay` 
+ADD COLUMN `regDate` TIMESTAMP NULL AFTER `problom`;
+
+ALTER TABLE `secsm`.`question_date` 
+ADD COLUMN `regDate` TIMESTAMP NULL AFTER `problom`;
+
+ALTER TABLE `secsm`.`question_time` 
+CHANGE COLUMN `regDate` `regDate` TIMESTAMP NULL DEFAULT NULL ;
+ALTER TABLE `secsm`.`question_score` 
+CHANGE COLUMN `regDate` `regDate` TIMESTAMP NULL DEFAULT NULL ;
+ALTER TABLE `secsm`.`question_essay` 
+CHANGE COLUMN `regDate` `regDate` TIMESTAMP NULL DEFAULT NULL ;
+ALTER TABLE `secsm`.`question_date` 
+CHANGE COLUMN `regDate` `regDate` TIMESTAMP NULL DEFAULT NULL ;
+
+ALTER TABLE `secsm`.`question_choice` 
+CHANGE COLUMN `p1` `q1` TEXT NULL DEFAULT NULL ,
+CHANGE COLUMN `p2` `q2` TEXT NULL DEFAULT NULL ,
+CHANGE COLUMN `p3` `q3` TEXT NULL DEFAULT NULL ,
+CHANGE COLUMN `p4` `q4` TEXT NULL DEFAULT NULL ,
+CHANGE COLUMN `p5` `q5` TEXT NULL DEFAULT NULL ;
+
+ALTER TABLE `secsm`.`project` 
+ADD COLUMN `account_id` INT NULL AFTER `status`,
+ADD INDEX `project_account_id_idx` (`account_id` ASC);
+ALTER TABLE `secsm`.`project` 
+ADD CONSTRAINT `project_account_id`
+  FOREIGN KEY (`account_id`)
+  REFERENCES `secsm`.`account` (`ID`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+  

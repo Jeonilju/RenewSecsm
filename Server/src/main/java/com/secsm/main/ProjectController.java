@@ -3,8 +3,6 @@ package com.secsm.main;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.secsm.conf.Util;
 import com.secsm.dao.AttachDao;
 import com.secsm.dao.ProjectDao;
+import com.secsm.info.AccountInfo;
 import com.secsm.info.AttachInfo;
 import com.secsm.info.ProjectInfo;
 
@@ -44,57 +43,34 @@ public class ProjectController {
 			, @RequestParam(value="page", defaultValue = "0") int page) {
 		logger.info("project Page: " + page);
 		
+		AccountInfo accountInfo = Util.getLoginedUser(request);
+		if(accountInfo == null){
+			return "index";
+		}
+
 		request.setAttribute("projectList", projectDao.selectByPage(page, 10));
+		request.setAttribute("accountInfo", request);
 		return "project";
 	}
-		
-	@RequestMapping(value = "/addProject", method = RequestMethod.POST)
-	public String ProjectController_add(HttpServletRequest request
-			, @RequestParam("name") String name
- 			, @RequestParam("summary") String summary
- 			, @RequestParam("discription") String discription
- 			, @RequestParam("PL") String pl
- 			, @RequestParam("teamMember") String teamMember
- 			, @RequestParam("startDate") String startDate
- 			, @RequestParam("endDate") String endDate) {
-		logger.info("addProject Page");
-
-		Timestamp startDate_ = Timestamp.valueOf(startDate);
-		Timestamp endDate_ = Timestamp.valueOf(endDate);
-		
-		projectDao.create(name, summary, discription, pl, teamMember, startDate_, endDate_);
-		
-		return "addProject";
-	}
-	
-	@RequestMapping(value = "/updateProject", method = RequestMethod.POST)
-	public String ProjectController_update(HttpServletRequest request
-			, @RequestParam("id") int id
- 			, @RequestParam("name") String name
- 			, @RequestParam("summary") String summary
- 			, @RequestParam("discription") String discription
- 			, @RequestParam("PL") String pl
- 			, @RequestParam("teamMember") String teamMember
- 			, @RequestParam("startDate") String startDate
- 			, @RequestParam("endDate") String endDate) {
-		logger.info("updateProject Page");
-
-		return "updateProject";
-	}
-	
+				
 	@RequestMapping(value = "/detailProject/{id}", method = RequestMethod.GET)
 	public String ProjectController_detail(HttpServletRequest request
 			, @PathVariable(value="id") int id) {
 		logger.info("detailProject Page");
 		
+		AccountInfo accountInfo = Util.getLoginedUser(request);
 		ProjectInfo info = projectDao.selectById(id);
 		List<AttachInfo> attachList = attachDao.selectByProjectId(id);
 		
 		if(info == null)
 			return "projectNotFound";
+		else if(accountInfo == null){
+			return "index";
+		}
 		
 		request.setAttribute("projectInfo", info);
 		request.setAttribute("attachList", attachList);
+		request.setAttribute("accountInfo", accountInfo);
 		
 		return "detailProject";
 	}
@@ -112,11 +88,12 @@ public class ProjectController {
  			, @RequestParam("createProjectSummary") String summary
  			, @RequestParam("createProjectDiscription") String discription
  			, @RequestParam("createProjectPL") String pl
+ 			, @RequestParam("createProjectPL_id") int createProjectPL_id
  			, @RequestParam("createProjectPL") String teamMember
  			, @RequestParam("createProjectStartDate") String startDate
  			, @RequestParam("createProjectEndDate") String endDate) {
 		logger.info("api_createProject");
-		projectDao.create(name, summary, discription, pl, teamMember, Util.getTimestamp(startDate), Util.getTimestamp(endDate));
+		projectDao.create(name, summary, discription, pl, teamMember, Util.getTimestamp(startDate), Util.getTimestamp(endDate), createProjectPL_id);
 		
 		return "200";
 	}
@@ -192,4 +169,21 @@ public class ProjectController {
 	   
 		return "FileDownload";
 	}
+	
+	/** 프로젝트 업데이트 */
+	@RequestMapping(value = "/api_updateProject", method = RequestMethod.POST)
+	public String ProjectController_update(HttpServletRequest request
+			, @RequestParam("id") int id
+ 			, @RequestParam("name") String name
+ 			, @RequestParam("summary") String summary
+ 			, @RequestParam("discription") String discription
+ 			, @RequestParam("PL") String pl
+ 			, @RequestParam("teamMember") String teamMember
+ 			, @RequestParam("startDate") String startDate
+ 			, @RequestParam("endDate") String endDate) {
+		logger.info("updateProject Page");
+
+		return "updateProject";
+	}
+
 }

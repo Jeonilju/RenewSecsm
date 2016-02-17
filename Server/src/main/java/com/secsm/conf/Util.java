@@ -10,20 +10,20 @@ import com.secsm.info.AccountInfo;
 public class Util {
 
 	public static Timestamp getTimestamp(String date){
-		int year = Integer.parseInt(date.substring(6, 10)) - 1900;
-		int month = Integer.parseInt(date.substring(0,2)) - 1;
-		int day = Integer.parseInt(date.substring(3,5));
-		java.util.Date mDate = new java.util.Date(year, month, day);
-		Timestamp result = new Timestamp(mDate.getTime());
-		
-		System.out.println("year: " + year);
-		System.out.println("month: " + month);
-		System.out.println("day: " + day);
-		
-		System.out.println("변환된 시간1: " + mDate.toString());
-		
-		System.out.println("변환된 시간2: " + result.toString());
-		
+
+		Timestamp result = null;
+
+		try{
+			int year = Integer.parseInt(date.substring(6, 10)) - 1900;
+			int month = Integer.parseInt(date.substring(0,2)) - 1;
+			int day = Integer.parseInt(date.substring(3,5));
+			java.util.Date mDate = new java.util.Date(year, month, day);
+			result = new Timestamp(mDate.getTime());
+		}
+		catch(Exception e){
+			result = new Timestamp(System.currentTimeMillis());
+		}
+
 		return result;
 	}
 	

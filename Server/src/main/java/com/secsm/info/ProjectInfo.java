@@ -18,7 +18,12 @@ public class ProjectInfo {
 	
 	private int status;
 	
-	public ProjectInfo(int id, String name, String summary, String description, String pl, String team, int status, Timestamp startDate, Timestamp endDate, Timestamp regDate){
+	private int accountId;
+	
+	public ProjectInfo(int id, String name, String summary, String description
+			, String pl, String team, int status
+			, Timestamp startDate, Timestamp endDate, Timestamp regDate
+			, int accountId){
 		this.id = id;
 		this.name = name;
 		this.summary = summary;
@@ -29,6 +34,7 @@ public class ProjectInfo {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.regDate = regDate;
+		this.accountId = accountId;
 	}
 	
 	public int getId() {
@@ -93,5 +99,12 @@ public class ProjectInfo {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
+
+	public int getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(int accountId) {
+		this.accountId = accountId;
+	}
 }

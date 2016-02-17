@@ -22,7 +22,6 @@
 			if(response=='200')
 			{
 				location.replace("/Secsm/attendance");
-				//window.location.reload(true);
 			}
 			else{
 				alert(response);

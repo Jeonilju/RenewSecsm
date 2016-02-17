@@ -58,7 +58,20 @@ public class QuestionChoiceDao {
 					}
 				});
 	}
-	
+
+	public List<QuestionChoiceInfo> selectByQuestionId(int question_id){
+		return jdbcTemplate.query("select * from question_choice where question_id = ?", new Object[] {question_id},
+				new RowMapper<QuestionChoiceInfo>() {
+					public QuestionChoiceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new QuestionChoiceInfo(resultSet.getInt("id") , resultSet.getInt("question_id")
+								, resultSet.getString("problom"), resultSet.getString("q1")
+								, resultSet.getString("q2"), resultSet.getString("q3")
+								, resultSet.getString("q4"), resultSet.getString("q5")
+								, resultSet.getTimestamp("regDate"));
+					}
+				});
+	}
+
 	public void delete(int id){
 		jdbcTemplate.update("delete from question_choice where id = ?", new Object[] {id});
 	}

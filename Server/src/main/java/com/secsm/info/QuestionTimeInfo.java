@@ -9,7 +9,6 @@ public class QuestionTimeInfo {
 	private String problom;
 	private Timestamp regDate;
 	
-	
 	public QuestionTimeInfo(int id, int questionId, String problom, Timestamp regDate) {
 		super();
 		this.id = id;
