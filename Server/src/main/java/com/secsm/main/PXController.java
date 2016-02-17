@@ -243,10 +243,18 @@ public class PXController {
 		AccountInfo info = Util.getLoginedUser(request);
 		System.out.println(info.getId());
 		List<PxLogInfo> pxLogList = pxLogDao.selectByAccountId(info.getId());
+<<<<<<< HEAD
+		int rowCount = pxLogDao.total_list_num();
+		System.out.println(rowCount);
+		
+		Gson gson = new Gson();
+		String result = gson.toJson(pxLogList);
+=======
 		
 		Gson gson = new Gson();
 		String result = gson.toJson(pxLogList);
 		logger.info(result);
+>>>>>>> 9adebf25fcf7b1f7f23cdeb13179bc160722a8bc
 		
 		return result;
 	}
