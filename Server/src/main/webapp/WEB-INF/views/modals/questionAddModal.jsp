@@ -2,15 +2,67 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.secsm.info.*"%>
 
+<script type="text/javascript" src="/Secsm/resources/js/bootstrap-datepicker.js"></script>
+
 <script type="text/javascript">
+		
+	//DatePicker 설정
+	$(function() 
+		{
+			$("#questionAddStartDate").datepicker();
+			$("#questionAddEndDate").datepicker();
+		}
+	);
 	
 	function addQuestion(){
-		var param = "pxItemsName" + "=" + $("#pxItemsName").val() + "&" + 
-					"pxItemsCode" + "=" + $("#pxItemsCode").val() + "&" +
-					"pxItemsPrice" + "=" + $("#pxItemsPrice").val() + "&" +
-					"pxItemsDescription" + "=" + $("#pxItemsDescription").val() + "&" +
-					"pxItemsCount" + "="+ $("#pxItemsCount").val();
 
+		var qContentList = new Array();
+
+		$('#questionsTable tr').each(function() {
+			var qInfo = new Object();
+		    var qType = $(this).find(".qType")[0].value;
+		    
+		    qInfo.qType = qType;
+		    switch (qType) {
+			case "0":
+				// 객관식
+				qInfo.qTitle = $(this).find(".qTitle")[0].value;
+				qInfo.q1 = $(this).find(".q1")[0].value;
+				qInfo.q2 = $(this).find(".q2")[0].value;
+				qInfo.q3 = $(this).find(".q3")[0].value;
+				qInfo.q4 = $(this).find(".q4")[0].value;
+				qInfo.q5 = $(this).find(".q5")[0].value;
+				break;
+			case "1":
+				// 주관식
+				qInfo.qTitle = $(this).find(".qTitle")[0].value;
+				break;
+			case "2":
+				// 날짜
+				qInfo.qTitle = $(this).find(".qTitle")[0].value;
+				break;
+			case "3":
+				// 시간
+				qInfo.qTitle = $(this).find(".qTitle")[0].value;
+				break;
+			case "4":
+				// 점수
+				qInfo.qTitle = $(this).find(".qTitle")[0].value;
+				break;
+
+			default:
+				break;
+			}
+		    
+		    qContentList.push(qInfo);		    
+		 });
+		
+		var param = "questionAddTitle" + "=" + $("#questionAddTitle").val() + "&" + 
+					"questionAddContent" + "=" + $("#questionAddContent").val() + "&" +
+					"questionAddStartDate" + "=" + $("#questionAddStartDate").val() + "&" +
+					"questionAddEndDate" + "=" + $("#questionAddEndDate").val() + "&" +
+					"questionAddQuestions" + "=" + JSON.stringify(qContentList);
+		
 		$.ajax({
 		url : "/Secsm/api_questionAdd",
 		type : "POST",
@@ -40,51 +92,50 @@
 		});
 	}
 	
-	$("#etItemCode").keyup(function(event){
-	    if(event.keyCode == 13){
-	    	addItem();
-	    }
-	});
-	
 	$(function() {
 		$('#btn-add-choice').click(function() {
             $('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
             		+ "객관식"
             		+ "<br/>"
-            		+ "<input type='text'><br/>"
-            		+ "1번 <input type='text'><br/>"
-            		+ "2번 <input type='text'><br/>"
-            		+ "3번 <input type='text'><br/>"
-            		+ "4번 <input type='text'><br/>"
-            		+ "5번 <input type='text'><br/>"
-            		+ "</td></tr>");
-        });
-		$('#btn-add-date').click(function() {
-			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "날짜"
-            		+ "<br/>"
-            		+ "<input type='text'><br/>"
-            		+ "</td></tr>");
-        });
-		$('#btn-add-time').click(function() {
-			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "시간"
-            		+ "<br/>"
-            		+ "<input type='text'><br/>"
-            		+ "</td></tr>");
-        });
-		$('#btn-add-score').click(function() {
-			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "점수"
-            		+ "<br/>"
-            		+ "<input type='text'><br/>"
+            		+ "<input type'text' class='qType' name='qType' style='display: none;' value='0'<br/>"
+            		+ "<input type='text' id=\"qTitle\" name=\"qTitle\" class=\"qTitle\"><br/>"
+            		+ "1번 <input type='text' class='q1'><br/>"
+            		+ "2번 <input type='text' class='q2'><br/>"
+            		+ "3번 <input type='text' class='q3'><br/>"
+            		+ "4번 <input type='text' class='q4'><br/>"
+            		+ "5번 <input type='text' class='q5'><br/>"
             		+ "</td></tr>");
         });
 		$('#btn-add-essay').click(function() {
 			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
             		+ "주관식"
             		+ "<br/>"
-            		+ "<input type='text'><br/>"
+            		+ "<input type'text' class='qType' style='display: none;' value='1'<br/>"
+            		+ "<input type='text' class='qTitle'><br/>"
+            		+ "</td></tr>");
+        });
+		$('#btn-add-date').click(function() {
+			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
+            		+ "날짜"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType' style='display: none;' value='2'<br/>"
+            		+ "<input type='text' class='qTitle'><br/>"
+            		+ "</td></tr>");
+        });
+		$('#btn-add-time').click(function() {
+			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
+            		+ "시간"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType' style='display: none;' value='3'<br/>"
+            		+ "<input type='text' class='qTitle'><br/>"
+            		+ "</td></tr>");
+        });
+		$('#btn-add-score').click(function() {
+			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
+            		+ "점수"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType' style='display: none;' value='4'<br/>"
+            		+ "<input type='text' class='qTitle'><br/>"
             		+ "</td></tr>");
         });
 		
@@ -93,31 +144,6 @@
         });
     });
 
-	function insertQuestionTable(){
-			
-			for(var index = 0;index < jsonArr.length;index++){
-				var data = jsonArr[index];
-				var tableRef = document.getElementById('pxReqTable').getElementsByTagName('tbody')[0];
-	
-				// Insert a row in the table at the last row
-				var newRow   = tableRef.insertRow(tableRef.rows.length);
-	
-				// Insert a cell in the row at index 0
-				var newCell1  = newRow.insertCell(0);
-				var newCell2  = newRow.insertCell(1);
-				var newCell3  = newRow.insertCell(2);
-				var newCell4  = newRow.insertCell(3);
-	
-				// Append a text node to the cell
-				var newText  = document.createTextNode('New row')
-				newCell1.appendChild(document.createTextNode(data.id));
-				newCell2.appendChild(document.createTextNode(data.title));
-				newCell3.appendChild(document.createTextNode(data.context));
-				newCell4.appendChild(document.createTextNode(data.status));
-			}
-		}
-	
-	
 </script>
 
 <div class="modal fade" id="questionAddModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -136,10 +162,6 @@
 						<label for="questionAddContent" cond="">내용</label> 
 						<input name="questionAddContent" id="questionAddContent" type="text" class="form-control"/>
 					</div>
-					<div class="form-group">
-						<input name="questionAddQuestions" id="questionAddQuestions" type="text" class="form-control" style="display: none;"/>
-						<input name="questionAddCount" id="questionAddCount" type="number" class="form-control" style="display: none;" value="0"/>
-					</div>
 					
 					<hr />
 					
@@ -148,6 +170,17 @@
 					</table>
 					
 					<hr />
+					
+					<div class="form-group">
+						시작날짜
+						<input name="questionAddStartDate" id="questionAddStartDate" type="number" class="form-control" style="display: none;" value="0"/>
+					</div>
+					
+					<div class="form-group">
+						마감날짜
+						<input name="questionAddEndDate" id="questionAddEndDate" type="text" class="form-control" style="display: none;" value="0"/>
+					</div>
+					
 					
 					<div class="form-group">
 						<button id="btn-add-choice" type="button" class="btn btn-default">+객관식</button>
@@ -159,7 +192,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick="addItem();">등록</button>
+					<button type="button" class="btn btn-default" onclick="addQuestion();">등록</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</form>

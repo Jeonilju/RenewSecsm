@@ -52,7 +52,17 @@ public class QuestionTimeDao {
 					}
 				});
 	}
-	
+
+	public List<QuestionTimeInfo> selectByQuestionId(int question_id){
+		return jdbcTemplate.query("select * from question_time where question_id = ?", new Object[] {question_id},
+				new RowMapper<QuestionTimeInfo>() {
+					public QuestionTimeInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new QuestionTimeInfo(resultSet.getInt("id"), resultSet.getInt("question_id")
+								, resultSet.getString("problom"), resultSet.getTimestamp("regDate"));
+					}
+				});
+	}
+
 	public void delete(int id){
 		jdbcTemplate.update("delete from question_time where id = ?", new Object[] {id});
 	}

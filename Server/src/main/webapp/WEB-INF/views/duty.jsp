@@ -223,6 +223,7 @@
 				<div class="col-md-2"></div>
 			</div>
 		
+		
 			<div class="row-fluid">	
 				<div class="col-md-2"></div>
 			
