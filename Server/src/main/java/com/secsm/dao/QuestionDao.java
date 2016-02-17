@@ -34,8 +34,8 @@ public class QuestionDao {
 				, new Object[] {accountId, title, content, startDate, endDate});
 		
 		int questionId = jdbcTemplate.queryForInt("select id from question where "
-				+ "accountId = '" + accountId + " and " 
-				+ "title = '" + title + " and " 
+				+ "accountId = " + accountId + " and " 
+				+ "title = '" + title + "' and " 
 				+ "content = '" + content + "';");
 		
 		return questionId;

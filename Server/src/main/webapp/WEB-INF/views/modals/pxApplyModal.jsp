@@ -73,19 +73,33 @@
 
 			// Insert a row in the table at the last row
 			var newRow   = tableRef.insertRow(tableRef.rows.length);
-
+			 
 			// Insert a cell in the row at index 0
 			var newCell1  = newRow.insertCell(0);
 			var newCell2  = newRow.insertCell(1);
 			var newCell3  = newRow.insertCell(2);
 			var newCell4  = newRow.insertCell(3);
-
+			var newCell5  = newRow.insertCell(4);
+			
 			// Append a text node to the cell
 			var newText  = document.createTextNode('New row')
 			newCell1.appendChild(document.createTextNode(data.id));
 			newCell2.appendChild(document.createTextNode(data.title));
 			newCell3.appendChild(document.createTextNode(data.context));
-			newCell4.appendChild(document.createTextNode(data.status));
+			
+			if(data.status == 0 ){
+				newCell4.appendChild(document.createTextNode('승인 중'));
+				
+			}
+			else{
+				newCell4.appendChild(document.createTextNode('승인완료'));
+				var button = document.createElement('input');
+				button.setAttribute('type','button');
+				button.setAttribute('class','btn btn-default');
+				button.setAttribute('value','삭제');
+				button.setAttribute('OnClick','DeleteReqlist('+ data.id+ ',1)');
+				newCell5.appendChild(button);
+			}
 		}
 	}
 	
@@ -124,7 +138,7 @@
 			
 			<div class="modal-body">
 			
-				<button id="swapBtn" name="swapBtn" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn();">상품 요청</button>
+			<button id="swapBtn" name="swapBtn" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn();">상품 요청</button>
 			
 				<!-- 상품 요청 리스트-->
 				<div id="pxReqDivList" name="pxReqDivList" style="display: ;">
@@ -139,14 +153,7 @@
 					    </thead>
 					    <tbody id="pxReqTbody">
 							<%
-								for (PxReqInfo info : pxReqList){
-									out.println("<tr style=\"cursor:pointer;\" onClick=\"showDetailProject(" + info.getId() + ")\">");
-									out.println("<td>" + info.getId() + "</td>");
-									out.println("<td>" + info.getTitle() + "</td>");
-									out.println("<td>" + info.getContext() + "</td>");
-									out.println("<td>" + info.getStatus() + "</td>");
-									out.println("</tr>");
-								}
+							
 							%>
 						</tbody>
 					</table>
@@ -156,10 +163,10 @@
 				<!-- 상품 요청 form -->
 				<div id="pxReqDivForm" name="pxReqDivForm" style="display: none;">
 					제목
-					<input type="text" id="pxApplyTitle" name="pxApplyTitle">
+					<input type="text" id="pxApplyTitle" class = "form-control" name="pxApplyTitle">
 					
 					내용
-					<input type="text" id="pxApplyContent" name="pxApplyContent">
+					<input type="text" id="pxApplyContent" class = "form-control" name="pxApplyContent">
 				</div>
 			</div>
 			<div class="modal-footer">

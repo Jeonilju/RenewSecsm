@@ -28,9 +28,9 @@ public class ProjectDao implements ProjectIDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 	
-	public void create(String name, String summary, String discription, String pl, String teamMember, Timestamp startDate, Timestamp endDate){
-		jdbcTemplate.update("insert into project (Name, Summary, Description, PL, Team1, StartDate, EndDate) VALUES (?, ?, ?, ?, ?, ?, ?);"
-				, new Object[] {name, summary, discription, pl, teamMember, startDate, endDate});
+	public void create(String name, String summary, String discription, String pl, String teamMember, Timestamp startDate, Timestamp endDate, int accountId){
+		jdbcTemplate.update("insert into project (Name, Summary, Description, PL, Team1, status, StartDate, EndDate, account_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
+				, new Object[] {name, summary, discription, pl, teamMember, 0, startDate, endDate, accountId});
 	}
 
 	public List<ProjectInfo> selectAll(){
@@ -39,9 +39,9 @@ public class ProjectDao implements ProjectIDao {
 					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("summary"), resultSet.getString("description"),
-								resultSet.getString("pl"), resultSet.getString("team1"),
+								resultSet.getString("pl"), resultSet.getString("team1"), resultSet.getInt("status"), 
 								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
-								resultSet.getTimestamp("regDate"));
+								resultSet.getTimestamp("regDate"), resultSet.getInt("account_id"));
 					}
 				});
 	}
@@ -52,9 +52,9 @@ public class ProjectDao implements ProjectIDao {
 					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("summary"), resultSet.getString("description"),
-								resultSet.getString("pl"), resultSet.getString("team1"),
+								resultSet.getString("pl"), resultSet.getString("team1"), resultSet.getInt("status"), 
 								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
-								resultSet.getTimestamp("regDate"));
+								resultSet.getTimestamp("regDate"), resultSet.getInt("account_id"));
 					}
 				});
 	}
@@ -65,9 +65,9 @@ public class ProjectDao implements ProjectIDao {
 					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("summary"), resultSet.getString("description"),
-								resultSet.getString("pl"), resultSet.getString("team1"),
+								resultSet.getString("pl"), resultSet.getString("team1"), resultSet.getInt("status"), 
 								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
-								resultSet.getTimestamp("regDate"));
+								resultSet.getTimestamp("regDate"), resultSet.getInt("account_id"));
 					}
 				});
 	}
@@ -78,9 +78,9 @@ public class ProjectDao implements ProjectIDao {
 					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("summary"), resultSet.getString("description"),
-								resultSet.getString("pl"), resultSet.getString("team1"),
+								resultSet.getString("pl"), resultSet.getString("team1"), resultSet.getInt("status"), 
 								resultSet.getTimestamp("startDate"), resultSet.getTimestamp("endDate"),
-								resultSet.getTimestamp("regDate"));
+								resultSet.getTimestamp("regDate"), resultSet.getInt("account_id"));
 					}
 				});
 		
@@ -100,17 +100,23 @@ public class ProjectDao implements ProjectIDao {
 		}
 	}
 	
-	public void updateProject(int id, String name, String summary, String description, String pl, String teamMember, Timestamp startDate, Timestamp endDate){
+	public void updateProject(int id, String name, String summary, String description, String pl, String teamMember, int status){
 		jdbcTemplate.update("update project set "
 				+ "name = ?,"
 				+ " summary = ?,"
 				+ " description = ?,"
 				+ " pl = ?,"
-				+ " team = ?,"
-				+ " startDate = ?,"
-				+ " endDate = ?"
-			+ " where id = ?", 
-			new Object[]  { name, summary, description, pl, teamMember, startDate, endDate , id});
+				+ " team1 = ?,"
+				+ " status = ?"
+			+ " where id=?", 
+			new Object[]  { name, summary, description, pl, teamMember, status, id});
+	}
+	
+	public void setStatus(int id, int status){
+		jdbcTemplate.update("update project set "
+				+ " status = ?"
+			+ " where id=?", 
+			new Object[]  { status, id});
 	}
 	
 	public void delete(int id){

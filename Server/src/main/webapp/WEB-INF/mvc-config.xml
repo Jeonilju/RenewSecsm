@@ -65,6 +65,10 @@
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>
 	
+	<beans:bean id="AttachDao" class="com.secsm.dao.AttachDao">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
 	<beans:bean id="AttendanceDao" class="com.secsm.dao.AttendanceDao">
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>

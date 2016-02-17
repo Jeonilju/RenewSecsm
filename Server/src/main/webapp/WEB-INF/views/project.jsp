@@ -1,8 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<%@page import="com.secsm.info.AccountInfo"%>
 <%@page import="com.secsm.info.ProjectInfo"%>
 <%@page import="com.secsm.conf.*"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page pageEncoding="utf-8" %>
+
+<%
+	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
+%>
 
 <html>
 	<head>
@@ -30,6 +35,7 @@
 			    			"createProjectSummary" + "=" + $("#createProjectSummary").val() + "&" + 
 			    			"createProjectDiscription" + "=" + $("#createProjectDiscription").val() + "&" + 
 			    			"createProjectPL" + "=" + $("#createProjectPL").val() + "&" + 
+			    			"createProjectPL_id" + "=" + $("#createProjectPL_id").val() + "&" + 
 			    			"createProjectTeam" + "=" + $("#createProjectTeam").val() + "&" + 
 			    			"createProjectStartDate" + "=" + $("#createProjectStartDate").val() + "&" + 
     						"createProjectEndDate" + "="+ $("#createProjectEndDate").val();
@@ -66,7 +72,6 @@
     		
     		function showDetailProject(projectId){
     			location.replace("/Secsm/detailProject/" + projectId);
-//s    			location.href("/Secsm/detailProject/" + projectId);
     		}
     	</script>
     	
@@ -95,6 +100,7 @@
 			        <th>프로젝트 명</th>
 			        <th>기간</th>
 			        <th>PL</th>
+			        <th>상태</th>
 			      </tr>
 			    </thead>
 			    <tbody>
@@ -106,6 +112,28 @@
 							out.println("<td>" + Util.getTimestempStr(info.getStartDate()) 
 										+ " ~ " + Util.getTimestempStr(info.getEndDate()) + "</td>");
 							out.println("<td>" + info.getPl() + "</td>");
+							
+							if(info.getStatus() == 0){
+								// 시작단계
+								out.println("<td>" + "미승인" + "</td>");
+							}
+							else if(info.getStatus() == 1){
+								// 완료					
+								out.println("<td>" + "진행중" + "</td>");
+							}
+							else if(info.getStatus() == 2){
+								// 완료					
+								out.println("<td>" + "완료" + "</td>");
+							}
+							else if(info.getStatus() == -1){
+								// 드랍
+								out.println("<td>" + "드랍" + "</td>");
+							}
+							else{
+								// 알수없음
+								out.println("<td>" + "알수없음" + "</td>");
+							}
+							
 							out.println("</tr>");
 						}
 					%>
@@ -162,6 +190,8 @@
 							<input name="createProjectEndDate" id="createProjectEndDate" type="text" class="form-control" style="width: 30%"/>
 						</div>
 						
+						<input name="createProjectPL_id" id="createProjectPL_id" type="text" style="display: none;" value="<%=accountInfo.getId() %>"/>
+						
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
@@ -169,7 +199,6 @@
 					</div>
 				</form>
 			</div>
-			<!-- /.modal-content -->
 		</div>
 	</div>
 

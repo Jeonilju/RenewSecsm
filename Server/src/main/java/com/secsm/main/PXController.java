@@ -98,8 +98,9 @@ public class PXController {
 		if(result.size() == 1){
 			// 정상
 			accountDao.usePxAmount(info.getId(), result.get(0).getPrice());
-			pxLogDao.create(info.getId(), result.get(0).getId(), 0, 1);
+			pxLogDao.create(info.getId(), result.get(0).getId(), 0, 1,result.get(0).getName(),result.get(0).getPrice());
 			pxItemsDao.useItems(result.get(0).getId(), 1);
+			
 			return "0";
 		}
 		else if(result.size() < 1){
@@ -110,6 +111,19 @@ public class PXController {
 			// 있을수 없는일
 			return "2";
 		}
+	}
+	
+	/** 상품 신청 승인 */
+	@ResponseBody
+	@RequestMapping(value = "/api_Accept", method = RequestMethod.POST)
+	public String PXController_Accept(HttpServletRequest request
+			, @RequestParam("idx") int idx){
+		logger.info("api_Accept");
+		System.out.println(idx);
+		AccountInfo info = Util.getLoginedUser(request);
+		pxReqDao.Accept(idx);
+		
+		return "200";
 	}
 	
 	/** PX 금액 확인 */
@@ -155,12 +169,13 @@ public class PXController {
 		AccountInfo info = Util.getLoginedUser(request);
 		
 		List<PxLogInfo> result = pxLogDao.selectById(idx);
+		List<PxItemsInfo> result1 = pxItemsDao.select(result.get(0).getPxItemsId());
+		
 		if(result.size() == 1){
 			// 정상
-			accountDao.refund_usePxAmount(idx, result.get(0).getPrice());
+			accountDao.refund_usePxAmount(result.get(0).getAccountId(), result1.get(0).getPrice());
 			pxLogDao.delete(idx);
 			pxItemsDao.refund_useItems(result.get(0).getPxItemsId(), 1);
-			
 			return "200";
 
 		}
@@ -170,21 +185,77 @@ public class PXController {
 		}
 	}
 	
+	/** PX 환불 신청 */
+	@ResponseBody
+	@RequestMapping(value = "/api_Delete_req_list", method = RequestMethod.POST)
+	public String Delete_PxReq_list(HttpServletRequest request
+			, @RequestParam("idx") int idx){
+		
+		logger.info("api_process_refund");
+		AccountInfo info = Util.getLoginedUser(request);
+		
+		pxReqDao.delete(idx);
+		return "200";
+	}
+	
+	/** PX 상품 신청 리스트 조회 */
+	@ResponseBody
+	@RequestMapping(value = "/api_applyReqList", method = RequestMethod.POST)
+	public String PXController_api_applyReqList(HttpServletRequest request){
+		logger.info("api_applyReqList");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+
+		List<PxReqInfo> pxReqList = pxReqDao.selectAll();
+		Gson gson = new Gson();
+		String result = gson.toJson(pxReqList);
+			
+		logger.info(result);
+			
+		return result;
+		
+	}
+	
 	/** 구매 내역 조회 */
 	@ResponseBody
 	@RequestMapping(value = "/api_getPxLog", method = RequestMethod.POST)
-	public String PXController_logItem(HttpServletRequest request
-			, @RequestParam("logCount") int logCount){
+	public String PXController_logItem(HttpServletRequest request)
+	{
 		logger.info("api_getPxLog");
 		
 		AccountInfo info = Util.getLoginedUser(request);
+		System.out.println(info.getId());
 		List<PxLogInfo> pxLogList = pxLogDao.selectByAccountId(info.getId());
-		int rowCount = pxLogDao.total_list_num();
-		System.out.println(rowCount);
-		return JSONArray.toJSONString(pxLogList);
+		
+		Gson gson = new Gson();
+		String result = gson.toJson(pxLogList);
+		logger.info(result);
+		
+		return result;
 	}
 	
-	
+	/** Semi 구매 내역 조회 */
+	@ResponseBody
+	@RequestMapping(value = "/api_current_buyList", method = RequestMethod.POST)
+	public String PXController_Semi_list(HttpServletRequest request,
+			 @RequestParam("num") int num)
+	{
+		logger.info("api_semi_getPxLog");
+		
+		System.out.println(num);
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		System.out.println(info.getId());
+		List<PxLogInfo> pxLogList = pxLogDao.selectBydate(num);
+	//	int id = pxLogList.get(0).getPxItemsId();
+	//	List<PxItemsInfo> pxItemList =pxItemsDao.select(id);
+	//	pxLogList.get(0).setName(pxItemList.get(0).getName());
+		Gson gson = new Gson();
+		String result = gson.toJson(pxLogList);
+		logger.info(result);
+		return result;
+	}
+
 	@RequestMapping(value = "/paging", method = RequestMethod.GET)
 	public String Paging(@RequestParam int pageNum, Model model){
 	
@@ -228,20 +299,7 @@ public class PXController {
 		return "200";
 	}
 	
-	/** PX 상품 신청 리스트 조회 */
-	@ResponseBody
-	@RequestMapping(value = "/api_applyReqList", method = RequestMethod.POST)
-	public String PXController_api_applyReqList(HttpServletRequest request){
-		logger.info("api_applyReqList");
-		
-		List<PxReqInfo> pxReqList = pxReqDao.selectAll();
-		Gson gson = new Gson();
-		String result = gson.toJson(pxReqList);
-		
-		logger.info(result);
-		
-		return result;
-	}
+	
 	
 	/** PX 상품 추가 */
 	@ResponseBody
@@ -258,6 +316,5 @@ public class PXController {
 		
 		return "200";
 	}
-	
 	
 }

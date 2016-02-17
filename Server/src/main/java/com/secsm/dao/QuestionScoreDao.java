@@ -52,6 +52,16 @@ public class QuestionScoreDao {
 					}
 				});
 	}
+
+	public List<QuestionScoreInfo> selectByQuestionId(int question_id){
+		return jdbcTemplate.query("select * from question_score where question_id = ?", new Object[] {question_id},
+				new RowMapper<QuestionScoreInfo>() {
+					public QuestionScoreInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new QuestionScoreInfo(resultSet.getInt("id"), resultSet.getInt("question_id")
+								, resultSet.getString("problom"), resultSet.getTimestamp("regDate"));
+					}
+				});
+	}
 	
 	public void delete(int id){
 		jdbcTemplate.update("delete from question_score where id = ?", new Object[] {id});

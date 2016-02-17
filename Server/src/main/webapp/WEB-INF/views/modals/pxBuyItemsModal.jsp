@@ -7,19 +7,23 @@
  
  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/autoComplete.js"></script>
 
-
 <%
 	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
+	PxItemsInfo pxiteminfo = (PxItemsInfo) request.getAttribute("pxiteminfo");
+	
 %>
 
 <script type="text/javascript">
+
+	var num = 0;
+	//상품 검색
 	
 	// 아이템 구매
 	function buyItem(){
 		var param = "type" + "=" + $("#slItemType").val() + "&" + 
 					"code" + "=" + $("#etItemCode").val() + "&" + 
 					"isForcibly" + "="+ "0";
-
+		
 		$.ajax({
 		url : "/Secsm/api_pxBuyItem",
 		type : "POST",
@@ -28,13 +32,14 @@
 		async : false,
 		dataType : "text",
 		
-		success : function(response) {	
-			alert(response);
+		success : function(response) {
 			if(response=='0')
 			{
-				// 정상 구매
+				// 정상 구매 by 바코드
 				alert('정상 구매되었습니다.');
-				window.location.reload(true);
+				num++;
+				semi_List(num);
+				
 			}
 			else if(response == '1')
 			{
@@ -44,7 +49,6 @@
 			else{
 				alert('알수없음');
 			}
-			
 		},
 		error : function(request, status, error) {
 			if (request.status != '0') {
@@ -55,43 +59,65 @@
 		});
 	}
 	
-	function charge_Money(){
-		var param = "money" + "=" + $("#charge_money").val();
-		
+	function semi_List(num){
+		var param = "num" + "=" + num; 
 		$.ajax({
-			url : "/Secsm/api_Charge_Money",
-			type : "POST",
-			data : param,
-			cache : false,
-			async : false,
-			dataType : "text",
-			
-			success : function(response) {	
-				alert(response);
-				if(response=='0')
-				{
-					// 충전완료
-					alert('충전되었습니다.');
-				}
-				else if(response == '1')
-				{
-					// 해당 상품 없음
-					alert('실패하였습니다.');
-				}	
-				else{
-					alert('알수없음');
-				}
-				
-			},
-			error : function(request, status, error) {
-				if (request.status != '0') {
-					alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-				}
+		url : "/Secsm/api_current_buyList",
+		type : "POST",
+		data : param,
+		cache : false,
+		async : false,
+		dataType : "text",
+		
+		success : function(response) {	
+			var arr = JSON.parse(response);
+			insertBuyListTable(arr);
+		},
+		error : function(request, status, error) {
+			if (request.status != '0') {
+				alert("code : " + request.status + "\r\nmessage : "
+						+ request.reponseText + "\r\nerror : " + error);
 			}
-			
+		}
 		});
+	}
+	
+	function insertBuyListTable(jsonArr){
 		
+		document.getElementById('pxCurrentbuyTbody').innerHTML = "";	// 기존 테이블에 있는 내용 초기화
 		
+		for(var index = 0;index < jsonArr.length;index++){
+			var data = jsonArr[index];
+			var tableRef = document.getElementById('currentbuyTable').getElementsByTagName('tbody')[0];
+
+			// Insert a row in the table at the last row
+			var newRow   = tableRef.insertRow(tableRef.rows.length);
+	
+			// Insert a cell in the row at index 0
+			var newCell1  = newRow.insertCell(0);
+			var newCell2  = newRow.insertCell(1);
+			var newCell3  = newRow.insertCell(2);
+			var newCell4  = newRow.insertCell(3);
+			var newCell5  = newRow.insertCell(4);
+
+			// Append a text node to the cell
+			var newText  = document.createTextNode('New row')
+			newCell1.appendChild(document.createTextNode(data.regdate));
+			newCell2.appendChild(document.createTextNode(data.name));
+			newCell3.appendChild(document.createTextNode(data.count));
+			newCell4.appendChild(document.createTextNode(data.price));
+			
+			var button = document.createElement('input');
+			button.setAttribute('type','button');
+			button.setAttribute('class','btn btn-default');
+			button.setAttribute('value','환불');
+			button.setAttribute('OnClick','refund(' +data.id + ',1);getPxAmount();');
+			newCell5.appendChild(button);
+		}
+	}
+	
+	function end(){
+		num=0;
 	}
 	
 	$("#etItemCode").keyup(function(event){
@@ -100,43 +126,6 @@
 	    }
 	});
 	
-	//금액확인
-	function getPxAmount(){
-		
-		$.ajax({
-		url : "/Secsm/api_GetPxAmount",
-		type : "POST",
-		data : false,
-		cache : false,
-		async : false,
-		dataType : "text",
-		
-		success : function(response) {	
-			alert(response);
-			if(response==0)
-			{
-				alert('실패');
-				
-			}
-			else{
-				alert(response);
-				amount = document.getElementById(response);
-			}
-			
-		},
-		error : function(request, status, error) {
-			if (request.status != '0') {
-				alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-			}
-		}
-		
-		});
-	}
-	
-	//환불
-	function RefundItem(){
-		
-	}
 </script>
 
 <!-- 상품 구매 모달 -->
@@ -155,17 +144,7 @@
 							내 잔액 : 
 						</div>
 						<div class="col-md-3">    
-				<!--  		<label><%=accountInfo.getPxAmount() %> 원</label>  -->	
-					<!--			<script>getPxAmount()</script>
-								<label id = "amount ">원</label>  -->
-							<button type="button" class="btn btn-default" onclick="getPxAmount();"> 금액확인</button>	
-						</div>
-						
-						<div class="col-md-6">
-							<input id="charge_money" name="charge_money" type="text" style="width: 30%">
-						</div>
-						<div class="col-md-3">
-							<button type="button" class="btn btn-default" onclick="charge_Money();"> 충전 </button>
+								<label id = "amount"></label>  	
 						</div>
 					</div>
 					
@@ -180,16 +159,35 @@
 							<input id="etItemCode" name="etItemCode" type="text" style="width: 100%">
 						</div>
 						<div class="col-md-3">
-							<button type="button" class="btn btn-default" onclick="buyItem();"> 승인 </button>
+							<button type="button" class="btn btn-default" onclick="buyItem();getPxAmount();"> 검색 </button>
 						</div>
 					</div>
 					
 					<div style="height: 40px;"></div>
 				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				
+				<div>
+					<table class="table table-hover" id = "currentbuyTable">
+				 	   <thead>
+				   	   <tr>
+				   	     <th>날짜</th>
+				   	     <th>내용</th>
+				   	     <th>수량</th>
+				   	     <th>금액</th>
+				   	     <th>비고</th>
+				   	   </tr>
+				  	  </thead>
+				   		 <tbody id = "pxCurrentbuyTbody">
+		
+				    	</tbody>
+				 	 </table>
 				</div>
+				
+				<div class="modal-footer">
+					<button onclick= "end()" type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					
+				</div>
+				
 			</form>
 		</div>
 	</div>

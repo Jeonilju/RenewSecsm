@@ -19,13 +19,13 @@
 		dataType : "text",
 		
 		success : function(response) {	
-			alert(response);
 			if(response=='200')
 			{
-				//location.replace("/Secsm/attendance");
-				window.location.reload(true);
+				location.replace("/Secsm/attendance");
 			}
-			
+			else{
+				alert(response);
+			}
 		},
 		error : function(request, status, error) {
 			if (request.status != '0') {
