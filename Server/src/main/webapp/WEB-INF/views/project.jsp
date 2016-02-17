@@ -199,7 +199,6 @@
 					</div>
 				</form>
 			</div>
-			<!-- /.modal-content -->
 		</div>
 	</div>
 

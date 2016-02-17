@@ -49,7 +49,7 @@ public class ProjectController {
 		}
 
 		request.setAttribute("projectList", projectDao.selectByPage(page, 10));
-		request.setAttribute("accountInfo", request);
+		request.setAttribute("accountInfo", accountInfo);
 		return "project";
 	}
 				
@@ -171,19 +171,54 @@ public class ProjectController {
 	}
 	
 	/** 프로젝트 업데이트 */
+	@ResponseBody
 	@RequestMapping(value = "/api_updateProject", method = RequestMethod.POST)
 	public String ProjectController_update(HttpServletRequest request
-			, @RequestParam("id") int id
- 			, @RequestParam("name") String name
- 			, @RequestParam("summary") String summary
- 			, @RequestParam("discription") String discription
- 			, @RequestParam("PL") String pl
- 			, @RequestParam("teamMember") String teamMember
- 			, @RequestParam("startDate") String startDate
- 			, @RequestParam("endDate") String endDate) {
+			, @RequestParam("updateProjectId") int updateProjectId
+ 			, @RequestParam("updateProjectName") String updateProjectName
+ 			, @RequestParam("updateProjectSummary") String updateProjectSummary
+ 			, @RequestParam("updateProjectDiscription") String updateProjectDiscription
+ 			, @RequestParam("updateProjectPL") String updateProjectPL
+ 			, @RequestParam("updateProjectTeam") String updateProjectTeam) {
 		logger.info("updateProject Page");
-
-		return "updateProject";
+		
+		AccountInfo accountInfo = Util.getLoginedUser(request);
+		ProjectInfo projectInfo = projectDao.selectById(updateProjectId);
+		if(accountInfo == null){
+			// 비로그인
+			return "400";
+		}
+		else if(accountInfo.getId() != projectInfo.getAccountId()){
+			// 내 프로젝트 아님
+			return "401";
+		}
+		else{
+			// 정상
+			projectDao.updateProject(updateProjectId, updateProjectName, updateProjectSummary, updateProjectDiscription, updateProjectPL, updateProjectTeam, projectInfo.getStatus());
+			return "200";
+		}
 	}
+	
+	/** 프로젝트 삭제 */
+	@ResponseBody
+	@RequestMapping(value = "/api_removeProject", method = RequestMethod.POST)
+	public String ProjectController_removeProject(HttpServletRequest request
+			, @RequestParam("projectId") int projectId) {
+		logger.info("removeProject Page: " + projectId);
 
+		AccountInfo accountInfo = Util.getLoginedUser(request);
+		ProjectInfo projectInfo = projectDao.selectById(projectId);
+		if(accountInfo == null){
+			// 비로그인
+			return "400";
+		}
+		else if(accountInfo.getId() != projectInfo.getAccountId()){
+			// 자기 프로젝트가 아님
+			return "401";
+		}
+		else{
+			projectDao.delete(projectId);
+			return "200";
+		}
+	}
 }
