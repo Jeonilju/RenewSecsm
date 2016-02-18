@@ -76,7 +76,9 @@ public class PXController {
 	@RequestMapping(value = "/api_pxBuyItem", method = RequestMethod.POST)
 	public String PXController_buyItem(HttpServletRequest request
 			, @RequestParam("type") int type
-			, @RequestParam("code") String code){
+			, @RequestParam("code") String code
+			, @RequestParam("cnt") int cnt){
+		
 		logger.info("api_pxBuyItem");
 		System.out.println(code);
 		AccountInfo info = Util.getLoginedUser(request);
@@ -98,8 +100,8 @@ public class PXController {
 		if(result.size() == 1){
 			// 정상
 			accountDao.usePxAmount(info.getId(), result.get(0).getPrice());
-			pxLogDao.create(info.getId(), result.get(0).getId(), 0, 1,result.get(0).getName(),result.get(0).getPrice());
-			pxItemsDao.useItems(result.get(0).getId(), 1);
+			pxLogDao.create(info.getId(), result.get(0).getId(), 0, cnt,result.get(0).getName(),result.get(0).getPrice());
+			pxItemsDao.useItems(result.get(0).getId(), cnt);
 			
 			return "0";
 		}
@@ -178,9 +180,8 @@ public class PXController {
 			// 정상
 			accountDao.refund_usePxAmount(result.get(0).getAccountId(), result1.get(0).getPrice());
 			pxLogDao.delete(idx);
-			pxItemsDao.refund_useItems(result.get(0).getPxItemsId(), 1);
+			pxItemsDao.refund_useItems(result.get(0).getPxItemsId(), result.get(0).getCount());
 			return "200";
-
 		}
 		else{
 			// 비정상
@@ -188,7 +189,7 @@ public class PXController {
 		}
 	}
 	
-	/** PX 환불 신청 */
+	/** PX 목록에서 삭제 */
 	@ResponseBody
 	@RequestMapping(value = "/api_Delete_req_list", method = RequestMethod.POST)
 	public String Delete_PxReq_list(HttpServletRequest request

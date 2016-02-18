@@ -23,6 +23,7 @@
 	function buyItem(){
 		var param = "type" + "=" + $("#slItemType").val() + "&" + 
 					"code" + "=" + $("#etItemCode").val() + "&" + 
+					"cnt" + "=" + $("#itemcnt").val() + "&" +
 					"isForcibly" + "="+ "0";
 		
 		$.ajax({
@@ -180,16 +181,18 @@
 				</div>
 				<div class="modal-body" >
 					<div class="row-fluid" style="">
-						<div class="col-md-6">
+		  			<div class="col-md-6"></div> 
+		
+						<div class="table table-hover">
+							<th>분류</th>
+				   	     	<th>상품명</th>
+				   	     	<th>수량</th>
+				   	     	<th>내 잔액 :</th> 
+				   	     	<label id = "amount"></label>  
 						</div>
-						<div class="col-md-3">
-							내 잔액 : 
-						</div>
-						<div class="col-md-3">    
-								<label id = "amount"></label>  	
-						</div>
+	
 					</div>
-					
+	
 					<div class="row-fluid" style="margin: 20px">
 						<div class="col-md-3">
 							<select id="slItemType" name="slItemType" style="width: 100%; margin: 5px;">
@@ -197,12 +200,15 @@
 								<option value="1"> 상품 명 </option>
 							</select>
 						</div>
-						<div id = "box2" class="col-md-6">
+						<div id = "box2" class="col-md-4">
 							<input id="etItemCode" name="etItemCode" type="text" onkeypress = "auto_list();" style="width: 100%">
 						</div>
-						<div class="col-md-3">
+						
+						<div class="col-md-5">
+							<input id="itemcnt" name="itemcnt" type="text" style="width: 50%">
 							<button type="button" class="btn btn-default" onclick="buyItem();getPxAmount();"> 검색 </button>
 						</div>
+						
 					</div>
 					
 					<div style="height: 40px;"></div>
