@@ -27,6 +27,33 @@ public class Util {
 		return result;
 	}
 	
+	public static Timestamp getTimestamp(String date, boolean isStart){
+
+		Timestamp result = null;
+
+		try{
+			int year = Integer.parseInt(date.substring(6, 10)) - 1900;
+			int month = Integer.parseInt(date.substring(0,2)) - 1;
+			int day = Integer.parseInt(date.substring(3,5));
+			
+			java.util.Date mDate = new java.util.Date(year, month, day);
+			
+			if(isStart)
+				result = new Timestamp(mDate.getTime());
+			else
+				result = new Timestamp(mDate.getTime() +  24 * 3600);
+		}
+		catch(Exception e){
+			if(isStart)
+				result = new Timestamp(System.currentTimeMillis());
+			else
+				result = new Timestamp(System.currentTimeMillis() +  24 * 3600);
+		}
+
+		
+		return result;
+	}
+	
 	public static String getTimestempStr(Timestamp time){
 		if(time != null)
 			return "" + (time.getYear() + 1900) + "." + (time.getMonth() + 1) + "." + time.getDate();

@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.secsm.info.AnswerChoiceInfo;
 import com.secsm.info.AnswerScoreInfo;
 
 @Repository
@@ -63,6 +64,25 @@ public class AnswerScoreDao {
 				});
 	}
 
+	public boolean isExistAnswer(int id, int accountId){
+		List<AnswerScoreInfo> result = jdbcTemplate.query("select * from answer_score where "
+				+ "question_id = ?"
+				+ " and account_id = ? ", new Object[] {id, accountId},
+				new RowMapper<AnswerScoreInfo>() {
+					public AnswerScoreInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AnswerScoreInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
+								, resultSet.getInt("question_id"), resultSet.getInt("answer"));
+					}
+				});
+		
+		if(result.size() > 0){
+			return true;			
+		}
+		else{
+			return false;
+		}
+	}
+	
 	public void delete(int id){
 		jdbcTemplate.update("delete from answer_score where id = ?", new Object[] {id});
 	}

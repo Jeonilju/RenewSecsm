@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.secsm.info.AnswerChoiceInfo;
 import com.secsm.info.AnswerTimeInfo;
 
 @Repository
@@ -29,7 +30,7 @@ public class AnswerTimeDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
-	public void create(int accountId, int questionId, Timestamp answer){
+	public void create(int accountId, int questionId, String answer){
 		jdbcTemplate.update("insert into answer_time (account_id, question_id, answer) values (?, ?, ?)"
 				, new Object[] {accountId, questionId, answer});
 	}
@@ -39,7 +40,7 @@ public class AnswerTimeDao {
 				new RowMapper<AnswerTimeInfo>() {
 					public AnswerTimeInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AnswerTimeInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
-								, resultSet.getInt("question_id"), resultSet.getTimestamp("answer"));
+								, resultSet.getInt("question_id"), resultSet.getString("answer"));
 					}
 				});
 	}
@@ -49,7 +50,7 @@ public class AnswerTimeDao {
 				new RowMapper<AnswerTimeInfo>() {
 					public AnswerTimeInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AnswerTimeInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
-								, resultSet.getInt("question_id"), resultSet.getTimestamp("answer"));
+								, resultSet.getInt("question_id"), resultSet.getString("answer"));
 					}
 				});
 	}
@@ -59,9 +60,28 @@ public class AnswerTimeDao {
 				new RowMapper<AnswerTimeInfo>() {
 					public AnswerTimeInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AnswerTimeInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
-								, resultSet.getInt("question_id"), resultSet.getTimestamp("answer"));
+								, resultSet.getInt("question_id"), resultSet.getString("answer"));
 					}
 				});
+	}
+	
+	public boolean isExistAnswer(int id, int accountId){
+		List<AnswerTimeInfo> result = jdbcTemplate.query("select * from answer_time where "
+				+ "question_id = ?"
+				+ " and account_id = ? ", new Object[] {id, accountId},
+				new RowMapper<AnswerTimeInfo>() {
+					public AnswerTimeInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AnswerTimeInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
+								, resultSet.getInt("question_id"), resultSet.getString("answer"));
+					}
+				});
+		
+		if(result.size() > 0){
+			return true;			
+		}
+		else{
+			return false;
+		}
 	}
 	
 	public void delete(int id){

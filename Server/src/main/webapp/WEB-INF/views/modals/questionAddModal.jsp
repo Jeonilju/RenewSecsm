@@ -54,7 +54,7 @@
 				break;
 			}
 		    
-		    qContentList.push(qInfo);		    
+		    qContentList.push(qInfo);
 		 });
 		
 		var param = "questionAddTitle" + "=" + $("#questionAddTitle").val() + "&" + 
@@ -72,11 +72,11 @@
 		dataType : "text",
 		
 		success : function(response) {	
-			alert(response);
 			if(response=='200')
 			{
 				// 정상 구매
 				alert('정상 추가되었습니다.');
+				window.location.reload(true);
 			}
 			else{
 				alert('알수없음');
@@ -146,6 +146,10 @@
 
 </script>
 
+<style>
+	.datepicker{z-index:1151 !important;}
+</style>
+
 <div class="modal fade" id="questionAddModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -173,12 +177,12 @@
 					
 					<div class="form-group">
 						시작날짜
-						<input name="questionAddStartDate" id="questionAddStartDate" type="number" class="form-control" style="display: none;" value="0"/>
+						<input name="questionAddStartDate" id="questionAddStartDate" type="text" class="form-control"/>
 					</div>
 					
 					<div class="form-group">
 						마감날짜
-						<input name="questionAddEndDate" id="questionAddEndDate" type="text" class="form-control" style="display: none;" value="0"/>
+						<input name="questionAddEndDate" id="questionAddEndDate" type="text" class="form-control"/>
 					</div>
 					
 					

@@ -1,7 +1,5 @@
 package com.secsm.main;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +35,7 @@ import com.secsm.dao.QuestionEssayDao;
 import com.secsm.dao.QuestionScoreDao;
 import com.secsm.dao.QuestionTimeDao;
 import com.secsm.info.AccountInfo;
+import com.secsm.info.AnswerInfo;
 import com.secsm.info.QuestionChoiceInfo;
 import com.secsm.info.QuestionContentInfo;
 import com.secsm.info.QuestionDateInfo;
@@ -99,6 +99,41 @@ public class QuestionController {
 		}
 	}
 	
+	@RequestMapping(value = "/questionResult", method = RequestMethod.GET)
+	public String QuestionController_result(HttpServletRequest request
+			, int questionId) {
+		logger.info("questionResult Page");
+
+		AccountInfo info = Util.getLoginedUser(request);
+		QuestionInfo questionInfo = questionDao.selectById(questionId);
+		
+		if(info == null){
+			// 비로그인
+			return "index";
+		}
+		else{
+			if(questionInfo == null){
+				// TODO 등록된 프로젝트가 없음
+				return "";
+			}
+			else if (info.getId() == questionInfo.getAccountId()){
+				// 정상 접근
+				List<QuestionChoiceInfo> choiceList = questionChoiceDao.selectByQuestionId(questionInfo.getId());
+				List<QuestionEssayInfo> essayList = questionEssayDao.selectByQuestionId(questionInfo.getId());
+				List<QuestionDateInfo> dateList = questionDateDao.selectByQuestionId(questionInfo.getId());
+				List<QuestionTimeInfo> timeList = questionTimeDao.selectByQuestionId(questionInfo.getId());
+				List<QuestionScoreInfo> scoreList = questionScoreDao.selectByQuestionId(questionInfo.getId());
+				
+				return "questionResult";
+			}
+			else{
+				// 비정상 접근 
+				return "";
+			}
+		}
+
+	}
+	
 	/** 설문 생성 */
 	@ResponseBody
 	@RequestMapping(value = "/api_questionAdd", method = RequestMethod.POST)
@@ -116,8 +151,8 @@ public class QuestionController {
 			return "권한없음";
 		}
 		else{
-			Timestamp startDate = Util.getTimestamp(questionAddStartDate);
-			Timestamp endDate = Util.getTimestamp(questionAddEndDate);
+			Timestamp startDate = Util.getTimestamp(questionAddStartDate, true);
+			Timestamp endDate = Util.getTimestamp(questionAddEndDate, false);
 			ArrayList<QuestionContentInfo> questionContentList = new ArrayList<QuestionContentInfo>();
 			try {
 
@@ -181,7 +216,7 @@ public class QuestionController {
 	
 	/** 설문지 조회 */
 	@ResponseBody
-	@RequestMapping(value = "/api_questionGet", method = RequestMethod.GET)
+	@RequestMapping(value = "/api_questionGet", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public String QuestionController_getQuestion(HttpServletRequest request, HttpServletResponse response 
 			, @RequestParam("id") int id) {
 		logger.info("api get Question (설문지 조회)");
@@ -254,12 +289,12 @@ public class QuestionController {
 		
 		Gson gson = new Gson();
 		String result = gson.toJson(totalQuestionList);
-		logger.info(result);
-		try {
-			URLEncoder.encode(result , "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+//		logger.info(result);
+//		try {
+//			URLEncoder.encode(result , "UTF-8");
+//		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
 		return result;
 	}
 	
@@ -274,7 +309,7 @@ public class QuestionController {
 		
 		if(info == null){
 			// 비로그인
-			
+			return "401";
 		}
 		else{
 			// 로그인
@@ -284,34 +319,148 @@ public class QuestionController {
 			
 			if(info.getId() == questionAccountId) {
 				// 자신이 올린 설문
-				answerChoiceDao.selectByQuestionId(questionId);
-				answerDateDao.selectByQuestionId(questionId);
-				answerEssayDao.selectByQuestionId(questionId);
-				answerScoreDao.selectByQuestionId(questionId);
-				answerTimeDao.selectByQuestionId(questionId);
-				
-				
+				return "200";
 			}
 			else{
 				// 다른사람이 올린 설문
-				
+				return "403";
 			}
 		}
-		
-		Gson gson = new Gson();
-		return gson.toJson(info);
 	}
 	
 	/**설문 응답 */
 	@ResponseBody
-	@RequestMapping(value = "/api_questionRespons", method = RequestMethod.GET)
-	public String QuestionController_responsQuestion(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "/api_questionRespons", method = RequestMethod.POST)
+	public String QuestionController_responsQuestion(HttpServletRequest request, HttpServletResponse response
+			, @RequestParam("id") int id
+			, @RequestParam("questionResQuestions") String questionResQuestions) {
 		logger.info("api_questionRespons");
 		String result = "";
 		
+		AccountInfo accountInfo = Util.getLoginedUser(request);
+		if(accountInfo == null){
+			return "401";
+		}
+		
+		try {
+			ArrayList<AnswerInfo> answerContentList = new ArrayList<AnswerInfo>();
+			Object obj = JSONValue.parseWithException(questionResQuestions);
+			JSONArray array = (JSONArray)obj;
+		    JSONObject jobj = null;
+
+		    Gson gson = new Gson();
+
+		    for(int i=0;i<array.size();i++) {
+		    	jobj = (JSONObject)array.get(i);
+		    	answerContentList.add(gson.fromJson(jobj.toString(), AnswerInfo.class));
+		    }
+		    
+		    return responseQuestions(answerContentList, id, accountInfo.getId());
+		    
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	    
 		return result;
 	}
 	
+	private String responseQuestions(ArrayList<AnswerInfo> answerContentList, int questionId, int accountId){
+		QuestionInfo info = questionDao.selectByIdNTimestamp(questionId, new Timestamp(System.currentTimeMillis()));
+		
+		if(info == null)
+			return "408";
+		
+		List<QuestionChoiceInfo> choiceList = questionChoiceDao.selectByQuestionId(info.getId());
+		List<QuestionEssayInfo> essayList = questionEssayDao.selectByQuestionId(info.getId());
+		List<QuestionDateInfo> dateList = questionDateDao.selectByQuestionId(info.getId());
+		List<QuestionTimeInfo> timeList = questionTimeDao.selectByQuestionId(info.getId());
+		List<QuestionScoreInfo> scoreList = questionScoreDao.selectByQuestionId(info.getId());
+		
+		for(AnswerInfo answerInfo : answerContentList){
+			if(answerInfo.qType.equals("0")){
+				// 객관식
+				for (QuestionChoiceInfo qInfo : choiceList) {
+					if(answerInfo.qId.equals("" + qInfo.getId())){
+						if(answerChoiceDao.isExistAnswer(qInfo.getId(), accountId)){
+							// 이미 답한경우
+							logger.info("이미 설문에 참여한 유저");
+						}
+						else{
+							logger.info("답변 완료(객관식): " + qInfo.getId());
+							answerChoiceDao.create(accountId, qInfo.getId(), Integer.parseInt(answerInfo.qanswer));
+						}
+						break;
+					}
+				}
+			}
+			else if(answerInfo.qType.equals("1")){
+				// 주관식
+				for (QuestionEssayInfo qInfo : essayList) {
+					if(answerInfo.qId.equals("" + qInfo.getId())){
+						if(answerEssayDao.isExistAnswer(qInfo.getId(), accountId)){
+							// 이미 답한경우
+							logger.info("이미 설문에 참여한 유저");
+						}
+						else{
+							logger.info("답변 완료(주관식): " + qInfo.getId());
+							answerEssayDao.create(accountId, qInfo.getId(), answerInfo.qanswer);
+						}
+						break;
+					}
+				}
+			}
+			else if(answerInfo.qType.equals("2")){
+				// 날짜
+				for (QuestionDateInfo qInfo : dateList) {
+					if(answerInfo.qId.equals("" + qInfo.getId())){
+						if(answerDateDao.isExistAnswer(qInfo.getId(), accountId)){
+							// 이미 답한경우
+							logger.info("이미 설문에 참여한 유저");
+						}
+						else{
+							logger.info("답변 완료(날짜): " + qInfo.getId());
+							answerDateDao.create(accountId, qInfo.getId(), answerInfo.qanswer);
+						}
+						break;
+					}
+				}
+			}
+			else if(answerInfo.qType.equals("3")){
+				// 시간
+				for (QuestionTimeInfo qInfo : timeList) {
+					if(answerInfo.qId.equals("" + qInfo.getId())){
+						if(answerTimeDao.isExistAnswer(qInfo.getId(), accountId)){
+							// 이미 답한경우
+							logger.info("이미 설문에 참여한 유저");
+						}
+						else{
+							logger.info("답변 완료(시간): " + qInfo.getId());
+							answerTimeDao.create(accountId, qInfo.getId(), answerInfo.qanswer);
+						}
+						break;
+					}
+				}
+			}
+			else if(answerInfo.qType.equals("4")){
+				// 점수
+				for (QuestionScoreInfo qInfo : scoreList) {
+					if(answerInfo.qId.equals("" + qInfo.getId())){
+						if(answerScoreDao.isExistAnswer(qInfo.getId(), accountId)){
+							// 이미 답한경우
+							logger.info("이미 설문에 참여한 유저");
+						}
+						else{
+							logger.info("답변 완료(점수): " + qInfo.getId());
+							answerScoreDao.create(accountId, qInfo.getId(), Integer.parseInt(answerInfo.qanswer));
+						}
+						break;
+					}
+				}
+			}
+		}
+		
+		return "200";
+	}
 	
 	/**객관식 양식 */
 	@ResponseBody

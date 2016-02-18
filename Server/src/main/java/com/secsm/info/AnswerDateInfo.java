@@ -7,8 +7,8 @@ public class AnswerDateInfo {
 	private int id;
 	private int questionId;
 	private int accountId;
-	private Timestamp answer;
-	public AnswerDateInfo(int id, int questionId, int accountId, Timestamp answer) {
+	private String answer;
+	public AnswerDateInfo(int id, int questionId, int accountId, String answer) {
 		super();
 		this.id = id;
 		this.questionId = questionId;
@@ -33,10 +33,10 @@ public class AnswerDateInfo {
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
 	}
-	public Timestamp getAnswer() {
+	public String getAnswer() {
 		return answer;
 	}
-	public void setAnswer(Timestamp answer) {
+	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
 	

@@ -454,3 +454,16 @@ ADD CONSTRAINT `project_account_id`
   REFERENCES `secsm`.`account` (`ID`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
+
+ALTER TABLE `secsm`.`answer_time` 
+CHANGE COLUMN `answer` `answer` VARCHAR(100) NULL DEFAULT NULL ;
+
+ALTER TABLE `secsm`.`answer_date` 
+CHANGE COLUMN `answer` `answer` VARCHAR(100) NULL DEFAULT NULL ;
+
+ALTER TABLE `secsm`.`answer_time` 
+CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT ;
+ALTER TABLE `secsm`.`answer_choice` 
+CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT ;
+
+
