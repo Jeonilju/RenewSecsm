@@ -1,78 +1,5 @@
 use secsm;
 
-CREATE TABLE `account` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(50) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `Pw` varchar(50) NOT NULL,
-  `Px_amount` int(11) DEFAULT '0',
-  `Phone` varchar(45) NOT NULL,
-  `Grade` int(11) DEFAULT NULL,
-  `gender` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `ID_UNIQUE` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='사용자 정보';
-
-CREATE TABLE `answer_choice` (
-  `id` int(11) NOT NULL,
-  `question_id` int(11) DEFAULT NULL,
-  `answer` int(11) DEFAULT NULL,
-  `account_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `answer_choice_id_idx` (`question_id`),
-  KEY `account_choice_id_idx` (`account_id`),
-  CONSTRAINT `account_choice_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `answer_choice_id` FOREIGN KEY (`question_id`) REFERENCES `question_choice` (`question_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='객관식 답';
-
-CREATE TABLE `answer_date` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question_id` int(11) DEFAULT NULL,
-  `account_id` int(11) DEFAULT NULL,
-  `answer` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `account_date_id_idx` (`account_id`),
-  KEY `answer_date_id_idx` (`question_id`),
-  CONSTRAINT `account_date_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `answer_date_id` FOREIGN KEY (`question_id`) REFERENCES `question_date` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='날짜 답';
-
-CREATE TABLE `answer_essay` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question_id` int(11) DEFAULT NULL,
-  `answer` text,
-  `account_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `answer_essay_id_idx` (`question_id`),
-  KEY `account_essay_id_idx` (`account_id`),
-  CONSTRAINT `account_essay_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `answer_essay_id` FOREIGN KEY (`question_id`) REFERENCES `question_essay` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='주관식 답';
-
-CREATE TABLE `answer_score` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_id` int(11) DEFAULT NULL,
-  `question_id` int(11) DEFAULT NULL,
-  `answer` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `account_score_id_idx` (`account_id`),
-  KEY `answer_score_id_idx` (`question_id`),
-  CONSTRAINT `account_score_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `answer_score_id` FOREIGN KEY (`question_id`) REFERENCES `question_score` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='점수 답';
-
-CREATE TABLE `answer_time` (
-  `id` int(11) NOT NULL,
-  `account_id` int(11) DEFAULT NULL,
-  `question_id` int(11) DEFAULT NULL,
-  `answer` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `account_answer_time_idx` (`account_id`),
-  KEY `question_time_id_idx` (`question_id`),
-  CONSTRAINT `account_answer_time` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `answer_time_id` FOREIGN KEY (`question_id`) REFERENCES `question_time` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='시간 답';
-
 CREATE TABLE `attendance` (
   `Account_id` int(11) DEFAULT NULL,
   `RegDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -170,7 +97,6 @@ CREATE TABLE `project` (
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='프로젝트';
-
 
 CREATE TABLE `px_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -396,8 +322,6 @@ CREATE TABLE `book_req` (
   CONSTRAINT `account_book_log_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-<<<<<<< HEAD
-=======
 CREATE TABLE `secsm`.`attach` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `projectId` INT NULL,
@@ -410,6 +334,68 @@ CREATE TABLE `secsm`.`attach` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 COMMENT = '첨부파일 목록';
+
+CREATE TABLE `answer_choice` (
+  `id` int(11) NOT NULL,
+  `question_id` int(11) DEFAULT NULL,
+  `answer` int(11) DEFAULT NULL,
+  `account_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `answer_choice_id_idx` (`question_id`),
+  KEY `account_choice_id_idx` (`account_id`),
+  CONSTRAINT `account_choice_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `answer_choice_id` FOREIGN KEY (`question_id`) REFERENCES `question_choice` (`question_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='객관식 답';
+
+
+CREATE TABLE `answer_date` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `question_id` int(11) DEFAULT NULL,
+  `account_id` int(11) DEFAULT NULL,
+  `answer` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `account_date_id_idx` (`account_id`),
+  KEY `answer_date_id_idx` (`question_id`),
+  CONSTRAINT `account_date_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `answer_date_id` FOREIGN KEY (`question_id`) REFERENCES `question_date` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='날짜 답';
+
+CREATE TABLE `answer_essay` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `question_id` int(11) DEFAULT NULL,
+  `answer` text,
+  `account_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `answer_essay_id_idx` (`question_id`),
+  KEY `account_essay_id_idx` (`account_id`),
+  CONSTRAINT `account_essay_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `answer_essay_id` FOREIGN KEY (`question_id`) REFERENCES `question_essay` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='주관식 답';
+
+CREATE TABLE `answer_score` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) DEFAULT NULL,
+  `question_id` int(11) DEFAULT NULL,
+  `answer` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `account_score_id_idx` (`account_id`),
+  KEY `answer_score_id_idx` (`question_id`),
+  CONSTRAINT `account_score_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `answer_score_id` FOREIGN KEY (`question_id`) REFERENCES `question_score` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='점수 답';
+
+CREATE TABLE `answer_time` (
+  `id` int(11) NOT NULL,
+  `account_id` int(11) DEFAULT NULL,
+  `question_id` int(11) DEFAULT NULL,
+  `answer` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `account_answer_time_idx` (`account_id`),
+  KEY `question_time_id_idx` (`question_id`),
+  CONSTRAINT `account_answer_time` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `answer_time_id` FOREIGN KEY (`question_id`) REFERENCES `question_time` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='시간 답';
+
 
 ALTER TABLE `secsm`.`attach` 
 ADD COLUMN `name` VARCHAR(100) NULL AFTER `path`;
@@ -441,6 +427,8 @@ ADD COLUMN `regDate` TIMESTAMP NULL AFTER `problom`;
 ALTER TABLE `secsm`.`question_date` 
 ADD COLUMN `regDate` TIMESTAMP NULL AFTER `problom`;
 
+
+
 ALTER TABLE `secsm`.`question_time` 
 CHANGE COLUMN `regDate` `regDate` TIMESTAMP NULL DEFAULT NULL ;
 ALTER TABLE `secsm`.`question_score` 
@@ -466,6 +454,3 @@ ADD CONSTRAINT `project_account_id`
   REFERENCES `secsm`.`account` (`ID`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
-
-  
->>>>>>> 9adebf25fcf7b1f7f23cdeb13179bc160722a8bc

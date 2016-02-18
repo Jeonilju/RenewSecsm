@@ -25,27 +25,18 @@
 
 <%
     ArrayList<AttendanceInfo> attendanceList = (ArrayList<AttendanceInfo>) request.getAttribute("AttendanceInfo");
-<<<<<<< HEAD
-	String obj = "[";
-	if(attendanceList.size()!=0){
-=======
-	
 	String obj = "[";	
 	if(attendanceList != null){
->>>>>>> 9adebf25fcf7b1f7f23cdeb13179bc160722a8bc
 		for (AttendanceInfo info : attendanceList) {
 			obj = obj +"{\"start\":\"" + info.getRegDate() + "\","
 				+"\"className\":\"attendance\",\"borderColor\":\"white\",\"allDay\":\"false\"},";	
 		}
 		obj = obj.substring(0, obj.length()-1); 
-<<<<<<< HEAD
 		obj += "]";
 	}
-	else obj ="[]";
-=======
+	else {
+		obj ="[]";
 	}
-	obj += "]";
->>>>>>> 9adebf25fcf7b1f7f23cdeb13179bc160722a8bc
 %>
 
 <%

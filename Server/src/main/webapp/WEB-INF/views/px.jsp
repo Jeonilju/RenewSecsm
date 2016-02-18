@@ -70,15 +70,14 @@
 					<button onclick = "getPxAmount();" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxChargemoneyModal" >금액 충전</button>
 					
 			</div>
-		</div>	
-		<jsp:include page="base/foot.jsp" flush="false" />
+		</div>
+		<jsp:include page="modals/pxBuyItemsModal.jsp" flush="false" />
+		<jsp:include page="modals/pxBuyItemsListModal.jsp" flush="false" />
+		<jsp:include page="modals/pxApplyModal.jsp" flush="false" />
+		<jsp:include page="modals/pxAddModal.jsp" flush="false" />
+		<jsp:include page="modals/pxApplyModal2.jsp" flush="false" />
+		<jsp:include page="modals/pxChargemoneyModal.jsp" flush="false" />	
 		
+		<jsp:include page="base/foot.jsp" flush="false" />
 	</body>
-	<jsp:include page="modals/pxBuyItemsModal.jsp" flush="false" />
-	<jsp:include page="modals/pxBuyItemsListModal.jsp" flush="false" />
-	<jsp:include page="modals/pxApplyModal.jsp" flush="false" />
-	<jsp:include page="modals/pxAddModal.jsp" flush="false" />
-	<jsp:include page="modals/pxApplyModal2.jsp" flush="false" />
-	<jsp:include page="modals/pxChargemoneyModal.jsp" flush="false" />
-	
 </html>

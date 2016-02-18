@@ -232,9 +232,8 @@
 				</div>
 				<div class="col-md-2"></div>
 			</div>
-			<jsp:include page="base/foot.jsp" flush="false" />
-		</div>	
-</body>
-<jsp:include page="modals/dutyCreateModal.jsp" flush="false" />
-
+		</div>
+		<jsp:include page="modals/dutyCreateModal.jsp" flush="false" />
+		<jsp:include page="base/foot.jsp" flush="false" />	
+	</body>
 </html>
