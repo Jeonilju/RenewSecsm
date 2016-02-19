@@ -59,7 +59,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<img src="./resources/image/Logo.jpg" width="330" height="280">
+				<img src="/Secsm/resources/image/Logo.jpg" width="330" height="280">
 				<div class="intro-text">
 					<span class="name" style="font-size: 3em; margin: 20px;">Secsm 2016</span> 
 					

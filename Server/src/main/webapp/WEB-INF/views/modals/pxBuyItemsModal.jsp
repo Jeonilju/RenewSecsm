@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<link rel="stylesheet" href="/resources/demos/style.css">
+
 
 <%
 	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
@@ -23,7 +23,6 @@
 	function buyItem(){
 		var param = "type" + "=" + $("#slItemType").val() + "&" + 
 					"code" + "=" + $("#etItemCode").val() + "&" + 
-					"cnt" + "=" + $("#itemcnt").val() + "&" +
 					"isForcibly" + "="+ "0";
 		
 		$.ajax({
@@ -38,7 +37,6 @@
 			if(response=='0')
 			{
 				// 정상 구매 by 바코드
-				alert('정상 구매되었습니다.');
 				num++;
 				semi_List(num);
 				
@@ -54,7 +52,7 @@
 		},
 		error : function(request, status, error) {
 			if (request.status != '0') {
-				alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+				alert("code1 : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
 			}
 		}
 		
@@ -77,7 +75,7 @@
 		},
 		error : function(request, status, error) {
 			if (request.status != '0') {
-				alert("code : " + request.status + "\r\nmessage : "
+				alert("code2 : " + request.status + "\r\nmessage : "
 						+ request.reponseText + "\r\nerror : " + error);
 			}
 		}
@@ -100,21 +98,19 @@
 			var newCell2  = newRow.insertCell(1);
 			var newCell3  = newRow.insertCell(2);
 			var newCell4  = newRow.insertCell(3);
-			var newCell5  = newRow.insertCell(4);
 
 			// Append a text node to the cell
 			var newText  = document.createTextNode('New row')
-			newCell1.appendChild(document.createTextNode(data.regdate));
+			newCell1.appendChild(document.createTextNode(data.regDate));
 			newCell2.appendChild(document.createTextNode(data.name));
-			newCell3.appendChild(document.createTextNode(data.count));
-			newCell4.appendChild(document.createTextNode(data.price));
+			newCell3.appendChild(document.createTextNode(data.price));
 			
 			var button = document.createElement('input');
 			button.setAttribute('type','button');
 			button.setAttribute('class','btn btn-default');
 			button.setAttribute('value','환불');
 			button.setAttribute('OnClick','refund(' +data.id + ',1);getPxAmount();');
-			newCell5.appendChild(button);
+			newCell4.appendChild(button);
 		}
 	}
 	
@@ -138,7 +134,7 @@
 			},
 			error : function(request, status, error) {
 				if (request.status != '0') {
-					alert("codeaa : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+					alert("code3 : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
 				}
 			}
 			
@@ -161,13 +157,10 @@
 
 	}
 	
+	function inputreset(){
+		document.getElementById("buy_form").reset();
+	}
 
-	$("#etItemCode").keyup(function(event){
-	    if(event.keyCode == 13){
-	    	buyItem();
-	    }
-	});
-	
 	
 </script>
 
@@ -175,7 +168,6 @@
 <div class="modal fade" id="pxBuyItemsModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="createProjectForm" id="createProjectForm" action="/api_createProject">
 				<div class="modal-header">
 					<h4 class="modal-title" id="SignInModalLabel">상품 구매</h4>
 				</div>
@@ -186,14 +178,14 @@
 						<div class="table table-hover">
 							<th>분류</th>
 				   	     	<th>상품명</th>
-				   	     	<th>수량</th>
 				   	     	<th>내 잔액 :</th> 
 				   	     	<label id = "amount"></label>  
 						</div>
 	
 					</div>
-	
-					<div class="row-fluid" style="margin: 20px">
+					
+					<form id= "buy_form" onsubmit="buyItem();getPxAmount();inputreset();return false">
+					<div  class="row-fluid" style="margin: 20px">
 						<div class="col-md-3">
 							<select id="slItemType" name="slItemType" style="width: 100%; margin: 5px;">
 								<option value="0"> 바코드 </option>
@@ -205,24 +197,22 @@
 						</div>
 						
 						<div class="col-md-5">
-							<input id="itemcnt" name="itemcnt" type="text" style="width: 50%">
-							<button type="button" class="btn btn-default" onclick="buyItem();getPxAmount();"> 검색 </button>
+							<input type="submit" class="btn btn-default" value = "구입">
 						</div>
-						
 					</div>
+				</form>
 					
 					<div style="height: 40px;"></div>
 				</div>
 				
 				<div>
-					<table class="table table-hover" id = "currentbuyTable">
+					<table class="table table-hover" id = "currentbuyTable" style = "margin-left : 50px">
 				 	   <thead>
 				   	   <tr>
-				   	     <th>날짜</th>
-				   	     <th>내용</th>
-				   	     <th>수량</th>
+				   	     <th style = "width:216px">날짜</th>
+				   	     <th>상품명</th>
 				   	     <th>금액</th>
-				   	     <th>비고</th>
+				   	     <th>  </th>
 				   	   </tr>
 				  	  </thead>
 				   		 <tbody id = "pxCurrentbuyTbody">
@@ -232,11 +222,9 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button onclick= "end()" type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					<button onclick= "end()" type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
 					
 				</div>
-				
-			</form>
 		</div>
 	</div>
 </div>

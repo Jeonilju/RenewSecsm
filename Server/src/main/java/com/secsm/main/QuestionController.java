@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,7 +63,7 @@ public class QuestionController {
 	
 	@Autowired
 	private QuestionScoreDao questionScoreDao;
-	
+		
 	@Autowired
 	private QuestionTimeDao questionTimeDao;
 	
@@ -94,14 +95,14 @@ public class QuestionController {
 			// 로그인
 			List<QuestionInfo> questionList = questionDao.selectAll();
 			request.setAttribute("questionList", questionList);
-			
+			request.setAttribute("accountInfo", info);
 			return "question";	
 		}
 	}
 	
-	@RequestMapping(value = "/questionResult", method = RequestMethod.GET)
+	@RequestMapping(value = "/questionResult/{id}", method = RequestMethod.GET)
 	public String QuestionController_result(HttpServletRequest request
-			, int questionId) {
+			, @PathVariable("id")int questionId) {
 		logger.info("questionResult Page");
 
 		AccountInfo info = Util.getLoginedUser(request);
@@ -123,6 +124,14 @@ public class QuestionController {
 				List<QuestionDateInfo> dateList = questionDateDao.selectByQuestionId(questionInfo.getId());
 				List<QuestionTimeInfo> timeList = questionTimeDao.selectByQuestionId(questionInfo.getId());
 				List<QuestionScoreInfo> scoreList = questionScoreDao.selectByQuestionId(questionInfo.getId());
+				setAnswerList(choiceList, essayList, dateList, timeList, scoreList);
+				
+				request.setAttribute("questionInfo", questionInfo);
+				request.setAttribute("choiceList", choiceList);
+				request.setAttribute("essayList", essayList);
+				request.setAttribute("dateList", dateList);
+				request.setAttribute("timeList", timeList);
+				request.setAttribute("scoreList", scoreList);
 				
 				return "questionResult";
 			}
@@ -132,6 +141,34 @@ public class QuestionController {
 			}
 		}
 
+	}
+	
+	private void setAnswerList(
+			List<QuestionChoiceInfo> choiceList
+			, List<QuestionEssayInfo> essayList
+			, List<QuestionDateInfo> dateList
+			, List<QuestionTimeInfo> timeList
+			, List<QuestionScoreInfo> scoreList){
+		
+			for(QuestionChoiceInfo info : choiceList){
+				info.setAnswerList(answerChoiceDao.selectByQuestionId(info.getId()));
+			}
+			
+			for(QuestionEssayInfo info : essayList){
+				info.setAnswerList(answerEssayDao.selectByQuestionId(info.getId()));
+			}
+			
+			for(QuestionDateInfo info : dateList){
+				info.setAnswerList(answerDateDao.selectByQuestionId(info.getId()));
+			}
+			
+			for(QuestionTimeInfo info : timeList){
+				info.setAnswerList(answerTimeDao.selectByQuestionId(info.getId()));
+			}
+			
+			for(QuestionScoreInfo info : scoreList){
+				info.setAnswerList(answerScoreDao.selectByQuestionId(info.getId()));
+			}
 	}
 	
 	/** 설문 생성 */
