@@ -76,8 +76,7 @@ public class PXController {
 	@RequestMapping(value = "/api_pxBuyItem", method = RequestMethod.POST)
 	public String PXController_buyItem(HttpServletRequest request
 			, @RequestParam("type") int type
-			, @RequestParam("code") String code
-			, @RequestParam("cnt") int cnt){
+			, @RequestParam("code") String code){
 		
 		logger.info("api_pxBuyItem");
 		System.out.println(code);
@@ -100,8 +99,8 @@ public class PXController {
 		if(result.size() == 1){
 			// 정상
 			accountDao.usePxAmount(info.getId(), result.get(0).getPrice());
-			pxLogDao.create(info.getId(), result.get(0).getId(), 0, cnt,result.get(0).getName(),result.get(0).getPrice());
-			pxItemsDao.useItems(result.get(0).getId(), cnt);
+			pxLogDao.create(info.getId(), result.get(0).getId(), 0, 1,result.get(0).getName(),result.get(0).getPrice());
+			pxItemsDao.useItems(result.get(0).getId(),1);
 			
 			return "0";
 		}
@@ -265,9 +264,6 @@ public class PXController {
 		AccountInfo info = Util.getLoginedUser(request);
 		System.out.println(info.getId());
 		List<PxLogInfo> pxLogList = pxLogDao.selectBydate(num);
-	//	int id = pxLogList.get(0).getPxItemsId();
-	//	List<PxItemsInfo> pxItemList =pxItemsDao.select(id);
-	//	pxLogList.get(0).setName(pxItemList.get(0).getName());
 		Gson gson = new Gson();
 		String result = gson.toJson(pxLogList);
 		logger.info(result);
