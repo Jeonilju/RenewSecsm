@@ -1,6 +1,7 @@
 package com.secsm.info;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class QuestionContentInfo implements Comparable<QuestionContentInfo> {
 	public int id;
@@ -13,6 +14,8 @@ public class QuestionContentInfo implements Comparable<QuestionContentInfo> {
 	public String q4;
 	public String q5;
 	public Timestamp regDate;
+	
+	public List<AnswerContentInfo> answerList = null;
 	
 	public int compareTo(QuestionContentInfo arg0) {
 		

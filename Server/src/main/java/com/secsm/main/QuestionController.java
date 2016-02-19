@@ -260,17 +260,22 @@ public class QuestionController {
 		
 		QuestionInfo info = questionDao.selectById(id);
 		ArrayList<QuestionContentInfo> totalQuestionList = new ArrayList<QuestionContentInfo>();
+		
+		getQuestionList(info, false, )
+		
+		
+		Gson gson = new Gson();
+		String result = gson.toJson(totalQuestionList);
+		return result;
+	}
+	
+	private ArrayList<QuestionContentInfo> getQuestionList(QuestionInfo info, boolean isAnswer, ArrayList<QuestionContentInfo> totalQuestionList){
+		
 		List<QuestionChoiceInfo> choiceList = questionChoiceDao.selectByQuestionId(info.getId());
 		List<QuestionEssayInfo> essayList = questionEssayDao.selectByQuestionId(info.getId());
 		List<QuestionDateInfo> dateList = questionDateDao.selectByQuestionId(info.getId());
 		List<QuestionTimeInfo> timeList = questionTimeDao.selectByQuestionId(info.getId());
 		List<QuestionScoreInfo> scoreList = questionScoreDao.selectByQuestionId(info.getId());
-
-		logger.debug("객관식수: " + choiceList.size());
-		logger.debug("주관식수: " + essayList.size());
-		logger.debug("날짜수: " + dateList.size());
-		logger.debug("시간수: " + timeList.size());
-		logger.debug("점수수: " + scoreList.size());
 		
 		for(QuestionChoiceInfo qInfo : choiceList){
 			QuestionContentInfo newQuestion = new QuestionContentInfo();
@@ -324,15 +329,7 @@ public class QuestionController {
 		newQuestion.qContent = info.getContent();
 		totalQuestionList.add(0, newQuestion);
 		
-		Gson gson = new Gson();
-		String result = gson.toJson(totalQuestionList);
-//		logger.info(result);
-//		try {
-//			URLEncoder.encode(result , "UTF-8");
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
-		return result;
+		return totalQuestionList;
 	}
 	
 	/** 설문지 결과 조회 */
