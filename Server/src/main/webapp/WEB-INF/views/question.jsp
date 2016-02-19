@@ -6,6 +6,7 @@
 
 <%
 	List<QuestionInfo> questionList = (List<QuestionInfo>)request.getAttribute("questionList");
+	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
 %>
 
 <html>
@@ -156,7 +157,7 @@
 			
 			success : function(response) {	
 				if(response == "200"){
-					location.replace("/Secsm/questionResult");
+					location.replace("/Secsm/questionResult/" + id);
 				}
 				else if(response == "401"){
 					// 비로그인
@@ -197,6 +198,7 @@
 				        <th>제목</th>
 				        <th>작성자</th>
 				        <th>기간</th>
+				        <th>비고</th>
 				      </tr>
 				    </thead>
 				    <tbody>
@@ -207,7 +209,11 @@
 				    			out.print("<td>" + info.getTitle() + "</td>");
 				    			out.print("<td>" + info.getAccountId() + "</td>");
 				    			out.print("<td>" + Util.getTimestempStr(info.getStartDate()) 
-				    					+ " ~ " + Util.getTimestempStr(info.getEndDate()) + "</td>");
+		    						+ " ~ " + Util.getTimestempStr(info.getEndDate()) + "</td>");
+		    					if(info.getAccountId() == accountInfo.getId()){
+		    						out.print("<td>" + "<button type='button' class='btn' onclick='resultQuestion(" + info.getId() + ");'>결과 조회</button>" + "</td>");
+		    					}
+				    			
 				    			out.print("</tr>");
 				    		}
 				    	%>

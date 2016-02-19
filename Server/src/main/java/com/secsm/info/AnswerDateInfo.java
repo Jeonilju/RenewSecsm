@@ -1,13 +1,12 @@
 package com.secsm.info;
 
-import java.sql.Timestamp;
-
 public class AnswerDateInfo {
 
 	private int id;
 	private int questionId;
 	private int accountId;
 	private String answer;
+	
 	public AnswerDateInfo(int id, int questionId, int accountId, String answer) {
 		super();
 		this.id = id;
