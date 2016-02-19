@@ -60,8 +60,8 @@ public class BookItemsDao {
 				});
 	}
 	
-	public List<BookItemsInfo> selectByPage(){
-		return jdbcTemplate.query("select * from secsm.book_items order by id limit 0, 10", new Object[] {},
+	public List<BookItemsInfo> selectByPage(int searchPage){
+		return jdbcTemplate.query("select * from secsm.book_items order by regDate limit ?, 7", new Object[] {searchPage},
 				new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
@@ -72,10 +72,10 @@ public class BookItemsDao {
 				});
 	}
 	
-	public List<BookItemsInfo> selectById(String category, String keyword){
+	public List<BookItemsInfo> selectById(String category, String keyword, int searchPage){
 		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
-								+ "where b.name = ? and a.id = ? order by a.id limit 0, 10"
-				, new Object[] {category, keyword}
+								+ "where b.name = ? and a.id = ? order by regDate limit ?, 7"
+				, new Object[] {category, keyword,searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
@@ -86,10 +86,10 @@ public class BookItemsDao {
 				});
 	}
 	
-	public List<BookItemsInfo> selectByName(String category, String keyword){
+	public List<BookItemsInfo> selectByName(String category, String keyword, int searchPage){
 		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
-								+ "where b.name = ? and a.name regexp ? order by a.id limit 0, 10"
-				, new Object[] {category, keyword}
+								+ "where b.name = ? and a.name regexp ? order by regDate limit ?, 7"
+				, new Object[] {category, keyword, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
@@ -100,10 +100,10 @@ public class BookItemsDao {
 				});
 	}
 	
-	public List<BookItemsInfo> selectByCode(String category, String keyword){
+	public List<BookItemsInfo> selectByCode(String category, String keyword, int searchPage){
 		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
-								+ "where b.name = ? and a.code = ? order by a.id limit 0, 10"
-				, new Object[] {category, keyword}
+								+ "where b.name = ? and a.code = ? order by regDate limit ?, 7"
+				, new Object[] {category, keyword, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
@@ -114,10 +114,10 @@ public class BookItemsDao {
 				});
 	}
 	
-	public List<BookItemsInfo> selectById(String category){
+	public List<BookItemsInfo> selectById(String category, int searchPage){
 		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
-								+ "where b.name = ? order by a.id limit 0, 10"
-				, new Object[] {category}
+								+ "where b.name = ? order by regDate limit ?, 7"
+				, new Object[] {category, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
@@ -128,10 +128,10 @@ public class BookItemsDao {
 				});
 	}
 	
-	public List<BookItemsInfo> selectByName(String category){
+	public List<BookItemsInfo> selectByName(String category, int searchPage){
 		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
-								+ "where b.name = ? order by a.id limit 0, 10"
-				, new Object[] {category}
+								+ "where b.name = ? order by regDate limit ?, 7"
+				, new Object[] {category, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
@@ -142,10 +142,10 @@ public class BookItemsDao {
 				});
 	}
 	
-	public List<BookItemsInfo> selectByCode(String category){
+	public List<BookItemsInfo> selectByCode(String category, int searchPage){
 		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
-								+ "where b.name = ? order by a.id limit 0, 10"
-				, new Object[] {category}
+								+ "where b.name = ? order by regDate limit ?, 7"
+				, new Object[] {category, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
@@ -156,9 +156,9 @@ public class BookItemsDao {
 				});
 	}
 	
-	public List<BookItemsInfo> selectByIdNoCategory(String keyword){
-		return jdbcTemplate.query("select * from secsm.book_items where id = ? order by id limit 0, 10"
-				, new Object[] {keyword}
+	public List<BookItemsInfo> selectByIdNoCategory(String keyword, int searchPage){
+		return jdbcTemplate.query("select * from secsm.book_items where id = ? order by regDate limit ?, 7"
+				, new Object[] {keyword, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
@@ -169,8 +169,9 @@ public class BookItemsDao {
 				});
 	}
 	
-	public List<BookItemsInfo> selectByNameNoCategory(String keyword){
-		return jdbcTemplate.query("select * from secsm.book_items where name regexp ? order by id limit 0, 10", new Object[] {keyword}
+	public List<BookItemsInfo> selectByNameNoCategory(String keyword, int searchPage){
+		return jdbcTemplate.query("select * from secsm.book_items where name regexp ? order by regDate limit ?, 7"
+				, new Object[] {keyword, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
@@ -181,8 +182,9 @@ public class BookItemsDao {
 				});
 	}
 	
-	public List<BookItemsInfo> selectByCodeNoCategory(String keyword){
-		return jdbcTemplate.query("select * from secsm.book_items where code = ? order by id limit 0, 10", new Object[] {keyword}
+	public List<BookItemsInfo> selectByCodeNoCategory(String keyword, int searchPage){
+		return jdbcTemplate.query("select * from secsm.book_items where code = ? order by regDate limit ?, 7"
+				, new Object[] {keyword, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),

@@ -115,12 +115,21 @@ public class LivingController {
 			@RequestParam("date") long date) {
 		logger.info("dutyInsert");
 		
+		AccountInfo info = Util.getLoginedUser(request);
+		
+		if(info == null){
+			return "4";
+		}
+		
 		Timestamp timeDate = new Timestamp(date);
 		Timestamp start = new Timestamp(timeDate.getYear(),timeDate.getMonth(),timeDate.getDate(),0,0,0,0);
 		Timestamp end = new Timestamp(timeDate.getYear(),timeDate.getMonth(),timeDate.getDate()+1,0,0,0,0);
 		
 		List<AccountInfo> accountList = accountDao.selectDuty(title);
-		if(accountList.size() < 1) return "1";
+		if(accountList.size() < 1){
+			
+			return "1";
+		}
 		
 		List<DutyInfo> dutyList = dutyDao.selectTimeId(start,end);
 		if(dutyList.size() >= 1) {
@@ -137,7 +146,14 @@ public class LivingController {
 				return "0";
 			}
 		}
-		else if(dutyList.size() == 0) return "2";
+		else if(dutyList.size() == 0){
+			if(info.getGrade()==0 || info.getGrade()==3){
+				dutyDao.create1(start, accountList.get(0).getId());
+				return "0";
+			}
+			else return "2";
+		}
+		
 		return "3";
 
 	}
@@ -195,7 +211,7 @@ public class LivingController {
 	    for(String person:exceptionPersonArray){
 	    	query = query + " name !='" + person + "' AND";
 	    }
-		if(query.length()>3) query = query.substring(0,query.length()-4);
+		query = query + " gender=1";
 		System.out.println(query);
 		
 		List<AccountInfo> accountList = null;
@@ -296,7 +312,6 @@ public class LivingController {
 				}
 			}
 			
-			System.out.println(i);
 			dateForCreate.setDate(dateForCreate.getDate()+1);
 			dutyMonth.setTime(dateForCreate);
 		}

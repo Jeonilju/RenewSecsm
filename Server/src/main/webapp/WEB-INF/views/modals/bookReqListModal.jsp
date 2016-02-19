@@ -6,6 +6,10 @@
 
 <script type="text/javascript">
 	
+	var reqListStartDateVar = $("#reqListStartDate").val(); 
+	var reqListEndDateVar = $("#reqListEndDate").val();
+	var reqPage = 0;
+	
 	$(function() 
 		{
 			$("#reqListStartDate").datepicker();
@@ -13,17 +17,55 @@
 		}
 	);
 	
+	function goAddBook(title,publisher,author,imageURL){
+		var check = confirm("동일한 도서가 등록되어 있는지 확인했나요?");
+		if(!check) return;
+		$('select[name=addType]').val(0);
+		$("#addCode").val("");
+		$("#addTitle").val(title);
+		$("#addPublisher").val(publisher);
+		$("#addAuthor").val(author);
+		$("#addImageURL").val(imageURL);
+		$("#addCount").val(1);
+		$('#bookAddModal').modal('show');
+	}
+	
+	function goExcel(){
+		if($("#reqListStartDate").val()==""){
+			alert("시작일을 입력하세요.");
+			return;
+		}
+		else if($("#reqListEndDate").val()==""){
+			alert("마감일을 입력하세요.");
+			return;
+		}
+		
+		var excelURL = 'http://localhost:8181/Secsm/bookReqExcel?'
+						+ "reqListStartDate" + "=" + $("#reqListStartDate").val() + "&" 
+						+ "reqListEndDate" + "=" + $("#reqListEndDate").val();
+		window.open(excelURL); 
+	}
+	
 	function goImage(imageURL){
 		var imageSrc = '<img src="'+ imageURL + '" class="img-thumbnail" alt="No Image">';
 		$("#bookImageBody").html(imageSrc)
 		$("#bookImageBody").css("text-align","center");
 	}
 	
-	function reqList(){
+	function reqList(option){
+		if(option==0){
+			reqListStartDateVar = $("#reqListStartDate").val(); 
+			reqListEndDateVar = $("#reqListEndDate").val();
+			reqPage = 0;
+		}
+		else if(option==1 && 0>=reqPage ) return;
+		else if(option==1) reqPage = reqPage -7;
+		else if(option==2) reqPage = reqPage +7;
 
-		var param = "reqListStartDate" + "=" + $("#reqListStartDate").val() + "&" + 
-					"reqListEndDate" + "=" + $("#reqListEndDate").val();
-		
+		var param = "reqListStartDate" + "=" + reqListStartDateVar + "&" + 
+					"reqListEndDate" + "=" + reqListEndDateVar  + "&" + 
+					"reqPage" + "=" + reqPage;
+ 		
 		if($("#reqListStartDate").val()==""){
 			alert("시작일을 입력하세요.");
 			return;
@@ -51,11 +93,18 @@
 			else
 			{
 				var obj = JSON.parse(response);
+				
+				if(Object.keys(obj).length==0 && option==2){
+					reqPage = reqPage -7;
+					return;    					
+				}
+				
 				var tableContent = '<tbody>';
 				var i;
 				for(i=0;i<Object.keys(obj).length;i++){
 					tableContent = tableContent + '<tr> <td class="col-md-2"> <button type="button" class="btn btn-info" onclick="goImage(\'' + obj[i].imageURL
-								+'\');" data-toggle="modal" data-target="#bookImageModal">보기</button> </td> <td class="col-md-4">' + obj[i].title 
+								+'\');" data-toggle="modal" data-target="#bookImageModal">보기</button> </td>'
+								+ '<td class="col-md-4" style="cursor:pointer;" onClick="goAddBook(\'' + obj[i].title+'\',\''+obj[i].publisher+'\',\''+obj[i].author+'\',\''+obj[i].imageURL + '\');">'+ obj[i].title 
 								+ '</td> <td class="col-md-3">' + obj[i].publisher + '</td> <td class="col-md-1">' + obj[i].accountName + '</td> <td class="col-md-2">' + obj[i].strRegDate  + '</td> </tr>';	
 				}
 				tableContent = tableContent + '</tbody> </table>'
@@ -92,10 +141,13 @@
 				</div>
 
 				<div class="modal-footer form-inline">
+					<button type="button" class="btn" onclick="reqList(1);" style="float:left;" >이전</button>
+					<button type="button" class="btn" onclick="reqList(2);" style="margin-left:5px; float:left;">다음</button>
 					<label for="reqListStartDate" style="margin-right:4px">기간:</label>
-					<input name="reqListStartDate" id="reqListStartDate" type="text" class="form-control" style="width: 25%; margin-right:5px"/>~ 
-					<input name="reqListEndDate" id="reqListEndDate" type="text" class="form-control" style="width: 25%"/>
-					<button type="button" class="btn btn-default" onclick="reqList();">검색</button>
+					<input name="reqListStartDate" id="reqListStartDate" type="text" class="form-control" style="width: 15%; margin-right:5px"/>~ 
+					<input name="reqListEndDate" id="reqListEndDate" type="text" class="form-control" style="width: 15%"/>
+					<button type="button" class="btn btn-default" onclick="reqList(0);">검색</button>
+					<button type="button" class="btn btn-success" onclick="goExcel();">Excel</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</form>

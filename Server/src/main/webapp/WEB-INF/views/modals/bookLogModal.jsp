@@ -3,6 +3,11 @@
 <%@page import="com.secsm.info.*"%>
 
 <script type="text/javascript">
+	var logOptionVar = '도서명'; 
+	var logSearchVar = '';
+	var allLogVar = false;
+	var overDateVar = false; 
+	var logPage = 0;
 	
 	$(function() 
 		{
@@ -50,11 +55,30 @@
 		});
 	}
 	
-	function logBook(){
-
-		var param = {logOption: $("#logOption option:selected").text(), 
-					logSearch: $("#logSearch").val(),
-					allLog: $('#allLog').is(':checked')};
+	function logBook(option){
+		if(option==0){
+			logOptionVar = $("#logOption option:selected").text(); 
+			logSearchVar = $("#logSearch").val();
+			allLogVar = $('#allLog').is(':checked');
+			overDateVar = false; 
+			logPage = 0;
+		}
+		else if(option==4){
+			$('#allLog').removeAttr("checked");
+			$('select[name=logOption]').val(0);
+			$("#logSearch").val("");
+			overDateVar = true;
+			logPage = 0;
+		}
+		else if(option==1 && 0>=logPage ) return;
+		else if(option==1) logPage = logPage -7;
+		else if(option==2) logPage = logPage +7;
+		
+		var param = {logOption: logOptionVar, 
+					logSearch: logSearchVar,
+					allLog: allLogVar,
+					logPage: logPage,
+					overDate: overDateVar};
 		
 		$.ajax({
 		url : "/Secsm/api_logBook",
@@ -77,6 +101,12 @@
 			else
 			{
 				var obj = JSON.parse(response);
+				
+				if(Object.keys(obj).length==0 && option==2){
+					logPage = logPage -7;
+					return;    					
+				}
+				
 				var tableContent = '<tbody>';
 				var i;
 				for(i=0;i<Object.keys(obj).length;i++){
@@ -107,7 +137,6 @@
 		});
 	}
 	
-
 </script>
 
 <div class="modal fade" id="bookLogModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -136,8 +165,10 @@
          			 </select>
          			
          			<label for="logSearch" cond=""></label> 
+         			<button type="button" class="btn" onclick="logBook(1);" style="float:left;" >이전</button>
+					<button type="button" class="btn" onclick="logBook(2);" style="margin-left:5px; float:left;">다음</button>
 					<input name="logSearch" id="logSearch" type="text" class="form-control" style="width: 30%"/>
-					<button type="button" class="btn btn-default" onclick="logBook();">검색</button>
+					<button type="button" class="btn btn-default" onclick="logBook(0);">검색</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</form>
