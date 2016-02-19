@@ -64,8 +64,8 @@
     	<script type="text/javascript">
     	   	
     		var grade = <%=member.getGrade()%>;
-    		var deleteDate = 0;
-    		var insertDate = 0;
+    		var deleteDate;
+    		var insertDate;
     		
 	    	
     		$(document).ready(function() {
@@ -94,7 +94,7 @@
     				droppable: false,
     				eventClick: function(calEvent, jsEvent, view) {
     					$("#dutyDeleteName").text(calEvent.title);
-    					date = calEvent.start;
+    					deleteDate = calEvent.start;
     					$('#dutyDeleteModal').modal();
     				},
     				dayClick: function(date, allDay, jsEvent, view) {

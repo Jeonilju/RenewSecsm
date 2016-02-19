@@ -18,6 +18,7 @@
 		    dataType : "text",
 
 	    	success : function(response) {   
+	    		alert(response);
 	       		if(response=='0')
 	       		{
 	       		  	alert($('#dutyDeleteName').text() + '님의 당직일정이 삭제 되었습니다.');

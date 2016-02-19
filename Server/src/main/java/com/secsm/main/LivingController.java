@@ -171,8 +171,8 @@ public class LivingController {
 		
 		List<AccountInfo> accountList = accountDao.selectDuty(title);
 		if(accountList.size() < 1) return "1";
-		
 		List<DutyInfo> dutyList = dutyDao.selectTimeAndId(accountList.get(0).getId(),start,end);
+		
 		if(dutyList.size() >= 1) {
 			if(dutyList.get(0).getAccountId3() == accountList.get(0).getId()){
 				dutyDao.deleteAccount3(dutyList.get(0).getId());
