@@ -322,8 +322,8 @@ public class PXController {
 			, @RequestParam("pxItemsName") String name
 			, @RequestParam("pxItemsCode") String code
 			, @RequestParam("pxItemsPrice") int price
-			, @RequestParam("pxItemsDescription") String description
-			, @RequestParam("pxItemsCount") int count){
+			, @RequestParam("pxItemsCount") int count
+			, @RequestParam("pxItemsDescription") String description){
 		logger.info("api_pxAddItem");
 		
 		pxItemsDao.create(name, code, price, description, count);

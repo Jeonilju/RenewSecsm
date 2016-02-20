@@ -95,7 +95,7 @@
 				newCell4.appendChild(document.createTextNode('승인완료'));
 				var button = document.createElement('input');
 				button.setAttribute('type','button');
-				button.setAttribute('class','btn btn-default');
+				button.setAttribute('class','btn btn-danger');
 				button.setAttribute('value','삭제');
 				button.setAttribute('OnClick','DeleteReqlist('+ data.id+ ',1)');
 				newCell5.appendChild(button);
@@ -152,10 +152,7 @@
 	}
 		
 	
-	function apply_reset(){
-		
-		document.getElementById("pxReqDivForm").reset();
-	}
+
 </script>
 
 <div class="modal fade" id="pxApplyModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -192,6 +189,7 @@
 				</div>
 				
 				<!-- 상품 요청 form -->
+				<form id= "apply_form" onsubmit="pxApplyReq();inputreset(3);return false">
 				<div id="pxReqDivForm" name="pxReqDivForm" style="display: ;">
 					제목
 					<input type="text" id="pxApplyTitle" class = "form-control" name="pxApplyTitle">
@@ -202,9 +200,10 @@
 			</div>
 			
 			<div class="modal-footer">
-				<button id="pxReqBtn" name="pxReqBtn" type="button" class="btn btn-default" onclick="pxApplyReq();" style="display: ;">요청</button>
+				<input id="pxReqBtn" name="pxReqBtn" type="submit" value="요청" class="btn btn-default" style="display: ;">
 				<button type="button" class="btn btn-danger" data-dismiss="modal" onclick = "end_apply();">닫기</button>
 			</div>
+			</form>
 		</div>		
 		<!-- /.modal-content -->
 	</div>

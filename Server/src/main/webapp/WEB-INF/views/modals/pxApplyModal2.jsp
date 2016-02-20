@@ -89,13 +89,15 @@
 			
 			var button = document.createElement('input');
 			button.setAttribute('type','button');
-			button.setAttribute('class','btn btn-default');
+			
 			
 			if(data.status == 0 ){
+				button.setAttribute('class','btn btn-info');
 				button.setAttribute('value','승인');
 				button.setAttribute('OnClick','accept123(' +data.id + ');');
 			}
 			else{
+				button.setAttribute('class','btn btn-danger');
 				button.setAttribute('value','삭제');
 				button.setAttribute('OnClick','DeleteReqlist('+ data.id+ ',0)');
 			}
@@ -185,10 +187,7 @@
 		});
 	}
 	
-	function apply2_reset(){
-		
-		document.getElementById("pxReqDivForm2").reset();
-	}
+
 	function DeleteReqlist(idx,check){
 		
 		var param = "idx" + "=" + idx;
@@ -256,6 +255,7 @@
 				</div>
 				
 				<!-- 상품 요청 form -->
+			<form id= "apply2_form" onsubmit="pxApplyReq2();inputreset(4);return false">
 				<div id="pxReqDivForm2" name="pxReqDivForm2" style="display: none;">
 					제목
 					<input type="text" id="pxApplyTitle2" class = "form-control" name="pxApplyTitle2">
@@ -266,9 +266,10 @@
 			</div>
 			
 			<div class="modal-footer">
-				<button id="pxReqBtn2" name="pxReqBtn2" type="button" class="btn btn-default" onclick="pxApplyReq2();" style="display: none;">요청</button>
+				<input id="pxReqBtn2" name="pxReqBtn2" type="submit" value="요청" class="btn btn-default" style="display: none;">
 				<button type="button" class="btn btn-danger" data-dismiss="modal" onclick = "end_apply2();">닫기</button>
 			</div>
+			</form>
 		</div>
 		
 		<!-- /.modal-content -->

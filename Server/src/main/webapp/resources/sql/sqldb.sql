@@ -111,6 +111,7 @@ CREATE TABLE `px_items` (
   `Price` int(11) DEFAULT NULL,
   `Description` varchar(200) DEFAULT NULL,
   `Count` int(11) DEFAULT NULL,
+  UNIQUE KEY (`Code`),
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='PX 상품';
 
