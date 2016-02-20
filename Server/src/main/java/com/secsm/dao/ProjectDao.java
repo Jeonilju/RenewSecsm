@@ -47,7 +47,7 @@ public class ProjectDao implements ProjectIDao {
 	}
 	
 	public List<ProjectInfo> selectByPage(int page, int count){
-		return jdbcTemplate.query("select * from project order by id limit ?, ?", new Object[] { page, count },
+		return jdbcTemplate.query("select * from project order by id desc limit ?, ?", new Object[] { page, count },
 				new RowMapper<ProjectInfo>() {
 					public ProjectInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new ProjectInfo(resultSet.getInt("id"), resultSet.getString("name"),

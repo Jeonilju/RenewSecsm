@@ -3,14 +3,6 @@
 	pageEncoding="UTF-8"%>
 <html lang="en">
 
-<%
-	
-	if(request.getAttribute("isLogined") == null){
-		out.println("location.replace(\"/Secsm/attendance\")");
-	}
-
-%>
-
 <script type="text/javascript">
 
 	function login(){
@@ -29,7 +21,7 @@
 		success : function(response) {	
 			if(response=='200')
 			{
-				location.replace("/Secsm/attendance");
+				location.href="/Secsm/attendance";
 			}
 			else{
 				alert(response);
@@ -51,6 +43,14 @@
 		
 	}
 
+	function onLoad(){
+		<%
+		if(request.getAttribute("isLogined") == null){
+			out.println("location.href=\"/Secsm/attendance\";");
+		}
+
+	%>
+	}
 </script>
 
 <!-- Header -->
@@ -73,7 +73,7 @@
 						<label for="loginPW" style="width: 140px;">Password</label>
 						<input name="loginPW" id="loginPW" type="password" style="width:300px" class="form-control" />
 					</div>
-						<input type="submit" value = "Login"class="btn" style="width:300px; margin: 30px;" onclick="login();"></input>										
+						<input type="button" value ="Login"class="btn" style="width:300px; margin: 30px;" onclick="login();"></input>										
 					</form>
 				</div>
 			</div>
@@ -81,7 +81,7 @@
 	</div>
 </header>
 
-<body style="background: #18bc9c;">
+<body style="background: #18bc9c;" onload="onLoad();">
 	<jsp:include page="base/nav.jsp" flush="false" />
 	<jsp:include page="base/foot.jsp" flush="false" />
 </body>

@@ -52,7 +52,8 @@ public class SecsmController {
 		}
 		else{
 			// 로그인
-			return "attendance";
+			request.setAttribute("isLogined", true);
+			return "index";
 		}
 	}
 	

@@ -143,9 +143,19 @@
 				팀원: <%= info.getTeam() %>
 			</div>
 			
-			<div class="row" style="margin: 20px">
+			<hr/>
+			
+			<div class="row" style="margin-top: 50sp;">
 				<h5>첨부파일</h5>
-				<table class="table" style="width: auto;">
+				<div align="right" style="display: <%
+						if(accountInfo.getId() == info.getAccountId())
+							out.print("");
+						else
+							out.print("none");
+				%>;">
+					<button type="button" class="btn" data-toggle="modal" data-target="#projectAddAttach" style="margin: 5px;">문서 등록</button>
+				</div>
+				<table class="table" style="width: 70%;">
 					<thead>
 						<tr>
 							<th style="width: auto;">No.</th>
@@ -167,15 +177,16 @@
 				</table>
 			</div>
 			
+			<hr	/>
+			
 			<div class="row" align="right" style="display: <% 
 				if(accountInfo.getId() == info.getAccountId())
 					out.print("");
 				else
 					out.print("none");
 				%>;">
-				<button type="button" class="btn" data-toggle="modal" data-target="#projectAddAttach" style="margin: 5px;">문서 등록</button>
 				<button type="button" class="btn" style="margin: 5px;" data-toggle="modal" data-target="#projectUpdate">프로젝트 수정</button>
-				<button type="button" class="btn" style="margin: 5px;" onclick="removeProject();">프로젝트 삭제</button>
+				<button type="button" class="btn btn-danger" style="margin: 5px;" onclick="removeProject();">프로젝트 삭제</button>
 			</div>
 			
 			<div class="row" align="right" style="display: <% 
@@ -185,7 +196,7 @@
 					out.print("none");
 				%>;">
 				<button type="button" class="btn" style="margin: 5px;" onclick="setPorjectStatus(1);">프로젝트 승인</button>
-				<button type="button" class="btn" style="margin: 5px;" onclick="setPorjectStatus(-1);">프로젝트 드랍</button>
+				<button type="button" class="btn btn-danger" style="margin: 5px;" onclick="setPorjectStatus(-1);">프로젝트 드랍</button>
 				<button type="button" class="btn" style="margin: 5px;" onclick="setPorjectStatus(2);">프로젝트 완료</button>
 			</div>
 			
