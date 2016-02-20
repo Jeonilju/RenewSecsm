@@ -7,7 +7,7 @@
 <script type="text/javascript">
 	
 	
-	function addItem(){
+	function addDuty(){
 		var r=confirm("기존에 생성된 당직일정이 있다면 초기화 됩니다.\n계속 진행하시겠습니까?");
         if (r===false){
         	return;
@@ -59,11 +59,6 @@
 		});
 	}
 	
-	$("#etItemCode").keyup(function(event){
-	    if(event.keyCode == 13){
-	    	addItem();
-	    }
-	});
 
 </script>
 
@@ -119,7 +114,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick="addItem();">생성</button>
+					<button type="button" class="btn btn-default" onclick="addDuty();">생성</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</form>

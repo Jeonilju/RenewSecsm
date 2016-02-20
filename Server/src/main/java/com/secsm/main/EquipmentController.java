@@ -88,10 +88,8 @@ public class EquipmentController {
 			return "index";
 		}
 
-		List<BookItemsInfo> bookItemsList= bookItemsDao.selectByPage();
 		List<BookCategoryInfo> bookCategory= bookCategoryDao.selectALL();
-		
-		request.setAttribute("bookItemsList", bookItemsList);
+
 		request.setAttribute("bookCategory", bookCategory);
 		
 		return "book";
@@ -258,7 +256,8 @@ public class EquipmentController {
 	@RequestMapping(value = "/api_reqList", method = RequestMethod.POST , produces = "text/plain;charset=UTF-8")
 	public String EquipmentController_reqBook(HttpServletRequest request,
 			@RequestParam("reqListStartDate") String reqListStartDate,
-			@RequestParam("reqListEndDate") String reqListEndDate
+			@RequestParam("reqListEndDate") String reqListEndDate,
+			@RequestParam("reqPage") int reqPage
 			) throws UnsupportedEncodingException {
 		logger.info("api req list Book");
 
@@ -270,11 +269,11 @@ public class EquipmentController {
 		Timestamp startDate = Util.getTimestamp(reqListStartDate);
 		Timestamp endDate = Util.getTimestamp(reqListEndDate);
 		endDate.setDate(endDate.getDate()+1);
-		List<BookReqInfo> bookReqList = bookReqDao.selectByDate(startDate, endDate); 
+		List<BookReqInfo> bookReqList = bookReqDao.selectByDate(startDate, endDate, reqPage); 
 		
 		for(int i=0;i<bookReqList.size();i++){
-			Timestamp regDate = bookReqList.get(0).getRegDate();
-			bookReqList.get(0).setStrRegDate(Util.getTimestempStr(regDate));
+			Timestamp regDate = bookReqList.get(i).getRegDate();
+			bookReqList.get(i).setStrRegDate(Util.getTimestempStr(regDate));
 		}
 		Gson obj = new Gson();
 		String result = obj.toJson(bookReqList);
@@ -330,7 +329,7 @@ public class EquipmentController {
 		
 		Date date = new Date();
 		Timestamp regDate = new Timestamp(date.getTime());
-		
+		System.out.println(addType);
 		List<BookCategoryInfo> categoryInfo = bookCategoryDao.select(addType);
 		
 		if(categoryInfo.size() == 0){ return "402";}
@@ -361,7 +360,7 @@ public class EquipmentController {
 			return "404";
 		}
 		
-		List<BookItemsInfo> bookItemsInfo = bookItemsDao.selectByIdNoCategory(rentId);
+		List<BookItemsInfo> bookItemsInfo = bookItemsDao.selectByIdNoCategory(rentId,0);
 		if(bookItemsInfo.size()>0){
 			if(bookItemsInfo.get(0).getCount()>0){
 				bookItemsDao.downCount(rentId);
@@ -374,7 +373,7 @@ public class EquipmentController {
 			return "402";
 		}
 		
-		BookLogInfo bookLogInfo = new BookLogInfo(info.getId(),Integer.parseInt(rentId),startDate,Util.getTimestamp(rentEndDate),1);
+		BookLogInfo bookLogInfo = new BookLogInfo(info.getId(),Integer.parseInt(rentId),startDate,endDate,1);
 		bookLogDao.create(bookLogInfo);
 		
 		return "200";
@@ -385,7 +384,9 @@ public class EquipmentController {
 	public String EquipmentController_logBook(HttpServletRequest request,
 			@RequestParam("logOption") String logOption,
 			@RequestParam("logSearch") String logSearch,
-			@RequestParam("allLog") boolean allLog
+			@RequestParam("allLog") boolean allLog,
+			@RequestParam("logPage") int logPage,
+			@RequestParam("overDate") boolean overDate
 			) throws UnsupportedEncodingException {
 		logger.info("api log book");
 
@@ -396,9 +397,17 @@ public class EquipmentController {
 		
 		List<BookLogInfo> info = null;
 		
-		if(logSearch.equals("")){
-			if(!allLog) info = bookLogDao.selectAllStatus();
-			else info = bookLogDao.selectAll();
+		if(overDate){
+			Date date = new Date();
+			date = new Date(date.getYear(),date.getMonth(),date.getDate()-1);
+			Timestamp now = new Timestamp(date.getTime());
+			
+			info = bookLogDao.selectOverDate(now, logPage); 
+		}
+		
+		else if(logSearch.equals("")){
+			if(!allLog) info = bookLogDao.selectAllStatus(logPage);
+			else info = bookLogDao.selectAll(logPage);
 		}
 		
 		else if(logOption.equals("ID")) {
@@ -409,30 +418,30 @@ public class EquipmentController {
 				return "402";
 			}
 			if(!allLog){
-				info = bookLogDao.selectById(id); 
+				info = bookLogDao.selectById(id,logPage); 
 			}
-			else info = bookLogDao.selectAllById(id);
+			else info = bookLogDao.selectAllById(id,logPage);
 		}
 		
 		else if(logOption.equals("도서명")) {
 			if(!allLog){
-				info = bookLogDao.selectByName(logSearch);
+				info = bookLogDao.selectByName(logSearch, logPage);
 			}
-			else info = bookLogDao.selectAllByName(logSearch); 
+			else info = bookLogDao.selectAllByName(logSearch, logPage); 
 		}
 		
 		else if(logOption.equals("대여자")) {
 			if(!allLog){
-				info = bookLogDao.selectByAccountName(logSearch); 
+				info = bookLogDao.selectByAccountName(logSearch, logPage); 
 			}
-			else info = bookLogDao.selectAllByAccountName(logSearch); 
+			else info = bookLogDao.selectAllByAccountName(logSearch, logPage); 
 		}
 		
 		else if(logOption.equals("코드")) {
 			if(!allLog){
-				info = bookLogDao.selectByCode(logSearch); 
+				info = bookLogDao.selectByCode(logSearch, logPage); 
 			}
-			else info = bookLogDao.selectAllByCode(logSearch); 
+			else info = bookLogDao.selectAllByCode(logSearch, logPage); 
 		}
 		
 		for(int i=0;i<info.size();i++){
@@ -501,7 +510,8 @@ public class EquipmentController {
 	public String EquipmentController_bookSearch(HttpServletRequest request,
 			@RequestParam("searchOption") int searchOption,
 			@RequestParam("searchCategory") String searchCategory,
-			@RequestParam("searchKeyword") String searchKeyword
+			@RequestParam("searchKeyword") String searchKeyword,
+			@RequestParam("searchPage") int searchPage
 			) throws UnsupportedEncodingException {
 		logger.info("api bookSearch book");
 		
@@ -518,16 +528,16 @@ public class EquipmentController {
 		
 		if(categoryInfo.get(0).getId()==1){
 			if(searchKeyword.equals("")){
-				info = bookItemsDao.selectByPage();
+				info = bookItemsDao.selectByPage(searchPage);
 			}
 			else if(searchOption==0){
-				info = bookItemsDao.selectByNameNoCategory(searchKeyword);
+				info = bookItemsDao.selectByNameNoCategory(searchKeyword, searchPage);
 			}
 			else if(searchOption==1){
-				info =bookItemsDao.selectByCodeNoCategory(searchKeyword);
+				info =bookItemsDao.selectByCodeNoCategory(searchKeyword, searchPage);
 			}
 			else if(searchOption==2){
-				info = bookItemsDao.selectByIdNoCategory(searchKeyword);
+				info = bookItemsDao.selectByIdNoCategory(searchKeyword, searchPage);
 			}
 			else{}
 		}
@@ -535,26 +545,26 @@ public class EquipmentController {
 		else{
 			if(searchOption==0){
 				if(searchKeyword.equals("")){
-					info = bookItemsDao.selectByName(searchCategory);
+					info = bookItemsDao.selectByName(searchCategory, searchPage);
 				}
 				else{
-					info = bookItemsDao.selectByName(searchCategory, searchKeyword);
+					info = bookItemsDao.selectByName(searchCategory, searchKeyword, searchPage);
 				}
 			}
 			else if(searchOption==1){
 				if(searchKeyword.equals("")){
-					info = bookItemsDao.selectByCode(searchCategory);
+					info = bookItemsDao.selectByCode(searchCategory, searchPage);
 				}
 				else{
-					info =bookItemsDao.selectByCode(searchCategory, searchKeyword);
+					info =bookItemsDao.selectByCode(searchCategory, searchKeyword, searchPage);
 				}
 			}
 			else if(searchOption==2){
 				if(searchKeyword.equals("")){
-					info = bookItemsDao.selectById(searchCategory);
+					info = bookItemsDao.selectById(searchCategory, searchPage);
 				}
 				else{
-					info = bookItemsDao.selectById(searchCategory, searchKeyword);
+					info = bookItemsDao.selectById(searchCategory, searchKeyword, searchPage);
 				}
 			}
 			else{}
@@ -564,6 +574,7 @@ public class EquipmentController {
 		Gson obj = new Gson();
 		String result = obj.toJson(info);
 		
+		System.out.println(result);
 		return result;
 	}
 	
@@ -672,5 +683,63 @@ public class EquipmentController {
 		bookItemsDao.delete(modifyId);
 
 		return "200";
+	}
+	
+	@RequestMapping(value = "/bookReqExcel", method = RequestMethod.GET)
+	public String EquipmentController_bookReqExcel(HttpServletRequest request,
+			@RequestParam("reqListStartDate") String reqListStartDate,
+			@RequestParam("reqListEndDate") String reqListEndDate
+			) {
+		logger.info("bookReqExcel");
+		AccountInfo info = Util.getLoginedUser(request);
+		
+		if(info == null){
+			// 비로그인
+			return "index";
+		}
+		else if(info.getGrade() == 0 || 
+				info.getGrade() == 4){
+			Timestamp startDate = Util.getTimestamp(reqListStartDate);
+			Timestamp endDate = Util.getTimestamp(reqListEndDate);
+			endDate.setDate(endDate.getDate()+1);
+			List<BookReqInfo> bookReqList =  bookReqDao.selectByDate(startDate,endDate);
+			for(int i=0;i<bookReqList.size();i++){
+				Timestamp regDate = bookReqList.get(i).getRegDate();
+				bookReqList.get(i).setStrRegDate(Util.getTimestempStr(regDate));
+			}
+			request.setAttribute("bookReqList",bookReqList);
+			
+			return "bookExcel";
+		}
+		else{
+			return "index";
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/api_overDateList", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+	public String EquipmentController_overDateList(HttpServletRequest request,
+			@RequestParam("logPage") int logPage) throws UnsupportedEncodingException {
+		logger.info("api overDateList");
+
+		AccountInfo accountInfo = Util.getLoginedUser(request);
+		if (accountInfo == null) {
+			return "401";
+		}
+		
+		Date date = new Date();
+		date = new Date(date.getYear(),date.getMonth(),date.getDate()-1);
+		Timestamp now = new Timestamp(date.getTime());
+		
+		List<BookLogInfo> info = bookLogDao.selectOverDate(now, logPage); 
+		
+		for(int i=0;i<info.size();i++){
+			info.get(i).setStrStartDate(Util.getTimestempStr(info.get(i).getStartDate()));
+			info.get(i).setStrEndDate(Util.getTimestempStr(info.get(i).getEndDate()));
+		}
+		Gson obj = new Gson();
+		String result = obj.toJson(info);
+		
+		return result;
 	}
 }	

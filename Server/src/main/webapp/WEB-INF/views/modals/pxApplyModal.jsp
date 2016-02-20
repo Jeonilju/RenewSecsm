@@ -171,7 +171,7 @@
 			</div>
 			<div class="modal-footer">
 				<button id="pxReqBtn" name="pxReqBtn" type="button" class="btn btn-default" onclick="pxApplyReq();" style="display: none;">요청</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->

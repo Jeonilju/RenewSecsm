@@ -12,7 +12,7 @@
 
 		var param = {addCode:$("#addCode").val(),
 					addTitle: $("#addTitle").val(),
-					addType: $("#addType").val(),
+					addType: $("#addType option:selected").text(),
 					addPublisher: $("#addPublisher").val(),
 					addAuthor: $("#addAuthor").val(),
 					addImageURL: $("#addImageURL").val(),
@@ -47,7 +47,13 @@
 			if(response=='200')
 			{
 				alert('추가 되었습니다.');
-				location.reload();
+				$('select[name=addType]').val(0);
+				$("#addCode").val("");
+				$("#addTitle").val("");
+				$("#addPublisher").val("");
+				$("#addAuthor").val("");
+				$("#addImageURL").val("");
+				$("#addCount").val("");
 			}
 			else if(response=='401')
 			{
@@ -75,6 +81,12 @@
 
 </script>
 
+<style>
+	#bookAddModal{
+		z-index:999999;
+	}
+</style>	
+
 <%
 	ArrayList<BookCategoryInfo> bookCategory = (ArrayList<BookCategoryInfo>) request.getAttribute("bookCategory");
 %>
@@ -92,8 +104,9 @@
 						<label for="addType" cond="">분류</label> 
 						<select class="form-control" name="addType" id="addType">
               				<%
+              					int i=0;
               					for (BookCategoryInfo info : bookCategory){
-              						out.println("<option>" + info.getName() + "</option>");
+              						out.println("<option value=\"" + i++ +"\">" + info.getName() + "</option>");
               					}
               				%>
          			 	</select>

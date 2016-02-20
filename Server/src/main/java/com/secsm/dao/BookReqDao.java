@@ -48,6 +48,20 @@ public class BookReqDao {
 					}
 				});
 	}
+	
+	public List<BookReqInfo> selectByDate(Timestamp start, Timestamp end, int reqPage){
+		return jdbcTemplate.query("select a.id, a.title, a.publisher, a.author, a.link, a.imageURL, a.pay, a.regDate, b.name "
+				+ "from secsm.book_req a inner join account b ON a.account_id = b.id where a.regDate>=? and a.regDate<? "
+				+ "order by a.regDate limit ?,7", new Object[] {start, end, reqPage},
+				new RowMapper<BookReqInfo>() {
+					public BookReqInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new BookReqInfo(resultSet.getInt("a.id"), resultSet.getString("b.name"),
+								resultSet.getString("a.title"), resultSet.getString("a.publisher"),
+								resultSet.getString("a.author"), resultSet.getString("a.link"), resultSet.getString("a.imageURL"),
+								resultSet.getInt("a.pay"), resultSet.getTimestamp("a.regDate"));
+					}
+				});
+	}
 //	
 //	public List<AccountInfo> selectAll() {
 //		return jdbcTemplate.query("select * from account", new Object[] {  },

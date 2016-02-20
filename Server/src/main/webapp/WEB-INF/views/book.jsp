@@ -11,7 +11,7 @@
 		<!-- Encoding -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<jsp:include page="base/header.jsp" flush="false" />
-    	<title>Project</title>
+    	<title>Book</title>
     	
     	<%AccountInfo member = Util.getLoginedUser(request);%>
     	
@@ -20,8 +20,13 @@
     	<script type="text/javascript">
     		
     		var grade = <%=member.getGrade()%>;
-    	
+    		var searchOptionVar=0;
+    		var searchCategoryVar='ALL';
+    		var searchKeywordVar='';
+    		var page = 7;
+    		
     		$(document).ready(function(){
+    			bookSearch(0);
     			if(grade==0 || grade==4){
     				$('.adminButton').css('display', 'block'); 
     			}
@@ -39,7 +44,7 @@
     			$('#allLog').removeAttr("checked");
     			$('select[name=logOption]').val(0);
     			$("#logSearch").val("");
-    			logBook();
+    			logBook(0);
     		}
     		
     		function rent(id){
@@ -50,14 +55,25 @@
     			$('#allLog').removeAttr("checked");
     			$('select[name=logOption]').val(1);
     			$("#logSearch").val(id);
-    			logBook();
+    			logBook(0);
     		}
     		
-    		function bookSearch(){
-				
-    			var param = {searchOption: $(':radio[name="searchOption"]:checked').val(), 
-    						searchCategory: $("#searchCategory option:selected").val(), 
-    						searchKeyword: $("#searchKeyword").val()};
+    		function bookSearch(option){
+    			if(option==0){
+        			searchOptionVar= $(':radio[name="searchOption"]:checked').val();
+            		searchCategoryVar= $("#searchCategory option:selected").val();
+            		searchKeywordVar= $("#searchKeyword").val();
+        			page = 0;
+        		}
+        		else if(option==1 && 0>=page) return;
+        		else if(option==1) page = page-7;
+        		else if(option==2) page = page+7;
+    			
+    			var param = {searchOption: searchOptionVar, 
+    						searchCategory: searchCategoryVar, 
+    						searchKeyword: searchKeywordVar,
+    						searchPage: page
+    						}
 
     			$.ajax({
     			url : "/Secsm/api_bookSearch",
@@ -81,6 +97,12 @@
     				else
     				{
     					var obj = JSON.parse(response);
+    					
+    					if(Object.keys(obj).length==0 && option==2){
+    						page = page-7;
+							return;    					
+    					}
+    					
     					var tableContent = '<tbody>';
     					var i;
     					for(i=0;i<Object.keys(obj).length;i++){
@@ -105,7 +127,7 @@
     						}
     						else{
     							tableContent = tableContent + '<td class="col-md-1">' + '<button type="button" class="btn btn-success" onclick="rent('
-								+ obj[i].id + ');" data-toggle="modal" data-target="#bookLogModal">대여가능</button>' + '</td> </tr>';
+								+ obj[i].id + ');" data-toggle="modal" data-target="#bookRentModal">대여가능</button>' + '</td> </tr>';
     						}
     					}
     					tableContent = tableContent + '</tbody>';
@@ -124,7 +146,7 @@
     			
     			});
     		}
-    		
+    		    		
     		function modifyBook(id){
     			var param = {searchId: id};
     			$('#modifyId').val(id);
@@ -181,7 +203,7 @@
     		    	addCategory();
     		    }
     		    else if($('#bookLogModal').is(':visible')){
-    		    	logBook();
+    		    	logBook(0);
     		    }
     		    else if($('#bookModifyModal').is(':visible')){
     		    	modifyReq();
@@ -190,13 +212,13 @@
     		    	rentBook();
     		    }
     		    else if($('#bookReqListModal').is(':visible')){
-    		    	reqList();
+    		    	reqList(0);
     		    }
     		    else if($('#bookRequestModal').is(':visible')){
     		    	requestBook();
     		    }
     		    else{
-    		    	bookSearch();
+    		    	bookSearch(0);
     		    }
     		});
 
@@ -242,7 +264,7 @@
 					<button type="button" class="btn" data-toggle="modal" data-target="#bookRequestModal" style="margin: 5px; margin-right: 0px;">도서신청</button>
 				</div>
 				<div class="pull-right">
-					<button type="button" class="btn" onclick="bookSearch();" style="margin: 5px;">검색</button>
+					<button type="button" class="btn" onclick="bookSearch(0);" style="margin: 5px;">검색</button>
 				</div>
 				<div class="pull-right">
 					<input type="text" class="form-control" id="searchKeyword">
@@ -268,48 +290,16 @@
 			<div class="row">
 			<div class="pull-right">
 				<table class="table table-hover" id="mainTable" style="table-layout:fixed;">
-			    <thead>
-			      <tr>
-			      	<th class="col-md-1">No.</th>
-			      	<th class="col-md-1">이미지</th>
-			        <th class="col-md-5">도서명</th>
-			        <th class="col-md-2">출판사</th>
-			        <th class="col-md-1">저자</th>
-			        <th class="col-md-1">수량</th>
-			        <th class="col-md-1">대여</th>
-			      </tr>
-			    </thead>
-			    <tbody>
-					<%
-						for (BookItemsInfo info : bookItemsList){
-							out.println("<tr>");
-							out.println("<td class=\"col-md-1\">" + info.getId() + "</td>");
-							out.println("<td class=\"col-md-1\"> <button type=\"button\" class=\"btn btn-info\" onclick=\"" 
-										+ "goImage('" + info.getImageURL() +"');\" data-toggle=\"modal\" data-target=\"#bookImageModal\">보기</button> </td>");
-							if(member.getGrade()==0 || member.getGrade()==4){
-								out.println("<td class=\"col-md-5\" style=\"cursor:pointer;\" onClick=\"modifyBook(" + info.getId() + ")\" data-toggle=\"modal\" data-target=\"#bookModifyModal\">" + info.getName() + "</td>");
-							}
-							else{
-								out.println("<td class=\"col-md-5\">" + info.getName() + "</td>");
-							}
-							out.println("<td class=\"col-md-2\">" + info.getPublisher() + "</td>");
-							out.println("<td class=\"col-md-1\">" + info.getAuthor() + "</td>");
-							out.println("<td class=\"col-md-1\">" + info.getCount() + "/" + info.getTotalCount() + "</td>");
-							if(info.getCount()==0)
-								out.println("<td class=\"col-md-1\">" + "<button type=\"button\" class=\"btn btn-danger\" onclick=\"noRent("
-										+ info.getId() + ")\" data-toggle=\"modal\" data-target=\"#bookLogModal\">대여불가</button>" + "</td>");
-							else
-								out.println("<td class=\"col-md-1\">" + "<button type=\"button\" class=\"btn btn-success\" onclick=\"rent("
-										+ info.getId() + ")\" data-toggle=\"modal\" data-target=\"#bookRentModal\">대여가능</button>" + "</td>");
-								
-							out.println("</tr>");
-						}
-					%>
-				</tbody>
-			</table>
+				</table>
 			</div>
 			</div>
 			<div class="row">
+				<div class="pull-left">
+					<button type="button" class="btn" onclick="bookSearch(1);" style="margin: 5px;">이전</button>
+				</div>
+				<div class="pull-left">
+					<button type="button" class="btn" onclick="bookSearch(2);" style="margin: 5px; margin-left:0px;">다음</button>
+				</div>
 				<div class="pull-right">
 					<button type="button" class="btn" data-toggle="modal" data-target="#bookLogModal" onclick="recentLog();" style="margin: 5px; margin-right:0px;">대여로그</button>
 				</div>
@@ -318,6 +308,9 @@
 				</div>
 				<div class="pull-right">
 					<button type="button" class="btn adminButton" data-toggle="modal" data-target="#bookReqListModal" style="margin: 5px;">신청목록</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn btn-danger adminButton" data-toggle="modal" data-target="#bookLogModal" onclick="logBook(4);" style="margin: 5px;">미납자</button>
 				</div>
 			</div>
 		</div>	

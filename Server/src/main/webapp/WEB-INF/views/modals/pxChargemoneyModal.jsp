@@ -5,8 +5,6 @@
  <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"> </script>
  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
  
- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/autoComplete.js"></script>
-
 
 <%
 	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
@@ -26,7 +24,6 @@
 			dataType : "text",
 			
 			success : function(response) {	
-		//		alert(response);
 				if(response=='0')
 				{
 					// 충전완료
@@ -53,12 +50,6 @@
 		
 	}
 	
-	$("#etItemCode").keyup(function(event){
-	    if(event.keyCode == 13){
-	    	buyItem();
-	    }
-	});
-	
 	//금액확인
 	function getPxAmount(){
 		
@@ -71,14 +62,12 @@
 		dataType : "text",
 		
 		success : function(response) {	
-		//	alert(response);
 			if(response==0)
 			{
 				alert('실패');
 				
 			}
 			else{
-			//	alert(response);
 				var amount = document.getElementById("amount");
 				amount.innerHTML = response + "원";
 				
@@ -134,7 +123,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
 				</div>
 			</form>
 		</div>

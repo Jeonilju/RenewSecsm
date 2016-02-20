@@ -25,16 +25,16 @@
 
 <%
     ArrayList<AttendanceInfo> attendanceList = (ArrayList<AttendanceInfo>) request.getAttribute("AttendanceInfo");
-   String obj = "[";
-   if(attendanceList.size()!=0){
-      for (AttendanceInfo info : attendanceList) {
-         obj = obj +"{\"start\":\"" + info.getRegDate() + "\","
-            +"\"className\":\"attendance\",\"borderColor\":\"white\",\"allDay\":\"false\"},";   
-      }
-      obj = obj.substring(0, obj.length()-1); 
-      obj += "]";
-   }
-   else obj ="[]";
+	String obj = "[";
+	if(attendanceList.size()!=0){
+		for (AttendanceInfo info : attendanceList) {
+			obj = obj +"{\"start\":\"" + info.getRegDate() + "\","
+				+"\"className\":\"attendance\",\"borderColor\":\"white\",\"allDay\":\"false\"},";	
+		}
+		obj = obj.substring(0, obj.length()-1); 
+		obj += "]";
+	}
+	else obj ="[]";
 %>
 
 <%

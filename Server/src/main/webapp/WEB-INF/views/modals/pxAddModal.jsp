@@ -34,18 +34,13 @@
 		},
 		error : function(request, status, error) {
 			if (request.status != '0') {
-				alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+				alert("code10 : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
 			}
 		}
 		
 		});
 	}
-	
-	$("#etItemCode").keyup(function(event){
-	    if(event.keyCode == 13){
-	    	addItem();
-	    }
-	});
+
 
 </script>
 
@@ -82,7 +77,7 @@
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" onclick="addItem();">등록</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
 				</div>
 			</form>
 		</div>
