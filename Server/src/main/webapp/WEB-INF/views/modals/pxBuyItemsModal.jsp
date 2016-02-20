@@ -172,32 +172,36 @@
 					<h4 class="modal-title" id="SignInModalLabel">상품 구매</h4>
 				</div>
 				<div class="modal-body" >
-					<div class="row-fluid" style="">
-		  			<div class="col-md-6"></div> 
-		
-						<div class="table table-hover">
-							<th>분류</th>
-				   	     	<th>상품명</th>
-				   	     	<th>내 잔액 :</th> 
-				   	     	<label id = "amount"></label>  
-						</div>
+					<div class="row-fluid">
+		  	
+					<table class="table table-hover" style = "margin-bottom : 0px">
+						<thead>
+						<tr>
+							<th style = "widhth : 66px; padding-left : 50px">분류</th>
+				   	     	<th style = "padding-left:140px">상품명</th>
+				   	     	<th style="padding-left:62px width : 133px;padding-left: 120px;">내 잔액 :</th> 
+				   	     	<th><label id="amount" style="padding-right: 0px;margin-bottom : 0px;">-18777원</label></th>
+				   	     </tr> 
+				   	     </thead>
+					</table>
 	
 					</div>
 					
 					<form id= "buy_form" onsubmit="buyItem();getPxAmount();inputreset();return false">
-					<div  class="row-fluid" style="margin: 20px">
+					<div  class="row-fluid">
 						<div class="col-md-3">
-							<select id="slItemType" name="slItemType" style="width: 100%; margin: 5px;">
+							<select id="slItemType" name="slItemType" class = "form-control" style="width: 100%; ">
 								<option value="0"> 바코드 </option>
 								<option value="1"> 상품 명 </option>
 							</select>
 						</div>
 						<div id = "box2" class="col-md-4">
-							<input id="etItemCode" name="etItemCode" type="text" onkeypress = "auto_list();" style="width: 100%">
+							<input id="etItemCode" name="etItemCode" class="form-control" type="text" onkeypress="auto_list();" 
+							style="width: 213.22222px;padding-left: 10px;padding-right: 1px;">
 						</div>
 						
 						<div class="col-md-5">
-							<input type="submit" class="btn btn-default" value = "구입">
+							<input type="submit" class="btn btn-default" value = "구입" style = "margin-left : 60px;">
 						</div>
 					</div>
 				</form>
