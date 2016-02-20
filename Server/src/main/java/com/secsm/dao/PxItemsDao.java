@@ -44,6 +44,18 @@ public class PxItemsDao implements PxItemsIDao {
 				});
 	}
 	
+	public List<PxItemsInfo> select_auto(String name){
+		return jdbcTemplate.query("select * from px_items where name like '%?%'", new Object[]{name},
+				new RowMapper<PxItemsInfo>() {
+					public PxItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new PxItemsInfo(resultSet.getInt("id"), resultSet.getString("Name")
+								, resultSet.getString("Code"), resultSet.getInt("Price")
+								, resultSet.getString("Description"), resultSet.getInt("Count"));
+					}
+				});
+
+	}
+	
 	public List<PxItemsInfo> selectByCode(String code){
 		return jdbcTemplate.query("select * from px_items where code = ?", new Object[]{code},
 				new RowMapper<PxItemsInfo>() {

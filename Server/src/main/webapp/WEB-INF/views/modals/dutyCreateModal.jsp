@@ -6,9 +6,8 @@
 
 <script type="text/javascript">
 	
-	// 아이템 구매
 	
-	function addItem(){
+	function addDuty(){
 		var r=confirm("기존에 생성된 당직일정이 있다면 초기화 됩니다.\n계속 진행하시겠습니까?");
         if (r===false){
         	return;
@@ -60,11 +59,6 @@
 		});
 	}
 	
-	$("#etItemCode").keyup(function(event){
-	    if(event.keyCode == 13){
-	    	addItem();
-	    }
-	});
 
 </script>
 
@@ -72,7 +66,7 @@
 <div class="modal fade" id="dutyCreateModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="addPxItemsForm" id="addPxItemsForm" action="/api_pxAddItems">
+			<form name="autoDutyCreate" id="autoDutyCreate" action="/dutyAutoCreate">
 				<div class="modal-header">
 					<h4 class="modal-title">자동당직생성</h4>
 				</div>
@@ -120,7 +114,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick="addItem();">생성</button>
+					<button type="button" class="btn btn-default" onclick="addDuty();">생성</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</form>

@@ -77,8 +77,9 @@ public class PXController {
 	public String PXController_buyItem(HttpServletRequest request
 			, @RequestParam("type") int type
 			, @RequestParam("code") String code){
-		logger.info("api_pxBuyItem");
 		
+		logger.info("api_pxBuyItem");
+		System.out.println(code);
 		AccountInfo info = Util.getLoginedUser(request);
 		if(info == null){
 			return "index";
@@ -99,7 +100,7 @@ public class PXController {
 			// 정상
 			accountDao.usePxAmount(info.getId(), result.get(0).getPrice());
 			pxLogDao.create(info.getId(), result.get(0).getId(), 0, 1,result.get(0).getName(),result.get(0).getPrice());
-			pxItemsDao.useItems(result.get(0).getId(), 1);
+			pxItemsDao.useItems(result.get(0).getId(),1);
 			
 			return "0";
 		}
@@ -112,6 +113,8 @@ public class PXController {
 			return "2";
 		}
 	}
+	
+
 	
 	/** 상품 신청 승인 */
 	@ResponseBody
@@ -175,9 +178,8 @@ public class PXController {
 			// 정상
 			accountDao.refund_usePxAmount(result.get(0).getAccountId(), result1.get(0).getPrice());
 			pxLogDao.delete(idx);
-			pxItemsDao.refund_useItems(result.get(0).getPxItemsId(), 1);
+			pxItemsDao.refund_useItems(result.get(0).getPxItemsId(), result.get(0).getCount());
 			return "200";
-
 		}
 		else{
 			// 비정상
@@ -185,7 +187,7 @@ public class PXController {
 		}
 	}
 	
-	/** PX 환불 신청 */
+	/** PX 목록에서 삭제 */
 	@ResponseBody
 	@RequestMapping(value = "/api_Delete_req_list", method = RequestMethod.POST)
 	public String Delete_PxReq_list(HttpServletRequest request
@@ -216,6 +218,19 @@ public class PXController {
 		
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/api_px_Autocomplete", method = RequestMethod.POST)
+	public String PXController_Px_Auto(HttpServletRequest request){
+	
+		List<PxItemsInfo> px_autoList = pxItemsDao.selectAll();
+		Gson gson = new Gson();
+		String result = gson.toJson(px_autoList);
+			
+		logger.info(result);
+		
+		return result;
+	}
+	
 	/** 구매 내역 조회 */
 	@ResponseBody
 	@RequestMapping(value = "/api_getPxLog", method = RequestMethod.POST)
@@ -226,10 +241,11 @@ public class PXController {
 		AccountInfo info = Util.getLoginedUser(request);
 		System.out.println(info.getId());
 		List<PxLogInfo> pxLogList = pxLogDao.selectByAccountId(info.getId());
+		int rowCount = pxLogDao.total_list_num();
+		System.out.println(rowCount);
 		
 		Gson gson = new Gson();
 		String result = gson.toJson(pxLogList);
-		logger.info(result);
 		
 		return result;
 	}
@@ -247,9 +263,6 @@ public class PXController {
 		AccountInfo info = Util.getLoginedUser(request);
 		System.out.println(info.getId());
 		List<PxLogInfo> pxLogList = pxLogDao.selectBydate(num);
-	//	int id = pxLogList.get(0).getPxItemsId();
-	//	List<PxItemsInfo> pxItemList =pxItemsDao.select(id);
-	//	pxLogList.get(0).setName(pxItemList.get(0).getName());
 		Gson gson = new Gson();
 		String result = gson.toJson(pxLogList);
 		logger.info(result);

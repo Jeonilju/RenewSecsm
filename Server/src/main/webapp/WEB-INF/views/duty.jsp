@@ -12,7 +12,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<jsp:include page="base/header.jsp" flush="false" />
 		<link rel='stylesheet' href='./resources/fullcalendar/fullcalendar.css' />
-		<script src='./resources/fullcalendar/lib/jquery.min.js'></script>
 		<script src='./resources/fullcalendar/lib/moment.min.js'></script>
 		<script src='./resources/fullcalendar/fullcalendar.js'></script>
     	<title>Duty</title>
@@ -64,83 +63,23 @@
     	
     	<script type="text/javascript">
     	   	
-    		var insertSuccess = 0;
     		var grade = <%=member.getGrade()%>;
-    	
-	    	function eventInsert(title ,date){
-    			var param = "title" + "=" + title + "&" + 
-				"date" + "=" + date;
-    			
-				$.ajax({
-					url : "/Secsm/dutyInsert",
-					type : "POST",
-					data : param,
-					cache : false,
-					async : false,
-					dataType : "text",	
-
-					success : function(response) {	
-						if(response=='0')
-						{
-							alert(title + '님의 당직일정이 추가 되었습니다.');
-							location.reload();
-						}
-						else if(response == '1')
-						{
-							alert('해당 회원은 존재하지 않습니다.');
-						}	
-						else if(response == '2'){
-							alert('해당 당직 날짜에 당직일정을 추가할 수 없습니다.');
-						}
-						else{
-							alert('해당 날짜에 당직자가 이미 초과하였습니다.');
-						}
-					},
-					error : function(request, status, error) {
-						if (request.status != '0') {
-							alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-						}
-					}
-				});
-			
-	   		}
-	    	
-	    	function eventDelete(title ,date){
-    			var param = "title" + "=" + title + "&" + 
-				"date" + "=" + date;
-    			
-				$.ajax({
-					url : "/Secsm/dutyDelete",
-					type : "POST",
-					data : param,
-					cache : false,
-					async : false,
-					dataType : "text",	
-
-					success : function(response) {	
-						if(response=='0')
-						{
-							alert(title + '님의 당직일정이 삭제 되었습니다.');
-							location.reload();
-						}
-						else
-						{
-							alert('새로고침 후 다시 시도해주세요.');
-						}
-					},
-					error : function(request, status, error) {
-						if (request.status != '0') {
-							alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-						}
-					}
-				});
-	   		}
+    		var deleteDate;
+    		var insertDate;
+    		
 	    	
     		$(document).ready(function() {
+    			$(window).keydown(function(event){
+    	   		    if(event.keyCode == 13) {
+    	   		      event.preventDefault();
+    	   		      return false;
+    	   		    }
+    	   		}); 	
+    			
     			var info = '<%=obj%>';
     			var obj = JSON.parse(info);
     			
-   				if(grade == 0) $('#createDuty').css('display', 'block'); 
+   				if(grade==0 || grade==3) $('#createDuty').css('display', 'block'); 
     			
     			$('#calendar').fullCalendar({
     				header : {
@@ -154,21 +93,33 @@
     				allDay : false,
     				droppable: false,
     				eventClick: function(calEvent, jsEvent, view) {
-    					var r=confirm(calEvent.title + "님의 당직일정을 삭제하시겠습니까?");
-    		            if (r===true){
-    		            	eventDelete(calEvent.title, calEvent.start);
-    		            }
+    					$("#dutyDeleteName").text(calEvent.title);
+    					deleteDate = calEvent.start;
+    					$('#dutyDeleteModal').modal();
     				},
     				dayClick: function(date, allDay, jsEvent, view) {
-    				    var title = prompt("당직일정에 추가할 이름을 입력하세요.");
-    				    
-    				    if (title) {
-    				    	eventInsert(title,date);
-    					}
+    				    insertDate=date;
+    				    $('#dutyInsertModal').modal();
     				}
     			});	
 
 			});
+    		
+    		$(document).keyup(function(event){
+    			if(event.keyCode != 13){
+    			
+    			}
+    			else if($('#dutyDeleteModal').is(':visible')){
+    		    	eventDelete();
+    		    }
+    			else if($('#dutyInsertModal').is(':visible')){
+    				eventInsert();
+    		    }
+    			else if($('#dutyCreateModal').is(':visible')){
+    				addDuty();
+    		    }
+    		});
+
     </script>
     
     <style>	
@@ -212,19 +163,18 @@
 
 		<div class="container body-content" style="margin-top:150px">
 			<div class="row">
-				<div class="col-md-8">
-					<div>
-						<h1>당직</h1>
-					</div>
+				<div>
+					<h1>당직</h1>
 				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8"></div>
 				<div class="col-md-2">
 					<button type="button" id="createDuty" class='btn' data-toggle="modal" data-target="#dutyCreateModal">
-					<b>자동당직생성</b></button>
+					<b>당직 자동생성</b></button>
 				</div>
 				<div class="col-md-2"></div>
 			</div>
-		
-		
 			<div class="row-fluid">	
 				<div class="col-md-2"></div>
 			
@@ -233,9 +183,10 @@
 				</div>
 				<div class="col-md-2"></div>
 			</div>
-			<jsp:include page="base/foot.jsp" flush="false" />
-		</div>	
-</body>
-<jsp:include page="modals/dutyCreateModal.jsp" flush="false" />
-
+		</div>
+	</body>
+	<jsp:include page="modals/dutyCreateModal.jsp" flush="false" />
+	<jsp:include page="modals/dutyDeleteModal.jsp" flush="false" />
+	<jsp:include page="modals/dutyInsertModal.jsp" flush="false" />
+	<jsp:include page="base/foot.jsp" flush="false" />	
 </html>

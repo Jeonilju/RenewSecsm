@@ -1,6 +1,7 @@
 package com.secsm.info;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class QuestionEssayInfo {
 
@@ -8,6 +9,8 @@ public class QuestionEssayInfo {
 	private int questionId;
 	private String problom;
 	private Timestamp regDate;
+	
+	private List<AnswerEssayInfo> answerList = null;
 	
 	public QuestionEssayInfo(int id, int questionId, String problom, Timestamp regDate) {
 		super();
@@ -39,5 +42,11 @@ public class QuestionEssayInfo {
 	}
 	public void setRegDate(Timestamp regDate) {
 		this.regDate = regDate;
+	}
+	public List<AnswerEssayInfo> getAnswerList() {
+		return answerList;
+	}
+	public void setAnswerList(List<AnswerEssayInfo> answerList) {
+		this.answerList = answerList;
 	}
 }

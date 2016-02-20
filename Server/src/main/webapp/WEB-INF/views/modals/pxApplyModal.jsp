@@ -20,7 +20,7 @@
 		dataType : "text",
 		
 		success : function(response) {	
-			alert(response);
+		
 			if(response=='200')
 			{
 				alert("요청되었습니다.");
@@ -110,13 +110,16 @@
 		var swapBtn = document.getElementById("swapBtn");
 		var pxReqBtn = document.getElementById("pxReqBtn");
 		
+		var j = swapBtn.childNodes[0];
 		if(pxReqDivList.style.display == ""){
 			// Form으로 변경
+			j.innerText = '상품 요청';
 			swapBtn.value = "신청 리스트";
 			pxReqBtn.style.display = "";
 		}
 		else{
 			// list로 변경
+			j.innerText = '상품 리스트';
 			swapBtn.value = "상품 요청";
 			pxReqBtn.style.display = "none";
 			refreshReqTable();
@@ -126,7 +129,33 @@
 		pxReqDivList.style.display = pxReqDivForm.style.display;
 		pxReqDivForm.style.display = temp;
 	}
+	
+	function end_apply(){
+		
+		var pxReqDivList = document.getElementById("pxReqDivList");
+		var pxReqDivForm = document.getElementById("pxReqDivForm");
+		var swapBtn = document.getElementById("swapBtn");
+		var pxReqBtn = document.getElementById("pxReqBtn");
+		
+		var j = swapBtn.childNodes[0];
+		if(pxReqDivList.style.display == ""){
+			// Form으로 변경
+			j.innerText = '상품 요청';
+			swapBtn.value = "신청 리스트";
+			pxReqBtn.style.display = "";
 
+			var temp = pxReqDivList.style.display;
+			pxReqDivList.style.display = pxReqDivForm.style.display;
+			pxReqDivForm.style.display = temp;
+		}
+		
+	}
+		
+	
+	function apply_reset(){
+		
+		document.getElementById("pxReqDivForm").reset();
+	}
 </script>
 
 <div class="modal fade" id="pxApplyModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -138,10 +167,12 @@
 			
 			<div class="modal-body">
 			
-			<button id="swapBtn" name="swapBtn" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn();">상품 요청</button>
+			
+			<button id="swapBtn" name="swapBtn" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn();"><span>상품요청</span></button>
+		
 			
 				<!-- 상품 요청 리스트-->
-				<div id="pxReqDivList" name="pxReqDivList" style="display: ;">
+				<div id="pxReqDivList" name="pxReqDivList" style="display: none;">
 					<table class="table table-hover" id="pxReqTable">
 					    <thead>
 					      <tr>
@@ -161,7 +192,7 @@
 				</div>
 				
 				<!-- 상품 요청 form -->
-				<div id="pxReqDivForm" name="pxReqDivForm" style="display: none;">
+				<div id="pxReqDivForm" name="pxReqDivForm" style="display: ;">
 					제목
 					<input type="text" id="pxApplyTitle" class = "form-control" name="pxApplyTitle">
 					
@@ -169,11 +200,12 @@
 					<input type="text" id="pxApplyContent" class = "form-control" name="pxApplyContent">
 				</div>
 			</div>
+			
 			<div class="modal-footer">
-				<button id="pxReqBtn" name="pxReqBtn" type="button" class="btn btn-default" onclick="pxApplyReq();" style="display: none;">요청</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				<button id="pxReqBtn" name="pxReqBtn" type="button" class="btn btn-default" onclick="pxApplyReq();" style="display: ;">요청</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" onclick = "end_apply();">닫기</button>
 			</div>
-		</div>
+		</div>		
 		<!-- /.modal-content -->
 	</div>
 </div>

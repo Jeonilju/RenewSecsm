@@ -1,6 +1,7 @@
 package com.secsm.info;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class QuestionDateInfo {
 
@@ -8,6 +9,8 @@ public class QuestionDateInfo {
 	private int questionId;
 	private String problom;
 	private Timestamp regDate;
+	
+	private List<AnswerDateInfo> answerList = null;
 	
 	public QuestionDateInfo(int id, int questionId, String problom, Timestamp regDate) {
 		super();
@@ -39,5 +42,11 @@ public class QuestionDateInfo {
 	}
 	public void setRegDate(Timestamp regDate) {
 		this.regDate = regDate;
+	}
+	public List<AnswerDateInfo> getAnswerList() {
+		return answerList;
+	}
+	public void setAnswerList(List<AnswerDateInfo> answerList) {
+		this.answerList = answerList;
 	}
 }

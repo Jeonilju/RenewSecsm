@@ -92,7 +92,7 @@
 				
 							// Append a text node to the cell
 							var newText  = document.createTextNode('New row')
-							newCell1.appendChild(document.createTextNode(data.regdate));
+							newCell1.appendChild(document.createTextNode(data.regDate));
 							newCell2.appendChild(document.createTextNode(data.name));
 							newCell3.appendChild(document.createTextNode(data.count));
 							newCell4.appendChild(document.createTextNode(data.price));
@@ -137,7 +137,7 @@
 				 	 </table>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->

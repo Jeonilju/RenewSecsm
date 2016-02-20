@@ -28,9 +28,9 @@ public class QuestionChoiceDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
-	public void create(int questionId, String problom, String p1, String p2, String p3, String p4, String p5){
-		jdbcTemplate.update("insert into question_choice (question_id, problom, p1, p2, p3, p4, p5) values (?, ?, ?, ?, ?, ?, ?)"
-				, new Object[] {questionId, problom, p1, p2, p3, p4, p5});
+	public void create(int questionId, String problom, String q1, String q2, String q3, String q4, String q5){
+		jdbcTemplate.update("insert into question_choice (question_id, problom, q1, q2, q3, q4, q5) values (?, ?, ?, ?, ?, ?, ?)"
+				, new Object[] {questionId, problom, q1, q2, q3, q4, q5});
 	}
 	
 	public List<QuestionChoiceInfo> selectAll(){

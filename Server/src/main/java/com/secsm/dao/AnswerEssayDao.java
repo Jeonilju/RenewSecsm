@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.secsm.info.AnswerChoiceInfo;
 import com.secsm.info.AnswerEssayInfo;
 
 @Repository
@@ -61,6 +62,25 @@ public class AnswerEssayDao {
 								, resultSet.getInt("question_id"), resultSet.getString("answer"));
 					}
 				});
+	}
+	
+	public boolean isExistAnswer(int id, int accountId){
+		List<AnswerEssayInfo> result = jdbcTemplate.query("select * from answer_essay where "
+				+ "question_id = ?"
+				+ " and account_id = ? ", new Object[] {id, accountId},
+				new RowMapper<AnswerEssayInfo>() {
+					public AnswerEssayInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AnswerEssayInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
+								, resultSet.getInt("question_id"), resultSet.getString("answer"));
+					}
+				});
+		
+		if(result.size() > 0){
+			return true;			
+		}
+		else{
+			return false;
+		}
 	}
 	
 	public void delete(int id){

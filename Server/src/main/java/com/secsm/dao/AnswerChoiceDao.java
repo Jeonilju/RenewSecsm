@@ -2,7 +2,6 @@ package com.secsm.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -64,6 +63,25 @@ public class AnswerChoiceDao {
 				});
 	}
 
+	public boolean isExistAnswer(int id, int accountId){
+		List<AnswerChoiceInfo> result = jdbcTemplate.query("select * from answer_score where "
+				+ "question_id = ?"
+				+ " and account_id = ? ", new Object[] {id, accountId},
+				new RowMapper<AnswerChoiceInfo>() {
+					public AnswerChoiceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AnswerChoiceInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
+								, resultSet.getInt("question_id"), resultSet.getInt("answer"));
+					}
+				});
+		
+		if(result.size() > 0){
+			return true;			
+		}
+		else{
+			return false;
+		}
+	}
+	
 	public void delete(int id){
 		jdbcTemplate.update("delete from answer_score where id = ?", new Object[] {id});
 	}

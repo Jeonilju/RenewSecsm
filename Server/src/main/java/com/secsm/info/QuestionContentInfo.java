@@ -6,6 +6,7 @@ public class QuestionContentInfo implements Comparable<QuestionContentInfo> {
 	public int id;
 	public int qType;
 	public String qTitle;
+	public String qContent;
 	public String q1;
 	public String q2;
 	public String q3;

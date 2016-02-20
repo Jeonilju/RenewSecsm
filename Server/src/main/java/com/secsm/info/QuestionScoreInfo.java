@@ -1,6 +1,8 @@
 package com.secsm.info;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuestionScoreInfo {
 
@@ -8,6 +10,9 @@ public class QuestionScoreInfo {
 	private int questionId;
 	private String problom;
 	private Timestamp regDate;
+	
+	private List<AnswerScoreInfo> answerList = null;
+	
 	public QuestionScoreInfo(int id, int questionId, String problom, Timestamp regDate) {
 		super();
 		this.id = id;
@@ -38,5 +43,11 @@ public class QuestionScoreInfo {
 	}
 	public void setRegDate(Timestamp regDate) {
 		this.regDate = regDate;
+	}
+	public List<AnswerScoreInfo> getAnswerList() {
+		return answerList;
+	}
+	public void setAnswerList(List<AnswerScoreInfo> answerList) {
+		this.answerList = answerList;
 	}
 }
