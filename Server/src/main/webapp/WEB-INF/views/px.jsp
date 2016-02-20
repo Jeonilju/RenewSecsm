@@ -60,11 +60,11 @@
 					<button onclick = "log_detail();" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsListModal" >내역 조회</button>
 					<%
 						if(accountInfo.getGrade() == 5 || accountInfo.getGrade() == 0){
-							out.println("<button onclick= \"refreshReqTable2();\" type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxApplyModal2\" >상품 요청</button>");
+							out.println("<button onclick= \"refreshReqTable2();apply2_reset()\" type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxApplyModal2\" >상품 요청</button>");
 							out.println("<button type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxAddModal\" >상품 추가</button>");
 						}
 						else{
-							out.println("<button onclick= \"refreshReqTable();\" type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxApplyModal\" >상품 요청</button>");
+							out.println("<button onclick= \"refreshReqTable();apply_reset()\" type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxApplyModal\" >상품 요청</button>");
 						}
 					%>
 					<button onclick = "getPxAmount();" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxChargemoneyModal" >금액 충전</button>

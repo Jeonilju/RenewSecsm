@@ -17,8 +17,6 @@
 
 	var num = 0;
 
-	//상품 검색
-	
 	// 아이템 구매
 	function buyItem(){
 		var param = "type" + "=" + $("#slItemType").val() + "&" + 
@@ -157,8 +155,15 @@
 
 	}
 	
-	function inputreset(){
-		document.getElementById("buy_form").reset();
+	function inputreset(temp1)
+	{
+		if(temp1==0){
+			document.getElementById("buy_form").reset();
+		}
+		else if(temp1==1){
+			document.getElementById("charge_form").reset();
+			
+		}
 	}
 
 	
@@ -187,7 +192,7 @@
 	
 					</div>
 					
-					<form id= "buy_form" onsubmit="buyItem();getPxAmount();inputreset();return false">
+					<form id= "buy_form" onsubmit="buyItem();getPxAmount();inputreset(0);return false">
 					<div  class="row-fluid">
 						<div class="col-md-3">
 							<select id="slItemType" name="slItemType" class = "form-control" style="width: 100%; ">

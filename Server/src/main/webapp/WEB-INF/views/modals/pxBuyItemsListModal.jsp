@@ -92,7 +92,7 @@
 				
 							// Append a text node to the cell
 							var newText  = document.createTextNode('New row')
-							newCell1.appendChild(document.createTextNode(data.regdate));
+							newCell1.appendChild(document.createTextNode(data.regDate));
 							newCell2.appendChild(document.createTextNode(data.name));
 							newCell3.appendChild(document.createTextNode(data.count));
 							newCell4.appendChild(document.createTextNode(data.price));

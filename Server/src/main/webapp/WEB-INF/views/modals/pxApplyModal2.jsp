@@ -9,8 +9,8 @@
 <script type="text/javascript">
 	
 	function pxApplyReq2(){
-		var param = "pxApplyTitle2" + "=" + $("#pxApplyTitle2").val() + "&" + 
-				"pxApplyContent2" + "="+ $("#pxApplyContent2").val();
+		var param = "pxApplyTitle" + "=" + $("#pxApplyTitle2").val() + "&" + 
+				"pxApplyContent" + "="+ $("#pxApplyContent2").val();
 		$.ajax({
 		url : "/Secsm/api_applyReq",
 		type : "POST",
@@ -20,19 +20,19 @@
 		dataType : "text",
 		
 		success : function(response) {	
-			alert(response);
+			
 			if(response=='200')
 			{
 				alert("요청되었습니다.");
 				document.getElementById("pxApplyTitle2").value = "";
-				document.getElementById("pxApplyConten2t").value = "";
+				document.getElementById("pxApplyContent2").value = "";
 				refreshReqTable2()
 			}
 			
 		},
 		error : function(request, status, error) {
 			if (request.status != '0') {
-				alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+				alert("code___ : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
 			}
 		}
 		
@@ -111,13 +111,16 @@
 		var swapBtn2 = document.getElementById("swapBtn2");
 		var pxReqBtn2 = document.getElementById("pxReqBtn2");
 		
+		var j = swapBtn2.childNodes[0];
 		if(pxReqDivList2.style.display == ""){
 			// Form으로 변경
+			j.innerText = '상품 요청';
 			swapBtn2.value = "신청 리스트";
 			pxReqBtn2.style.display = "";
 		}
 		else{
 			// list로 변경
+			j.innerText = '상품 리스트';
 			swapBtn2.value = "상품 요청";
 			pxReqBtn2.style.display = "none";
 			refreshReqTable2();
@@ -128,8 +131,33 @@
 		pxReqDivForm2.style.display = temp;
 	}
 	
+	function end_apply2(){
+		
+		var pxReqDivList2 = document.getElementById("pxReqDivList2");
+		var pxReqDivForm2 = document.getElementById("pxReqDivForm2");
+		var swapBtn2 = document.getElementById("swapBtn2");
+		var pxReqBtn2 = document.getElementById("pxReqBtn2");
+		
+		var j = swapBtn2.childNodes[0];
+		
+		if(pxReqDivForm2.style.display == ""){
+			// list로 변경
+			j.innerText = '상품 리스트';
+			swapBtn2.value = "상품 요청";
+			pxReqBtn2.style.display = "none";
+			refreshReqTable2();
+			
+			var temp = pxReqDivList2.style.display;
+			pxReqDivList2.style.display = pxReqDivForm2.style.display;
+			pxReqDivForm2.style.display = temp;
+		}
+		
+
+	}
+	
+	
 	function accept123(idx){
-		alert(idx);
+	
 		var param = "idx" + "=" + idx;
 		
 		$.ajax({
@@ -155,6 +183,11 @@
 			}
 		}
 		});
+	}
+	
+	function apply2_reset(){
+		
+		document.getElementById("pxReqDivForm2").reset();
 	}
 	function DeleteReqlist(idx,check){
 		
@@ -200,7 +233,7 @@
 			
 			<div class="modal-body">
 			
-				<button id="swapBtn2" name="swapBtn2" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn2();">상품 요청</button>
+				<button id="swapBtn2" name="swapBtn2" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn2();">상품 리스트</button>
 			
 				<!-- 상품 요청 리스트-->
 				<div id="pxReqDivList2" name="pxReqDivList2" style="display: ;">
@@ -225,17 +258,19 @@
 				<!-- 상품 요청 form -->
 				<div id="pxReqDivForm2" name="pxReqDivForm2" style="display: none;">
 					제목
-					<input type="text" id="pxApplyTitle2" name="pxApplyTitle2">
+					<input type="text" id="pxApplyTitle2" class = "form-control" name="pxApplyTitle2">
 					
 					내용
-					<input type="text" id="pxApplyContent2" name="pxApplyContent2">
+					<input type="text" id="pxApplyContent2" class = "form-control" name="pxApplyContent2">
 				</div>
 			</div>
-			<div class="modal-footer2">
+			
+			<div class="modal-footer">
 				<button id="pxReqBtn2" name="pxReqBtn2" type="button" class="btn btn-default" onclick="pxApplyReq2();" style="display: none;">요청</button>
-				<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" onclick = "end_apply2();">닫기</button>
 			</div>
 		</div>
+		
 		<!-- /.modal-content -->
 	</div>
 </div>
