@@ -105,33 +105,26 @@ public class QuestionController {
 			, @PathVariable("id")int questionId) {
 		logger.info("questionResult Page");
 
-		AccountInfo info = Util.getLoginedUser(request);
+		AccountInfo accountInfo = Util.getLoginedUser(request);
 		QuestionInfo questionInfo = questionDao.selectById(questionId);
 		
-		if(info == null){
+		if(accountInfo == null){
 			// 비로그인
 			return "index";
 		}
 		else{
 			if(questionInfo == null){
 				// TODO 등록된 프로젝트가 없음
-				return "";
+				return "index";
 			}
-			else if (info.getId() == questionInfo.getAccountId()){
+			else if (accountInfo.getId() == questionInfo.getAccountId()){
 				// 정상 접근
-				List<QuestionChoiceInfo> choiceList = questionChoiceDao.selectByQuestionId(questionInfo.getId());
-				List<QuestionEssayInfo> essayList = questionEssayDao.selectByQuestionId(questionInfo.getId());
-				List<QuestionDateInfo> dateList = questionDateDao.selectByQuestionId(questionInfo.getId());
-				List<QuestionTimeInfo> timeList = questionTimeDao.selectByQuestionId(questionInfo.getId());
-				List<QuestionScoreInfo> scoreList = questionScoreDao.selectByQuestionId(questionInfo.getId());
-				setAnswerList(choiceList, essayList, dateList, timeList, scoreList);
 				
+				ArrayList<QuestionContentInfo> totalQuestionList = new ArrayList<QuestionContentInfo>();
+				getQuestionList(questionInfo, true, totalQuestionList);
+
 				request.setAttribute("questionInfo", questionInfo);
-				request.setAttribute("choiceList", choiceList);
-				request.setAttribute("essayList", essayList);
-				request.setAttribute("dateList", dateList);
-				request.setAttribute("timeList", timeList);
-				request.setAttribute("scoreList", scoreList);
+				request.setAttribute("totalQuestionList", totalQuestionList);
 				
 				return "questionResult";
 			}
@@ -141,34 +134,6 @@ public class QuestionController {
 			}
 		}
 
-	}
-	
-	private void setAnswerList(
-			List<QuestionChoiceInfo> choiceList
-			, List<QuestionEssayInfo> essayList
-			, List<QuestionDateInfo> dateList
-			, List<QuestionTimeInfo> timeList
-			, List<QuestionScoreInfo> scoreList){
-		
-			for(QuestionChoiceInfo info : choiceList){
-				info.setAnswerList(answerChoiceDao.selectByQuestionId(info.getId()));
-			}
-			
-			for(QuestionEssayInfo info : essayList){
-				info.setAnswerList(answerEssayDao.selectByQuestionId(info.getId()));
-			}
-			
-			for(QuestionDateInfo info : dateList){
-				info.setAnswerList(answerDateDao.selectByQuestionId(info.getId()));
-			}
-			
-			for(QuestionTimeInfo info : timeList){
-				info.setAnswerList(answerTimeDao.selectByQuestionId(info.getId()));
-			}
-			
-			for(QuestionScoreInfo info : scoreList){
-				info.setAnswerList(answerScoreDao.selectByQuestionId(info.getId()));
-			}
 	}
 	
 	/** 설문 생성 */
@@ -261,8 +226,7 @@ public class QuestionController {
 		QuestionInfo info = questionDao.selectById(id);
 		ArrayList<QuestionContentInfo> totalQuestionList = new ArrayList<QuestionContentInfo>();
 		
-		getQuestionList(info, false, )
-		
+		getQuestionList(info, false, totalQuestionList);
 		
 		Gson gson = new Gson();
 		String result = gson.toJson(totalQuestionList);
@@ -288,6 +252,9 @@ public class QuestionController {
 			newQuestion.q4 = qInfo.getP4();
 			newQuestion.q5 = qInfo.getP5();
 			
+			if(isAnswer)
+				newQuestion.answerList = answerChoiceDao.selectByQuestionIdToContent(qInfo.getId());
+			
 			totalQuestionList.add(newQuestion);
 		}
 
@@ -296,6 +263,10 @@ public class QuestionController {
 			newQuestion.id = qInfo.getId();
 			newQuestion.qType = 1;
 			newQuestion.qTitle = qInfo.getProblom();
+			
+			if(isAnswer)
+				newQuestion.answerList = answerEssayDao.selectByQuestionIdToContent(qInfo.getId());
+	
 			totalQuestionList.add(newQuestion);
 		}
 
@@ -304,6 +275,10 @@ public class QuestionController {
 			newQuestion.id = qInfo.getId();
 			newQuestion.qType = 2;
 			newQuestion.qTitle = qInfo.getProblom();
+			
+			if(isAnswer)
+				newQuestion.answerList = answerDateDao.selectByQuestionIdToContent(qInfo.getId());
+			
 			totalQuestionList.add(newQuestion);
 		}
 		
@@ -312,6 +287,10 @@ public class QuestionController {
 			newQuestion.id = qInfo.getId();
 			newQuestion.qType = 3;
 			newQuestion.qTitle = qInfo.getProblom();
+			
+			if(isAnswer)
+				newQuestion.answerList = answerTimeDao.selectByQuestionIdToContent(qInfo.getId());
+			
 			totalQuestionList.add(newQuestion);
 		}
 
@@ -320,14 +299,20 @@ public class QuestionController {
 			newQuestion.id = qInfo.getId();
 			newQuestion.qType = 4;
 			newQuestion.qTitle = qInfo.getProblom();
+			
+			if(isAnswer)
+				newQuestion.answerList = answerScoreDao.selectByQuestionIdToContent(qInfo.getId());
+			
 			totalQuestionList.add(newQuestion);
 		}
 		Collections.sort(totalQuestionList);
 		
-		QuestionContentInfo newQuestion = new QuestionContentInfo();
-		newQuestion.qTitle = info.getTitle();
-		newQuestion.qContent = info.getContent();
-		totalQuestionList.add(0, newQuestion);
+		if(!isAnswer){
+			QuestionContentInfo newQuestion = new QuestionContentInfo();
+			newQuestion.qTitle = info.getTitle();
+			newQuestion.qContent = info.getContent();
+			totalQuestionList.add(0, newQuestion);
+		}
 		
 		return totalQuestionList;
 	}

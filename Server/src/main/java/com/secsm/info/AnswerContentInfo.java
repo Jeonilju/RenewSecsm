@@ -5,6 +5,7 @@ public class AnswerContentInfo {
 	private int questionId;
 	private int accountId;
 	private String answer;
+	
 	public AnswerContentInfo(int id, int questionId, int accountId, String answer) {
 		super();
 		this.id = id;

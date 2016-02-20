@@ -1,16 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <%@page import="com.secsm.conf.Util"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.secsm.info.*"%>
 <%@ page pageEncoding="utf-8" %>
 
 <%
 	QuestionInfo questionInfo = (QuestionInfo) request.getAttribute("questionInfo");
-	List<QuestionChoiceInfo> choiceList = (List<QuestionChoiceInfo>) request.getAttribute("choiceList");
-	List<QuestionEssayInfo> essayList = (List<QuestionEssayInfo>) request.getAttribute("essayList");
-	List<QuestionDateInfo> dateList = (List<QuestionDateInfo>) request.getAttribute("dateList");
-	List<QuestionTimeInfo> timeList = (List<QuestionTimeInfo>) request.getAttribute("timeList");
-	List<QuestionScoreInfo> scoreList = (List<QuestionScoreInfo>) request.getAttribute("scoreList");
+	ArrayList<QuestionContentInfo> totalQuestionList = (ArrayList<QuestionContentInfo>) request.getAttribute("totalQuestionList");
 %>
 
 <html>
@@ -31,28 +28,66 @@
 
 		<div class="container body-content" style="margin-top: 150px">
 			<div class="row-fluid">
-				<h1> 결과조회 </h1>
+				<h1> <%= questionInfo.getTitle() %> </h1>
 			</div>
 			
 			<div align="right" >
-				<button type="button" class="btn" style="margin: 5px;" onclick="location.replace('/Secsm/questionResultExcel " + <%=questionInfo.getId() %>> + "');">엑셀 다운</button>
+				<button type="button" class="btn" style="margin: 5px;" onclick="location.replace('/Secsm/questionResultExcel " + <%=questionInfo.getId() %> + "');">엑셀 다운</button>
 			</div>
 			
-			<div>
-				<table class="table table-hover">
-				    <thead>
-				      <tr>
-				        <th>No.</th>
-				      </tr>
-				    </thead>
-				    <tbody>
-				    	<%
-				    		
-				    	%>
-				    </tbody>
-				  </table>
+			<div class="row-fluid">
+				<pre><%=questionInfo.getContent() %></pre>
 			</div>
 			
+			<%
+				int index = 1;
+				for(QuestionContentInfo info : totalQuestionList){
+					out.println("<div class='row-fluid'>");
+					
+					String qType = "";
+					if(info.qType == 0){
+						qType = "객관식";
+					}
+					else if(info.qType == 1){
+						qType = "주관식";
+					}
+					else if(info.qType == 2){
+						qType = "날짜";
+					}
+					else if(info.qType == 3){
+						qType = "시간";
+					}
+					else if(info.qType == 4){
+						qType = "점수";
+					}
+					out.println("" + index + ". " + qType + ": " + info.qTitle + "<br/>");
+					
+					out.println("<table class='table table-hover'>");
+					
+					out.println("<thead>");
+					out.println("<tr>");
+					out.println("<td>" + "이름" + "</td>");
+					out.println("<td>" + "답변" + "</td>");
+					out.println("</tr>");
+					out.println("</thead>");
+					
+					if(info.answerList != null){
+						for(AnswerContentInfo answerInfo : info.answerList){
+							
+							out.println("<tbody>");
+							out.println("<tr>");
+							out.println("<td>" + answerInfo.getAccountId() + "</td>");
+							out.println("<td>" + answerInfo.getAnswer() + "</td>");
+							out.println("</tr>");
+							out.println("</tbody>");
+						}
+					}
+					
+					out.println("</div>");
+					
+					index++;
+				}
+			%>
 			<jsp:include page="base/foot.jsp" flush="false" />
 		</div>	
 	</body>
