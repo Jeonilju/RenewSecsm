@@ -98,19 +98,25 @@ public class PXController {
 		
 		if(result.size() == 1){
 			// 정상
+			
+			if(result.get(0).getCount()==0){
+				return "2";
+			}
+			else{
 			accountDao.usePxAmount(info.getId(), result.get(0).getPrice());
 			pxLogDao.create(info.getId(), result.get(0).getId(), 0, 1,result.get(0).getName(),result.get(0).getPrice());
 			pxItemsDao.useItems(result.get(0).getId(),1);
 			
 			return "0";
+			}
 		}
 		else if(result.size() < 1){
 			// 해당 아이템이 존재하지 않음
 			return "1";
 		}
 		else{
-			// 있을수 없는일
-			return "2";
+		// 있을수 없는일
+			return "3";
 		}
 	}
 	
