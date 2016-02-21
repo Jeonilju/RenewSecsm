@@ -80,8 +80,8 @@
 		</div>
 	</div>
 </header>
-
-<body style="background: #18bc9c;" onload="onLoad();">
+<!-- <body style="background: #18bc9c;" onload="onLoad();"> -->
+<body style="background: #18bc9c;" >
 	<jsp:include page="base/nav.jsp" flush="false" />
 	<jsp:include page="base/foot.jsp" flush="false" />
 </body>

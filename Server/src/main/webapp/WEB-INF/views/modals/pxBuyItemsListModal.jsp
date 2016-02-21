@@ -11,6 +11,8 @@
 
 <script type="text/javascript">
 
+					var pagenum = 10;
+					
 					function refund(idx,chk) {
 						var param = "idx" + "=" + idx;
 						
@@ -49,19 +51,45 @@
 						});
 					}
 					
-					function log_detail() {
+					function log_detail(opt) {
 					
+						if(opt==0){
+							
+							pagenum = 0;
+						}
+						else if(opt==1){
+							pagenum = pagenum - 10;
+						}
+						else if(opt==2){
+							pagenum = pagenum + 10;
+						}
+						
+						
+						var param = "opt" + "=" + opt + "&" + 
+									"pagenum" + "=" + pagenum;
+						
 						$.ajax({
 							url : "/Secsm/api_getPxLog",
 							type : "POST",
-							data : "",
+							data : param,
 							cache : false,
 							async : false,
 							dataType : "text",
 							
-							success : function(response) {	
-		    					var arr = JSON.parse(response);
-		    					insertLogTable(arr);
+							success : function(response) {
+								
+								if(response == "400"){
+									alert("마지막 페이지 입니다.");
+									pagenum = pagenum - 10;
+								}
+								else if(response == "300"){
+									alert("첫페이지 입니다.");
+									pagenum = 0;
+								}
+								else{
+		    						var arr = JSON.parse(response);
+		    						insertLogTable(arr);
+								}
 							},
 							error : function(request, status, error) {
 								if (request.status != '0') {
@@ -132,9 +160,10 @@
 				  	  </thead>
 				   		 <tbody id = "pxLogTbody">
 		
-				    		
 				    	</tbody>
 				 	 </table>
+					<button type="button" class="btn btn-sm" onclick="log_detail(1);" style="margin: 5px;">이전</button>
+					<button type="button" class="btn btn-sm" onclick="log_detail(2);" style="margin: 5px; margin-left:0px;">다음</button>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>

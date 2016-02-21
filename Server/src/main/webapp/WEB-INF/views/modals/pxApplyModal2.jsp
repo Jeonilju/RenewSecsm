@@ -7,7 +7,7 @@
 %>
 
 <script type="text/javascript">
-	
+	var pagenum = 10;
 	function pxApplyReq2(){
 		var param = "pxApplyTitle" + "=" + $("#pxApplyTitle2").val() + "&" + 
 				"pxApplyContent" + "="+ $("#pxApplyContent2").val();
@@ -26,7 +26,7 @@
 				alert("요청되었습니다.");
 				document.getElementById("pxApplyTitle2").value = "";
 				document.getElementById("pxApplyContent2").value = "";
-				refreshReqTable2()
+				refreshReqTable2(0)
 			}
 			
 		},
@@ -39,8 +39,19 @@
 		});
 	}
 	
-	function refreshReqTable2(){
-		var param = "";
+	function refreshReqTable2(opt){
+		
+		if(opt==0){
+			pagenum = 0;
+		}
+		else if(opt==1){
+			pagenum = pagenum - 10;
+		}
+		else if(opt==2){
+			pagenum = pagenum + 10;
+		}
+		
+		var param = "pagenum" + "=" + pagenum;
 		
 		$.ajax({
 		url : "/Secsm/api_applyReqList",
@@ -50,9 +61,19 @@
 		async : false,
 		dataType : "text",
 		
-		success : function(response) {	
-			var arr = JSON.parse(response);
-			insertReqTable2(arr);
+		success : function(response) {
+			if(response == "400"){
+				alert("마지막 페이지 입니다.");
+				pagenum = pagenum - 10;
+			}
+			else if(response == "300"){
+				alert("첫페이지 입니다.");
+				pagenum = 0;
+			}
+			else{
+				var arr = JSON.parse(response);
+				insertReqTable2(arr);
+			}
 		},
 		error : function(request, status, error) {
 			if (request.status != '0') {
@@ -251,6 +272,8 @@
 							%>
 						</tbody>
 					</table>
+				<button type="button" class="btn btn-sm" onclick="refreshReqTable2(1);" style="margin: 5px;">이전</button>
+				<button type="button" class="btn btn-sm" onclick="refreshReqTable2(2);" style="margin: 5px; margin-left:0px;">다음</button>
 				
 				</div>
 				
