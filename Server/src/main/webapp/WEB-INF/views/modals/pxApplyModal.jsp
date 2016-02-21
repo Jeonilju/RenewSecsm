@@ -8,7 +8,10 @@
 
 <script type="text/javascript">
 	
+	var pagenum = 10;
+	
 	function pxApplyReq(){
+		
 		var param = "pxApplyTitle" + "=" + $("#pxApplyTitle").val() + "&" + 
 				"pxApplyContent" + "="+ $("#pxApplyContent").val();
 		$.ajax({
@@ -20,13 +23,13 @@
 		dataType : "text",
 		
 		success : function(response) {	
-			alert(response);
+		
 			if(response=='200')
 			{
 				alert("요청되었습니다.");
 				document.getElementById("pxApplyTitle").value = "";
 				document.getElementById("pxApplyContent").value = "";
-				refreshReqTable()
+				refreshReqTable(0)
 			}
 			
 		},
@@ -39,8 +42,20 @@
 		});
 	}
 	
-	function refreshReqTable(){
-		var param = "";
+	function refreshReqTable(opt){
+		
+		if(opt==0){
+			
+			pagenum = 0;
+		}
+		else if(opt==1){
+			pagenum = pagenum - 10;
+		}
+		else if(opt==2){
+			pagenum = pagenum + 10;
+		}
+		
+		var param = "pagenum" + "=" + pagenum;
 		
 		$.ajax({
 		url : "/Secsm/api_applyReqList",
@@ -50,9 +65,19 @@
 		async : false,
 		dataType : "text",
 		
-		success : function(response) {	
-			var arr = JSON.parse(response);
-			insertReqTable(arr);
+		success : function(response) {
+			if(response == "400"){
+				alert("마지막 페이지 입니다.");
+				pagenum = pagenum - 10;
+			}
+			else if(response == "300"){
+				alert("첫페이지 입니다.");
+				pagenum = 0;
+			}
+			else{
+				var arr = JSON.parse(response);
+				insertReqTable(arr);
+			}
 		},
 		error : function(request, status, error) {
 			if (request.status != '0') {
@@ -95,7 +120,7 @@
 				newCell4.appendChild(document.createTextNode('승인완료'));
 				var button = document.createElement('input');
 				button.setAttribute('type','button');
-				button.setAttribute('class','btn btn-default');
+				button.setAttribute('class','btn btn-danger');
 				button.setAttribute('value','삭제');
 				button.setAttribute('OnClick','DeleteReqlist('+ data.id+ ',1)');
 				newCell5.appendChild(button);
@@ -110,13 +135,16 @@
 		var swapBtn = document.getElementById("swapBtn");
 		var pxReqBtn = document.getElementById("pxReqBtn");
 		
+		var j = swapBtn.childNodes[0];
 		if(pxReqDivList.style.display == ""){
 			// Form으로 변경
+			j.innerText = '상품 요청';
 			swapBtn.value = "신청 리스트";
 			pxReqBtn.style.display = "";
 		}
 		else{
 			// list로 변경
+			j.innerText = '상품 리스트';
 			swapBtn.value = "상품 요청";
 			pxReqBtn.style.display = "none";
 			refreshReqTable();
@@ -126,6 +154,29 @@
 		pxReqDivList.style.display = pxReqDivForm.style.display;
 		pxReqDivForm.style.display = temp;
 	}
+	
+	function end_apply(){
+		
+		var pxReqDivList = document.getElementById("pxReqDivList");
+		var pxReqDivForm = document.getElementById("pxReqDivForm");
+		var swapBtn = document.getElementById("swapBtn");
+		var pxReqBtn = document.getElementById("pxReqBtn");
+		
+		var j = swapBtn.childNodes[0];
+		if(pxReqDivList.style.display == ""){
+			// Form으로 변경
+			j.innerText = '상품 요청';
+			swapBtn.value = "신청 리스트";
+			pxReqBtn.style.display = "";
+
+			var temp = pxReqDivList.style.display;
+			pxReqDivList.style.display = pxReqDivForm.style.display;
+			pxReqDivForm.style.display = temp;
+		}
+		
+	}
+		
+	
 
 </script>
 
@@ -138,10 +189,12 @@
 			
 			<div class="modal-body">
 			
-			<button id="swapBtn" name="swapBtn" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn();">상품 요청</button>
+			
+			<button id="swapBtn" name="swapBtn" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn();"><span>상품요청</span></button>
+		
 			
 				<!-- 상품 요청 리스트-->
-				<div id="pxReqDivList" name="pxReqDivList" style="display: ;">
+				<div id="pxReqDivList" name="pxReqDivList" style="display: none;">
 					<table class="table table-hover" id="pxReqTable">
 					    <thead>
 					      <tr>
@@ -157,11 +210,13 @@
 							%>
 						</tbody>
 					</table>
-				
+				<button type="button" class="btn btn-sm" onclick="refreshReqTable(1);" style="margin: 5px;">이전</button>
+				<button type="button" class="btn btn-sm" onclick="refreshReqTable(2);" style="margin: 5px; margin-left:0px;">다음</button>
 				</div>
 				
 				<!-- 상품 요청 form -->
-				<div id="pxReqDivForm" name="pxReqDivForm" style="display: none;">
+				<form id= "apply_form" onsubmit="pxApplyReq();inputreset(3);return false">
+				<div id="pxReqDivForm" name="pxReqDivForm" style="display: ;">
 					제목
 					<input type="text" id="pxApplyTitle" class = "form-control" name="pxApplyTitle">
 					
@@ -169,11 +224,13 @@
 					<input type="text" id="pxApplyContent" class = "form-control" name="pxApplyContent">
 				</div>
 			</div>
+			
 			<div class="modal-footer">
-				<button id="pxReqBtn" name="pxReqBtn" type="button" class="btn btn-default" onclick="pxApplyReq();" style="display: none;">요청</button>
-				<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+				<input id="pxReqBtn" name="pxReqBtn" type="submit" value="요청" class="btn btn-default" style="display: ;">
+				<button type="button" class="btn btn-danger" data-dismiss="modal" onclick = "end_apply();">닫기</button>
 			</div>
-		</div>
+			</form>
+		</div>		
 		<!-- /.modal-content -->
 	</div>
 </div>

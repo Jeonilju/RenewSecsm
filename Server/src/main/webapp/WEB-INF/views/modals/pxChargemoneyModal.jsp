@@ -85,47 +85,59 @@
 		});
 	}
 	
+	function showKeyCode(event) {
+		event = event || window.event;
+		var keyID = (event.which) ? event.which : event.keyCode;
+		if( ( keyID >=48 && keyID <= 57 ) || ( keyID >=96 && keyID <= 105 ) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 )
+		{
+			return;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 </script>
 
 <!-- 금액 충전 모달 -->
 <div class="modal fade" id="pxChargemoneyModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="createProjectForm" id="createProjectForm" action="/api_createProject">
 				<div class="modal-header">
 					<h4 class="modal-title" id="SignInModalLabel">금액 충전</h4>
 				</div>
 				<div class="modal-body" >
 					<div class="row-fluid" style="">
-						<div class="col-md-6">
+						<div class="col-md-8">
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2" style="padding-left: 10px;">
 							내 잔액 : 
 						</div>
-						<div class="col-md-3">    
+						<div>    
 								<label id = "amounts"></label>  	
 						</div>
 					</div>
 					
-					<div class="row-fluid" style="margin: 20px">
-						<div class="col-md-3">
-							충전금액
+					<form id= "charge_form" onsubmit="charge_Money();getPxAmount();inputreset(1);return false">
+					<div class="row-fluid" style="margin: 10px">
+						<div class="col-md-3" style=" padding-right: 0px; padding-left: 50px;">
+							<h5>충전금액</h5>
 						</div>
 						<div class = "col-md-6">
-						<input id="charge_money" name="charge_money" type="text" style="width: 100%">
+						<input id="charge_money" onkeydown="return showKeyCode(event)" name="charge_money" class = "form-control" type="text" style="width: 100%">
 						</div>
 						<div class="col-md-3">
-							<button type="button" class="btn btn-default" onclick="charge_Money();getPxAmount();"> 충전 </button>
+							<input type="submit" class="btn btn-default" value = "충전">
 						</div>
 					</div>
-					
+					</form>
 					<div style="height: 40px;"></div>
 				</div>
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
 				</div>
-			</form>
 		</div>
 	</div>
 </div>

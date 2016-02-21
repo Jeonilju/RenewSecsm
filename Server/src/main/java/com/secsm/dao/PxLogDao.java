@@ -58,10 +58,10 @@ public class PxLogDao implements PxLogIDao {
 				});
 	}
 	
-	public List<PxLogInfo> selectByAccountId(int id){
+	public List<PxLogInfo> selectByAccountId(int id,int pagenum){
 		
-		return jdbcTemplate.query("select * from px_log as log, px_items as item where log.Account_id = ? AND item.id = log.px_items_id"
-				+ "", new Object[] {id},
+		return jdbcTemplate.query("select * from px_log as log, px_items as item where log.Account_id = ? AND item.id = log.px_items_id order by regDate limit ?, 10"
+				+ "", new Object[] {id,pagenum},
 				new RowMapper<PxLogInfo>() {
 					public PxLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new PxLogInfo(resultSet.getInt("log.id"), resultSet.getInt("log.Account_id")
@@ -89,6 +89,13 @@ public class PxLogDao implements PxLogIDao {
 		return rowCount;
 		
 	}
+	
+	public int total_list_num_Byid(int id){
+		int rowCount = jdbcTemplate.queryForInt("select count(*) from px_log where Account_id  = ?",new Object[]{id});
+		return rowCount;
+		
+	}
+	
 	public void delete(int id){
 		jdbcTemplate.update("delete from px_log where id = ?", new Object[] {id});
 	}
