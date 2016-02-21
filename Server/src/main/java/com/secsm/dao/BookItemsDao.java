@@ -114,35 +114,7 @@ public class BookItemsDao {
 				});
 	}
 	
-	public List<BookItemsInfo> selectById(String category, int searchPage){
-		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
-								+ "where b.name = ? order by regDate limit ?, 7"
-				, new Object[] {category, searchPage}
-				, new RowMapper<BookItemsInfo>() {
-					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
-								resultSet.getString("name"), resultSet.getString("publisher"), resultSet.getString("author"),
-								resultSet.getString("imageURL"), resultSet.getInt("type"), resultSet.getTimestamp("regDate"),
-								resultSet.getInt("count"), resultSet.getInt("totalCount"));
-					}
-				});
-	}
-	
-	public List<BookItemsInfo> selectByName(String category, int searchPage){
-		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
-								+ "where b.name = ? order by regDate limit ?, 7"
-				, new Object[] {category, searchPage}
-				, new RowMapper<BookItemsInfo>() {
-					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
-								resultSet.getString("name"), resultSet.getString("publisher"), resultSet.getString("author"),
-								resultSet.getString("imageURL"), resultSet.getInt("type"), resultSet.getTimestamp("regDate"),
-								resultSet.getInt("count"), resultSet.getInt("totalCount"));
-					}
-				});
-	}
-	
-	public List<BookItemsInfo> selectByCode(String category, int searchPage){
+	public List<BookItemsInfo> selectByCategory(String category, int searchPage){
 		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
 								+ "where b.name = ? order by regDate limit ?, 7"
 				, new Object[] {category, searchPage}

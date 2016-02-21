@@ -17,19 +17,6 @@
 		}
 	);
 	
-	function goAddBook(title,publisher,author,imageURL){
-		var check = confirm("동일한 도서가 등록되어 있는지 확인했나요?");
-		if(!check) return;
-		$('select[name=addType]').val(0);
-		$("#addCode").val("");
-		$("#addTitle").val(title);
-		$("#addPublisher").val(publisher);
-		$("#addAuthor").val(author);
-		$("#addImageURL").val(imageURL);
-		$("#addCount").val(1);
-		$('#bookAddModal').modal('show');
-	}
-	
 	function goExcel(){
 		if($("#reqListStartDate").val()==""){
 			alert("시작일을 입력하세요.");
@@ -40,16 +27,10 @@
 			return;
 		}
 		
-		var excelURL = 'http://localhost:8181/Secsm/bookReqExcel?'
+		var excelURL = 'http://localhost:8181/Secsm/equipmentReqExcel?'
 						+ "reqListStartDate" + "=" + $("#reqListStartDate").val() + "&" 
 						+ "reqListEndDate" + "=" + $("#reqListEndDate").val();
 		window.open(excelURL); 
-	}
-	
-	function goImage(imageURL){
-		var imageSrc = '<img src="'+ imageURL + '" class="img-thumbnail" alt="No Image">';
-		$("#bookImageBody").html(imageSrc)
-		$("#bookImageBody").css("text-align","center");
 	}
 	
 	function reqList(option){
@@ -77,7 +58,7 @@
 		else{}
 		
 		$.ajax({
-		url : "/Secsm/api_reqList",
+		url : "/Secsm/api_equipmentReqList",
 		type : "POST",
 		data : param,
 		cache : false,
@@ -102,16 +83,15 @@
 				var tableContent = '<tbody>';
 				var i;
 				for(i=0;i<Object.keys(obj).length;i++){
-					tableContent = tableContent + '<tr> <td class="col-md-2"> <button type="button" class="btn btn-info" onclick="goImage(\'' + obj[i].imageURL
-								+'\');" data-toggle="modal" data-target="#bookImageModal">보기</button> </td>'
-								+ '<td class="col-md-4" style="cursor:pointer;" onClick="goAddBook(\'' + obj[i].title+'\',\''+obj[i].publisher+'\',\''+obj[i].author+'\',\''+obj[i].imageURL + '\');">'+ obj[i].title 
-								+ '</td> <td class="col-md-3">' + obj[i].publisher + '</td> <td class="col-md-1">' + obj[i].accountName + '</td> <td class="col-md-2">' + obj[i].strRegDate  + '</td> </tr>';	
+					tableContent = tableContent + '<tr> <td class="col-md-2">' + obj[i].typeKr + '</td> <td class="col-md-4">'
+								+ obj[i].titleKr + '</td> <td class="col-md-2">' + obj[i].brand + '</td> <td class="col-md-1">' 
+								+ obj[i].count + '</td> <td class="col-md-1">' + obj[i].accountName + '</td> <td class="col-md-2">' + obj[i].strRegDate  + '</td> </tr>';	
 				}
 				tableContent = tableContent + '</tbody> </table>'
 				var tableHeader = '<table class="table" style="table-layout:fixed;"> <thead> <tr>'
-			      					+'<th class="col-md-2">이미지</th> <th class="col-md-4">도서명</th> <th class="col-md-3">출판사</th> <th class="col-md-1">신청자</th> <th class="col-md-2">신청일</th> </tr> </thead>';
+			      					+'<th class="col-md-2">분류</th> <th class="col-md-4">장비명</th> <th class="col-md-2">브랜드</th> <th class="col-md-1">수량</th> <th class="col-md-1">신청자</th> <th class="col-md-2">신청일</th> </tr> </thead>';
 			    var table = tableHeader + tableContent;
-				$("#bookReqListTable").html(table);
+				$("#equipmentReqListTable").html(table);
 			}
 		},
 		error : function(request, status, error) {
@@ -127,15 +107,15 @@
 </script>
 
 <!-- 자동당직생성 모달-->
-<div class="modal fade" id="bookReqListModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="equipmentReqListModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-dialog modal-lg" >
 		<div class="modal-content">
-			<form name="bookReqList" id="bookReqList">
+			<form name="equipmentReqList" id="equipmentReqList">
 				<div class="modal-header">
 					<h4 class="modal-title">신청목록</h4>
 				</div>
 				<div class="modal-body" >
-					<div id=bookReqListTable>
+					<div id=equipmentReqListTable>
 						
 					</div>
 				</div>

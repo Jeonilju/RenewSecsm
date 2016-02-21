@@ -45,10 +45,13 @@
 			else if(response=='3'){
 				alert('제외날짜의 포맷을 확인하세요.');
 			}
-			else{
+			else if(response=='4'){
 				alert('제외인원이 존재하지 않거나 잘못된 포맷을 사용하고 있습니다.');
 			}
-			
+			else if(response=='5'){
+				alert('로그인을 하세요.');
+			}
+			else{}
 		},
 		error : function(request, status, error) {
 			if (request.status != '0') {

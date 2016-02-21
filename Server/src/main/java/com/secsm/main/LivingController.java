@@ -107,6 +107,14 @@ public class LivingController {
 		
 		return "duty";
 	}
+
+	
+////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+//////////////////////Duty APIs/////////////////////
+////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+
 	
 	@ResponseBody
 	@RequestMapping(value = "/dutyInsert", method = RequestMethod.POST)
@@ -165,6 +173,11 @@ public class LivingController {
 			@RequestParam("date") long date) {
 		logger.info("dutyDelete");
 		
+		AccountInfo info = Util.getLoginedUser(request);
+		if(info == null){
+			return "3";
+		}
+		
 		Timestamp timeDate = new Timestamp(date);
 		Timestamp start = new Timestamp(timeDate.getYear(),timeDate.getMonth(),timeDate.getDate(),0,0,0,0);
 		Timestamp end = new Timestamp(timeDate.getYear(),timeDate.getMonth(),timeDate.getDate()+1,0,0,0,0);
@@ -203,6 +216,11 @@ public class LivingController {
 			@RequestParam("exceptionPerson") String exceptionPerson
 			) {
 		logger.info("dutyAutoCreate");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		if(info == null){
+			return "5";
+		}
 		
 	    String[] exceptionPersonArray = exceptionPerson.split("/");
 	    String[] exceptionDayArray = exceptionDay.split("/");

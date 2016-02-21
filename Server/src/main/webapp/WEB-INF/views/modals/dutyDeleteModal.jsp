@@ -24,10 +24,17 @@
 	       		  	alert($('#dutyDeleteName').text() + '님의 당직일정이 삭제 되었습니다.');
 	       	    	location.reload();
 	      	 	}
-	       		else
+	       		if(response=='1')
 	       		{
-	            	alert('새로고침 후 다시 시도해주세요.');
-	         	}
+	       		  	alert('해당 회원이 존재하지 않습니다.');
+	       	    	location.reload();
+	      	 	}
+	       		if(response=='3')
+	       		{
+	       		  	alert('로그인을 하세요.');
+	       	    	location.reload();
+	      	 	}
+	       		else{}
 	      	},
 	      	error : function(request, status, error) {
 	       	 	if (request.status != '0') {

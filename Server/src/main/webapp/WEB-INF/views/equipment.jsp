@@ -1,16 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<%@page import="com.secsm.conf.*"%>
+<%@page import="java.util.ArrayList"%>
+<%@ page pageEncoding="utf-8" %>
+<%@page import="com.secsm.info.EquipmentItemsInfo"%>
 <%@page import="com.secsm.info.EquipmentCategoryInfo"%>
 <%@page import="com.secsm.info.AccountInfo"%>
-<%@page import="java.util.*"%>
-<%@ page pageEncoding="utf-8" %>
-
-<%
-	AccountInfo accountInfo = (AccountInfo) request.getAttribute("accountInfo");
-
-	@SuppressWarnings("unchecked")
-	List<EquipmentCategoryInfo> equipmentCategoryList = (ArrayList<EquipmentCategoryInfo>) request.getAttribute("equipmentCategoryList");
-	
-%>
 
 <html>
 	<head>
@@ -19,360 +13,315 @@
 		<jsp:include page="base/header.jsp" flush="false" />
     	<title>Equipment</title>
     	
-	</head>
-	
-	<body onload="onLoad();">
-	
-	<script type="text/javascript">
+    	<%AccountInfo member = Util.getLoginedUser(request);%>
     	
-    		function showSearch(){
-    			var divSearch = document.getElementById("divSearch");
-    			var divRental = document.getElementById("divRental");
-    			var divApply = document.getElementById("divApply");
-    			var divAdd = document.getElementById("divAdd");
-    			
-    			divSearch.style.display = "";
-    			divRental.style.display = "none";
-    			divApply.style.display = "none";
-    			divAdd.style.display = "none";
-    		}
-    		
-    		function showRental(){
-    			var divSearch = document.getElementById("divSearch");
-    			var divRental = document.getElementById("divRental");
-    			var divApply = document.getElementById("divApply");
-    			var divAdd = document.getElementById("divAdd");
-    			
-    			divSearch.style.display = "none";
-    			divRental.style.display = "";
-    			divApply.style.display = "none";
-    			divAdd.style.display = "none";
-    		}
-    		
-    		function showApply(){
-    			var divSearch = document.getElementById("divSearch");
-    			var divRental = document.getElementById("divRental");
-    			var divApply = document.getElementById("divApply");
-    			var divAdd = document.getElementById("divAdd");
-    			
-    			divSearch.style.display = "none";
-    			divRental.style.display = "none";
-    			divApply.style.display = "";
-    			divAdd.style.display = "none";
-    		}
-    		
-    		function showAdd(){
-    			var divSearch = document.getElementById("divSearch");
-    			var divRental = document.getElementById("divRental");
-    			var divApply = document.getElementById("divApply");
-    			var divAdd = document.getElementById("divAdd");
-    			
-    			divSearch.style.display = "none";
-    			divRental.style.display = "none";
-    			divApply.style.display = "none";
-    			divAdd.style.display = "";
-    		}
+    	<script type="text/javascript" src="/Secsm/resources/js/bootstrap-datepicker.js"></script>
     	
-    		function searchEquipment(){
-    			
-    			var param = "searchEquipmentType" + "=" + $("#searchEquipmentType").val() + "&" + 
-						"searchEquipmentContent" + "="+ $("#searchEquipmentContent").val();
-				$.ajax({
-				url : "/Secsm/api_searchEquipment",
-				type : "POST",
-				data : param,
-				cache : false,
-				async : false,
-				dataType : "text",
-				
-				success : function(response) {	
-					alert(response);
-					var arr = JSON.parse(response);
-					insertSearchTable(arr);
-					
-				},
-				error : function(request, status, error) {
-					if (request.status != '0') {
-						alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-					}
-				}
-				
-				});
-    		}
+    	<script type="text/javascript">
     		
-    		function applyEquipment(){
-    			var param = "applyEquipmentType" + "=" + $("#applyEquipmentType").val() + "&" + 
-					"applyEquipmentContent" + "="+ $("#applyEquipmentContent").val();
-				
-    			$.ajax({
-					url : "/Secsm/api_applyEquipment",
-					type : "POST",
-					data : param,
-					cache : false,
-					async : false,
-					dataType : "text",
-					
-					success : function(response) {	
-						alert(response);
-					},
-					error : function(request, status, error) {
-						if (request.status != '0') {
-							alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-						}
-					}
-				});
-    		}
-
-    		function reqEquipment(){
-    			var param ="reqEquipmentTitle" + "=" + $("#reqEquipmentTitle").val() + "&" + 
-						"reqEquipmentContent" + "="+ $("#reqEquipmentContent").val();
-				
-    			$.ajax({
-				url : "/Secsm/api_reqEquipment",
-				type : "POST",
-				data : param,
-				cache : false,
-				async : false,
-				dataType : "text",
-				
-				success : function(response) {	
-					alert(response);
-					
-					
-				},
-				error : function(request, status, error) {
-					if (request.status != '0') {
-						alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-					}
-				}
-				
-				});
-    		}
-
-    		function addEquipment(){
-    			var param ="addEquipmentName" + "=" + $("#addEquipmentName").val() + "&" +
-		    			"addEquipmentCode" + "=" + $("#addEquipmentCode").val() + "&" +
-		    			"addEquipmentCount" + "=" + $("#addEquipmentCount").val() + "&" +
-		    			"addEquipmentType" + "=" + $("#addEquipmentType").val() + "&" +
-						"addEquipmentContent" + "="+ $("#addEquipmentContent").val();
-				
-				$.ajax({
-				url : "/Secsm/api_addEquipment",
-				type : "POST",
-				data : param,
-				cache : false,
-				async : false,
-				dataType : "text",
-				
-				success : function(response) {	
-					if(response == '200'){
-						alert("추가되었습니다.");
-								
-					}
-					
-				},
-				error : function(request, status, error) {
-					if (request.status != '0') {
-						alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-					}
-				}
-				
-				});
-    		}
+    		var grade = <%=member.getGrade()%>;
+    		var searchOptionVar=0;
+    		var searchCategoryVar='ALL';
+    		var searchKeywordVar='';
+    		var page = 7;
     		
-    		function onLoad(){
-    			<%
-    				if(accountInfo == null){
-    					out.println("location.replace(\"/Secsm/index\");");
-    				}
-    			%>
-    		}
-    		
-    		/** 검색 테이블 삽입 */
-    		function insertSearchTable(jsonArr){
-    			
-    			document.getElementById('equipmentSearchTbody').innerHTML = "";	// 기존 테이블에 있는 내용 초기화
-    			
-    			for(var index = 0;index < jsonArr.length;index++){
-    				var data = jsonArr[index];
-    				var tableRef = document.getElementById('equipmentSearchTable').getElementsByTagName('tbody')[0];
-
-    				// Insert a row in the table at the last row
-    				var newRow   = tableRef.insertRow(tableRef.rows.length);
-
-    				// Insert a cell in the row at index 0
-    				var newCell1  = newRow.insertCell(0);
-    				var newCell2  = newRow.insertCell(1);
-    				var newCell3  = newRow.insertCell(2);
-    				var newCell4  = newRow.insertCell(3);
-
-    				// Append a text node to the cell
-    				var newText  = document.createTextNode('New row')
-    				newCell1.appendChild(document.createTextNode(data.id));
-    				newCell2.appendChild(document.createTextNode(data.name));
-    				newCell3.appendChild(document.createTextNode(data.count));
-    				newCell4.appendChild(document.createTextNode(data.status));
+    		$(document).ready(function(){
+    			equipmentSearch(0);
+    			if(grade==0 || grade==4){
+    				$('.adminButton').css('display', 'block'); 
     			}
+    			
+    	   		$("#searchOptionWrap").css({"margin-top":"15px","margin-left":"5px","margin-right":"5px"});
+    	   		$(window).keydown(function(event){
+    	   		    if(event.keyCode == 13) {
+    	   		      event.preventDefault();
+    	   		      return false;
+    	   		    }
+    	   		}); 	   		
+    		});
+    		
+    		function recentLog(){
+    			$('#allLog').removeAttr("checked");
+    			$('select[name=logOption]').val(0);
+    			$("#logSearch").val("");
+    			logEquipment(0);
     		}
+    		
+    		function rent(id){
+    			$('#rentId').val(id);
+    		}
+    		
+    		function noRent(id){
+    			$('#allLog').removeAttr("checked");
+    			$('select[name=logOption]').val(1);
+    			$("#logSearch").val(id);
+    			logEquipment(0);
+    		}
+    		
+    		function equipmentSearch(option){
+    			if(option==0){
+        			searchOptionVar= $(':radio[name="searchOption"]:checked').val();
+            		searchCategoryVar= $("#searchCategory option:selected").val();
+            		searchKeywordVar= $("#searchKeyword").val();
+        			page = 0;
+        		}
+        		else if(option==1 && 0>=page) return;
+        		else if(option==1) page = page-7;
+        		else if(option==2) page = page+7;
+    			
+    			var param = {searchOption: searchOptionVar, 
+    						searchCategory: searchCategoryVar, 
+    						searchKeyword: searchKeywordVar,
+    						searchPage: page
+    						}
+
+    			$.ajax({
+    			url : "/Secsm/api_equipmentSearch",
+    			type : "POST",
+    			data : param,
+    			cache : false,
+    			async : false,
+    			dataType : "text",
+    			
+    			success : function(response) {	
+    				if(response=='401')
+    				{
+    					alert("로그인을 하세요.");
+    					location.reload();
+    				}
+    				if(response=='402')
+    				{
+    					alert("해당 카테고리가 존재하지 않습니다.");
+    					location.reload();
+    				}
+    				else
+    				{
+    					var obj = JSON.parse(response);
+    					
+    					if(Object.keys(obj).length==0 && option==2){
+    						page = page-7;
+							return;    					
+    					}
+    					
+    					var tableContent = '<tbody>';
+    					var i;
+    					for(i=0;i<Object.keys(obj).length;i++){
+    						tableContent = tableContent + '<tr>'
+    										+ '<td class="col-md-1">' + obj[i].id + '</td>'
+    										+ '<td class="col-md-1">' + '<button type="button" class="btn btn-info" onclick="goImage(\'' + obj[i].imageURL
+    										+ '\');" data-toggle="modal" data-target="#equipmentImageModal">보기</button> </td>';
+    						if(grade==0 ||grade==4){
+    							tableContent = tableContent + '<td class="col-md-5" style="cursor:pointer;" onClick="modifyEquipment(' + obj[i].id + ')" data-toggle="modal" data-target="#equipmentModifyModal">' + obj[i].name + '</td>';
+    						}
+    						else {
+    							tableContent = tableContent + '<td class="col-md-5">' + obj[i].name + '</td>';
+    						}
+    						
+    						tableContent = tableContent	+ '<td class="col-md-3">' + obj[i].manufacturer + '</td>'
+    										+ '<td class="col-md-1">' + obj[i].count + '/' + obj[i].totalCount + '</td>';
+
+    						if(obj[i].count=='0'){
+    							tableContent = tableContent + '<td class="col-md-1">' + '<button type="button" class="btn btn-danger" onclick="noRent('
+												+ obj[i].id + ');" data-toggle="modal" data-target="#equipmentLogModal">대여불가</button>' + '</td> </tr>';
+    						}
+    						else{
+    							tableContent = tableContent + '<td class="col-md-1">' + '<button type="button" class="btn btn-success" onclick="rent('
+								+ obj[i].id + ');" data-toggle="modal" data-target="#equipmentRentModal">대여가능</button>' + '</td> </tr>';
+    						}
+    					}
+    					tableContent = tableContent + '</tbody>';
+    					var tableHeader = '<thead> <tr> <th class="col-md-1">No.</th> <th class="col-md-1">이미지</th> <th class="col-md-5">장비명</th>' +
+				        				'<th class="col-md-3">제조사</th> <th class="col-md-1">수량</th> <th class="col-md-1">대여</th> </tr> </thead>';
+    				    var table = tableHeader + tableContent;
+    				    
+    					$("#mainTable").html(table);
+    				}
+    			},
+    			error : function(request, status, error) {
+    				if (request.status != '0') {
+    					alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+    				}
+    			}
+    			
+    			});
+    		}
+    		
+    		function modifyEquipment(id){
+    			var param = {searchId: id};
+    			$('#modifyId').val(id);
+    			
+    			$.ajax({
+        			url : "/Secsm/api_equipmentSearchForModify",
+        			type : "POST",
+        			data : param,
+        			cache : false,
+        			async : false,
+        			dataType : "text",
+        			
+        			success : function(response) {	
+        				if(response=='401')
+        				{
+        					alert("로그인을 하세요.");
+        					location.reload();
+        				}
+        				else if(response=='402')
+        				{
+        					alert("해당 장비정보가 없습니다.");
+        					location.reload();
+        				}
+        				else
+        				{
+        					var obj = JSON.parse(response);
+        					
+        					$("#modifyCode").val(obj[0].code);
+        					$("#modifyTitle").val(obj[0].name);
+        					$("#modifyManufacturer").val(obj[0].manufacturer);
+        					$("#modifyImageURL").val(obj[0].imageURL);
+        					$("#modifyCount").val(obj[0].totalCount);
+        					$('select[name=modifyType]').val(parseInt(obj[0].type));
+        				}
+        			},
+        			error : function(request, status, error) {
+        				if (request.status != '0') {
+        					alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+        				}
+        			}
+        			
+        			});
+    		}
+    		
+    		$(document).keyup(function(event){
+    			if(event.keyCode != 13){
+    			
+    			}
+    			else if($('#equipmentAddModal').is(':visible')){
+    		    	addEquipment();
+    		    }
+    		    else if($('#equipmentCategoryModal').is(':visible')){
+    		    	addCategory();
+    		    }
+    		    else if($('#equipmentLogModal').is(':visible')){
+    		    	logEquipment(0);
+    		    }
+    		    else if($('#equipmentModifyModal').is(':visible')){
+    		    	modifyReq();
+    		    }
+    		    else if($('#equipmentRentModal').is(':visible')){
+    		    	rentEquipment();
+    		    }
+    		    else if($('#equipmentReqListModal').is(':visible')){
+    		    	reqList(0);
+    		    }
+    		    else if($('#equipmentRequestModal').is(':visible')){
+    		    	requestEquipment();
+    		    }
+    		    else{
+    		    	equipmentSearch(0);
+    		    }
+    		});
     		
     	</script>
+    	
+    	<style>
+    		#searchKeyword{
+    			margin-top:6px;
+    			width: 300px;
+    		}
+    		#category{
+    			margin-top:6px;
+    		}
+    		.datepicker{z-index:1151 !important;}
+    		
+    		td{
+    			word-break:break-all;
+    		}
+    		
+    		.adminButton{
+				display:none;
+			}
+		}
+			
+    	</style>
+	</head>
 	
-		<jsp:include page="base/nav.jsp" flush="true" />
+	<%
+		ArrayList<EquipmentCategoryInfo> equipmentCategory = (ArrayList<EquipmentCategoryInfo>) request.getAttribute("equipmentCategory");
+	%>
+	
+	<jsp:include page="base/nav.jsp" flush="true" />
+	<body>
+
 		<div class="container body-content" style="margin-top: 150px">
-			<div class="row-fluid">
-				<h1> 장비 </h1>
+			<div class="row">
+				<h1> Equipment </h1>
 			</div>
-			
-			<div class="row-fluid">
-				<ul >
-					<li role="presentation" style="cursor:pointer"><a role="menuitem" onclick="showSearch();">장비 검색</a></li>
-					<li role="presentation" style="cursor:pointer"><a role="menuitem" onclick="showRental();">대여 및 반납</a></li>
-					<li role="presentation" style="cursor:pointer"><a role="menuitem" onclick="showApply();">장비 요청</a></li>
-					
-					<%
-//						if(accountInfo.getGrade() == 4 || accountInfo.getGrade() == 0){
-							// 장비부장 or 최고관리자
-							out.println("<li role=\"presentation\" style=\"cursor:pointer\" ><a role=\"menuitem\" onclick=\"showAdd();\">장비 추가</a></li>");
-//						}
-					%>
-				</ul>
-			
+			<div class="row">
+				<div class="pull-right">
+					<button type="button" class="btn" data-toggle="modal" data-target="#equipmentRequestModal" style="margin: 5px; margin-right: 0px;">장비신청</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn" onclick="equipmentSearch(0);" style="margin: 5px;">검색</button>
+				</div>
+				<div class="pull-right">
+					<input type="text" class="form-control" id="searchKeyword">
+				</div>
+				<div class="pull-right">
+					<select class="form-control" name="searchCategory" id="searchCategory" style="width:10em; margin-top:6px">
+              			<%
+              				for (EquipmentCategoryInfo info : equipmentCategory){
+              					out.println("<option>" + info.getName() + "</option>");
+              				}
+              			%>
+         			 </select>
+         		</div>
+         		<div class="pull-right" id="searchOptionWrap">
+					<label for="searchOption"><input type="radio" name="searchOption" value="0" checked>장비명</label>
+					<label for="searchOption"><input type="radio" name="searchOption" value="1" >코드</label>
+					<label for="searchOption"><input type="radio" name="searchOption" value="2" >ID</label>
+				</div>
+         		<div class="pull-right">
+					<button type="button" class="btn adminButton" data-toggle="modal" data-target="#equipmentCategoryModal" style="margin: 5px;">추가/삭제</button>
+				</div>
 			</div>
-			
-			<!-- 장비 검색 -->
-			<div name="divSearch" id="divSearch" style="display: none;">
-				장비 검색
-				<select id="searchEquipmentType" name="searchEquipmentType">
-					<option value=-1>전체</option>
-					<%
-						if(equipmentCategoryList != null){
-							for(int count = 0;count < equipmentCategoryList.size();count++){
-								out.print("<option value=" + equipmentCategoryList.get(count).getId() + ">");
-								out.print(equipmentCategoryList.get(count).getName());
-								out.print("</option>");
-							}
-						}
-					%>
-				</select>
-				<input type="text" id="searchEquipmentContent" name="searchEquipmentContent">
-				<button class="btn" id="searchEquipmentBtn" name="searchEquipmentBtn" onclick="searchEquipment();">검색</button>
-				
-				<table id="equipmentSearchTable" class="table table-hover" >
-					<thead>
-						<td>id</td>
-						<td>이름</td>
-						<td>수량</td>
-						<td>상태</td>
-					</thead>
-					<tbody id="equipmentSearchTbody">
-						
-					</tbody>
+			<div class="row">
+			<div class="pull-right">
+				<table class="table table-hover" id="mainTable" style="table-layout:fixed;">
 				</table>
-				
 			</div>
-			
-			<!-- 대여 및 반납 -->
-			<div name="divRental" id="divRental" style="display: ;">
-				대여 및 반납
-				<select id="applyEquipmentType" name="applyEquipmentType">
-					<option value=-1>전체</option>
-					<%
-						if(equipmentCategoryList != null){
-							for(int count = 0;count < equipmentCategoryList.size();count++){
-								out.print("<option value=" + equipmentCategoryList.get(count).getId() + ">");
-								out.print(equipmentCategoryList.get(count).getName());
-								out.print("</option>");
-							}
-						}
-					%>
-				</select>
-				
-				<div class="column-filter-widget">
-					<input type="text" id="applyEquipmentContent" name="applyEquipmentContent">
+			</div>
+			<div class="row">
+				<div class="pull-left">
+					<button type="button" class="btn" onclick="equipmentSearch(1);" style="margin: 5px;">이전</button>
 				</div>
-				<button class="btn" id="applyEquipmentBtn" name="applyEquipmentBtn" onclick="applyEquipment();">검색</button>
-				
-			</div>
-			
-			<!-- 장비 요청 -->
-			<div name="divApply" id="divApply" style="display: none;">
-				장비 요청
-				<div style="margin: 30px">
-					<div class="column-filter-widget">
-						분류
-						<select id="reqEquipmentType" name="reqEquipmentType">
-							<option value=-1>전체</option>
-							<%
-								if(equipmentCategoryList != null){
-									for(int count = 0;count < equipmentCategoryList.size();count++){
-										out.print("<option value=" + equipmentCategoryList.get(count).getId() + ">");
-										out.print(equipmentCategoryList.get(count).getName());
-										out.print("</option>");
-									}
-								}
-							%>
-						</select>
-					</div>
-					<div class="column-filter-widget">
-						장비 명
-						<input type="text" id="reqEquipmentTitle" name="reqEquipmentTitle">
-					</div>
-					
-					<div class="column-filter-widget">
-						내용
-						<input type="text" id="reqEquipmentContent" name="reqEquipmentContent">
-					</div>
-				<button class="btn" id="applyEquipmentBtn" name="applyEquipmentBtn" onclick="reqEquipment();">요청</button>
+				<div class="pull-left">
+					<button type="button" class="btn" onclick="equipmentSearch(2);" style="margin: 5px; margin-left:0px;">다음</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn" data-toggle="modal" data-target="#equipmentLogModal" onclick="recentLog();" style="margin: 5px; margin-right:0px;">대여로그</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn adminButton" data-toggle="modal" data-target="#equipmentAddModal" style="margin: 5px;">장비등록</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn adminButton" data-toggle="modal" data-target="#equipmentReqListModal" style="margin: 5px;">신청목록</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn btn-danger adminButton" data-toggle="modal" data-target="#equipmentLogModal" onclick="logEquipment(4);" style="margin: 5px;">미납자</button>
 				</div>
 			</div>
-			
-			<!-- 장비 추가 -->
-			<div name="divAdd" id="divAdd" style="display: none;">
-				장비 추가
-				<div style="margin: 30px">
-					<div class="column-filter-widget">
-						분류
-						<select id="addEquipmentType" name="addEquipmentType">
-							<option value=-1>전체</option>
-							<%
-								if(equipmentCategoryList != null){
-									for(int count = 0;count < equipmentCategoryList.size();count++){
-										out.print("<option value=" + equipmentCategoryList.get(count).getId() + ">");
-										out.print(equipmentCategoryList.get(count).getName());
-										out.print("</option>");
-									}
-								}
-							%>
-						</select>
-					</div>
-					<div class="column-filter-widget">
-						장비 명
-						<input type="text" id="addEquipmentName" name="addEquipmentName">
-					</div>
-					
-					<div class="column-filter-widget">
-						코드
-						<input type="text" id="addEquipmentCode" name="addEquipmentCode">
-					</div>
-					
-					<div class="column-filter-widget">
-						수량
-						<input type="text" id="addEquipmentCount" name="addEquipmentCount">
-					</div>
-					
-					<div class="column-filter-widget">
-						설명
-						<input type="text" id="addEquipmentContent" name="addEquipmentContent">
-					</div>
-					
-					<button class="btn" id="addEquipmentBtn" name="addEquipmentBtn" onclick="addEquipment();">추가</button>
-					
-				</div>
-			</div>
-			
-			<jsp:include page="base/foot.jsp" flush="false" />
 		</div>	
+		
 
+		<jsp:include page="base/foot.jsp" flush="false" />
+	</body>
+	
+	<jsp:include page="modals/equipmentModifyModal.jsp" flush="false" />
+	<jsp:include page="modals/equipmentImageModal.jsp" flush="false" />
+	<jsp:include page="modals/equipmentCategoryModal.jsp" flush="false" />
+	<jsp:include page="modals/equipmentLogModal.jsp" flush="false" />
+	<jsp:include page="modals/equipmentRentModal.jsp" flush="false" />
+	<jsp:include page="modals/equipmentRequestModal.jsp" flush="false" />
+	<jsp:include page="modals/equipmentAddModal.jsp" flush="false" />
+	<jsp:include page="modals/equipmentReqListModal.jsp" flush="false" />
 
-</body>
 </html>

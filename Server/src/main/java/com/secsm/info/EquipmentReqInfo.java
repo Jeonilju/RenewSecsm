@@ -3,59 +3,163 @@ package com.secsm.info;
 import java.sql.Timestamp;
 
 public class EquipmentReqInfo {
-
 	private int id;
+	private String accountName;
 	private int accountId;
-	private String title;
-	private String context;
+	private String typeKr;
+	private String typeEn;
+	private String titleKr;
+	private String titleEn;
+	private String brand;
+	private String link;
+	private int pay;
+	private int count;
+	private String content;
 	private Timestamp regDate;
-	private int status;
+	private String strRegDate;
 	
-	public EquipmentReqInfo(int id, int accountId, String title, String context, Timestamp regDate, int status) {
-		super();
-		this.id = id;
+	public EquipmentReqInfo(int accountId, String typeKr, String typeEn, String titleKr, String titleEn, String brand,
+			String link, int pay, int count, String content, Timestamp regDate) {
 		this.accountId = accountId;
-		this.title = title;
-		this.context = context;
+		this.typeKr = typeKr;
+		this.typeEn = typeEn;
+		this.titleKr = titleKr;
+		this.titleEn = titleEn;
+		this.brand = brand;
+		this.link = link;
+		this.pay = pay;
+		this.count = count;
+		this.content = content;
 		this.regDate = regDate;
-		this.status = status;
 	}
+	
+	public EquipmentReqInfo(int id, String accountName, String typeKr, String typeEn, String titleKr, String titleEn, String brand,
+			String link, int pay, int count, String content, Timestamp regDate) {
+		this.id = id;
+		this.accountName = accountName;
+		this.typeKr = typeKr;
+		this.typeEn = typeEn;
+		this.titleKr = titleKr;
+		this.titleEn = titleEn;
+		this.brand = brand;
+		this.link = link;
+		this.pay = pay;
+		this.count = count;
+		this.content = content;
+		this.regDate = regDate;
+	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	public String getAccountName() {
+		return accountName;
+	}
+
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
 	public int getAccountId() {
 		return accountId;
 	}
+
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
 	}
-	public String getTitle() {
-		return title;
+
+	public String getTypeKr() {
+		return typeKr;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+
+	public void setTypeKr(String typeKr) {
+		this.typeKr = typeKr;
 	}
-	public String getContext() {
-		return context;
+
+	public String getTypeEn() {
+		return typeEn;
 	}
-	public void setContext(String context) {
-		this.context = context;
+
+	public void setTypeEn(String typeEn) {
+		this.typeEn = typeEn;
 	}
+
+	public String getTitleKr() {
+		return titleKr;
+	}
+
+	public void setTitleKr(String titleKr) {
+		this.titleKr = titleKr;
+	}
+
+	public String getTitleEn() {
+		return titleEn;
+	}
+
+	public void setTitleEn(String titleEn) {
+		this.titleEn = titleEn;
+	}
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	public int getPay() {
+		return pay;
+	}
+
+	public void setPay(int pay) {
+		this.pay = pay;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 	public Timestamp getRegDate() {
 		return regDate;
 	}
+
 	public void setRegDate(Timestamp regDate) {
 		this.regDate = regDate;
 	}
-	public int getStatus() {
-		return status;
-	}
-	public void setStatus(int status) {
-		this.status = status;
+
+	public String getStrRegDate() {
+		return strRegDate;
 	}
 
+	public void setStrRegDate(String strRegDate) {
+		this.strRegDate = strRegDate;
+	}
 	
 }
+

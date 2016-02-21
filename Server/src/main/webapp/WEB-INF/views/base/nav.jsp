@@ -38,7 +38,7 @@
 				</li>
 				
 				<li class="dropdown">
-					<a id="equipmentDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">기자제<b class="caret"></b></a>
+					<a id="equipmentDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">기자재<b class="caret"></b></a>
 						
 					<ul class="dropdown-menu" role="menu" aria-labelledby="equipmentDrop">
 						<li role="presentation"><a role="menuitem" href="/Secsm/book">도서</a></li>

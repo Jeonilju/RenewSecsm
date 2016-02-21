@@ -25,29 +25,28 @@ CREATE TABLE `duty` (
 CREATE TABLE `equipment_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `isBook` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='장비 분류 카테고리';
 
 CREATE TABLE `equipment_items` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Code` varchar(50) DEFAULT NULL,
-  `Name` varchar(50) DEFAULT NULL,
-  `Type` int(11) NOT NULL DEFAULT '-1',
-  `RegDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `Count` int(11) NOT NULL DEFAULT '0',
-  `status` int(11) NOT NULL DEFAULT '0',
-  `Description` text,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `manufacturer` varchar(50) DEFAULT NULL,
+  `imageURL` varchar(100) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `regDate` timestamp NULL DEFAULT NULL,
+  `count` int(11) DEFAULT NULL,
   `totalCount` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='도서 및 장비';
+  PRIMARY KEY (`ID`),
+  KEY `equipment_category_items_idx` (`type`),
+  CONSTRAINT `equipment_category_items` FOREIGN KEY (`type`) REFERENCES `equipment_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='장비';
 
 CREATE TABLE `equipment_log` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Account_id` int(11) DEFAULT NULL,
-  `RegDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `Type` int(11) DEFAULT NULL,
-  `Equipment_itmes_id` int(11) DEFAULT NULL,
+  `Equipment_items_id` int(11) DEFAULT NULL,
   `StartDate` timestamp NULL DEFAULT NULL,
   `EndDate` timestamp NULL DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
@@ -56,19 +55,25 @@ CREATE TABLE `equipment_log` (
   KEY `equipment_log_equipment_items_id_idx` (`Equipment_itmes_id`),
   CONSTRAINT `equipment_log_account_id` FOREIGN KEY (`Account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `equipment_log_equipment_items_id` FOREIGN KEY (`Equipment_itmes_id`) REFERENCES `equipment_items` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='도서 및 장비 대여 기록';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='장비 대여 기록';
 
 CREATE TABLE `equipment_req` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Account_id` int(11) DEFAULT NULL,
-  `Title` varchar(50) DEFAULT NULL,
-  `Context` text,
-  `RegDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `Status` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `equipment_req_account_id_idx` (`Account_id`),
-  CONSTRAINT `equipment_req_account_id` FOREIGN KEY (`Account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='도서 및 장비 신청';
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) DEFAULT NULL,
+  `typeKr` varchar(50) DEFAULT NULL,
+  `typeEn` varchar(50) DEFAULT NULL,
+  `titleKr` varchar(50) DEFAULT NULL,
+  `titleEn` varchar(50) DEFAULT NULL,
+  `brand` varchar(50) DEFAULT NULL,
+  `link` varchar(100) DEFAULT NULL,
+  `pay` int(20) DEFAULT NULL,
+  `count` int(11) DEFAULT NULL,
+  `content` varchar(150) DEFAULT NULL,
+  `regdate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `equipment_req_account_id_idx` (`account_id`),
+  CONSTRAINT `equipment_req_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='장비 신청';
 
 CREATE TABLE `notice` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -310,7 +315,7 @@ CREATE TABLE `book_log` (
 CREATE TABLE `book_req` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) DEFAULT NULL,
-  `title` varchar(100) DEFAULT NULL,
+  `title` varchar(50) DEFAULT NULL,
   `publisher` varchar(50) DEFAULT NULL,
   `author` varchar(50) DEFAULT NULL,
   `link` varchar(100) DEFAULT NULL,

@@ -30,12 +30,15 @@
 				}	
 				else if(response == '2'){
 					alert('해당 당직 날짜에 당직일정을 추가할 수 없습니다.');
+					location.reload();
 				}
 				else if(response == '3'){
 					alert('해당 날짜에 당직자가 이미 초과하였습니다.');
+					location.reload();
 				}
 				else if(response == '4'){
 					alert('로그인을 하세요.');
+					location.reload();
 				}
 				else{}
 			},
