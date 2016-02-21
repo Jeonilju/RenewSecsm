@@ -168,7 +168,7 @@
 			document.getElementById("add_form").reset();
 		}
 		else if(temp1==3){
-			document.getElementById("pxReqDivForm").reset();
+			document.getElementById("apply_form").reset();
 		}
 		else if(temp1==4){
 			document.getElementById("apply2_form").reset();

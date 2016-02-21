@@ -25,12 +25,11 @@
 							dataType : "text",
 							
 							success : function(response) {	
-		    					alert(response);
 		    					if(response=='200')
 		    					{
 		    						alert("환불되었습니다!");
 		    						if(chk==0){
-		    							log_detail();
+		    							log_detail(0);
 		    						}
 		    						else if(chk == 1){
 		    							num--;
