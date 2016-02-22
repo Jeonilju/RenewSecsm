@@ -5,13 +5,15 @@ public class AnswerContentInfo {
 	private int questionId;
 	private int accountId;
 	private String answer;
+	private String name;
 	
-	public AnswerContentInfo(int id, int questionId, int accountId, String answer) {
+	public AnswerContentInfo(int id, int questionId, int accountId, String answer, String name) {
 		super();
 		this.id = id;
 		this.questionId = questionId;
 		this.accountId = accountId;
 		this.answer = answer;
+		this.name = name;
 	}
 	public int getId() {
 		return id;
@@ -36,5 +38,11 @@ public class AnswerContentInfo {
 	}
 	public void setAnswer(String answer) {
 		this.answer = answer;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 }

@@ -7,7 +7,8 @@
 	response.setHeader("Content-Disposition", "attachment; filename=" + ss + ".xls");
 	response.setHeader("Content-Description", "JSP Generated Data");
 
-	List<EquipmentReqInfo> equipmentReqList = (List<EquipmentReqInfo>) request.getAttribute("equipmentReqList");
+	QuestionInfo questionInfo = (QuestionInfo) request.getAttribute("questionInfo");
+	ArrayList<QuestionContentInfo> totalQuestionList = (ArrayList<QuestionContentInfo>) request.getAttribute("totalQuestionList");
 %>
 
 <html>
@@ -16,29 +17,75 @@
 </head>
 
 <body>
+	<table>
+		<tr>
+			<td>제목</td>
+			<td>내용</td>
+		</tr>
+		<tr>
+			<td><%=questionInfo.getTitle()%></td>
+			<td><%=questionInfo.getContent()%></td>
+		</tr>
+		
+	</table>
+
 	<table border="1">
 	<tr>
-		<th>No.</th>
-		<th>신청자</th>
-		<th>제목</th>
-		<th>내용</th>
-		<th>상태</th>
-		<th>신청일</th>
-	</tr>	
-	<%  
-		for(EquipmentReqInfo info : equipmentReqList)
-		{
-			out.print("<tr>");
-			out.print("<th>" + info.getId() + "</th>");
-			out.print("<th>" + info.getAccountId() + "</th>");
-			out.print("<th>" + info.getTitle() + "</th>");
-			out.print("<th>" + info.getContext() + "</th>");
-			out.print("<th>" + info.getStatus() + "</th>");
-			out.print("<th>" + info.getRegDate().toString() + "</th>");
-			out.print("</tr>");
-		}
-	%>
+		<th>답변자</th>
+		<th>결과</th>
+	</tr>
 	</table>
+
+
+<%
+				int index = 1;
+				for(QuestionContentInfo info : totalQuestionList){
+					out.println("<div class='row-fluid'>");
+					
+					String qType = "";
+					if(info.qType == 0){
+						qType = "객관식";
+					}
+					else if(info.qType == 1){
+						qType = "주관식";
+					}
+					else if(info.qType == 2){
+						qType = "날짜";
+					}
+					else if(info.qType == 3){
+						qType = "시간";
+					}
+					else if(info.qType == 4){
+						qType = "점수";
+					}
+					out.println("" + index + ". " + qType + ": " + info.qTitle + "<br/>");
+					
+					out.println("<table class='table table-hover'>");
+					
+					out.println("<thead>");
+					out.println("<tr>");
+					out.println("<td>" + "이름" + "</td>");
+					out.println("<td>" + "답변" + "</td>");
+					out.println("</tr>");
+					out.println("</thead>");
+					
+					if(info.answerList != null){
+						for(AnswerContentInfo answerInfo : info.answerList){
+							
+							out.println("<tbody>");
+							out.println("<tr>");
+							out.println("<td>" + answerInfo.getAccountId() + "</td>");
+							out.println("<td>" + answerInfo.getAnswer() + "</td>");
+							out.println("</tr>");
+							out.println("</tbody>");
+						}
+					}
+					
+					out.println("</div>");
+					
+					index++;
+				}
+			%>
 
 </body>
 </html>

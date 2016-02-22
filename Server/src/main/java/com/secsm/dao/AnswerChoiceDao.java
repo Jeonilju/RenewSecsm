@@ -69,7 +69,7 @@ public class AnswerChoiceDao {
 				new RowMapper<AnswerContentInfo>() {
 					public AnswerContentInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AnswerContentInfo(resultSet.getInt("id"), resultSet.getInt("question_id")
-								, resultSet.getInt("account_id"), "" + resultSet.getInt("answer"));
+								, resultSet.getInt("account_id"), "" + resultSet.getInt("answer"), resultSet.getString("name"));
 					}
 				});
 	}

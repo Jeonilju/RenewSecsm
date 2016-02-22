@@ -32,7 +32,7 @@
 			</div>
 			
 			<div align="right" >
-				<button type="button" class="btn" style="margin: 5px;" onclick="location.replace('/Secsm/questionResultExcel " + <%=questionInfo.getId() %> + "');">엑셀 다운</button>
+				<button type="button" class="btn" style="margin: 5px;" onclick="location.replace('/Secsm/questionResult/<%=questionInfo.getId() %>/excel');">엑셀 다운</button>
 			</div>
 			
 			<div class="row-fluid">

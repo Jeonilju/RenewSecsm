@@ -136,6 +136,42 @@ public class QuestionController {
 
 	}
 	
+	/** 설문지 엑셀로 다운 */
+	@RequestMapping(value = "/questionResult/{id}/excel", method = RequestMethod.GET)
+	public String QuestionController_resultExcel(HttpServletRequest request
+			, @PathVariable("id")int questionId) {
+		logger.info("equipmentReqExcel");
+		
+		AccountInfo accountInfo = Util.getLoginedUser(request);
+		QuestionInfo questionInfo = questionDao.selectById(questionId);
+		
+		if(accountInfo == null){
+			// 비로그인
+			return "index";
+		}
+		else{
+			if(questionInfo == null){
+				// TODO 등록된 프로젝트가 없음
+				return "index";
+			}
+			else if (accountInfo.getId() == questionInfo.getAccountId()){
+				// 정상 접근
+				
+				ArrayList<QuestionContentInfo> totalQuestionList = new ArrayList<QuestionContentInfo>();
+				getQuestionList(questionInfo, true, totalQuestionList);
+
+				request.setAttribute("questionInfo", questionInfo);
+				request.setAttribute("totalQuestionList", totalQuestionList);
+				
+				return "questionResultExcel";
+			}
+			else{
+				// 비정상 접근 
+				return "index";
+			}
+		}
+	}
+	
 	/** 설문 생성 */
 	@ResponseBody
 	@RequestMapping(value = "/api_questionAdd", method = RequestMethod.POST)
