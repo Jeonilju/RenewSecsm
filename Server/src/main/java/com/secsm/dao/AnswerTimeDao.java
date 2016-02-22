@@ -2,7 +2,6 @@ package com.secsm.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -13,7 +12,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.secsm.info.AnswerChoiceInfo;
 import com.secsm.info.AnswerContentInfo;
 import com.secsm.info.AnswerTimeInfo;
 
@@ -67,11 +65,11 @@ public class AnswerTimeDao {
 	}
 
 	public List<AnswerContentInfo> selectByQuestionIdToContent(int question_id){
-		return jdbcTemplate.query("select * from answer_time where question_id = ?", new Object[] {question_id},
+		return jdbcTemplate.query("select * from answer_time, account where question_id = ? and answer_time.account_id = account.id", new Object[] {question_id},
 				new RowMapper<AnswerContentInfo>() {
 					public AnswerContentInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AnswerContentInfo(resultSet.getInt("id"), resultSet.getInt("question_id")
-								, resultSet.getInt("account_id"), "" + resultSet.getString("answer"));
+								, resultSet.getInt("account_id"), "" + resultSet.getString("answer"), resultSet.getString("name"));
 					}
 				});
 	}

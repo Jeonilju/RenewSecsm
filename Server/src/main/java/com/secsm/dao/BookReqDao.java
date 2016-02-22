@@ -35,6 +35,8 @@ public class BookReqDao {
 				new Object[] {info.getAccountId(), info.getTitle(), info.getPublisher(), info.getAuthor(), info.getLink(), info.getImageURL(), info.getPay(), info.getRegDate()});
 	}
 	
+	
+	//엑셀로 뽑을때 사용
 	public List<BookReqInfo> selectByDate(Timestamp start, Timestamp end){
 		return jdbcTemplate.query("select a.id, a.title, a.publisher, a.author, a.link, a.imageURL, a.pay, a.regDate, b.name "
 				+ "from secsm.book_req a inner join account b ON a.account_id = b.id where a.regDate>=? and a.regDate<? "

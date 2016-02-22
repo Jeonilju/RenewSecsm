@@ -28,7 +28,26 @@ public class SecsmController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String MainController_main(HttpServletRequest request) {
 		logger.info("index Page");
+		return resultIndex(request);
+	}
+	
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String MainController_index(HttpServletRequest request) {
+		logger.info("index Page");
+		return resultIndex(request);
+	}
+	
+	@RequestMapping(value = "/Secsm/logout", method = RequestMethod.GET)
+	public String MainController_logout(HttpServletRequest request) {
+		logger.info("logout Page");
 
+		HttpSession session = request.getSession();
+		session.setAttribute("currentmember", null);
+		
+		return resultIndex(request);
+	}
+	
+	private String resultIndex(HttpServletRequest request){
 		AccountInfo info = Util.getLoginedUser(request);
 		if(info == null){
 			// 비로그인 
@@ -38,21 +57,6 @@ public class SecsmController {
 			// 로그인
 			request.setAttribute("isLogined", true);
 			return "index";
-		}
-	}
-	
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String MainController_index(HttpServletRequest request) {
-		logger.info("index Page");
-
-		AccountInfo info = Util.getLoginedUser(request);
-		if(info == null){
-			// 비로그인 
-			return "index";
-		}
-		else{
-			// 로그인
-			return "attendance";
 		}
 	}
 	

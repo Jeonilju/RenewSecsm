@@ -8,21 +8,15 @@
 
 </script>
 
-<style>
-	#bookImageModal{
-		z-index:999999;
-	}
-</style>
-
 <!-- 자동당직생성 모달-->
-<div class="modal fade" id="bookImageModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="equipmentImageModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
-			<form name="bookImage" id="bookImage">
+			<form name="equipmentImage" id="equipmentImage">
 				<div class="modal-header">
-					<h4 class="modal-title">도서 이미지</h4>
+					<h4 class="modal-title">장비 이미지</h4>
 				</div>
-				<div class="modal-body" id="bookImageBody">
+				<div class="modal-body" id="equipmentImageBody">
 					
 				</div>
 

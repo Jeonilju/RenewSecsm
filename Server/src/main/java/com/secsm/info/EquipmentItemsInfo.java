@@ -7,80 +7,120 @@ public class EquipmentItemsInfo {
 	private int id;
 	private String code;
 	private String name;
+	private String manufacturer;
+	private String imageURL;
 	private int type;
 	private Timestamp regDate;
 	private int count;
 	private int totalCount;
-	private int status;
-	private String description;
 	
-	public EquipmentItemsInfo(int id, String code, String name, int type, Timestamp regDate, int count, int totalCount,
-			int status, String description) {
-		super();
+	public EquipmentItemsInfo(int id, String code, String name, String manufacturer, String imageURL, int type,
+			Timestamp regDate, int count, int totalCount) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
+		this.manufacturer = manufacturer;
+		this.imageURL = imageURL;
 		this.type = type;
 		this.regDate = regDate;
 		this.count = count;
 		this.totalCount = totalCount;
-		this.status = status;
-		this.description = description;
 	}
-	public int getTotalCount() {
-		return totalCount;
-	}
-	public void setTotalCount(int totalCount) {
+	
+	public EquipmentItemsInfo(String code, String name, String manufacturer, String imageURL, int type,
+			Timestamp regDate, int count, int totalCount) {
+		this.code = code;
+		this.name = name;
+		this.manufacturer = manufacturer;
+		this.imageURL = imageURL;
+		this.type = type;
+		this.regDate = regDate;
+		this.count = count;
 		this.totalCount = totalCount;
 	}
+	
+	public EquipmentItemsInfo(int id, String code, String name, String manufacturer, String imageURL, int type,
+			int count, int totalCount) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.manufacturer = manufacturer;
+		this.imageURL = imageURL;
+		this.type = type;
+		this.count = count;
+		this.totalCount = totalCount;
+	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getCode() {
 		return code;
 	}
+
 	public void setCode(String code) {
 		this.code = code;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+	public String getImageURL() {
+		return imageURL;
+	}
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
+
 	public int getType() {
 		return type;
 	}
+
 	public void setType(int type) {
 		this.type = type;
 	}
+
 	public Timestamp getRegDate() {
 		return regDate;
 	}
+
 	public void setRegDate(Timestamp regDate) {
 		this.regDate = regDate;
 	}
+
 	public int getCount() {
 		return count;
 	}
+
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public int getStatus() {
-		return status;
+
+	public int getTotalCount() {
+		return totalCount;
 	}
-	public void setStatus(int status) {
-		this.status = status;
+
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
 	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
 	
 }

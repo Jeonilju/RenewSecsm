@@ -31,8 +31,10 @@ public class LivingController {
 	
 	@Autowired
 	private AccountDao accountDao;
+
 	@Autowired
 	private AttendanceDao attendanceDao;
+	
 	@Autowired
 	private DutyDao dutyDao;	
 	
@@ -74,6 +76,7 @@ public class LivingController {
 		
 		request.setAttribute("AttendanceInfo", attendanceList);
 	    request.setAttribute("AttendanceRate", attendanceRate);
+		request.setAttribute("accountInfo", info);
 
 		return "attendance";
 	}
@@ -102,11 +105,20 @@ public class LivingController {
 		Timestamp end = new Timestamp(future.getTime());
 		
 		List<DutyInfo> dutyList = dutyDao.selectTimeName(start,end);
-		System.out.println(dutyList);
+		
 		request.setAttribute("DutyInfo", dutyList);
+		request.setAttribute("accountInfo", info);
 		
 		return "duty";
 	}
+
+	
+/////////////////////////////////////////////////////////////////////////
+//////////////////////								/////////////////////
+//////////////////////			Duty APIs			/////////////////////
+//////////////////////								/////////////////////
+/////////////////////////////////////////////////////////////////////////
+
 	
 	@ResponseBody
 	@RequestMapping(value = "/dutyInsert", method = RequestMethod.POST)
@@ -165,6 +177,11 @@ public class LivingController {
 			@RequestParam("date") long date) {
 		logger.info("dutyDelete");
 		
+		AccountInfo info = Util.getLoginedUser(request);
+		if(info == null){
+			return "3";
+		}
+		
 		Timestamp timeDate = new Timestamp(date);
 		Timestamp start = new Timestamp(timeDate.getYear(),timeDate.getMonth(),timeDate.getDate(),0,0,0,0);
 		Timestamp end = new Timestamp(timeDate.getYear(),timeDate.getMonth(),timeDate.getDate()+1,0,0,0,0);
@@ -203,6 +220,11 @@ public class LivingController {
 			@RequestParam("exceptionPerson") String exceptionPerson
 			) {
 		logger.info("dutyAutoCreate");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		if(info == null){
+			return "5";
+		}
 		
 	    String[] exceptionPersonArray = exceptionPerson.split("/");
 	    String[] exceptionDayArray = exceptionDay.split("/");

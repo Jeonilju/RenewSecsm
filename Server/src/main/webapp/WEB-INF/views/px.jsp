@@ -50,24 +50,24 @@
 	<jsp:include page="base/nav.jsp" flush="true" />
 	<body onload="onLoad();">
 
-		<div class="container body-content" style="margin-top: 150px; height: 300px;">
+		<div class="container body-content" style="margin-top: 150px;">
 			<div class="row-fluid">
 				<h1> PX </h1>
 			</div>
 			
 			<div class="row-fluid">
-					<button onclick = "getPxAmount();semi_List(0);" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsModal" >상품 구매</button>
-					<button onclick = "log_detail();" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsListModal" >내역 조회</button>
+					<button onclick = "getPxAmount();semi_List(0);inputreset(0)" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsModal" >상품 구매</button>
+					<button onclick = "log_detail(0);" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsListModal" >내역 조회</button>
 					<%
 						if(accountInfo.getGrade() == 5 || accountInfo.getGrade() == 0){
-							out.println("<button onclick= \"refreshReqTable2();\" type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxApplyModal2\" >상품 요청</button>");
-							out.println("<button type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxAddModal\" >상품 추가</button>");
+							out.println("<button onclick= \"refreshReqTable2(0);inputreset(4);\" type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxApplyModal2\" >상품 요청</button>");
+							out.println("<button onclick= \"inputreset(2);\" type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxAddModal\" >상품 추가</button>");
 						}
 						else{
-							out.println("<button onclick= \"refreshReqTable();\" type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxApplyModal\" >상품 요청</button>");
+							out.println("<button onclick= \"refreshReqTable(0);inputreset(3);\" type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxApplyModal\" >상품 요청</button>");
 						}
 					%>
-					<button onclick = "getPxAmount();" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxChargemoneyModal" >금액 충전</button>
+					<button onclick = "getPxAmount();inputreset(1);" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxChargemoneyModal" >금액 충전</button>
 					
 			</div>
 		</div>
@@ -78,6 +78,6 @@
 		<jsp:include page="modals/pxApplyModal2.jsp" flush="false" />
 		<jsp:include page="modals/pxChargemoneyModal.jsp" flush="false" />	
 		
-		<jsp:include page="base/foot.jsp" flush="false" />
+		<jsp:include page="base/foot.jsp" flush="false"/>
 	</body>
 </html>

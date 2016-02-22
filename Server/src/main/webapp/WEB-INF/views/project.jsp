@@ -48,10 +48,8 @@
     				dataType : "text",
     		
     				success : function(response) {	
-    					alert(response);
     					if(response=='200')
     					{
-    						alert("프로젝트가 생성되었습니다!");
     						location.reload();
     					}
     					else
@@ -71,7 +69,7 @@
     		}
     		
     		function showDetailProject(projectId){
-    			location.replace("/Secsm/detailProject/" + projectId);
+    			location.href= "/Secsm/detailProject/" + projectId;
     		}
     	</script>
     	
@@ -145,8 +143,8 @@
 			</table>
 			
 			<div>
-				<button type="button" class="button" >이전</button>
-				<button type="button" class="button" >다음</button>
+				<button type="button" class="btn" >이전</button>
+				<button type="button" class="btn" >다음</button>
 			</div>
 			
 		</div>	

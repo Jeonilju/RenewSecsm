@@ -74,13 +74,14 @@
 							
 							out.println("<tbody>");
 							out.println("<tr>");
-							out.println("<td>" + answerInfo.getAccountId() + "</td>");
+							out.println("<td>" + answerInfo.getName() + "</td>");
 							out.println("<td>" + answerInfo.getAnswer() + "</td>");
 							out.println("</tr>");
 							out.println("</tbody>");
 						}
 					}
 					
+					out.println("</table>");
 					out.println("</div>");
 					
 					index++;

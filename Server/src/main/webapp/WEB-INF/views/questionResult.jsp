@@ -39,10 +39,11 @@
 				<pre><%=questionInfo.getContent() %></pre>
 			</div>
 			
+			<div class='row'>
 			<%
 				int index = 1;
 				for(QuestionContentInfo info : totalQuestionList){
-					out.println("<div class='row-fluid'>");
+					out.println("<div class='row-fluid' style='margin: 20px'>");
 					
 					String qType = "";
 					if(info.qType == 0){
@@ -76,19 +77,21 @@
 							
 							out.println("<tbody>");
 							out.println("<tr>");
-							out.println("<td>" + answerInfo.getAccountId() + "</td>");
+							out.println("<td>" + answerInfo.getName() + "</td>");
 							out.println("<td>" + answerInfo.getAnswer() + "</td>");
 							out.println("</tr>");
 							out.println("</tbody>");
 						}
 					}
 					
+					out.println("</table>");
 					out.println("</div>");
 					
 					index++;
 				}
 			%>
-			<jsp:include page="base/foot.jsp" flush="false" />
-		</div>	
+			</div>
+		</div>
+		<jsp:include page="base/foot.jsp" flush="false" />	
 	</body>
 </html>

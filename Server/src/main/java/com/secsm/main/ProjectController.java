@@ -89,7 +89,7 @@ public class ProjectController {
  			, @RequestParam("createProjectDiscription") String discription
  			, @RequestParam("createProjectPL") String pl
  			, @RequestParam("createProjectPL_id") int createProjectPL_id
- 			, @RequestParam("createProjectPL") String teamMember
+ 			, @RequestParam("createProjectTeam") String teamMember
  			, @RequestParam("createProjectStartDate") String startDate
  			, @RequestParam("createProjectEndDate") String endDate) {
 		logger.info("api_createProject");

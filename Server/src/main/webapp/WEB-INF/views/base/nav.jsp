@@ -44,7 +44,7 @@
 				</li>
 				
 				<li class="dropdown">
-					<a id="equipmentDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">기자제<b class="caret"></b></a>
+					<a id="equipmentDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">기자재<b class="caret"></b></a>
 						
 					<ul class="dropdown-menu" role="menu" aria-labelledby="equipmentDrop">
 						<li role="presentation"><a role="menuitem" href="/Secsm/book">도서</a></li>
@@ -62,8 +62,8 @@
 				
 				<%
 					if(accountInfo_nav != null){
-						out.println("<li class='dropdown' style='margin-left: 20px'>");
-						out.println("<button type='button' class='btn'>로그아웃</button>");
+						out.println("<li style='margin-left: 20px'>");
+						out.println("<a href='/Secsm/logout role='button' >로그아웃<b class='caret'></b></a>");
 						out.println("</li>");
 					}
 				%>

@@ -33,8 +33,8 @@ public class PxReqDao implements PxReqIDao {
 				, new Object[] {accountId, title, context, 0});
 	}
 	
-	public List<PxReqInfo> selectAll(){
-		return jdbcTemplate.query("select * from px_req",
+	public List<PxReqInfo> selectAll(int pagenum){
+		return jdbcTemplate.query("select * from px_req order by regDate limit ?, 10", new Object[] {pagenum},
 				new RowMapper<PxReqInfo>() {
 					public PxReqInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new PxReqInfo(resultSet.getInt("id"), resultSet.getInt("Account_id")
@@ -65,6 +65,11 @@ public class PxReqDao implements PxReqIDao {
 				+ " status = status + 1"
 			+ " where id = ?", 
 			new Object[]  { id});
+	}
+	
+	public int total_list(){
+		int rowcount = jdbcTemplate.queryForInt("select count(*) from px_req");
+		return rowcount;
 	}
 	
 	public void delete(int id){

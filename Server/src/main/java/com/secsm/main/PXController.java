@@ -5,12 +5,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,8 +56,8 @@ public class PXController {
 		}
 		
 		request.setAttribute("accountInfo", info);
-		request.setAttribute("pxReqList", pxReqDao.selectAll());
-		request.setAttribute("pxLogList", pxLogDao.selectByAccountId(info.getId()));
+		request.setAttribute("pxReqList", pxReqDao.selectAll(0));
+		request.setAttribute("pxLogList", pxLogDao.selectByAccountId(info.getId(),0));
 		
 		return "px";
 	}
@@ -98,19 +96,25 @@ public class PXController {
 		
 		if(result.size() == 1){
 			// 정상
+			
+			if(result.get(0).getCount()==0){
+				return "2";
+			}
+			else{
 			accountDao.usePxAmount(info.getId(), result.get(0).getPrice());
 			pxLogDao.create(info.getId(), result.get(0).getId(), 0, 1,result.get(0).getName(),result.get(0).getPrice());
 			pxItemsDao.useItems(result.get(0).getId(),1);
 			
 			return "0";
+			}
 		}
 		else if(result.size() < 1){
 			// 해당 아이템이 존재하지 않음
 			return "1";
 		}
 		else{
-			// 있을수 없는일
-			return "2";
+		// 있을수 없는일
+			return "3";
 		}
 	}
 	
@@ -162,7 +166,6 @@ public class PXController {
 		
 	}
 	
-	
 	/** PX 환불 신청 */
 	@ResponseBody
 	@RequestMapping(value = "/Refund_px_items", method = RequestMethod.POST)
@@ -204,19 +207,27 @@ public class PXController {
 	/** PX 상품 신청 리스트 조회 */
 	@ResponseBody
 	@RequestMapping(value = "/api_applyReqList", method = RequestMethod.POST)
-	public String PXController_api_applyReqList(HttpServletRequest request){
+	public String PXController_api_applyReqList(HttpServletRequest request
+			,@RequestParam("pagenum") int pagenum){
 		logger.info("api_applyReqList");
 		
 		AccountInfo info = Util.getLoginedUser(request);
-
-		List<PxReqInfo> pxReqList = pxReqDao.selectAll();
-		Gson gson = new Gson();
-		String result = gson.toJson(pxReqList);
-			
-		logger.info(result);
-			
-		return result;
 		
+		if(pagenum <0){ 
+			return "300";
+		}
+		int totalnum = pxReqDao.total_list();
+
+		if(pagenum > totalnum){
+			return "400";
+		}
+		else{
+			List<PxReqInfo> pxReqList = pxReqDao.selectAll(pagenum);
+			Gson gson = new Gson();
+			String result = gson.toJson(pxReqList);
+			logger.info(result);
+			return result;
+		}
 	}
 	
 	@ResponseBody
@@ -235,20 +246,32 @@ public class PXController {
 	/** 구매 내역 조회 */
 	@ResponseBody
 	@RequestMapping(value = "/api_getPxLog", method = RequestMethod.POST)
-	public String PXController_logItem(HttpServletRequest request)
+	public String PXController_logItem(HttpServletRequest request,
+			@RequestParam("opt") int opt,
+			@RequestParam("pagenum") int pagenum)
 	{
 		logger.info("api_getPxLog");
+		if(pagenum <0){ 
+			return "300";
+		}
 		
 		AccountInfo info = Util.getLoginedUser(request);
 		System.out.println(info.getId());
-		List<PxLogInfo> pxLogList = pxLogDao.selectByAccountId(info.getId());
-		int rowCount = pxLogDao.total_list_num();
-		System.out.println(rowCount);
 		
-		Gson gson = new Gson();
-		String result = gson.toJson(pxLogList);
+		int totalnum = pxLogDao.total_list_num_Byid(info.getId());
+
+		if(pagenum > totalnum){
+			return "400";
+		}
+		else{
+			List<PxLogInfo> pxLogList = pxLogDao.selectByAccountId(info.getId(),pagenum);
+			Gson gson = new Gson();
+			String result = gson.toJson(pxLogList);
+			return result;
+	
+		}
 		
-		return result;
+
 	}
 	
 	/** Semi 구매 내역 조회 */
@@ -270,35 +293,7 @@ public class PXController {
 		return result;
 	}
 
-	@RequestMapping(value = "/paging", method = RequestMethod.GET)
-	public String Paging(@RequestParam int pageNum, Model model){
-	
-		int Page_size = 10;
-		int Page_max_count =10;
-		int TotalCount = pxLogDao.total_list_num();		//전체 글 개수
-		int pageTotalCount = (TotalCount/Page_size);			//전체 페이지 계산
-		int startPage = (pageNum/Page_max_count) * Page_max_count + 1;
-		
-		int endPage;
-		
-		if(pageTotalCount - (startPage-1) < Page_max_count){
-			endPage = (startPage) + (pageTotalCount% Page_max_count);
-		}
-		else{
-			endPage = (startPage-1) + Page_max_count;
-		}
-		
-		model.addAttribute("pageNum", pageNum); //선택한 글번호 전송
-		model.addAttribute("startPage", startPage);
-		model.addAttribute("endPage", endPage);
-		model.addAttribute("pageTotalCount", pageTotalCount);
-		model.addAttribute("pageMaxCount", Page_max_count);
-		
-		return "/modals/pxBuyItemsListModal";
-		
-	}
-	
-	
+
 	/** PX 상품 신청 */
 	@ResponseBody
 	@RequestMapping(value = "/api_applyReq", method = RequestMethod.POST)
@@ -322,8 +317,8 @@ public class PXController {
 			, @RequestParam("pxItemsName") String name
 			, @RequestParam("pxItemsCode") String code
 			, @RequestParam("pxItemsPrice") int price
-			, @RequestParam("pxItemsDescription") String description
-			, @RequestParam("pxItemsCount") int count){
+			, @RequestParam("pxItemsCount") int count
+			, @RequestParam("pxItemsDescription") String description){
 		logger.info("api_pxAddItem");
 		
 		pxItemsDao.create(name, code, price, description, count);

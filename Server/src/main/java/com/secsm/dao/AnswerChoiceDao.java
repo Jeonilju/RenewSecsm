@@ -65,7 +65,7 @@ public class AnswerChoiceDao {
 	}
 	
 	public List<AnswerContentInfo> selectByQuestionIdToContent(int question_id){
-		return jdbcTemplate.query("select * from answer_score where question_id = ?", new Object[] {question_id},
+		return jdbcTemplate.query("select * from answer_score, account where question_id = ? and answer_score.account_id = account.id", new Object[] {question_id},
 				new RowMapper<AnswerContentInfo>() {
 					public AnswerContentInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AnswerContentInfo(resultSet.getInt("id"), resultSet.getInt("question_id")

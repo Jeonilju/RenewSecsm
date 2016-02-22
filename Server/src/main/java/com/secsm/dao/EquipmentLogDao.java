@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.secsm.idao.EquipmentLogIDao;
+import com.secsm.info.BookLogInfo;
 import com.secsm.info.EquipmentLogInfo;
 
 public class EquipmentLogDao implements EquipmentLogIDao {
@@ -28,84 +29,176 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
-	public void create(int accountId, int equipmentItemId, int type, Timestamp startDate, Timestamp endDate, int status){
-		jdbcTemplate.update("insert into equipment_log (Account_id, type, Equipment_itmes_id, StartDate, EndDate, status) values (?, ?, ?, ?, ?, ?)"
-				, new Object[] {accountId, type, equipmentItemId, startDate, endDate, status});
+	public void create(EquipmentLogInfo info){
+		jdbcTemplate.update("insert into secsm.equipment_log (account_id, equipment_items_id, startDate, endDate, status) values (?, ?, ?, ?, ?)", 
+				new Object[] {info.getAccountId(),info.getEquipmentItemsId(),info.getStartDate(),info.getEndDate(),info.getStatus()});
 	}
 	
-	public List<EquipmentLogInfo> selectAll(){
-		return jdbcTemplate.query("select * from equipment_log",
+	public void rentBack(int id){
+		jdbcTemplate.update("update secsm.equipment_log set status = 0 where id=?", new Object[]  {id});
+	}
+	
+	public void updateEndDate(int id, Timestamp endDate){
+		jdbcTemplate.update("update secsm.equipment_log set endDate = ? where id=?", new Object[]  {endDate,id});
+	}
+	
+	public List<EquipmentLogInfo> selectAll(int logPage) {
+		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id order by startDate limit ?,7", new Object[] { logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new EquipmentLogInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
-								, resultSet.getTimestamp("regDate"), resultSet.getInt("type")
-								, resultSet.getInt("Equipment_itmes_id"), resultSet.getTimestamp("startDate")
-								, resultSet.getTimestamp("endDate"), resultSet.getInt("status"));
+						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
+								resultSet.getString("b.name"), resultSet.getInt("a.equipment_items_id"), resultSet.getString("c.name"),
+								resultSet.getTimestamp("a.startDate"), resultSet.getTimestamp("a.endDate"),
+								resultSet.getInt("a.status"));
 					}
 				});
 	}
 	
-	public List<EquipmentLogInfo> selectByAccountId(int accountId){
-		return jdbcTemplate.query("select * from equipment_log where account_id = ?", new Object[] {accountId},
+	public List<EquipmentLogInfo> selectAllStatus(int logPage) {
+		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where status = 1 order by startDate limit ?,7", new Object[] { logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new EquipmentLogInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
-								, resultSet.getTimestamp("regDate"), resultSet.getInt("type")
-								, resultSet.getInt("Equipment_itmes_id"), resultSet.getTimestamp("startDate")
-								, resultSet.getTimestamp("endDate"), resultSet.getInt("status"));
+						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
+								resultSet.getString("b.name"), resultSet.getInt("a.equipment_items_id"), resultSet.getString("c.name"),
+								resultSet.getTimestamp("a.startDate"), resultSet.getTimestamp("a.endDate"),
+								resultSet.getInt("a.status"));
 					}
 				});
 	}
 	
-	public List<EquipmentLogInfo> selectByEquipmentId(int Equipment_itmes_id){
-		return jdbcTemplate.query("select * from equipment_log where Equipment_itmes_id = ?", new Object[] {Equipment_itmes_id},
+	public List<EquipmentLogInfo> selectById(int id, int logPage) {
+		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where equipment_items_id = ? and status=1 order by startDate limit ?,7"
+				, new Object[] {id, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new EquipmentLogInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
-								, resultSet.getTimestamp("regDate"), resultSet.getInt("type")
-								, resultSet.getInt("Equipment_itmes_id"), resultSet.getTimestamp("startDate")
-								, resultSet.getTimestamp("endDate"), resultSet.getInt("status"));
+						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
+								resultSet.getString("b.name"), resultSet.getInt("a.equipment_items_id"), resultSet.getString("c.name"),
+								resultSet.getTimestamp("a.startDate"), resultSet.getTimestamp("a.endDate"),
+								resultSet.getInt("a.status"));
 					}
 				});
 	}
 	
-	public List<EquipmentLogInfo> selectById(int id){
-		return jdbcTemplate.query("select * from equipment_log where id = ?", new Object[] {id},
+	public List<EquipmentLogInfo> selectAllById(int id, int logPage) {
+		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where equipment_items_id = ? order by startDate limit ?,7"
+				, new Object[] {id, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new EquipmentLogInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
-								, resultSet.getTimestamp("regDate"), resultSet.getInt("type")
-								, resultSet.getInt("Equipment_itmes_id"), resultSet.getTimestamp("startDate")
-								, resultSet.getTimestamp("endDate"), resultSet.getInt("status"));
+						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
+								resultSet.getString("b.name"), resultSet.getInt("a.equipment_items_id"), resultSet.getString("c.name"),
+								resultSet.getTimestamp("a.startDate"), resultSet.getTimestamp("a.endDate"),
+								resultSet.getInt("a.status"));
 					}
 				});
 	}
 	
-	public List<EquipmentLogInfo> selectForApply(int accountId, int equipmentId){
-		return jdbcTemplate.query("select * from equipment_log where account_id = ? and Equipment_items_id = ? order by regDate DESC", new Object[] {accountId, equipmentId},
+	public List<EquipmentLogInfo> selectByName(String name, int logPage) {
+		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where status=1 and c.name regexp ? order by startDate limit ?,7"
+				, new Object[] {name, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new EquipmentLogInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
-								, resultSet.getTimestamp("regDate"), resultSet.getInt("type")
-								, resultSet.getInt("Equipment_itmes_id"), resultSet.getTimestamp("startDate")
-								, resultSet.getTimestamp("endDate"), resultSet.getInt("status"));
+						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
+								resultSet.getString("b.name"), resultSet.getInt("a.equipment_items_id"), resultSet.getString("c.name"),
+								resultSet.getTimestamp("a.startDate"), resultSet.getTimestamp("a.endDate"),
+								resultSet.getInt("a.status"));
 					}
 				});
 	}
 	
-	public void setStatue(int accountId, int equipmentItemId, int status){
-		jdbcTemplate.update("update equipment_log set "
-				+ " status =  ?,"
-			+ " where Account_id = ?"
-			+ " and Equipment_itmes_id = ?", 
-			new Object[]  { status, accountId, equipmentItemId });
+	public List<EquipmentLogInfo> selectAllByName(String name, int logPage) {
+		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where c.name regexp ? order by startDate limit ?,7"
+				, new Object[] {name, logPage },
+				new RowMapper<EquipmentLogInfo>() {
+					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
+								resultSet.getString("b.name"), resultSet.getInt("a.equipment_items_id"), resultSet.getString("c.name"),
+								resultSet.getTimestamp("a.startDate"), resultSet.getTimestamp("a.endDate"),
+								resultSet.getInt("a.status"));
+					}
+				});
+	}
+	
+	public List<EquipmentLogInfo> selectByCode(String code, int logPage) {
+		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where code = ? and status=1 order by startDate limit ?,7"
+				, new Object[] {code, logPage },
+				new RowMapper<EquipmentLogInfo>() {
+					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
+								resultSet.getString("b.name"), resultSet.getInt("a.equipment_items_id"), resultSet.getString("c.name"),
+								resultSet.getTimestamp("a.startDate"), resultSet.getTimestamp("a.endDate"),
+								resultSet.getInt("a.status"));
+					}
+				});
+	}
+	
+	public List<EquipmentLogInfo> selectAllByCode(String code, int logPage) {
+		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where code = ? order by startDate limit ?,7"
+				, new Object[] {code, logPage },
+				new RowMapper<EquipmentLogInfo>() {
+					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
+								resultSet.getString("b.name"), resultSet.getInt("a.equipment_items_id"), resultSet.getString("c.name"),
+								resultSet.getTimestamp("a.startDate"), resultSet.getTimestamp("a.endDate"),
+								resultSet.getInt("a.status"));
+					}
+				});
+	}
+	
+	public List<EquipmentLogInfo> selectByAccountName(String accountName, int logPage) {
+		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where b.name = ? and status=1 order by startDate limit ?,7"
+				, new Object[] {accountName, logPage },
+				new RowMapper<EquipmentLogInfo>() {
+					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
+								resultSet.getString("b.name"), resultSet.getInt("a.equipment_items_id"), resultSet.getString("c.name"),
+								resultSet.getTimestamp("a.startDate"), resultSet.getTimestamp("a.endDate"),
+								resultSet.getInt("a.status"));
+					}
+				});
+	}
+	
+	public List<EquipmentLogInfo> selectAllByAccountName(String accountName, int logPage) {
+		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where b.name = ? order by startDate limit ?,7"
+				, new Object[] {accountName, logPage },
+				new RowMapper<EquipmentLogInfo>() {
+					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
+								resultSet.getString("b.name"), resultSet.getInt("a.equipment_items_id"), resultSet.getString("c.name"),
+								resultSet.getTimestamp("a.startDate"), resultSet.getTimestamp("a.endDate"),
+								resultSet.getInt("a.status"));
+					}
+				});
+	}
+
+	public List<EquipmentLogInfo> selectOverDate(Timestamp now, int logPage) {
+		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where status=1 and endDate<=? order by endDate limit ?,7"
+				, new Object[] {now, logPage },
+				new RowMapper<EquipmentLogInfo>() {
+					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
+								resultSet.getString("b.name"), resultSet.getInt("a.equipment_items_id"), resultSet.getString("c.name"),
+								resultSet.getTimestamp("a.startDate"), resultSet.getTimestamp("a.endDate"),
+								resultSet.getInt("a.status"));
+					}
+				});
 	}
 	
 	public void delete(int id){
-		jdbcTemplate.update("delete from equipment_log where id = ?", new Object[]{id});
+		jdbcTemplate.update("delete from equipment_log where equipment_items_id = ?", new Object[]{id});
 	}
-	
-	public void deleteAll(){
-		jdbcTemplate.update("delete from equipment_log");
-	}
+//	
+//	public void deleteAll(){
+//		jdbcTemplate.update("delete from equipment_log");
+//	}
 }

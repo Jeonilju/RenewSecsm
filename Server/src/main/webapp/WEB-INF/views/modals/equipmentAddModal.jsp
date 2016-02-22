@@ -6,15 +6,12 @@
 
 <script type="text/javascript">
 	
-	// 아이템 구매
-	
-	function addBook(){
+	function addEquipment(){
 
 		var param = {addCode:$("#addCode").val(),
 					addTitle: $("#addTitle").val(),
 					addType: $("#addType option:selected").text(),
-					addPublisher: $("#addPublisher").val(),
-					addAuthor: $("#addAuthor").val(),
+					addManufacturer: $("#addManufacturer").val(),
 					addImageURL: $("#addImageURL").val(),
 					addCount: $("#addCount").val()};
 		
@@ -23,15 +20,11 @@
 			return;
 		}
 		else if($("#addTitle").val()==""){
-			alert("도서명을 입력하세요.");
+			alert("장비명을 입력하세요.");
 			return;
 		}
 		else if($("#addPublisher").val()==""){
-			alert("출판사를 입력하세요.");
-			return;
-		}
-		else if($("#addAuthor").val()==""){
-			alert("저자를 입력하세요.");
+			alert("제조사를 입력하세요.");
 			return;
 		}
 		else if($("#addCount").val()==""){
@@ -40,7 +33,7 @@
 		}
 		
 		$.ajax({
-		url : "/Secsm/api_addBook",
+		url : "/Secsm/api_addEquipment",
 		type : "POST",
 		data : param,
 		cache : false,
@@ -83,25 +76,19 @@
 	}
 	
 
-</script>
-
-<style>
-	#bookAddModal{
-		z-index:999999;
-	}
-</style>	
+</script>	
 
 <%
-	ArrayList<BookCategoryInfo> bookCategory = (ArrayList<BookCategoryInfo>) request.getAttribute("bookCategory");
+	ArrayList<EquipmentCategoryInfo> equipmentCategory = (ArrayList<EquipmentCategoryInfo>) request.getAttribute("equipmentCategory");
 %>
 
 <!-- 자동당직생성 모달-->
-<div class="modal fade" id="bookAddModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="equipmentAddModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="bookAdd" id="bookAdd">
+			<form name="equipmentAdd" id="equipmentAdd">
 				<div class="modal-header">
-					<h4 class="modal-title">도서등록</h4>
+					<h4 class="modal-title">장비등록</h4>
 				</div>
 				<div class="modal-body" >
 					<div class="form-group">
@@ -109,7 +96,7 @@
 						<select class="form-control" name="addType" id="addType">
               				<%
               					int i=0;
-              					for (BookCategoryInfo info : bookCategory){
+              					for (EquipmentCategoryInfo info : equipmentCategory){
               						out.println("<option value=\"" + i++ +"\">" + info.getName() + "</option>");
               					}
               				%>
@@ -122,22 +109,17 @@
 					</div>
 					
 					<div class="form-group">
-						<label for="addTitle" cond="">도서명</label> 
+						<label for="addTitle" cond="">장비명</label> 
 						<input name="addTitle" id="addTitle" type="text" class="form-control"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="addPublisher" cond="">출판사</label> 
-						<input name="addPublisher" id="addPublisher" type="text" class="form-control"/>
+						<label for="addManufacturer" cond="">제조사</label> 
+						<input name="addManufacturer" id="addManufacturer" type="text" class="form-control"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="addAuthor" cond="">저자</label> 
-						<input name="addAuthor" id="addAuthor" type="text" class="form-control"/>
-					</div>
-					
-					<div class="form-group">
-						<label for="addImageURL" cond="">이미지 URL</label> 
+						<label for="addImageURL" cond="">파일 URL</label> 
 						<input name="addImageURL" id="addImageURL" type="text" class="form-control"/>
 					</div>
 					
@@ -149,7 +131,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick="addBook();">추가</button>
+					<button type="button" class="btn btn-default" onclick="addEquipment();">추가</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</form>

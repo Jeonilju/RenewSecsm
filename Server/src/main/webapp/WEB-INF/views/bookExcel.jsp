@@ -4,7 +4,7 @@
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	String ss = sdf.format(new java.util.Date());
 	
-	response.setHeader("Content-Disposition", "attachment; filename=" + ss + ".xls");
+	response.setHeader("Content-Disposition", "attachment; filename=Book(" + ss + ").xls");
 	response.setHeader("Content-Description", "JSP Generated Data");
 
 	List<BookReqInfo> bookReqList = (List<BookReqInfo>) request.getAttribute("bookReqList");

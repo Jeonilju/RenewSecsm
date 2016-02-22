@@ -7,40 +7,56 @@
 %>
 
 <script type="text/javascript">
-	
+	var pagenum = 10;
 	function pxApplyReq2(){
-		var param = "pxApplyTitle2" + "=" + $("#pxApplyTitle2").val() + "&" + 
-				"pxApplyContent2" + "="+ $("#pxApplyContent2").val();
-		$.ajax({
-		url : "/Secsm/api_applyReq",
-		type : "POST",
-		data : param,
-		cache : false,
-		async : false,
-		dataType : "text",
+		var param = "pxApplyTitle" + "=" + $("#pxApplyTitle2").val() + "&" + 
+				"pxApplyContent" + "="+ $("#pxApplyContent2").val();
 		
-		success : function(response) {	
-			alert(response);
-			if(response=='200')
-			{
-				alert("요청되었습니다.");
-				document.getElementById("pxApplyTitle2").value = "";
-				document.getElementById("pxApplyConten2t").value = "";
-				refreshReqTable2()
-			}
+		if($("#pxApplyTitle2").val() == ""){
+			alert("상품명을 입력해주세요.");
+		}
+		else{
+			$.ajax({
+			url : "/Secsm/api_applyReq",
+			type : "POST",
+			data : param,
+			cache : false,
+			async : false,
+			dataType : "text",
+		
+			success : function(response) {	
 			
-		},
-		error : function(request, status, error) {
-			if (request.status != '0') {
-				alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+				if(response=='200')
+				{
+					alert("요청되었습니다.");
+					document.getElementById("pxApplyTitle2").value = "";
+					document.getElementById("pxApplyContent2").value = "";
+					refreshReqTable2(0);
+				}
+			
+			},
+			error : function(request, status, error) {
+				if (request.status != '0') {
+					alert("code___ : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+				}
 			}
+		
+			});
+		}
+	}
+	function refreshReqTable2(opt){
+		
+		if(opt==0){
+			pagenum = 0;
+		}
+		else if(opt==1){
+			pagenum = pagenum - 10;
+		}
+		else if(opt==2){
+			pagenum = pagenum + 10;
 		}
 		
-		});
-	}
-	
-	function refreshReqTable2(){
-		var param = "";
+		var param = "pagenum" + "=" + pagenum;
 		
 		$.ajax({
 		url : "/Secsm/api_applyReqList",
@@ -50,9 +66,19 @@
 		async : false,
 		dataType : "text",
 		
-		success : function(response) {	
-			var arr = JSON.parse(response);
-			insertReqTable2(arr);
+		success : function(response) {
+			if(response == "400"){
+				alert("마지막 페이지 입니다.");
+				pagenum = pagenum - 10;
+			}
+			else if(response == "300"){
+				alert("첫페이지 입니다.");
+				pagenum = 0;
+			}
+			else{
+				var arr = JSON.parse(response);
+				insertReqTable2(arr);
+			}
 		},
 		error : function(request, status, error) {
 			if (request.status != '0') {
@@ -89,13 +115,15 @@
 			
 			var button = document.createElement('input');
 			button.setAttribute('type','button');
-			button.setAttribute('class','btn btn-default');
+			
 			
 			if(data.status == 0 ){
+				button.setAttribute('class','btn btn-info');
 				button.setAttribute('value','승인');
 				button.setAttribute('OnClick','accept123(' +data.id + ');');
 			}
 			else{
+				button.setAttribute('class','btn btn-danger');
 				button.setAttribute('value','삭제');
 				button.setAttribute('OnClick','DeleteReqlist('+ data.id+ ',0)');
 			}
@@ -111,13 +139,16 @@
 		var swapBtn2 = document.getElementById("swapBtn2");
 		var pxReqBtn2 = document.getElementById("pxReqBtn2");
 		
+		var j = swapBtn2.childNodes[0];
 		if(pxReqDivList2.style.display == ""){
 			// Form으로 변경
+			j.innerText = '상품 요청';
 			swapBtn2.value = "신청 리스트";
 			pxReqBtn2.style.display = "";
 		}
 		else{
 			// list로 변경
+			j.innerText = '상품 리스트';
 			swapBtn2.value = "상품 요청";
 			pxReqBtn2.style.display = "none";
 			refreshReqTable2();
@@ -128,8 +159,33 @@
 		pxReqDivForm2.style.display = temp;
 	}
 	
+	function end_apply2(){
+		
+		var pxReqDivList2 = document.getElementById("pxReqDivList2");
+		var pxReqDivForm2 = document.getElementById("pxReqDivForm2");
+		var swapBtn2 = document.getElementById("swapBtn2");
+		var pxReqBtn2 = document.getElementById("pxReqBtn2");
+		
+		var j = swapBtn2.childNodes[0];
+		
+		if(pxReqDivForm2.style.display == ""){
+			// list로 변경
+			j.innerText = '상품 리스트';
+			swapBtn2.value = "상품 요청";
+			pxReqBtn2.style.display = "none";
+			refreshReqTable2();
+			
+			var temp = pxReqDivList2.style.display;
+			pxReqDivList2.style.display = pxReqDivForm2.style.display;
+			pxReqDivForm2.style.display = temp;
+		}
+		
+
+	}
+	
+	
 	function accept123(idx){
-		alert(idx);
+	
 		var param = "idx" + "=" + idx;
 		
 		$.ajax({
@@ -156,6 +212,8 @@
 		}
 		});
 	}
+	
+
 	function DeleteReqlist(idx,check){
 		
 		var param = "idx" + "=" + idx;
@@ -200,7 +258,7 @@
 			
 			<div class="modal-body">
 			
-				<button id="swapBtn2" name="swapBtn2" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn2();">상품 요청</button>
+				<button id="swapBtn2" name="swapBtn2" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn2();">상품 리스트</button>
 			
 				<!-- 상품 요청 리스트-->
 				<div id="pxReqDivList2" name="pxReqDivList2" style="display: ;">
@@ -208,7 +266,7 @@
 					    <thead>
 					      <tr>
 					        <th>No.</th>
-					        <th>제목</th>
+					        <th>상품명</th>
 					        <th>내용</th>
 					        <th>상태</th>
 					      </tr>
@@ -219,23 +277,29 @@
 							%>
 						</tbody>
 					</table>
+				<button type="button" class="btn btn-sm" onclick="refreshReqTable2(1);" style="margin: 5px;">이전</button>
+				<button type="button" class="btn btn-sm" onclick="refreshReqTable2(2);" style="margin: 5px; margin-left:0px;">다음</button>
 				
 				</div>
 				
 				<!-- 상품 요청 form -->
+			<form id= "apply2_form" onsubmit="pxApplyReq2();inputreset(4);return false">
 				<div id="pxReqDivForm2" name="pxReqDivForm2" style="display: none;">
-					제목
-					<input type="text" id="pxApplyTitle2" name="pxApplyTitle2">
+					상품명
+					<input type="text" id="pxApplyTitle2" class = "form-control" name="pxApplyTitle2">
 					
 					내용
-					<input type="text" id="pxApplyContent2" name="pxApplyContent2">
+					<input type="text" id="pxApplyContent2" class = "form-control" name="pxApplyContent2">
 				</div>
 			</div>
-			<div class="modal-footer2">
-				<button id="pxReqBtn2" name="pxReqBtn2" type="button" class="btn btn-default" onclick="pxApplyReq2();" style="display: none;">요청</button>
-				<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+			
+			<div class="modal-footer">
+				<input id="pxReqBtn2" name="pxReqBtn2" type="submit" value="요청" class="btn btn-default" style="display: none;">
+				<button type="button" class="btn btn-danger" data-dismiss="modal" onclick = "end_apply2();">닫기</button>
 			</div>
+			</form>
 		</div>
+		
 		<!-- /.modal-content -->
 	</div>
 </div>

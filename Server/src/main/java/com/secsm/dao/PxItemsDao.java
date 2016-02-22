@@ -29,8 +29,7 @@ public class PxItemsDao implements PxItemsIDao {
 	}
 
 	public void create(String name, String code, int price, String description, int count){
-		jdbcTemplate.update("insert into px_items (name, code, price, description, count) values (?, ?, ?, ?, ?)"
-				, new Object[] {name, code, price, description, count});
+		jdbcTemplate.update("insert into px_items (name, code, price, description, count) values (?, ?, ?, ?, ?) on duplicate key update name = ?, code = ?, price = ?, description = ?, count = ?", new Object[] {name, code, price, description, count,name, code, price, description, count});
 	}
 	
 	public List<PxItemsInfo> selectAll(){

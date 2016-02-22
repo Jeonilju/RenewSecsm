@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import com.secsm.info.BookCategoryInfo;
 import com.secsm.info.EquipmentCategoryInfo;
 
 public class EquipmentCategoryDao {
@@ -26,46 +27,65 @@ public class EquipmentCategoryDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
-	public void create(String name, int isBook){
-		jdbcTemplate.update("insert into equipment_category (name, isBook) values (?, ?)", new Object[] {name, isBook});
+	public void create(String name){
+		jdbcTemplate.update("insert into equipment_category (name) values (?)", new Object[] {name});
 	}
 	
 	public List<EquipmentCategoryInfo> selectAll(){
 		return jdbcTemplate.query("select * from equipment_category",
 				new RowMapper<EquipmentCategoryInfo>() {
 					public EquipmentCategoryInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new EquipmentCategoryInfo(resultSet.getInt("id"), resultSet.getString("name")
-								, resultSet.getInt("isBook"));
+						return new EquipmentCategoryInfo(resultSet.getInt("id"), resultSet.getString("name"));
 					}
 				});
 	}
 	
-	public List<EquipmentCategoryInfo> selectById(int id){
-		return jdbcTemplate.query("select * from equipment_category where id = ?", new Object[] {id},
+	public List<EquipmentCategoryInfo> select(String name) {
+		return jdbcTemplate.query("SELECT * FROM secsm.equipment_category where name=? order by id limit 0, 1",
+				new Object[] {name},
 				new RowMapper<EquipmentCategoryInfo>() {
 					public EquipmentCategoryInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new EquipmentCategoryInfo(resultSet.getInt("id"), resultSet.getString("name")
-								, resultSet.getInt("isBook"));
+						return new EquipmentCategoryInfo(resultSet.getInt("id"),resultSet.getString("name"));
 					}
 				});
 	}
 	
-	public List<EquipmentCategoryInfo> selectIsBook(int isBook){
-		return jdbcTemplate.query("select * from equipment_category where isBook=?", new Object[] {isBook},
+	public List<EquipmentCategoryInfo> select(int id) {
+		return jdbcTemplate.query("SELECT * FROM secsm.equipment_category where id=? order by id limit 0, 1",
+				new Object[] {id},
 				new RowMapper<EquipmentCategoryInfo>() {
 					public EquipmentCategoryInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new EquipmentCategoryInfo(resultSet.getInt("id"), resultSet.getString("name")
-								, resultSet.getInt("isBook"));
+						return new EquipmentCategoryInfo(resultSet.getInt("id"),resultSet.getString("name"));
 					}
 				});
 	}
+	
+//	public List<EquipmentCategoryInfo> selectById(int id){
+//		return jdbcTemplate.query("select * from equipment_category where id = ?", new Object[] {id},
+//				new RowMapper<EquipmentCategoryInfo>() {
+//					public EquipmentCategoryInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+//						return new EquipmentCategoryInfo(resultSet.getInt("id"), resultSet.getString("name")
+//								, resultSet.getInt("isBook"));
+//					}
+//				});
+//	}
+//	
+//	public List<EquipmentCategoryInfo> selectIsBook(int isBook){
+//		return jdbcTemplate.query("select * from equipment_category where isBook=?", new Object[] {isBook},
+//				new RowMapper<EquipmentCategoryInfo>() {
+//					public EquipmentCategoryInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+//						return new EquipmentCategoryInfo(resultSet.getInt("id"), resultSet.getString("name")
+//								, resultSet.getInt("isBook"));
+//					}
+//				});
+//	}
 	
 	
 	public void delete(int id){
 		jdbcTemplate.update("delete from equipment_category where id = ?", new Object[] {id});
 	}
-	
-	public void deleteAll(){
-		jdbcTemplate.update("delete from equipment_category");
-	}
+
+//	public void deleteAll(){
+//		jdbcTemplate.update("delete from equipment_category");
+//	}
 }

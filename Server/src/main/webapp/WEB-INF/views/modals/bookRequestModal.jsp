@@ -10,12 +10,12 @@
 	
 	function requestBook(){
 
-		var param = "reqTitle" + "=" + $("#reqTitle").val() + "&" + 
-					"reqPublisher" + "=" + $("#reqPublisher").val() + "&" +
-					"reqAuthor" + "=" + $("#reqAuthor").val() + "&" +
-					"reqLink" + "=" + $("#reqLink").val() + "&" +
-					"reqImageURL" + "=" + $("#reqImageURL").val() + "&" +
-					"reqPay" + "=" + $("#reqPay").val();
+		var param = {reqTitle: $("#reqTitle").val(),
+					reqPublisher: $("#reqPublisher").val(),
+					reqAuthor: $("#reqAuthor").val(),
+					reqLink: $("#reqLink").val(),
+					reqImageURL: $("#reqImageURL").val(),
+					reqPay: $("#reqPay").val()};
 		
 		if($("#reqTitle").val()==""){
 			alert("도서명을 입력하세요.");
