@@ -59,7 +59,7 @@
 					<button onclick = "getPxAmount();semi_List(0);inputreset(0)" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsModal" >상품 구매</button>
 					<button onclick = "log_detail(0);" type="button" class="btn" style="margin: 5px; width: 260px; height: 100px" data-toggle="modal" data-target="#pxBuyItemsListModal" >내역 조회</button>
 					<%
-						if(accountInfo.getGrade() == 5 || accountInfo.getGrade() == 0){
+						if(accountInfo.getGrade() == 4 || accountInfo.getGrade() == 0){
 							out.println("<button onclick= \"refreshReqTable2(0);inputreset(4);\" type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxApplyModal2\" >상품 요청</button>");
 							out.println("<button onclick= \"inputreset(2);\" type=\"button\" class=\"btn\" style=\"margin: 5px; width: 260px; height: 100px\" data-toggle=\"modal\" data-target=\"#pxAddModal\" >상품 추가</button>");
 						}

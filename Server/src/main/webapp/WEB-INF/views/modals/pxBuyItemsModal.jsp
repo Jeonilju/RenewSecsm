@@ -17,6 +17,7 @@
 		z-index:30 !important;
 	}
 </style>
+
 <script type="text/javascript">
 
 	var num = 0;
@@ -218,7 +219,7 @@
 							</select>
 						</div>
 						<div id = "box2" class="col-md-4">
-							<input id="etItemCode" name="etItemCode" class="form-control" type="text" onkeypress="auto_list();">
+							<input id="etItemCode" name="etItemCode" class="form-control" type="text" onkeypress="auto_list();" style = "width :202.222px">
 						</div>
 						
 						<div class="col-md-5">

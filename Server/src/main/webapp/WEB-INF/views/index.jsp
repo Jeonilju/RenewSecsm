@@ -72,7 +72,7 @@
 							<label for="loginPW" style="width: 140px;">Password</label>
 							<input name="loginPW" id="loginPW" type="password" style="width:300px" class="form-control" />
 						</div>
-						<input type="button" value ="Login"class="btn" style="width:300px; margin: 30px;" onclick="login();"></input>										
+						<input type="submit" value ="Login"class="btn" style="width:300px; margin: 30px;" onclick="login();"></input>										
 					</form>
 				</div>
 			</div>
@@ -82,7 +82,9 @@
 <!-- <body style="background: #18bc9c;" onload="onLoad();"> -->
 <body style="background: #18bc9c;" >
 	<jsp:include page="base/nav.jsp" flush="false" />
+	<jsp:include page="modals/account_SignUp.jsp" flush="false" />	
 	<jsp:include page="base/foot.jsp" flush="false" />
+	
 </body>
 
 
