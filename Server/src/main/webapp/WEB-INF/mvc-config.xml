@@ -30,7 +30,11 @@
 		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver"/>
 		<beans:property name="url" value="jdbc:mysql://localhost:3306/secsm?useUnicode=true&amp;characterEncoding=utf-8"/>
 		<beans:property name="username" value="root"/>
+<<<<<<< HEAD
 		<beans:property name="password" value="1234"/>
+=======
+		<beans:property name="password" value="Wjsdlfwn8520!"/>
+>>>>>>> a0a653ca3e2be9d248d496252eafa6b312678dc9
 
 	</beans:bean>
 	

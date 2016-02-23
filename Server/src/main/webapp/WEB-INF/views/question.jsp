@@ -211,7 +211,7 @@
 				    			out.print("<td>" + Util.getTimestempStr(info.getStartDate()) 
 		    						+ " ~ " + Util.getTimestempStr(info.getEndDate()) + "</td>");
 		    					if(info.getAccountId() == accountInfo.getId()){
-		    						out.print("<td>" + "<button type='button' class='btn' onclick='resultQuestion(" + info.getId() + ");'>결과 조회</button>" + "</td>");
+		    						out.print("<td>" + "<button type='button' class='btn' onclick='event.cancelBubble=true; resultQuestion(" + info.getId() + ");'>결과 조회</button>" + "</td>");
 		    					}
 				    			
 				    			out.print("</tr>");

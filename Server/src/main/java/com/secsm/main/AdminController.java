@@ -28,6 +28,7 @@ public class AdminController {
 		if(info != null){
 			if(info.getGrade() == 0){
 				// 권한 있음
+				request.setAttribute("accountInfo", info);
 				return "admin";
 			}
 		}

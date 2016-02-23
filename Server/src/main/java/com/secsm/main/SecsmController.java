@@ -28,30 +28,37 @@ public class SecsmController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String MainController_main(HttpServletRequest request) {
 		logger.info("index Page");
-
-		AccountInfo info = Util.getLoginedUser(request);
-		if(info == null){
-			// 비로그인 
-			return "index";
-		}
-		else{
-			// 로그인
-			request.setAttribute("isLogined", true);
-			return "index";
-		}
+		return resultIndex(request);
 	}
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String MainController_index(HttpServletRequest request) {
 		logger.info("index Page");
+		return resultIndex(request);
+	}
+	
+	@RequestMapping(value = "/Secsm/logout", method = RequestMethod.GET)
+	public String MainController_logout(HttpServletRequest request) {
+		logger.info("logout Page");
 
+		HttpSession session = request.getSession();
+		session.setAttribute("currentmember", null);
+		
+		return resultIndex(request);
+	}
+	
+	
+	public static String resultIndex(HttpServletRequest request){
 		AccountInfo info = Util.getLoginedUser(request);
 		if(info == null){
 			// 비로그인 
+			logger.info("비로그인상태");
+			request.setAttribute("isLogined", null);
 			return "index";
 		}
 		else{
 			// 로그인
+			logger.info("로그인상태");
 			request.setAttribute("isLogined", true);
 			return "index";
 		}
@@ -93,4 +100,41 @@ public class SecsmController {
 		return result;
 	}
 	
+	/** 회원가입  */
+	@RequestMapping(value = "/api_signup", method = RequestMethod.POST)
+	@ResponseBody
+	public String MainController_api_signup(HttpServletRequest request
+			, @RequestParam("User_mail") String User_mail
+			, @RequestParam("User_password") String User_password
+			, @RequestParam("re_User_password") String re_User_password
+			, @RequestParam("User_name") String User_name
+			, @RequestParam("User_gender") int User_gender
+			, @RequestParam("User_phone") String User_phone
+			, @RequestParam("User_grade") int User_grade
+			) {
+		logger.info("api_signup");
+		
+		accountDao.create(User_name, User_mail, User_password, User_phone, User_grade, User_gender);
+		
+		return "200";
+		
+	}
+	
+	/** 중복체크  */
+	@RequestMapping(value = "/api_duplicate_check", method = RequestMethod.POST)
+	@ResponseBody
+	public String MainController_api_duplicate_Check(HttpServletRequest request
+			, @RequestParam("User_mail") String User_mail
+			) {
+		logger.info("api_signup");
+		
+		int chk =accountDao.duplicate_check(User_mail);
+		if(chk ==0){
+			return "200";
+		}
+		else{
+			return "400";
+		}
+		
+	}
 }

@@ -31,8 +31,10 @@ public class LivingController {
 	
 	@Autowired
 	private AccountDao accountDao;
+
 	@Autowired
 	private AttendanceDao attendanceDao;
+	
 	@Autowired
 	private DutyDao dutyDao;	
 	
@@ -43,7 +45,7 @@ public class LivingController {
 		
 		//비로그인시 메인페이지로
 		if(info == null){
-			return "index";
+			return SecsmController.resultIndex(request);
 		}
 		
 		//start, end Date 지정
@@ -74,6 +76,7 @@ public class LivingController {
 		
 		request.setAttribute("AttendanceInfo", attendanceList);
 	    request.setAttribute("AttendanceRate", attendanceRate);
+		request.setAttribute("accountInfo", info);
 
 		return "attendance";
 	}
@@ -86,7 +89,7 @@ public class LivingController {
 		
 		//비로그인시 메인페이지로
 		if(info == null){
-			return "index";
+			return SecsmController.resultIndex(request);
 		}
 		
 		//start, end Date 지정
@@ -102,18 +105,19 @@ public class LivingController {
 		Timestamp end = new Timestamp(future.getTime());
 		
 		List<DutyInfo> dutyList = dutyDao.selectTimeName(start,end);
-		System.out.println(dutyList);
+		
 		request.setAttribute("DutyInfo", dutyList);
+		request.setAttribute("accountInfo", info);
 		
 		return "duty";
 	}
 
 	
-////////////////////////////////////////////////////
-////////////////////////////////////////////////////
-//////////////////////Duty APIs/////////////////////
-////////////////////////////////////////////////////
-////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+//////////////////////								/////////////////////
+//////////////////////			Duty APIs			/////////////////////
+//////////////////////								/////////////////////
+/////////////////////////////////////////////////////////////////////////
 
 	
 	@ResponseBody

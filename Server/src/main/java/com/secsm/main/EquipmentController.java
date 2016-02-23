@@ -1,13 +1,18 @@
 package com.secsm.main;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+=======
+>>>>>>> a0a653ca3e2be9d248d496252eafa6b312678dc9
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,25 +28,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.secsm.conf.Util;
+import com.secsm.dao.BookCategoryDao;
+import com.secsm.dao.BookItemsDao;
+import com.secsm.dao.BookLogDao;
+import com.secsm.dao.BookReqDao;
 import com.secsm.dao.EquipmentCategoryDao;
 import com.secsm.dao.EquipmentItemsDao;
 import com.secsm.dao.EquipmentLogDao;
 import com.secsm.dao.EquipmentReqDao;
 import com.secsm.info.AccountInfo;
 import com.secsm.info.BookCategoryInfo;
+import com.secsm.info.BookItemsInfo;
+import com.secsm.info.BookLogInfo;
+import com.secsm.info.BookReqInfo;
 import com.secsm.info.EquipmentCategoryInfo;
 import com.secsm.info.EquipmentItemsInfo;
 import com.secsm.info.EquipmentLogInfo;
 import com.secsm.info.EquipmentReqInfo;
-
-import net.sf.json.JSONObject;
-import com.secsm.info.BookReqInfo;
-import com.secsm.dao.BookReqDao;
-import com.secsm.info.BookItemsInfo;
-import com.secsm.info.BookLogInfo;
-import com.secsm.dao.BookCategoryDao;
-import com.secsm.dao.BookItemsDao;
-import com.secsm.dao.BookLogDao;
 
 @Controller
 public class EquipmentController {
@@ -82,8 +85,8 @@ public class EquipmentController {
 		}
 		
 		List<EquipmentCategoryInfo> equipmentCategory= equipmentCategoryDao.selectAll();
-
 		request.setAttribute("equipmentCategory", equipmentCategory);
+		request.setAttribute("accountInfo", info);
 		
 		return "equipment";
 	}
@@ -98,8 +101,8 @@ public class EquipmentController {
 		}
 
 		List<BookCategoryInfo> bookCategory= bookCategoryDao.selectALL();
-
 		request.setAttribute("bookCategory", bookCategory);
+		request.setAttribute("accountInfo", info);
 		
 		return "book";
 	}
@@ -127,6 +130,7 @@ public class EquipmentController {
 				equipmentReqList.get(i).setStrRegDate(Util.getTimestempStr(regDate));
 			}
 			request.setAttribute("equipmentReqList",equipmentReqList);
+			request.setAttribute("accountInfo", info);
 			
 			return "equipmentExcel";
 		}
@@ -158,6 +162,7 @@ public class EquipmentController {
 				bookReqList.get(i).setStrRegDate(Util.getTimestempStr(regDate));
 			}
 			request.setAttribute("bookReqList",bookReqList);
+			request.setAttribute("accountInfo", info);
 			
 			return "bookExcel";
 		}

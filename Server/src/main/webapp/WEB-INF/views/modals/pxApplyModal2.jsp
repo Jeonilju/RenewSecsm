@@ -11,34 +11,39 @@
 	function pxApplyReq2(){
 		var param = "pxApplyTitle" + "=" + $("#pxApplyTitle2").val() + "&" + 
 				"pxApplyContent" + "="+ $("#pxApplyContent2").val();
-		$.ajax({
-		url : "/Secsm/api_applyReq",
-		type : "POST",
-		data : param,
-		cache : false,
-		async : false,
-		dataType : "text",
 		
-		success : function(response) {	
-			
-			if(response=='200')
-			{
-				alert("요청되었습니다.");
-				document.getElementById("pxApplyTitle2").value = "";
-				document.getElementById("pxApplyContent2").value = "";
-				refreshReqTable2(0)
-			}
-			
-		},
-		error : function(request, status, error) {
-			if (request.status != '0') {
-				alert("code___ : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-			}
+		if($("#pxApplyTitle2").val() == ""){
+			alert("상품명을 입력해주세요.");
 		}
+		else{
+			$.ajax({
+			url : "/Secsm/api_applyReq",
+			type : "POST",
+			data : param,
+			cache : false,
+			async : false,
+			dataType : "text",
 		
-		});
+			success : function(response) {	
+			
+				if(response=='200')
+				{
+					alert("요청되었습니다.");
+					document.getElementById("pxApplyTitle2").value = "";
+					document.getElementById("pxApplyContent2").value = "";
+					refreshReqTable2(0);
+				}
+			
+			},
+			error : function(request, status, error) {
+				if (request.status != '0') {
+					alert("code___ : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+				}
+			}
+		
+			});
+		}
 	}
-	
 	function refreshReqTable2(opt){
 		
 		if(opt==0){
@@ -261,7 +266,7 @@
 					    <thead>
 					      <tr>
 					        <th>No.</th>
-					        <th>제목</th>
+					        <th>상품명</th>
 					        <th>내용</th>
 					        <th>상태</th>
 					      </tr>
@@ -280,7 +285,7 @@
 				<!-- 상품 요청 form -->
 			<form id= "apply2_form" onsubmit="pxApplyReq2();inputreset(4);return false">
 				<div id="pxReqDivForm2" name="pxReqDivForm2" style="display: none;">
-					제목
+					상품명
 					<input type="text" id="pxApplyTitle2" class = "form-control" name="pxApplyTitle2">
 					
 					내용

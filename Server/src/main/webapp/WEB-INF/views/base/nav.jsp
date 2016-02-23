@@ -1,5 +1,11 @@
+<%@page import="com.secsm.info.AccountInfo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!-- Navigation -->
+
+<%
+	AccountInfo accountInfo_nav = (AccountInfo) request.getAttribute("accountInfo");
+%>
+
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -11,7 +17,7 @@
 				<span class="icon-bar"></span>
 			</button>
 			
-			<a class="navbar-brand" href="index">Secsm</a>
+			<a class="navbar-brand" href="/Secsm/index">Secsm</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -52,9 +58,23 @@
 					<ul class="dropdown-menu" role="menu" aria-labelledby="pxDrop">
 						<li role="presentation"><a role="menuitem" href="/Secsm/px">PX</a></li>
 					</ul>
-				</li>				
+				</li>
+				
+				<%
+					if(accountInfo_nav != null){
+						out.println("<li style='margin-left: 20px'>");
+						out.println("<a href='/Secsm/logout' role='button' >로그아웃<b class='caret'></b></a>");
+						out.println("</li>");
+					}
+					else{
+						out.println("<li style='margin-left: 20px'>");
+						out.println("<a data-toggle= 'modal' onclick = 'inputreset(5);' data-target='#account_SignUp' >SIGN UP<b class='caret'></b></a>");
+						out.println("</li>");
+					}
+				%>
+				
+				
 			</ul>
-
 		</div>
 	</div>
 </nav>

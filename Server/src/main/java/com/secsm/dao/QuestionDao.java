@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.secsm.info.ProjectInfo;
 import com.secsm.info.QuestionInfo;
 
 @Repository
@@ -43,6 +44,18 @@ public class QuestionDao {
 	
 	public List<QuestionInfo> selectAll(){
 		return jdbcTemplate.query("select * from question",
+				new RowMapper<QuestionInfo>() {
+					public QuestionInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new QuestionInfo(resultSet.getInt("id"), resultSet.getInt("accountId")
+								, resultSet.getString("title"), resultSet.getString("content")
+								, resultSet.getTimestamp("regDate"), resultSet.getTimestamp("startDate")
+								, resultSet.getTimestamp("endDate"));
+					}
+				});
+	}
+	
+	public List<QuestionInfo> selectByPage(int page, int count){
+		return jdbcTemplate.query("select * from question order by id desc limit ?, ?", new Object[] { page, count },
 				new RowMapper<QuestionInfo>() {
 					public QuestionInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new QuestionInfo(resultSet.getInt("id"), resultSet.getInt("accountId")

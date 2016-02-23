@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.secsm.info.AnswerChoiceInfo;
+import com.secsm.info.AnswerContentInfo;
 import com.secsm.info.AnswerEssayInfo;
 
 @Repository
@@ -60,6 +60,16 @@ public class AnswerEssayDao {
 					public AnswerEssayInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AnswerEssayInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
 								, resultSet.getInt("question_id"), resultSet.getString("answer"));
+					}
+				});
+	}
+	
+	public List<AnswerContentInfo> selectByQuestionIdToContent(int question_id){
+		return jdbcTemplate.query("select * from answer_essay, account where question_id = ? and answer_essay.account_id = account.id", new Object[] {question_id},
+				new RowMapper<AnswerContentInfo>() {
+					public AnswerContentInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AnswerContentInfo(resultSet.getInt("id"), resultSet.getInt("question_id")
+								, resultSet.getInt("account_id"), "" + resultSet.getString("answer"), resultSet.getString("name"));
 					}
 				});
 	}

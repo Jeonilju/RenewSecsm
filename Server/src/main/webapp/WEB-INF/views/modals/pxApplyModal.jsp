@@ -14,32 +14,37 @@
 		
 		var param = "pxApplyTitle" + "=" + $("#pxApplyTitle").val() + "&" + 
 				"pxApplyContent" + "="+ $("#pxApplyContent").val();
-		$.ajax({
-		url : "/Secsm/api_applyReq",
-		type : "POST",
-		data : param,
-		cache : false,
-		async : false,
-		dataType : "text",
 		
-		success : function(response) {	
-		
-			if(response=='200')
-			{
-				alert("요청되었습니다.");
-				document.getElementById("pxApplyTitle").value = "";
-				document.getElementById("pxApplyContent").value = "";
-				refreshReqTable(0)
-			}
-			
-		},
-		error : function(request, status, error) {
-			if (request.status != '0') {
-				alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-			}
+		if($("#pxApplyTitle").val() == ""){
+			alert("상품명을 입력해주세요.");
 		}
+		else{
+		$.ajax({
+			url : "/Secsm/api_applyReq",
+			type : "POST",
+			data : param,
+			cache : false,
+			async : false,
+			dataType : "text",
 		
-		});
+			success : function(response) {	
+				if(response=='200')
+				{
+					alert("요청되었습니다.");
+					document.getElementById("pxApplyTitle").value = "";
+					document.getElementById("pxApplyContent").value = "";
+					refreshReqTable(0);
+				}
+				
+			},
+			error : function(request, status, error) {
+				if (request.status != '0') {
+					alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+			}
+			}
+		
+			});
+		}
 	}
 	
 	function refreshReqTable(opt){
@@ -192,14 +197,13 @@
 			
 			<button id="swapBtn" name="swapBtn" type="button" class="btn" style="margin: 5px;" onclick="pxReqSwapBtn();"><span>상품요청</span></button>
 		
-			
 				<!-- 상품 요청 리스트-->
 				<div id="pxReqDivList" name="pxReqDivList" style="display: none;">
 					<table class="table table-hover" id="pxReqTable">
 					    <thead>
 					      <tr>
 					        <th>No.</th>
-					        <th>제목</th>
+					        <th>상품명</th>
 					        <th>내용</th>
 					        <th>상태</th>
 					      </tr>
@@ -217,7 +221,7 @@
 				<!-- 상품 요청 form -->
 				<form id= "apply_form" onsubmit="pxApplyReq();inputreset(3);return false">
 				<div id="pxReqDivForm" name="pxReqDivForm" style="display: ;">
-					제목
+					상품명
 					<input type="text" id="pxApplyTitle" class = "form-control" name="pxApplyTitle">
 					
 					내용

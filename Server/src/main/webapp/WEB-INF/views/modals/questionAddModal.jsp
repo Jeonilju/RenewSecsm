@@ -1,6 +1,9 @@
 <%@ page pageEncoding="utf-8" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.secsm.info.*"%>
+<%@ page contentType="text/html; charset=utf-8" %>
+<% request.setCharacterEncoding("utf-8"); %>
+<% response.setContentType("text/html; charset=utf-8"); %>
 
 <script type="text/javascript" src="/Secsm/resources/js/bootstrap-datepicker.js"></script>
 
@@ -92,51 +95,44 @@
 		});
 	}
 	
+	function getQuestionContent(type){
+		var param = "type" + "=" + type;
+	
+		$.ajax({
+		url : "/Secsm/api_questionContent/" + type ,
+		type : "GET",
+		data : param,
+		cache : false,
+		async : false,
+		dataType : "text",
+		
+		success : function(response) {	
+			$('#questionsTable > tbody:last').append(response);
+		},
+		error : function(request, status, error) {
+		if (request.status != '0') {
+			alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+		}
+		}
+		
+		});
+	}
+	
 	$(function() {
 		$('#btn-add-choice').click(function() {
-            $('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "객관식"
-            		+ "<br/>"
-            		+ "<input type'text' class='qType' name='qType' style='display: none;' value='0'<br/>"
-            		+ "<input type='text' id=\"qTitle\" name=\"qTitle\" class=\"qTitle\"><br/>"
-            		+ "1번 <input type='text' class='q1'><br/>"
-            		+ "2번 <input type='text' class='q2'><br/>"
-            		+ "3번 <input type='text' class='q3'><br/>"
-            		+ "4번 <input type='text' class='q4'><br/>"
-            		+ "5번 <input type='text' class='q5'><br/>"
-            		+ "</td></tr>");
+			getQuestionContent(0);
         });
 		$('#btn-add-essay').click(function() {
-			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "주관식"
-            		+ "<br/>"
-            		+ "<input type'text' class='qType' style='display: none;' value='1'<br/>"
-            		+ "<input type='text' class='qTitle'><br/>"
-            		+ "</td></tr>");
+			getQuestionContent(1);
         });
 		$('#btn-add-date').click(function() {
-			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "날짜"
-            		+ "<br/>"
-            		+ "<input type'text' class='qType' style='display: none;' value='2'<br/>"
-            		+ "<input type='text' class='qTitle'><br/>"
-            		+ "</td></tr>");
+			getQuestionContent(2);
         });
 		$('#btn-add-time').click(function() {
-			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "시간"
-            		+ "<br/>"
-            		+ "<input type'text' class='qType' style='display: none;' value='3'<br/>"
-            		+ "<input type='text' class='qTitle'><br/>"
-            		+ "</td></tr>");
+			getQuestionContent(3);
         });
 		$('#btn-add-score').click(function() {
-			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "점수"
-            		+ "<br/>"
-            		+ "<input type'text' class='qType' style='display: none;' value='4'<br/>"
-            		+ "<input type='text' class='qTitle'><br/>"
-            		+ "</td></tr>");
+			getQuestionContent(4);
         });
 		
         $('#btn-delete-row').click(function() {
@@ -144,6 +140,7 @@
         });
     });
 
+	
 </script>
 
 <style>
@@ -185,13 +182,13 @@
 						<input name="questionAddEndDate" id="questionAddEndDate" type="text" class="form-control"/>
 					</div>
 					
-					
 					<div class="form-group">
 						<button id="btn-add-choice" type="button" class="btn btn-default">+객관식</button>
 						<button id="btn-add-essay" type="button" class="btn btn-default">+주관식</button>
 						<button id="btn-add-date" type="button" class="btn btn-default">+날짜</button>
 						<button id="btn-add-time" type="button" class="btn btn-default">+시간</button>
 						<button id="btn-add-score" type="button" class="btn btn-default">+점수</button>
+						<button id="btn-delete-row" type="button" class="btn btn-danger">-삭제</button>
 					</div>
 				</div>
 

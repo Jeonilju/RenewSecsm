@@ -108,11 +108,13 @@
 		dataType : "text",
 		
 		success : function(response) {	
-			alert(response);
 			if(response=='200')
 			{
 				// 정상 구매
-				alert('응답이 완료되었습니다.');
+				window.location.reload(true);
+			}
+			else if(response = '408'){
+				alert('이미 마감된 설문입니다.');
 			}
 			else{
 				alert('알수없음');

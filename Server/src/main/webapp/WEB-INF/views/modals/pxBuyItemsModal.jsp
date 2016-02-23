@@ -12,6 +12,11 @@
 	PxItemsInfo pxiteminfo = (PxItemsInfo) request.getAttribute("pxiteminfo");
 	
 %>
+<style>
+	.ui-autocomplete{
+		z-index:30 !important;
+	}
+</style>
 
 <script type="text/javascript">
 
@@ -43,7 +48,10 @@
 			{
 				// 해당 상품 없음
 				alert('해당 상품이 존재하지 않습니다.');
-			}	
+			}
+			else if(response == '2'){
+				alert('재고가 없습니다. 상품신청을 해주세요.');
+			}
 			else{
 				alert('알수없음');
 			}
@@ -79,6 +87,7 @@
 		}
 		});
 	}
+	
 	
 	function insertBuyListTable(jsonArr){
 		
@@ -168,10 +177,13 @@
 			document.getElementById("add_form").reset();
 		}
 		else if(temp1==3){
-			document.getElementById("pxReqDivForm").reset();
+			document.getElementById("apply_form").reset();
 		}
 		else if(temp1==4){
 			document.getElementById("apply2_form").reset();
+		}
+		else if(temp1==5){
+			document.getElementById("accountSignUpForm").reset();
 		}
 	}
 
@@ -210,8 +222,7 @@
 							</select>
 						</div>
 						<div id = "box2" class="col-md-4">
-							<input id="etItemCode" name="etItemCode" class="form-control" type="text" onkeypress="auto_list();" 
-							style="width: 213.22222px;padding-left: 10px;padding-right: 1px;">
+							<input id="etItemCode" name="etItemCode" class="form-control" type="text" onkeypress="auto_list();" style = "width :202.222px">
 						</div>
 						
 						<div class="col-md-5">

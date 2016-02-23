@@ -83,9 +83,17 @@ public class QuestionController {
 	private AnswerTimeDao answerTimeDao;
 	
 	@RequestMapping(value = "/question", method = RequestMethod.GET)
-	public String QuestionController_index(HttpServletRequest request) {
+	public String QuestionController_index(HttpServletRequest request
+			, @RequestParam(value="page", defaultValue = "0") int page) {
 		logger.info("question Page");
-
+		return getQuestionIndex(request, page);
+	}
+	
+	private String getQuestionIndex(HttpServletRequest request){
+		return getQuestionIndex(request, 0);
+	}
+	
+	private String getQuestionIndex(HttpServletRequest request, int page){
 		AccountInfo info = Util.getLoginedUser(request);
 		if(info == null){
 			// 비로그인
@@ -93,7 +101,7 @@ public class QuestionController {
 		}
 		else{
 			// 로그인
-			List<QuestionInfo> questionList = questionDao.selectAll();
+			List<QuestionInfo> questionList = questionDao.selectByPage(page, 10);
 			request.setAttribute("questionList", questionList);
 			request.setAttribute("accountInfo", info);
 			return "question";	
@@ -105,33 +113,25 @@ public class QuestionController {
 			, @PathVariable("id")int questionId) {
 		logger.info("questionResult Page");
 
-		AccountInfo info = Util.getLoginedUser(request);
+		AccountInfo accountInfo = Util.getLoginedUser(request);
 		QuestionInfo questionInfo = questionDao.selectById(questionId);
 		
-		if(info == null){
+		if(accountInfo == null){
 			// 비로그인
-			return "index";
+			return getQuestionIndex(request);
 		}
 		else{
 			if(questionInfo == null){
-				// TODO 등록된 프로젝트가 없음
-				return "";
+				return getQuestionIndex(request);
 			}
-			else if (info.getId() == questionInfo.getAccountId()){
+			else if (accountInfo.getId() == questionInfo.getAccountId()){
 				// 정상 접근
-				List<QuestionChoiceInfo> choiceList = questionChoiceDao.selectByQuestionId(questionInfo.getId());
-				List<QuestionEssayInfo> essayList = questionEssayDao.selectByQuestionId(questionInfo.getId());
-				List<QuestionDateInfo> dateList = questionDateDao.selectByQuestionId(questionInfo.getId());
-				List<QuestionTimeInfo> timeList = questionTimeDao.selectByQuestionId(questionInfo.getId());
-				List<QuestionScoreInfo> scoreList = questionScoreDao.selectByQuestionId(questionInfo.getId());
-				setAnswerList(choiceList, essayList, dateList, timeList, scoreList);
 				
+				ArrayList<QuestionContentInfo> totalQuestionList = new ArrayList<QuestionContentInfo>();
+				getQuestionList(questionInfo, true, totalQuestionList);
+
 				request.setAttribute("questionInfo", questionInfo);
-				request.setAttribute("choiceList", choiceList);
-				request.setAttribute("essayList", essayList);
-				request.setAttribute("dateList", dateList);
-				request.setAttribute("timeList", timeList);
-				request.setAttribute("scoreList", scoreList);
+				request.setAttribute("totalQuestionList", totalQuestionList);
 				
 				return "questionResult";
 			}
@@ -143,32 +143,39 @@ public class QuestionController {
 
 	}
 	
-	private void setAnswerList(
-			List<QuestionChoiceInfo> choiceList
-			, List<QuestionEssayInfo> essayList
-			, List<QuestionDateInfo> dateList
-			, List<QuestionTimeInfo> timeList
-			, List<QuestionScoreInfo> scoreList){
+	/** 설문지 엑셀로 다운 */
+	@RequestMapping(value = "/questionResult/{id}/excel", method = RequestMethod.GET)
+	public String QuestionController_resultExcel(HttpServletRequest request
+			, @PathVariable("id")int questionId) {
+		logger.info("equipmentReqExcel");
 		
-			for(QuestionChoiceInfo info : choiceList){
-				info.setAnswerList(answerChoiceDao.selectByQuestionId(info.getId()));
+		AccountInfo accountInfo = Util.getLoginedUser(request);
+		QuestionInfo questionInfo = questionDao.selectById(questionId);
+		
+		if(accountInfo == null){
+			// 비로그인
+			return getQuestionIndex(request);
+		}
+		else{
+			if(questionInfo == null){
+				return getQuestionIndex(request);
 			}
-			
-			for(QuestionEssayInfo info : essayList){
-				info.setAnswerList(answerEssayDao.selectByQuestionId(info.getId()));
+			else if (accountInfo.getId() == questionInfo.getAccountId()){
+				// 정상 접근
+				
+				ArrayList<QuestionContentInfo> totalQuestionList = new ArrayList<QuestionContentInfo>();
+				getQuestionList(questionInfo, true, totalQuestionList);
+
+				request.setAttribute("questionInfo", questionInfo);
+				request.setAttribute("totalQuestionList", totalQuestionList);
+				
+				return "questionResultExcel";
 			}
-			
-			for(QuestionDateInfo info : dateList){
-				info.setAnswerList(answerDateDao.selectByQuestionId(info.getId()));
+			else{
+				// 비정상 접근 
+				return "index";
 			}
-			
-			for(QuestionTimeInfo info : timeList){
-				info.setAnswerList(answerTimeDao.selectByQuestionId(info.getId()));
-			}
-			
-			for(QuestionScoreInfo info : scoreList){
-				info.setAnswerList(answerScoreDao.selectByQuestionId(info.getId()));
-			}
+		}
 	}
 	
 	/** 설문 생성 */
@@ -260,17 +267,21 @@ public class QuestionController {
 		
 		QuestionInfo info = questionDao.selectById(id);
 		ArrayList<QuestionContentInfo> totalQuestionList = new ArrayList<QuestionContentInfo>();
+		
+		getQuestionList(info, false, totalQuestionList);
+		
+		Gson gson = new Gson();
+		String result = gson.toJson(totalQuestionList);
+		return result;
+	}
+	
+	private ArrayList<QuestionContentInfo> getQuestionList(QuestionInfo info, boolean isAnswer, ArrayList<QuestionContentInfo> totalQuestionList){
+		
 		List<QuestionChoiceInfo> choiceList = questionChoiceDao.selectByQuestionId(info.getId());
 		List<QuestionEssayInfo> essayList = questionEssayDao.selectByQuestionId(info.getId());
 		List<QuestionDateInfo> dateList = questionDateDao.selectByQuestionId(info.getId());
 		List<QuestionTimeInfo> timeList = questionTimeDao.selectByQuestionId(info.getId());
 		List<QuestionScoreInfo> scoreList = questionScoreDao.selectByQuestionId(info.getId());
-
-		logger.debug("객관식수: " + choiceList.size());
-		logger.debug("주관식수: " + essayList.size());
-		logger.debug("날짜수: " + dateList.size());
-		logger.debug("시간수: " + timeList.size());
-		logger.debug("점수수: " + scoreList.size());
 		
 		for(QuestionChoiceInfo qInfo : choiceList){
 			QuestionContentInfo newQuestion = new QuestionContentInfo();
@@ -283,6 +294,9 @@ public class QuestionController {
 			newQuestion.q4 = qInfo.getP4();
 			newQuestion.q5 = qInfo.getP5();
 			
+			if(isAnswer)
+				newQuestion.answerList = answerChoiceDao.selectByQuestionIdToContent(qInfo.getId());
+			
 			totalQuestionList.add(newQuestion);
 		}
 
@@ -291,6 +305,10 @@ public class QuestionController {
 			newQuestion.id = qInfo.getId();
 			newQuestion.qType = 1;
 			newQuestion.qTitle = qInfo.getProblom();
+			
+			if(isAnswer)
+				newQuestion.answerList = answerEssayDao.selectByQuestionIdToContent(qInfo.getId());
+	
 			totalQuestionList.add(newQuestion);
 		}
 
@@ -299,6 +317,10 @@ public class QuestionController {
 			newQuestion.id = qInfo.getId();
 			newQuestion.qType = 2;
 			newQuestion.qTitle = qInfo.getProblom();
+			
+			if(isAnswer)
+				newQuestion.answerList = answerDateDao.selectByQuestionIdToContent(qInfo.getId());
+			
 			totalQuestionList.add(newQuestion);
 		}
 		
@@ -307,6 +329,10 @@ public class QuestionController {
 			newQuestion.id = qInfo.getId();
 			newQuestion.qType = 3;
 			newQuestion.qTitle = qInfo.getProblom();
+			
+			if(isAnswer)
+				newQuestion.answerList = answerTimeDao.selectByQuestionIdToContent(qInfo.getId());
+			
 			totalQuestionList.add(newQuestion);
 		}
 
@@ -315,24 +341,22 @@ public class QuestionController {
 			newQuestion.id = qInfo.getId();
 			newQuestion.qType = 4;
 			newQuestion.qTitle = qInfo.getProblom();
+			
+			if(isAnswer)
+				newQuestion.answerList = answerScoreDao.selectByQuestionIdToContent(qInfo.getId());
+			
 			totalQuestionList.add(newQuestion);
 		}
 		Collections.sort(totalQuestionList);
 		
-		QuestionContentInfo newQuestion = new QuestionContentInfo();
-		newQuestion.qTitle = info.getTitle();
-		newQuestion.qContent = info.getContent();
-		totalQuestionList.add(0, newQuestion);
+		if(!isAnswer){
+			QuestionContentInfo newQuestion = new QuestionContentInfo();
+			newQuestion.qTitle = info.getTitle();
+			newQuestion.qContent = info.getContent();
+			totalQuestionList.add(0, newQuestion);
+		}
 		
-		Gson gson = new Gson();
-		String result = gson.toJson(totalQuestionList);
-//		logger.info(result);
-//		try {
-//			URLEncoder.encode(result , "UTF-8");
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
-		return result;
+		return totalQuestionList;
 	}
 	
 	/** 설문지 결과 조회 */
@@ -498,53 +522,69 @@ public class QuestionController {
 		
 		return "200";
 	}
-	
+
 	/**객관식 양식 */
 	@ResponseBody
-	@RequestMapping(value = "/api_questionGetChoice", method = RequestMethod.GET)
-	public String QuestionController_questionGetChoice(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "/api_questionContent/{type}", method = RequestMethod.GET, produces = "application/text; charset=utf8")
+	public String QuestionController_questionGetContent(HttpServletRequest request, HttpServletResponse response
+			, @PathVariable(value="type") int type) {
 		logger.info("api questionGetChoice");
 		String result = "";
 		
-		return result;
-	}
-	
-	/** 주관식 양식 */
-	@ResponseBody
-	@RequestMapping(value = "/api_questionGetEssay", method = RequestMethod.GET)
-	public String QuestionController_questionGetEssay(HttpServletRequest request, HttpServletResponse response) {
-		logger.info("api questionGetEssay");
-		String result = "";
-		
-		return result;
-	}
-	
-	/** 점수 양식 */
-	@ResponseBody
-	@RequestMapping(value = "/api_questionGetScore", method = RequestMethod.GET)
-	public String QuestionController_questionGetScore(HttpServletRequest request, HttpServletResponse response) {
-		logger.info("api questionGetScore");
-		String result = "";
-		
-		return result;
-	}
-	
-	/** 시간 양식 */
-	@ResponseBody
-	@RequestMapping(value = "/api_questionGetTime", method = RequestMethod.GET)
-	public String QuestionController_questionGetTime(HttpServletRequest request, HttpServletResponse response) {
-		logger.info("api questionGetTime");
-		String result = "";
-		
-		return result;
-	}
-	
-	/**날짜 양식 */
-	@ResponseBody
-	@RequestMapping(value = "/api_questionGetDate", method = RequestMethod.GET)
-	public String QuestionController_questionGetDate(HttpServletRequest request, HttpServletResponse response) {
-		logger.info("api questionGetDate");
-		String result = "";
+		switch (type) {
+		case 0:
+			result = "<tr style='margin:10px;'><td>"
+            		+ "객관식"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType form-control' name='qType' style='display: none;' value='0'<br/>"
+            		+ "<textarea type='text' id=\"qTitle\" name=\"qTitle\" class='qTitle form-control' style='width: 200%;'></textarea><br/>"
+            		+ "1번 <input type='text' class='q1 form-control'>"
+            		+ "2번 <input type='text' class='q2 form-control'>"
+            		+ "3번 <input type='text' class='q3 form-control'>"
+            		+ "4번 <input type='text' class='q4 form-control'>"
+            		+ "5번 <input type='text' class='q5 form-control'>"
+            		+ "<hr/>"
+            		+ "</td></tr>";
+			break;
+		case 1:
+			result = "<tr style='margin:10px;'><td>"
+            		+ "주관식"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType form-control' style='display: none;' value='1'<br/>"
+            		+ "<textarea type='text' class='qTitle form-control' style='width: 200%;'></textarea><br/>"
+            		+ "<hr/>"
+            		+ "</td></tr>";
+			break;
+		case 2:
+			result = "<tr style='margin:10px;'><td>"
+            		+ "날짜"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType form-control' style='display: none;' value='2'<br/>"
+            		+ "<textarea type='text' class='qTitle form-control' style='width: 200%;'></textarea><br/>"
+            		+ "<hr/>"
+            		+ "</td></tr>";
+			break;
+		case 3:
+			result = "<tr style='margin:10px;'><td>"
+            		+ "시간"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType form-control' style='display: none;' value='3'<br/>"
+            		+ "<textarea type='text' class='qTitle form-control' style='width: 200%;'></textarea><br/>"
+            		+ "<hr/>"
+            		+ "</td></tr>";
+			break;
+		case 4: 
+			result = "<tr style='margin:10px;'><td>"
+            		+ "점수"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType form-control' style='display: none;' value='4'<br/>"
+            		+ "<textarea type='text' class='qTitle form-control' style='width: 200%;'></textarea><br/>"
+            		+ "<hr/>"
+            		+ "</td></tr>";
+			break;
+		default:
+			break;
+		}
 		
 		return result;
 	}
