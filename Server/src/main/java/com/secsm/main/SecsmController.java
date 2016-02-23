@@ -48,14 +48,17 @@ public class SecsmController {
 	}
 	
 	
-	private String resultIndex(HttpServletRequest request){
+	public static String resultIndex(HttpServletRequest request){
 		AccountInfo info = Util.getLoginedUser(request);
 		if(info == null){
 			// 비로그인 
+			logger.info("비로그인상태");
+			request.setAttribute("isLogined", null);
 			return "index";
 		}
 		else{
 			// 로그인
+			logger.info("로그인상태");
 			request.setAttribute("isLogined", true);
 			return "index";
 		}

@@ -45,7 +45,7 @@ public class LivingController {
 		
 		//비로그인시 메인페이지로
 		if(info == null){
-			return "index";
+			return SecsmController.resultIndex(request);
 		}
 		
 		//start, end Date 지정
@@ -89,7 +89,7 @@ public class LivingController {
 		
 		//비로그인시 메인페이지로
 		if(info == null){
-			return "index";
+			return SecsmController.resultIndex(request);
 		}
 		
 		//start, end Date 지정

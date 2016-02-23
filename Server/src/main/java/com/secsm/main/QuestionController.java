@@ -525,7 +525,7 @@ public class QuestionController {
 
 	/**객관식 양식 */
 	@ResponseBody
-	@RequestMapping(value = "/api_questionContent/{type}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api_questionContent/{type}", method = RequestMethod.GET, produces = "application/text; charset=utf8")
 	public String QuestionController_questionGetContent(HttpServletRequest request, HttpServletResponse response
 			, @PathVariable(value="type") int type) {
 		logger.info("api questionGetChoice");
@@ -536,100 +536,55 @@ public class QuestionController {
 			result = "<tr style='margin:10px;'><td>"
             		+ "객관식"
             		+ "<br/>"
-            		+ "<input type'text' class='qType' name='qType' style='display: none;' value='0'<br/>"
-            		+ "<input type='text' id=\"qTitle\" name=\"qTitle\" class=\"qTitle\"><br/>"
-            		+ "1번 <input type='text' class='q1'><br/>"
-            		+ "2번 <input type='text' class='q2'><br/>"
-            		+ "3번 <input type='text' class='q3'><br/>"
-            		+ "4번 <input type='text' class='q4'><br/>"
-            		+ "5번 <input type='text' class='q5'><br/>"
+            		+ "<input type'text' class='qType form-control' name='qType' style='display: none;' value='0'<br/>"
+            		+ "<textarea type='text' id=\"qTitle\" name=\"qTitle\" class='qTitle form-control' style='width: 200%;'></textarea><br/>"
+            		+ "1번 <input type='text' class='q1 form-control'>"
+            		+ "2번 <input type='text' class='q2 form-control'>"
+            		+ "3번 <input type='text' class='q3 form-control'>"
+            		+ "4번 <input type='text' class='q4 form-control'>"
+            		+ "5번 <input type='text' class='q5 form-control'>"
+            		+ "<hr/>"
             		+ "</td></tr>";
 			break;
 		case 1:
 			result = "<tr style='margin:10px;'><td>"
             		+ "주관식"
             		+ "<br/>"
-            		+ "<input type'text' class='qType' style='display: none;' value='1'<br/>"
-            		+ "<input type='text' class='qTitle'><br/>"
+            		+ "<input type'text' class='qType form-control' style='display: none;' value='1'<br/>"
+            		+ "<textarea type='text' class='qTitle form-control' style='width: 200%;'></textarea><br/>"
+            		+ "<hr/>"
             		+ "</td></tr>";
 			break;
 		case 2:
 			result = "<tr style='margin:10px;'><td>"
             		+ "날짜"
             		+ "<br/>"
-            		+ "<input type'text' class='qType' style='display: none;' value='2'<br/>"
-            		+ "<input type='text' class='qTitle'><br/>"
+            		+ "<input type'text' class='qType form-control' style='display: none;' value='2'<br/>"
+            		+ "<textarea type='text' class='qTitle form-control' style='width: 200%;'></textarea><br/>"
+            		+ "<hr/>"
             		+ "</td></tr>";
 			break;
 		case 3:
 			result = "<tr style='margin:10px;'><td>"
             		+ "시간"
             		+ "<br/>"
-            		+ "<input type'text' class='qType' style='display: none;' value='3'<br/>"
-            		+ "<input type='text' class='qTitle'><br/>"
+            		+ "<input type'text' class='qType form-control' style='display: none;' value='3'<br/>"
+            		+ "<textarea type='text' class='qTitle form-control' style='width: 200%;'></textarea><br/>"
+            		+ "<hr/>"
             		+ "</td></tr>";
 			break;
 		case 4: 
 			result = "<tr style='margin:10px;'><td>"
             		+ "점수"
             		+ "<br/>"
-            		+ "<input type'text' class='qType' style='display: none;' value='4'<br/>"
-            		+ "<input type='text' class='qTitle'><br/>"
+            		+ "<input type'text' class='qType form-control' style='display: none;' value='4'<br/>"
+            		+ "<textarea type='text' class='qTitle form-control' style='width: 200%;'></textarea><br/>"
+            		+ "<hr/>"
             		+ "</td></tr>";
 			break;
 		default:
 			break;
 		}
-		
-		return result;
-	}
-	
-	/**객관식 양식 */
-	@ResponseBody
-	@RequestMapping(value = "/api_questionGetChoice", method = RequestMethod.GET)
-	public String QuestionController_questionGetChoice(HttpServletRequest request, HttpServletResponse response) {
-		logger.info("api questionGetChoice");
-		String result = "";
-		
-		return result;
-	}
-	
-	/** 주관식 양식 */
-	@ResponseBody
-	@RequestMapping(value = "/api_questionGetEssay", method = RequestMethod.GET)
-	public String QuestionController_questionGetEssay(HttpServletRequest request, HttpServletResponse response) {
-		logger.info("api questionGetEssay");
-		String result = "";
-		
-		return result;
-	}
-	
-	/** 점수 양식 */
-	@ResponseBody
-	@RequestMapping(value = "/api_questionGetScore", method = RequestMethod.GET)
-	public String QuestionController_questionGetScore(HttpServletRequest request, HttpServletResponse response) {
-		logger.info("api questionGetScore");
-		String result = "";
-		
-		return result;
-	}
-	
-	/** 시간 양식 */
-	@ResponseBody
-	@RequestMapping(value = "/api_questionGetTime", method = RequestMethod.GET)
-	public String QuestionController_questionGetTime(HttpServletRequest request, HttpServletResponse response) {
-		logger.info("api questionGetTime");
-		String result = "";
-		
-		return result;
-	}
-	
-	/**날짜 양식 */
-	@ResponseBody
-	@RequestMapping(value = "/api_questionGetDate", method = RequestMethod.GET)
-	public String QuestionController_questionGetDate(HttpServletRequest request, HttpServletResponse response) {
-		logger.info("api questionGetDate");
-		String result = "";
 		
 		return result;
 	}

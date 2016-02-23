@@ -121,63 +121,18 @@
 	$(function() {
 		$('#btn-add-choice').click(function() {
 			getQuestionContent(0);
-			/*
-            $('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "객관식"
-            		+ "<br/>"
-            		+ "<input type'text' class='qType' name='qType' style='display: none;' value='0'<br/>"
-            		+ "<input type='text' id=\"qTitle\" name=\"qTitle\" class=\"qTitle\"><br/>"
-            		+ "1번 <input type='text' class='q1'><br/>"
-            		+ "2번 <input type='text' class='q2'><br/>"
-            		+ "3번 <input type='text' class='q3'><br/>"
-            		+ "4번 <input type='text' class='q4'><br/>"
-            		+ "5번 <input type='text' class='q5'><br/>"
-            		+ "</td></tr>");
-			*/
         });
 		$('#btn-add-essay').click(function() {
 			getQuestionContent(1);
-			/*
-			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "주관식"
-            		+ "<br/>"
-            		+ "<input type'text' class='qType' style='display: none;' value='1'<br/>"
-            		+ "<input type='text' class='qTitle'><br/>"
-            		+ "</td></tr>");
-			*/
         });
 		$('#btn-add-date').click(function() {
 			getQuestionContent(2);
-			/*
-			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "날짜"
-            		+ "<br/>"
-            		+ "<input type'text' class='qType' style='display: none;' value='2'<br/>"
-            		+ "<input type='text' class='qTitle'><br/>"
-            		+ "</td></tr>");
-			*/
         });
 		$('#btn-add-time').click(function() {
 			getQuestionContent(3);
-			/*
-			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "시간"
-            		+ "<br/>"
-            		+ "<input type'text' class='qType' style='display: none;' value='3'<br/>"
-            		+ "<input type='text' class='qTitle'><br/>"
-            		+ "</td></tr>");
-			*/
         });
 		$('#btn-add-score').click(function() {
 			getQuestionContent(4);
-			/*
-			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
-            		+ "점수"
-            		+ "<br/>"
-            		+ "<input type'text' class='qType' style='display: none;' value='4'<br/>"
-            		+ "<input type='text' class='qTitle'><br/>"
-            		+ "</td></tr>");
-			*/
         });
 		
         $('#btn-delete-row').click(function() {
@@ -185,6 +140,7 @@
         });
     });
 
+	
 </script>
 
 <style>
@@ -232,6 +188,7 @@
 						<button id="btn-add-date" type="button" class="btn btn-default">+날짜</button>
 						<button id="btn-add-time" type="button" class="btn btn-default">+시간</button>
 						<button id="btn-add-score" type="button" class="btn btn-default">+점수</button>
+						<button id="btn-delete-row" type="button" class="btn btn-danger">-삭제</button>
 					</div>
 				</div>
 

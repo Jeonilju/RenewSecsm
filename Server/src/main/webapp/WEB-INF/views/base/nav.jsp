@@ -63,7 +63,7 @@
 				<%
 					if(accountInfo_nav != null){
 						out.println("<li style='margin-left: 20px'>");
-						out.println("<a href='/Secsm/logout role='button' >로그아웃<b class='caret'></b></a>");
+						out.println("<a href='/Secsm/logout' role='button' >로그아웃<b class='caret'></b></a>");
 						out.println("</li>");
 					}
 					else{

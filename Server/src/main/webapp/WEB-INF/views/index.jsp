@@ -35,21 +35,20 @@
 		
 		});
 	
+	}
+	
+	function onLoad(){
 		$("#loginPW").keyup(function(event){
 		    if(event.keyCode == 13){
-		    	addItem();
+		    	login();
 		    }
 		});
 		
-	}
-
-	function onLoad(){
 		<%
-		if(request.getAttribute("isLogined") == null){
-			out.println("location.href=\"/Secsm/attendance\";");
-		}
-
-	%>
+			if(request.getAttribute("isLogined") != null){
+				out.println("location.href=\"/Secsm/attendance\";");
+			}
+		%>
 	}
 </script>
 
@@ -70,9 +69,9 @@
 						</div>
 						<div class="form-inline" style="padding:3px">
 							<label for="loginPW" style="width: 140px;">Password</label>
-							<input name="loginPW" id="loginPW" type="password" style="width:300px" class="form-control" />
+							<input name="loginPW" id="loginPW" type="password" style="width:300px" class="form-control"/>
 						</div>
-						<input type="submit" value ="Login"class="btn" style="width:300px; margin: 30px;" onclick="login();"></input>										
+						<input type="button" value ="Login"class="btn" style="width:300px; margin: 30px;" onclick="login();"></input>										
 					</form>
 				</div>
 			</div>
@@ -80,7 +79,7 @@
 	</div>
 </header>
 <!-- <body style="background: #18bc9c;" onload="onLoad();"> -->
-<body style="background: #18bc9c;" >
+<body style="background: #18bc9c;" onload="onLoad();" >
 	<jsp:include page="base/nav.jsp" flush="false" />
 	<jsp:include page="modals/account_SignUp.jsp" flush="false" />	
 	<jsp:include page="base/foot.jsp" flush="false" />
