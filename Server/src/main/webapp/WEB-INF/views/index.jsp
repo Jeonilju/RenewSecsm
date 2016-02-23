@@ -49,7 +49,7 @@
 				out.println("location.href=\"/Secsm/attendance\";");
 			}
 		%>
-	}
+		}
 </script>
 
 <!-- Header -->
@@ -81,7 +81,8 @@
 <!-- <body style="background: #18bc9c;" onload="onLoad();"> -->
 <body style="background: #18bc9c;" onload="onLoad();" >
 	<jsp:include page="base/nav.jsp" flush="false" />
-	<jsp:include page="modals/account_SignUp.jsp" flush="false" />	
+	<jsp:include page="modals/account_SignUp.jsp" flush="false" />
+	<jsp:include page="modals/pxBuyItemsModal.jsp" flush="false" />	
 	<jsp:include page="base/foot.jsp" flush="false" />
 	
 </body>

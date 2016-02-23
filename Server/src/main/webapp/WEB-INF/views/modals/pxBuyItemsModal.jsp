@@ -182,6 +182,9 @@
 		else if(temp1==4){
 			document.getElementById("apply2_form").reset();
 		}
+		else if(temp1==5){
+			document.getElementById("accountSignUpForm").reset();
+		}
 	}
 
 	

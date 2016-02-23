@@ -4,6 +4,7 @@
 
 <script type="text/javascript">
 
+
 	function NewUser_SignUp(){
 		var param = "User_mail" + "=" + $("#User_mail").val() + "&" + 
 					"User_password" + "=" + $("#User_password").val() + "&" + 
@@ -12,30 +13,81 @@
 					"User_gender" + "=" + $("#User_gender").val() + "&" + 
 					"User_phone" + "="+ $("#User_phone").val() + "&" + 
 					"User_grade" + "="+ $("#User_grade").val();
-		alert(param);
+	//	alert(param);
+		
+		var form = document.accountSignUpForm;
+	
+		if(form.User_mail.value== ""){
+			alert("E-mail을 입력하지 않았습니다.");
+			return;
+		}
+		else if(form.User_password.value != form.re_User_password.value){
+			alert("비밀번호와 재입력 비밀번호가 일치하지 않습니다.");
+			return;
+		}
+		else if(form.User_password.value == "" || re_User_password == ""){
+			alert("비밀번호를 입력하지 않았습니다.");
+			return;
+		}
+		else if(form.User_phone.value == ""){
+			alert("핸드폰 번호를 입력하지 않았습니다.");
+			return;
+		}
+		else if(form.User_password.value.length < 8){
+			alert("비밀번호 길이가 짧습니다.");
+			return;
+		}
+		else if(form.User_name.value.length == ""){
+			alert("이름을 입력하지 않았습니다..");
+			return;
+		}
+		else{
+			$.ajax({
+				url : "/Secsm/api_signup",
+				type : "POST",
+				data : param,
+				cache : false,
+				async : false,
+				dataType : "text",
+			
+				success : function(response) {	
+					if(response=='200')
+					{
+						// 정상 수정
+						alert("회원가입이 완료되었습니다.");
+						window.location.reload(true);
+					}
+				},
+				error : function(request, status, error) {
+					if (request.status != '0') {
+						alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+					}
+				}
+			});
+		}
+	}
+	
+	function check_duplicate_email(){
+		var param = "User_mail" + "=" + $("#User_mail").val();
+		//alert(param);
+		
 		
 		$.ajax({
-			url : "/Secsm/api_signup",
+			url : "/Secsm/api_duplicate_check",
 			type : "POST",
 			data : param,
 			cache : false,
 			async : false,
 			dataType : "text",
-			
+		
 			success : function(response) {	
 				if(response=='200')
 				{
 					// 정상 수정
-					alert("회원가입이 완료되었습니다.");
-					window.location.reload(true);
+					alert("E_mail이 중복되지 않습니다.");
 				}
 				else if(response == '400'){
-					// 비로그인
-					location.replace("/Secsm/index");
-				}
-				else if(response == '401'){
-					// 자기 프로젝트 아님
-					alert("권한이 없습니다.");
+					alert("E_mail이 중복됩니다. 다른 e_mail을 사용해 주세요.");
 				}
 			},
 			error : function(request, status, error) {
@@ -44,8 +96,8 @@
 				}
 			}
 		});
+		
 	}
-
 </script>
 
 
@@ -63,6 +115,7 @@
 					<div class="form-group">
 						<label for="User_mail">E-mail</label> 
 						<input name="User_mail" id="User_mail" type="text" class="form-control" placeholder = "E-mail"/>
+						<button type = "button" class = "btn btn-default" id = "check_email" onclick = "check_duplicate_email()" >중복확인</button>						
 					</div>
 					<div class="form-group">
 						<label for="User_password">비밀번호</label> 
