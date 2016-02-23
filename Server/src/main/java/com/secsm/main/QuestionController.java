@@ -83,9 +83,17 @@ public class QuestionController {
 	private AnswerTimeDao answerTimeDao;
 	
 	@RequestMapping(value = "/question", method = RequestMethod.GET)
-	public String QuestionController_index(HttpServletRequest request) {
+	public String QuestionController_index(HttpServletRequest request
+			, @RequestParam(value="page", defaultValue = "0") int page) {
 		logger.info("question Page");
-
+		return getQuestionIndex(request, page);
+	}
+	
+	private String getQuestionIndex(HttpServletRequest request){
+		return getQuestionIndex(request, 0);
+	}
+	
+	private String getQuestionIndex(HttpServletRequest request, int page){
 		AccountInfo info = Util.getLoginedUser(request);
 		if(info == null){
 			// 비로그인
@@ -93,7 +101,7 @@ public class QuestionController {
 		}
 		else{
 			// 로그인
-			List<QuestionInfo> questionList = questionDao.selectAll();
+			List<QuestionInfo> questionList = questionDao.selectByPage(page, 10);
 			request.setAttribute("questionList", questionList);
 			request.setAttribute("accountInfo", info);
 			return "question";	
@@ -110,12 +118,11 @@ public class QuestionController {
 		
 		if(accountInfo == null){
 			// 비로그인
-			return "index";
+			return getQuestionIndex(request);
 		}
 		else{
 			if(questionInfo == null){
-				// TODO 등록된 프로젝트가 없음
-				return "index";
+				return getQuestionIndex(request);
 			}
 			else if (accountInfo.getId() == questionInfo.getAccountId()){
 				// 정상 접근
@@ -147,12 +154,11 @@ public class QuestionController {
 		
 		if(accountInfo == null){
 			// 비로그인
-			return "index";
+			return getQuestionIndex(request);
 		}
 		else{
 			if(questionInfo == null){
-				// TODO 등록된 프로젝트가 없음
-				return "index";
+				return getQuestionIndex(request);
 			}
 			else if (accountInfo.getId() == questionInfo.getAccountId()){
 				// 정상 접근
@@ -515,6 +521,67 @@ public class QuestionController {
 		}
 		
 		return "200";
+	}
+
+	/**객관식 양식 */
+	@ResponseBody
+	@RequestMapping(value = "/api_questionContent/{type}", method = RequestMethod.GET)
+	public String QuestionController_questionGetContent(HttpServletRequest request, HttpServletResponse response
+			, @PathVariable(value="type") int type) {
+		logger.info("api questionGetChoice");
+		String result = "";
+		
+		switch (type) {
+		case 0:
+			result = "<tr style='margin:10px;'><td>"
+            		+ "객관식"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType' name='qType' style='display: none;' value='0'<br/>"
+            		+ "<input type='text' id=\"qTitle\" name=\"qTitle\" class=\"qTitle\"><br/>"
+            		+ "1번 <input type='text' class='q1'><br/>"
+            		+ "2번 <input type='text' class='q2'><br/>"
+            		+ "3번 <input type='text' class='q3'><br/>"
+            		+ "4번 <input type='text' class='q4'><br/>"
+            		+ "5번 <input type='text' class='q5'><br/>"
+            		+ "</td></tr>";
+			break;
+		case 1:
+			result = "<tr style='margin:10px;'><td>"
+            		+ "주관식"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType' style='display: none;' value='1'<br/>"
+            		+ "<input type='text' class='qTitle'><br/>"
+            		+ "</td></tr>";
+			break;
+		case 2:
+			result = "<tr style='margin:10px;'><td>"
+            		+ "날짜"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType' style='display: none;' value='2'<br/>"
+            		+ "<input type='text' class='qTitle'><br/>"
+            		+ "</td></tr>";
+			break;
+		case 3:
+			result = "<tr style='margin:10px;'><td>"
+            		+ "시간"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType' style='display: none;' value='3'<br/>"
+            		+ "<input type='text' class='qTitle'><br/>"
+            		+ "</td></tr>";
+			break;
+		case 4: 
+			result = "<tr style='margin:10px;'><td>"
+            		+ "점수"
+            		+ "<br/>"
+            		+ "<input type'text' class='qType' style='display: none;' value='4'<br/>"
+            		+ "<input type='text' class='qTitle'><br/>"
+            		+ "</td></tr>";
+			break;
+		default:
+			break;
+		}
+		
+		return result;
 	}
 	
 	/**객관식 양식 */

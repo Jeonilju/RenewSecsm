@@ -1,6 +1,9 @@
 <%@ page pageEncoding="utf-8" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.secsm.info.*"%>
+<%@ page contentType="text/html; charset=utf-8" %>
+<% request.setCharacterEncoding("utf-8"); %>
+<% response.setContentType("text/html; charset=utf-8"); %>
 
 <script type="text/javascript" src="/Secsm/resources/js/bootstrap-datepicker.js"></script>
 
@@ -92,8 +95,33 @@
 		});
 	}
 	
+	function getQuestionContent(type){
+		var param = "type" + "=" + type;
+	
+		$.ajax({
+		url : "/Secsm/api_questionContent/" + type ,
+		type : "GET",
+		data : param,
+		cache : false,
+		async : false,
+		dataType : "text",
+		
+		success : function(response) {	
+			$('#questionsTable > tbody:last').append(response);
+		},
+		error : function(request, status, error) {
+		if (request.status != '0') {
+			alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+		}
+		}
+		
+		});
+	}
+	
 	$(function() {
 		$('#btn-add-choice').click(function() {
+			getQuestionContent(0);
+			/*
             $('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
             		+ "객관식"
             		+ "<br/>"
@@ -105,38 +133,51 @@
             		+ "4번 <input type='text' class='q4'><br/>"
             		+ "5번 <input type='text' class='q5'><br/>"
             		+ "</td></tr>");
+			*/
         });
 		$('#btn-add-essay').click(function() {
+			getQuestionContent(1);
+			/*
 			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
             		+ "주관식"
             		+ "<br/>"
             		+ "<input type'text' class='qType' style='display: none;' value='1'<br/>"
             		+ "<input type='text' class='qTitle'><br/>"
             		+ "</td></tr>");
+			*/
         });
 		$('#btn-add-date').click(function() {
+			getQuestionContent(2);
+			/*
 			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
             		+ "날짜"
             		+ "<br/>"
             		+ "<input type'text' class='qType' style='display: none;' value='2'<br/>"
             		+ "<input type='text' class='qTitle'><br/>"
             		+ "</td></tr>");
+			*/
         });
 		$('#btn-add-time').click(function() {
+			getQuestionContent(3);
+			/*
 			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
             		+ "시간"
             		+ "<br/>"
             		+ "<input type'text' class='qType' style='display: none;' value='3'<br/>"
             		+ "<input type='text' class='qTitle'><br/>"
             		+ "</td></tr>");
+			*/
         });
 		$('#btn-add-score').click(function() {
+			getQuestionContent(4);
+			/*
 			$('#questionsTable > tbody:last').append("<tr style='margin:10px;'><td>"
             		+ "점수"
             		+ "<br/>"
             		+ "<input type'text' class='qType' style='display: none;' value='4'<br/>"
             		+ "<input type='text' class='qTitle'><br/>"
             		+ "</td></tr>");
+			*/
         });
 		
         $('#btn-delete-row').click(function() {
@@ -184,7 +225,6 @@
 						마감날짜
 						<input name="questionAddEndDate" id="questionAddEndDate" type="text" class="form-control"/>
 					</div>
-					
 					
 					<div class="form-group">
 						<button id="btn-add-choice" type="button" class="btn btn-default">+객관식</button>
