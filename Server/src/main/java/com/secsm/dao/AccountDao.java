@@ -31,6 +31,10 @@ public class AccountDao implements AccountIDao {
 		jdbcTemplate.update("insert into account (name, email, pw, phone,Grade,gender) values (?, ?, ?, ?,?,?)", new Object[] { name, email, pw, phone,grade,gender });
 	}
 	
+	public int duplicate_check(String email){
+		int count = jdbcTemplate.queryForInt("select count(*) from account where email = ?",new Object[]  { email});
+		return count;
+	}
 	public List<AccountInfo> selectAll() {
 		return jdbcTemplate.query("select * from account", new Object[] {  },
 				new RowMapper<AccountInfo>() {

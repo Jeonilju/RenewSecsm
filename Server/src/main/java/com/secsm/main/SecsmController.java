@@ -116,4 +116,22 @@ public class SecsmController {
 		return "200";
 		
 	}
+	
+	/** 중복체크  */
+	@RequestMapping(value = "/api_duplicate_check", method = RequestMethod.POST)
+	@ResponseBody
+	public String MainController_api_duplicate_Check(HttpServletRequest request
+			, @RequestParam("User_mail") String User_mail
+			) {
+		logger.info("api_signup");
+		
+		int chk =accountDao.duplicate_check(User_mail);
+		if(chk ==0){
+			return "200";
+		}
+		else{
+			return "400";
+		}
+		
+	}
 }

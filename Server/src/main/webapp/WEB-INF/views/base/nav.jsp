@@ -68,7 +68,7 @@
 					}
 					else{
 						out.println("<li style='margin-left: 20px'>");
-						out.println("<a data-toggle= 'modal' data-target='#account_SignUp' >SIGN UP<b class='caret'></b></a>");
+						out.println("<a data-toggle= 'modal' onclick = 'inputreset(5);' data-target='#account_SignUp' >SIGN UP<b class='caret'></b></a>");
 						out.println("</li>");
 					}
 				%>
