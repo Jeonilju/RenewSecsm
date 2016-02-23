@@ -27,8 +27,8 @@ public class AccountDao implements AccountIDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
-	public void create(String name, String email, String pw, String phone){
-		jdbcTemplate.update("insert into account (name, email, pw, phone) values (?, ?, ?, ?)", new Object[] { name, email, pw, phone });
+	public void create(String name, String email, String pw, String phone,int grade,int gender){
+		jdbcTemplate.update("insert into account (name, email, pw, phone,Grade,gender) values (?, ?, ?, ?,?,?)", new Object[] { name, email, pw, phone,grade,gender });
 	}
 	
 	public List<AccountInfo> selectAll() {

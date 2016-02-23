@@ -421,7 +421,7 @@ CHANGE COLUMN `Description` `Description` TEXT NULL DEFAULT NULL COMMENT '' ;
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('교육부장', '교육부장', '1234', '10000', '0000', '3', '0');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자치회장', '자치회상', '1234', '0', '0000', '1', '0');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('생활부장', '생활부장', '1234', '0', '0000', '2', '0');
-INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('PX부장', 'PX부장', '1234', '9999999', '0000', '4', '0');
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('PX부장', 'PX부장', '1234', '999999', '0000', '4', '0');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자산관리부장', '자산관리부장', '1234', '0', '0000', '5', '0');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('기획부장', '기획부장', '1234', '0', '0000', '6', '0');
 
