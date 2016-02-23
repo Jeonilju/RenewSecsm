@@ -1,18 +1,13 @@
 package com.secsm.main;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-=======
->>>>>>> a0a653ca3e2be9d248d496252eafa6b312678dc9
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
