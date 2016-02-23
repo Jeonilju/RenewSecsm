@@ -6,10 +6,7 @@ import java.util.Date;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-<<<<<<< HEAD
 
-=======
->>>>>>> 169f645e2d7afd3f07b3030d879b4da72eb9b1b6
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 
