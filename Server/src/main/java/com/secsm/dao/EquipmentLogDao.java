@@ -44,7 +44,7 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 	
 	public List<EquipmentLogInfo> selectAll(int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id order by startDate limit ?,7", new Object[] { logPage },
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id order by startDate desc limit ?,7", new Object[] { logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
@@ -57,7 +57,7 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 	
 	public List<EquipmentLogInfo> selectAllStatus(int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where status = 1 order by startDate limit ?,7", new Object[] { logPage },
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where status = 1 order by startDate desc limit ?,7", new Object[] { logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new EquipmentLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
@@ -70,7 +70,7 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 	
 	public List<EquipmentLogInfo> selectById(int id, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where equipment_items_id = ? and status=1 order by startDate limit ?,7"
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where equipment_items_id = ? and status=1 order by startDate desc limit ?,7"
 				, new Object[] {id, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -84,7 +84,7 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 	
 	public List<EquipmentLogInfo> selectAllById(int id, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where equipment_items_id = ? order by startDate limit ?,7"
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where equipment_items_id = ? order by startDate desc limit ?,7"
 				, new Object[] {id, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -98,7 +98,7 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 	
 	public List<EquipmentLogInfo> selectByName(String name, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where status=1 and c.name regexp ? order by startDate limit ?,7"
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where status=1 and c.name regexp ? order by startDate desc limit ?,7"
 				, new Object[] {name, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -112,7 +112,7 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 	
 	public List<EquipmentLogInfo> selectAllByName(String name, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where c.name regexp ? order by startDate limit ?,7"
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where c.name regexp ? order by startDate desc limit ?,7"
 				, new Object[] {name, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -126,7 +126,7 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 	
 	public List<EquipmentLogInfo> selectByCode(String code, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where code = ? and status=1 order by startDate limit ?,7"
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where code = ? and status=1 order by startDate desc limit ?,7"
 				, new Object[] {code, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -140,7 +140,7 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 	
 	public List<EquipmentLogInfo> selectAllByCode(String code, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where code = ? order by startDate limit ?,7"
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where code = ? order by startDate desc limit ?,7"
 				, new Object[] {code, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -154,7 +154,7 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 	
 	public List<EquipmentLogInfo> selectByAccountName(String accountName, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where b.name = ? and status=1 order by startDate limit ?,7"
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where b.name = ? and status=1 order by startDate desc limit ?,7"
 				, new Object[] {accountName, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -168,7 +168,7 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 	
 	public List<EquipmentLogInfo> selectAllByAccountName(String accountName, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where b.name = ? order by startDate limit ?,7"
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where b.name = ? order by startDate desc limit ?,7"
 				, new Object[] {accountName, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -182,7 +182,7 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 
 	public List<EquipmentLogInfo> selectOverDate(Timestamp now, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where status=1 and endDate<=? order by endDate limit ?,7"
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where status=1 and endDate<=? order by  endDate desc limit ?,7"
 				, new Object[] {now, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {

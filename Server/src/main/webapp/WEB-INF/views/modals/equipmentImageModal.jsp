@@ -14,7 +14,7 @@
 		<div class="modal-content">
 			<form name="equipmentImage" id="equipmentImage">
 				<div class="modal-header">
-					<h4 class="modal-title">장비 이미지</h4>
+					<h4 class="modal-title">이미지</h4>
 				</div>
 				<div class="modal-body" id="equipmentImageBody">
 					

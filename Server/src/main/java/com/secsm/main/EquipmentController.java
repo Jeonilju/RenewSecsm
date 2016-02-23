@@ -3,6 +3,9 @@ package com.secsm.main;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.secsm.conf.Util;
@@ -184,10 +188,14 @@ public class EquipmentController {
 			@RequestParam("reqCount") int reqCount
 			) {
 		logger.info("api req Equipment");
-
+		
 		AccountInfo info = Util.getLoginedUser(request);
 		if (info == null) {
 			return "401";
+		}
+		
+		if(reqCount<=0){
+			return "402";
 		}
 		
 		Date date = new Date();
@@ -198,6 +206,107 @@ public class EquipmentController {
 		equipmentReqDao.create(equipmentReqInfo);
 
 		return "200";
+	}
+	
+	/** 장비 요청 수정을 위한 검색 */
+	@ResponseBody
+	@RequestMapping(value = "/api_reqSearchEquipment", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+	public String EquipmentController_reqSearchEquipment(HttpServletRequest request,
+			@RequestParam("reqModifyId") int reqModifyId
+			) {
+		logger.info("api reqSearch Equipment");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		if (info == null) {
+			return "401";
+		}
+		
+		List<EquipmentReqInfo> reqInfo = equipmentReqDao.selectByIdForModify(reqModifyId,info.getId());
+		if(reqInfo.size()<1) return "402";
+		
+		Gson obj = new Gson();
+		String result = obj.toJson(reqInfo);
+		return result;
+	}
+	
+	/** 장비 요청 수정 */
+	@ResponseBody
+	@RequestMapping(value = "/api_reqModifyEquipment", method = RequestMethod.POST)
+	public String EquipmentController_reqModifyEquipment(HttpServletRequest request,
+			@RequestParam("reqModifyId") int reqModifyId,
+			@RequestParam("reqModifyTypeKr") String reqModifyTypeKr,
+			@RequestParam("reqModifyTypeEn") String reqModifyTypeEn,
+			@RequestParam("reqModifyTitleKr") String reqModifyTitleKr,
+			@RequestParam("reqModifyTitleEn") String reqModifyTitleEn,
+			@RequestParam("reqModifyBrand") String reqModifyBrand,
+			@RequestParam("reqModifyLink") String reqModifyLink,
+			@RequestParam("reqModifyContent") String reqModifyContent,
+			@RequestParam("reqModifyPay") int reqModifyPay,
+			@RequestParam("reqModifyCount") int reqModifyCount
+			) {
+		logger.info("api reqModifyEquipment");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		if (info == null) {
+			return "401";
+		}
+		
+		if(reqModifyCount<=0){
+			return "402";
+		}
+		
+		Date date = new Date();
+		Timestamp regDate = new Timestamp(date.getTime());
+		
+		EquipmentReqInfo equipmentReqInfo = new EquipmentReqInfo(reqModifyId,info.getId(),reqModifyTypeKr,reqModifyTypeEn,reqModifyTitleKr,
+				reqModifyTitleEn,reqModifyBrand,reqModifyLink,reqModifyPay,reqModifyCount,reqModifyContent,regDate); 
+		equipmentReqDao.modify(equipmentReqInfo);
+
+		return "200";
+	}
+	
+	/** 장비 신청철회 */
+	@ResponseBody
+	@RequestMapping(value = "/api_reqEquipmentCancel", method = RequestMethod.POST)
+	public String EquipmentController_reqEquipmentCancel(HttpServletRequest request,
+			@RequestParam("reqModifyId") int reqModifyId
+			) {
+		logger.info("api reqEquipment Cancel");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		if (info == null) {
+			return "401";
+		}
+		
+		equipmentReqDao.delete(reqModifyId, info.getId());
+
+		return "200";
+	}
+	
+	/** 본인장비 요청 리스트 */
+	@ResponseBody
+	@RequestMapping(value = "/api_equipmentMyReqList", method = RequestMethod.POST , produces = "text/plain;charset=UTF-8")
+	public String EquipmentController_equipmentMyReqList(HttpServletRequest request,
+			@RequestParam("reqPage") int reqPage
+			) throws UnsupportedEncodingException {
+		logger.info("api my req list Epuipment");
+
+		AccountInfo info = Util.getLoginedUser(request);
+		if (info == null) {
+			return "401";
+		}
+		
+		List<EquipmentReqInfo> equipmentReqList = equipmentReqDao.selectById(info.getId(), reqPage); 
+		
+		for(int i=0;i<equipmentReqList.size();i++){
+			Timestamp regDate = equipmentReqList.get(i).getRegDate();
+			equipmentReqList.get(i).setStrRegDate(Util.getTimestempStr(regDate));
+		}
+		Gson obj = new Gson();
+		String result = obj.toJson(equipmentReqList);
+		System.out.println(result);
+		
+		return result;
 	}
 	
 	/** 장비 요청 리스트 */
@@ -238,23 +347,103 @@ public class EquipmentController {
 			, @RequestParam("addCode") String addCode
 			, @RequestParam("addTitle") String addTitle
 			, @RequestParam("addManufacturer") String addManufacturer
-			, @RequestParam("addImageURL") String addImageURL
+			, @RequestParam("addImageURL") MultipartFile addImageURL
 			, @RequestParam("addType") String addType
 			, @RequestParam("addCount") int addCount) {
-		logger.info("api add Book");
+		logger.info("api add Equipment");
 		
 		AccountInfo accountInfo = Util.getLoginedUser(request);
 		if (accountInfo == null) {
 			return "401";
 		}
 		
-		Date date = new Date();
-		Timestamp regDate = new Timestamp(date.getTime());
+		if(addCount<=0){
+			return "404";
+		}
+		
+		List<EquipmentItemsInfo> equipmentList = equipmentItemsDao.selectByCodeNoCategory(addCode, 0);
+		if(equipmentList.size()>0 && !addCode.equals("") && equipmentList.get(0).getCode().equals(addCode)){
+			return "405";
+		}
+		
 		List<EquipmentCategoryInfo> categoryInfo = equipmentCategoryDao.select(addType);
 		
 		if(categoryInfo.size() == 0){ return "402";}
 		
-		EquipmentItemsInfo info = new EquipmentItemsInfo(addCode, addTitle, addManufacturer, addImageURL, categoryInfo.get(0).getId(), regDate, addCount, addCount);
+		if(!addImageURL.isEmpty())
+		{
+			String fileLocation = new Date().getTime() + addImageURL.getOriginalFilename();
+			
+			try 
+			{
+				byte[] bytes = addImageURL.getBytes();
+				
+				String saveDir = "";
+	 			String tempSavePath = request.getRealPath(File.separator) + "\\resources\\equipmentImage\\";
+	 			String savePath = tempSavePath.replace('\\', '/'); 
+	 			System.out.println(savePath);
+	 			File targetDir = new File(savePath);
+	 			if (!targetDir.exists()) 
+	 			{
+	 				targetDir.mkdirs();
+	 			}
+	 			saveDir = savePath;
+	 			
+				// Create the file on server
+				File serverFile = new File(saveDir + fileLocation);
+				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+				stream.write(bytes);
+				stream.close();
+				
+				logger.info("Server File Location=" + serverFile.getAbsolutePath());
+				
+				Date date = new Date();
+				Timestamp regDate = new Timestamp(date.getTime());
+				EquipmentItemsInfo info = new EquipmentItemsInfo(addCode, addTitle, addManufacturer, fileLocation, categoryInfo.get(0).getId(), regDate, addCount, addCount);
+				equipmentItemsDao.create(info);
+				
+				return "200";
+			}	 
+			catch (Exception e) 
+			{
+				logger.info("file error : " + e.toString());
+        	}
+		}
+		return "403";		
+	}
+	
+	/** 장비 추가 (이미지없을때)*/
+	@ResponseBody
+	@RequestMapping(value = "/api_addEquipmentNoFile", method = RequestMethod.POST)
+	public String EquipmentController_addEquipmentNoFile(HttpServletRequest request
+			, @RequestParam("addCode") String addCode
+			, @RequestParam("addTitle") String addTitle
+			, @RequestParam("addManufacturer") String addManufacturer
+			, @RequestParam("addType") String addType
+			, @RequestParam("addCount") int addCount) {
+		logger.info("api add EquipmentNoFile");
+		
+		AccountInfo accountInfo = Util.getLoginedUser(request);
+		if (accountInfo == null) {
+			return "401";
+		}
+		
+		if(addCount<=0){
+			return "403";
+		}
+		
+		List<EquipmentItemsInfo> equipmentList = equipmentItemsDao.selectByCodeNoCategory(addCode, 0);
+		if(equipmentList.size()>0 && !addCode.equals("") && equipmentList.get(0).getCode().equals(addCode)){
+			return "404";
+		}
+		
+		List<EquipmentCategoryInfo> categoryInfo = equipmentCategoryDao.select(addType);
+		
+		if(categoryInfo.size() == 0){ return "402";}
+		
+		Date date = new Date();
+		Timestamp regDate = new Timestamp(date.getTime());
+		EquipmentItemsInfo info = new EquipmentItemsInfo(addCode, addTitle, addManufacturer, null, categoryInfo.get(0).getId(), regDate, addCount, addCount);
 		equipmentItemsDao.create(info);
 		return "200";
 	}
@@ -497,7 +686,6 @@ public class EquipmentController {
 			, @RequestParam("modifyCode") String modifyCode
 			, @RequestParam("modifyTitle") String modifyTitle
 			, @RequestParam("modifyManufacturer") String modifyManufacturer
-			, @RequestParam("modifyImageURL") String modifyImageURL
 			, @RequestParam("modifyType") int modifyType
 			, @RequestParam("modifyCount") int modifyCount) {
 		logger.info("api modify Equipment");
@@ -505,6 +693,15 @@ public class EquipmentController {
 		AccountInfo accountInfo = Util.getLoginedUser(request);
 		if (accountInfo == null) {
 			return "401";
+		}
+		
+		if(modifyCount<=0){
+			return "405";
+		}
+		
+		List<EquipmentItemsInfo> equipmentList = equipmentItemsDao.selectByCodeNoCategory(modifyCode, 0);
+		if(equipmentList.size()>0 && !modifyCode.equals("") && equipmentList.get(0).getCode().equals(modifyCode)){
+			return "406";
 		}
 		
 		List<EquipmentCategoryInfo> categoryInfo = equipmentCategoryDao.select(modifyType);
@@ -521,9 +718,69 @@ public class EquipmentController {
 			return "402";
 		}
 		
-		EquipmentItemsInfo info = new EquipmentItemsInfo(modifyId, modifyCode, modifyTitle, modifyManufacturer, modifyImageURL, categoryInfo.get(0).getId(), modifyCount, modifyCount);
+		EquipmentItemsInfo info = new EquipmentItemsInfo(modifyId, modifyCode, modifyTitle, modifyManufacturer, categoryInfo.get(0).getId(), modifyCount, modifyCount);
 		equipmentItemsDao.modify(info);
 		return "200";
+	}
+	
+	/** 장비 이미지 수정*/
+	@ResponseBody
+	@RequestMapping(value = "/api_modifyImage", method = RequestMethod.POST)
+	public String EquipmentController_modifyImage(HttpServletRequest request
+			, @RequestParam("modifyId") int modifyId
+			, @RequestParam("modifyImageURL") MultipartFile modifyImageURL) {
+		logger.info("api modify Equipment");
+		
+		AccountInfo accountInfo = Util.getLoginedUser(request);
+		if (accountInfo == null) {
+			return "401";
+		}
+		
+		List<EquipmentItemsInfo> countTest = equipmentItemsDao.select(modifyId);
+		if(countTest.size()==0){
+			return "402";
+		}
+		
+		Date date = new Date();
+		Timestamp regDate = new Timestamp(date.getTime());
+		
+		if(!modifyImageURL.isEmpty())
+		{
+			String fileLocation = new Date().getTime() + modifyImageURL.getOriginalFilename();
+			
+			try 
+			{
+				byte[] bytes = modifyImageURL.getBytes();
+				
+				String saveDir = "";
+	 			String tempSavePath = request.getRealPath(File.separator) + "\\resources\\equipmentImage\\";
+	 			String savePath = tempSavePath.replace('\\', '/'); 
+	 			System.out.println(savePath);
+	 			File targetDir = new File(savePath);
+	 			if (!targetDir.exists()) 
+	 			{
+	 				targetDir.mkdirs();
+	 			}
+	 			saveDir = savePath;
+	 			
+				// Create the file on server
+				File serverFile = new File(saveDir + fileLocation);
+				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+				stream.write(bytes);
+				stream.close();
+				
+				logger.info("Server File Location=" + serverFile.getAbsolutePath());
+				
+				equipmentItemsDao.modifyImage(modifyId, fileLocation);
+				
+				return "200";
+			}	 
+			catch (Exception e) 
+			{
+				logger.info("file error : " + e.toString());
+        	}
+		}
+		return "403";		
 	}
 	
 	/** 장비 삭제*/
@@ -650,6 +907,104 @@ public class EquipmentController {
 		return "200";
 	}
 	
+	/** 도서 요청 수정을 위한 검색 */
+	@ResponseBody
+	@RequestMapping(value = "/api_reqSearchBook", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+	public String EquipmentController_reqSearchBook(HttpServletRequest request,
+			@RequestParam("reqModifyId") int reqModifyId
+			) {
+		logger.info("api reqSearchBook");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		if (info == null) {
+			return "401";
+		}
+		
+		List<BookReqInfo> reqInfo = bookReqDao.selectByIdForModify(reqModifyId,info.getId());
+		if(reqInfo.size()<1) return "402";
+		
+		Gson obj = new Gson();
+		String result = obj.toJson(reqInfo);
+		return result;
+	}
+	
+	/** 도서 요청 수정 */
+	@ResponseBody
+	@RequestMapping(value = "/api_reqModifyBook", method = RequestMethod.POST)
+	public String EquipmentController_reqModifyBook(HttpServletRequest request,
+			@RequestParam("reqModifyId") int reqModifyId,
+			@RequestParam("reqModifyTitle") String reqModifyTitle,
+			@RequestParam("reqModifyPublisher") String reqModifyPublisher,
+			@RequestParam("reqModifyAuthor") String reqModifyAuthor,
+			@RequestParam("reqModifyLink") String reqModifyLink,
+			@RequestParam("reqModifyImageURL") String reqModifyImageURL,
+			@RequestParam("reqModifyPay") int reqModifyPay
+			) {
+		logger.info("api reqModifyBook");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		if (info == null) {
+			return "401";
+		}
+		
+		if(reqModifyPay<=0){
+			return "402";
+		}
+		
+		Date date = new Date();
+		Timestamp regDate = new Timestamp(date.getTime());
+		
+		BookReqInfo bookReqInfo = new BookReqInfo(reqModifyId,info.getId(),reqModifyTitle,reqModifyPublisher,reqModifyAuthor
+				,reqModifyLink,reqModifyImageURL,reqModifyPay,regDate); 
+		bookReqDao.modify(bookReqInfo);
+
+		return "200";
+	}
+	
+	/** 도서 신청철회 */
+	@ResponseBody
+	@RequestMapping(value = "/api_reqBookCancel", method = RequestMethod.POST)
+	public String EquipmentController_reqBookCancel(HttpServletRequest request,
+			@RequestParam("reqModifyId") int reqModifyId
+			) {
+		logger.info("api reqBook Cancel");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		if (info == null) {
+			return "401";
+		}
+		
+		bookReqDao.delete(reqModifyId, info.getId());
+
+		return "200";
+	}
+	
+	/** 본인도서 요청 리스트 */
+	@ResponseBody
+	@RequestMapping(value = "/api_bookMyReqList", method = RequestMethod.POST , produces = "text/plain;charset=UTF-8")
+	public String EquipmentController_bookMyReqList(HttpServletRequest request,
+			@RequestParam("reqPage") int reqPage
+			) throws UnsupportedEncodingException {
+		logger.info("api my req list Book");
+
+		AccountInfo info = Util.getLoginedUser(request);
+		if (info == null) {
+			return "401";
+		}
+		
+		List<BookReqInfo> bookReqList = bookReqDao.selectById(info.getId(), reqPage); 
+		
+		for(int i=0;i<bookReqList.size();i++){
+			Timestamp regDate = bookReqList.get(i).getRegDate();
+			bookReqList.get(i).setStrRegDate(Util.getTimestempStr(regDate));
+		}
+		Gson obj = new Gson();
+		String result = obj.toJson(bookReqList);
+		System.out.println(result);
+		
+		return result;
+	}
+	
 	/** 도서 요청 리스트 */
 	@ResponseBody
 	@RequestMapping(value = "/api_reqList", method = RequestMethod.POST , produces = "text/plain;charset=UTF-8")
@@ -681,7 +1036,7 @@ public class EquipmentController {
 		return result;
 	}
 	
-	/** 도서 추가 */
+	/** 도서 추가*/
 	@ResponseBody
 	@RequestMapping(value = "/api_addBook", method = RequestMethod.POST)
 	public String EquipmentController_addBook(HttpServletRequest request
@@ -697,6 +1052,15 @@ public class EquipmentController {
 		AccountInfo accountInfo = Util.getLoginedUser(request);
 		if (accountInfo == null) {
 			return "401";
+		}
+		
+		List<BookItemsInfo> bookList = bookItemsDao.selectByCodeNoCategory(addCode, 0);
+		if(bookList.size()>0 && !addCode.equals("") && bookList.get(0).getCode().equals(addCode)){
+			return "404";
+		}
+		
+		if(addCount<=0){
+			return "403";
 		}
 		
 		Date date = new Date();
@@ -956,6 +1320,15 @@ public class EquipmentController {
 		AccountInfo accountInfo = Util.getLoginedUser(request);
 		if (accountInfo == null) {
 			return "401";
+		}
+		
+		if(modifyCount<=0){
+			return "405";
+		}
+		
+		List<BookItemsInfo> bookList = bookItemsDao.selectByCodeNoCategory(modifyCode, 0);
+		if(bookList.size()>0 && !modifyCode.equals("") && bookList.get(0).getCode().equals(modifyCode)){
+			return "406";
 		}
 		
 		List<BookCategoryInfo> categoryInfo = bookCategoryDao.select(modifyType);

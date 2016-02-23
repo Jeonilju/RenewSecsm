@@ -45,7 +45,7 @@ public class BookLogDao {
 	
 	public List<BookLogInfo> selectAll(int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.book_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.book_items c on a.book_items_id=c.id order by startDate limit ?,7", new Object[] { logPage },
+				+ " inner join secsm.book_items c on a.book_items_id=c.id order by startDate desc limit ?,7", new Object[] { logPage },
 				new RowMapper<BookLogInfo>() {
 					public BookLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
@@ -58,7 +58,7 @@ public class BookLogDao {
 	
 	public List<BookLogInfo> selectAllStatus(int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.book_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.book_items c on a.book_items_id=c.id where status = 1 order by startDate limit ?,7", new Object[] {logPage},
+				+ " inner join secsm.book_items c on a.book_items_id=c.id where status = 1 order by startDate desc limit ?,7", new Object[] {logPage},
 				new RowMapper<BookLogInfo>() {
 					public BookLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookLogInfo(resultSet.getInt("a.id"), resultSet.getInt("a.account_id"),
@@ -71,7 +71,7 @@ public class BookLogDao {
 	
 	public List<BookLogInfo> selectById(int id, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.book_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.book_items c on a.book_items_id=c.id where book_items_id = ? and status=1 order by startDate limit ?,7",
+				+ " inner join secsm.book_items c on a.book_items_id=c.id where book_items_id = ? and status=1 order by startDate desc limit ?,7",
 				new Object[] { id, logPage },
 				new RowMapper<BookLogInfo>() {
 					public BookLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -85,7 +85,7 @@ public class BookLogDao {
 	
 	public List<BookLogInfo> selectAllById(int id, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.book_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.book_items c on a.book_items_id=c.id where book_items_id = ? order by startDate limit ?,7",
+				+ " inner join secsm.book_items c on a.book_items_id=c.id where book_items_id = ? order by startDate desc limit ?,7",
 				new Object[] { id, logPage },
 				new RowMapper<BookLogInfo>() {
 					public BookLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -99,7 +99,7 @@ public class BookLogDao {
 	
 	public List<BookLogInfo> selectByName(String name, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.book_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.book_items c on a.book_items_id=c.id where status=1 and c.name regexp ? order by startDate limit ?,7",
+				+ " inner join secsm.book_items c on a.book_items_id=c.id where status=1 and c.name regexp ? order by startDate desc limit ?,7",
 				new Object[] { name,logPage },
 				new RowMapper<BookLogInfo>() {
 					public BookLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -113,7 +113,7 @@ public class BookLogDao {
 	
 	public List<BookLogInfo> selectAllByName(String name, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.book_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.book_items c on a.book_items_id=c.id where c.name regexp ? order by startDate limit ?,7",
+				+ " inner join secsm.book_items c on a.book_items_id=c.id where c.name regexp ? order by startDate desc limit ?,7",
 				new Object[] { name, logPage },
 				new RowMapper<BookLogInfo>() {
 					public BookLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -127,7 +127,7 @@ public class BookLogDao {
 	
 	public List<BookLogInfo> selectByCode(String code, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.book_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.book_items c on a.book_items_id=c.id where code = ? and status=1 order by startDate limit ?,7",
+				+ " inner join secsm.book_items c on a.book_items_id=c.id where code = ? and status=1 order by startDate desc limit ?,7",
 				new Object[] { code,logPage },
 				new RowMapper<BookLogInfo>() {
 					public BookLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -141,7 +141,7 @@ public class BookLogDao {
 	
 	public List<BookLogInfo> selectAllByCode(String code, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.book_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.book_items c on a.book_items_id=c.id where code = ? order by startDate limit ?,7",
+				+ " inner join secsm.book_items c on a.book_items_id=c.id where code = ? order by startDate desc limit ?,7",
 				new Object[] { code, logPage },
 				new RowMapper<BookLogInfo>() {
 					public BookLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -155,7 +155,7 @@ public class BookLogDao {
 	
 	public List<BookLogInfo> selectByAccountName(String accountName, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.book_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.book_items c on a.book_items_id=c.id where b.name = ? and status=1 order by startDate limit ?,7",
+				+ " inner join secsm.book_items c on a.book_items_id=c.id where b.name = ? and status=1 order by startDate desc limit ?,7",
 				new Object[] { accountName, logPage },
 				new RowMapper<BookLogInfo>() {
 					public BookLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -169,7 +169,7 @@ public class BookLogDao {
 	
 	public List<BookLogInfo> selectAllByAccountName(String accountName, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.book_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.book_items c on a.book_items_id=c.id where b.name = ? order by startDate limit ?,7",
+				+ " inner join secsm.book_items c on a.book_items_id=c.id where b.name = ? order by startDate desc limit ?,7",
 				new Object[] { accountName, logPage },
 				new RowMapper<BookLogInfo>() {
 					public BookLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -183,7 +183,7 @@ public class BookLogDao {
 	
 	public List<BookLogInfo> selectOverDate(Timestamp now, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.book_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.book_items c on a.book_items_id=c.id where status=1 and endDate<=? order by endDate limit ?,7",
+				+ " inner join secsm.book_items c on a.book_items_id=c.id where status=1 and endDate<=? order by endDate desc limit ?,7",
 				new Object[] { now, logPage },
 				new RowMapper<BookLogInfo>() {
 					public BookLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {

@@ -20,7 +20,7 @@
 		<div class="modal-content">
 			<form name="bookImage" id="bookImage">
 				<div class="modal-header">
-					<h4 class="modal-title">도서 이미지</h4>
+					<h4 class="modal-title">이미지</h4>
 				</div>
 				<div class="modal-body" id="bookImageBody">
 					

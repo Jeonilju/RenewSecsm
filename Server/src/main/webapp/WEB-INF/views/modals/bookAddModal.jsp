@@ -18,11 +18,7 @@
 					addImageURL: $("#addImageURL").val(),
 					addCount: $("#addCount").val()};
 		
-		if($("#addCode").val()==""){
-			alert("코드명을 입력하세요.");
-			return;
-		}
-		else if($("#addTitle").val()==""){
+		if($("#addTitle").val()==""){
 			alert("도서명을 입력하세요.");
 			return;
 		}
@@ -68,6 +64,14 @@
 			{
 				alert('분류가 존재하지 않습니다.');
 				location.reload();
+			}
+			else if(response=='403')
+			{
+				alert('수량을 확인해주세요.');	
+			}
+			else if(response=='404')
+			{
+				alert('같은 코드의 도서가 존재합니다.');	
 			}
 			else
 			{

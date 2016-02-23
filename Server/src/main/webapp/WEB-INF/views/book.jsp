@@ -40,6 +40,12 @@
     	   		}); 	   		
     		});
     		
+    		function goImage(imageURL){
+    			var imageSrc = '<img src="'+ imageURL + '" class="img-thumbnail" alt="No Image">';
+    			$("#bookImageBody").html(imageSrc)
+    			$("#bookImageBody").css("text-align","center");
+    		}
+    		
     		function recentLog(){
     			$('#allLog').removeAttr("checked");
     			$('select[name=logOption]').val(0);
@@ -307,7 +313,7 @@
 					<button type="button" class="btn adminButton" data-toggle="modal" data-target="#bookAddModal" style="margin: 5px;">도서등록</button>
 				</div>
 				<div class="pull-right">
-					<button type="button" class="btn adminButton" data-toggle="modal" data-target="#bookReqListModal" style="margin: 5px;">신청목록</button>
+					<button type="button" class="btn" data-toggle="modal" data-target="#bookReqListModal" style="margin: 5px;" onclick="myReqList(0);">신청목록</button>
 				</div>
 				<div class="pull-right">
 					<button type="button" class="btn btn-danger adminButton" data-toggle="modal" data-target="#bookLogModal" onclick="logBook(4);" style="margin: 5px;">미납자</button>
@@ -318,7 +324,7 @@
 
 		<jsp:include page="base/foot.jsp" flush="false" />
 	</body>
-	
+	<jsp:include page="modals/bookReqModifyModal.jsp" flush="false" />
 	<jsp:include page="modals/bookModifyModal.jsp" flush="false" />
 	<jsp:include page="modals/bookImageModal.jsp" flush="false" />
 	<jsp:include page="modals/bookCategoryModal.jsp" flush="false" />

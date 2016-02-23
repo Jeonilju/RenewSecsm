@@ -25,6 +25,18 @@ public class BookReqInfo {
 		this.regDate = regDate;
 	}
 	
+	public BookReqInfo(int id, int accountId, String title, String publisher, String author, String link, String imageURL, int pay, Timestamp regDate) {
+		this.id = id;
+		this.accountId = accountId;
+		this.title = title;
+		this.publisher = publisher;
+		this.author = author;
+		this.link = link;
+		this.imageURL = imageURL;
+		this.pay = pay;
+		this.regDate = regDate;
+	}
+	
 	public BookReqInfo(int id, String accountName, String title, String publisher, String author, String link, String imageURL, int pay, Timestamp regDate) {
 		this.id = id;
 		this.accountName = accountName;

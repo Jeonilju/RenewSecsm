@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.secsm.info.BookItemsInfo;
 import com.secsm.info.BookReqInfo;
+import com.secsm.info.EquipmentReqInfo;
 
 
 public class BookReqDao {
@@ -35,6 +36,24 @@ public class BookReqDao {
 				new Object[] {info.getAccountId(), info.getTitle(), info.getPublisher(), info.getAuthor(), info.getLink(), info.getImageURL(), info.getPay(), info.getRegDate()});
 	}
 	
+	public void modify(BookReqInfo info){
+		jdbcTemplate.update("update book_req set title=?, publisher=?, author=?, link=?, imageURL=?, pay=?, regDate=? where id=? and account_id=?", 
+				new Object[] {info.getTitle(),info.getPublisher(),info.getAuthor(),info.getLink(),info.getImageURL(),info.getPay(),info.getRegDate(),info.getId(),info.getAccountId()});
+	}
+	
+	public List<BookReqInfo> selectById(int id, int page){
+		return jdbcTemplate.query("select a.id, a.title, a.publisher, a.author, a.link, a.imageURL, a.pay, a.regDate, b.name "
+				+ "from secsm.book_req a inner join account b ON a.account_id = b.id where b.id=? "
+				+ "order by a.regDate desc limit ?,7", new Object[] {id, page},
+				new RowMapper<BookReqInfo>() {
+					public BookReqInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new BookReqInfo(resultSet.getInt("a.id"), resultSet.getString("b.name"),
+								resultSet.getString("a.title"), resultSet.getString("a.publisher"),
+								resultSet.getString("a.author"), resultSet.getString("a.link"), resultSet.getString("a.imageURL"),
+								resultSet.getInt("a.pay"), resultSet.getTimestamp("a.regDate"));
+					}
+				});
+	}
 	
 	//엑셀로 뽑을때 사용
 	public List<BookReqInfo> selectByDate(Timestamp start, Timestamp end){
@@ -64,36 +83,23 @@ public class BookReqDao {
 					}
 				});
 	}
-//	
-//	public List<AccountInfo> selectAll() {
-//		return jdbcTemplate.query("select * from account", new Object[] {  },
-//				new RowMapper<AccountInfo>() {
-//					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-//						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
-//								resultSet.getString("email"), resultSet.getString("pw"),
-//								resultSet.getString("phone"), resultSet.getInt("grade")
-//								, resultSet.getInt("Px_amount"));
-//					}
-//				});
-//	}
-//	
-//	public List<AccountInfo> select(String email) {
-//		return jdbcTemplate.query("select * from account where email = ?", new Object[] { email },
-//				new RowMapper<AccountInfo>() {
-//					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-//						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
-//								resultSet.getString("email"), resultSet.getString("pw"),
-//								resultSet.getString("phone"), resultSet.getInt("grade")
-//								, resultSet.getInt("Px_amount"));
-//					}
-//				});
-//	}
-//	
-//	public void delete(int id){
-//		
-//	}
-//	
-//	public void deleteAll(){
-//		
-//	}
+	
+	public List<BookReqInfo> selectByIdForModify(int id, int accountId){
+		return jdbcTemplate.query("select * from secsm.book_req where id=? and account_id=? "
+				, new Object[] {id, accountId},
+				new RowMapper<BookReqInfo>() {
+					public BookReqInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new BookReqInfo(resultSet.getInt("id"), resultSet.getInt("account_id"),
+								resultSet.getString("title"), resultSet.getString("publisher"),
+								resultSet.getString("author"), resultSet.getString("link"), 
+								resultSet.getString("imageURL"), resultSet.getInt("pay"), resultSet.getTimestamp("regDate"));
+					}
+				});
+	}
+	
+	public void delete(int id, int accountId){
+		jdbcTemplate.update("delete from book_req where id = ? and account_id = ?", new Object[] {id, accountId});
+	}
+
+	
 }
