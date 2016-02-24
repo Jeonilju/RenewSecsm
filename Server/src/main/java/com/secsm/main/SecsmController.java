@@ -37,7 +37,7 @@ public class SecsmController {
 		return resultIndex(request);
 	}
 	
-	@RequestMapping(value = "/Secsm/logout", method = RequestMethod.GET)
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String MainController_logout(HttpServletRequest request) {
 		logger.info("logout Page");
 

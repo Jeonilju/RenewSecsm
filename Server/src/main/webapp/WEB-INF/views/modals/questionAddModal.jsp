@@ -193,7 +193,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick="addQuestion();">등록</button>
+					<button type="button" class="btn btn-primary" onclick="addQuestion();">등록</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</form>
