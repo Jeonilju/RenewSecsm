@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.secsm.conf.Util;
 import com.secsm.dao.AccountDao;
+import com.secsm.dao.AttendanceDao;
 import com.secsm.info.AccountInfo;
 
 @Controller
@@ -24,6 +25,9 @@ public class SecsmController {
 
 	@Autowired
 	private AccountDao accountDao;
+
+	@Autowired
+	private AttendanceDao attendanceDao;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String MainController_main(HttpServletRequest request) {
@@ -34,7 +38,16 @@ public class SecsmController {
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String MainController_index(HttpServletRequest request) {
 		logger.info("index Page");
-		return resultIndex(request);
+		
+		AccountInfo accountInfo = Util.getLoginedUser(request);
+		if(accountInfo == null){
+			// 비로그인
+			return resultIndex(request);			
+		}
+		else{
+			return LivingController.resultAttendance(request, attendanceDao);
+		}
+		
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)

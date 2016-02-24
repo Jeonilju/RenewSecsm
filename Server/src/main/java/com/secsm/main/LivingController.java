@@ -47,7 +47,13 @@ public class LivingController {
 		if(info == null){
 			return SecsmController.resultIndex(request);
 		}
-		
+		else{
+			return resultAttendance(request, attendanceDao);
+		}
+	}
+	
+	public static String resultAttendance(HttpServletRequest request, AttendanceDao attendanceDao){
+		AccountInfo info = Util.getLoginedUser(request);
 		//start, end Date 지정
 		Date current = new Date();
 		int currentMonth = current.getMonth();
