@@ -412,9 +412,97 @@ ALTER TABLE `secsm`.`project`
 CHANGE COLUMN `Summary` `Summary` VARCHAR(400) NULL DEFAULT NULL COMMENT '' ,
 CHANGE COLUMN `Description` `Description` TEXT NULL DEFAULT NULL COMMENT '' ;
 
-INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('교육부장', '교육부장', '1234', '10000', '0000', '3', '0');
-INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자치회장', '자치회상', '1234', '0', '0000', '1', '0');
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('교육부장', '교육부장', '1234', '10000', '0000', '3', '1');
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자치회장', '자치회상', '1234', '0', '0000', '1', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('생활부장', '생활부장', '1234', '0', '0000', '2', '0');
+<<<<<<< HEAD
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('PX부장', 'PX부장', '1234', '999999', '0000', '4', '1');
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자산관리부장', '자산관리부장', '1234', '0', '0000', '5', '1');
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('기획부장', '기획부장', '1234', '0', '0000', '6', '1');
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('기존회원', '기존회원', '1234', '0', '0000', '8', '1');
+
+INSERT INTO `secsm`.`book_category` (`id`, `name`) VALUES ('1', 'ALL');
+INSERT INTO `secsm`.`book_category` (`id`, `name`) VALUES ('2', '소프트웨어');
+INSERT INTO `secsm`.`book_category` (`id`, `name`) VALUES ('3', '하드웨어');
+INSERT INTO `secsm`.`book_category` (`id`, `name`) VALUES ('4', '디자인');
+INSERT INTO `secsm`.`book_category` (`id`, `name`) VALUES ('5', '기타');
+
+INSERT INTO `secsm`.`book_req` (`id`, `account_id`, `title`, `publisher`, `author`, `link`, `imageURL`, `pay`, `regdate`) VALUES ('1', '8', 'Cocos2d-x 3 모바일 게임 프로그래밍', '에이콘', '인자건', 'http://www.yes24.com/24/Goods/13212007?Acode=101', 'http://image.yes24.com/momo/TopCate369/MidCate001/36808474.jpg', '27000', '2016-02-25 00:53:37');
+INSERT INTO `secsm`.`book_req` (`id`, `account_id`, `title`, `publisher`, `author`, `link`, `imageURL`, `pay`, `regdate`) VALUES ('2', '8', '오라클 SQL과 PL/SQL을 다루는 기술', '길벗', '홍형경', 'http://www.yes24.com/24/goods/18077084', 'http://image.yes24.com/momo/TopCate505/MidCate010/50496006.jpg', '25200', '2016-02-25 01:08:52');
+INSERT INTO `secsm`.`book_req` (`id`, `account_id`, `title`, `publisher`, `author`, `link`, `imageURL`, `pay`, `regdate`) VALUES ('3', '5', '후니의 쉽게 쓴 시스코 네트워킹', '성인당', '진강훈', 'http://www.yes24.com/24/goods/4747319', 'http://image.yes24.com/momo/TopCate108/MidCate05/10740226.jpg', '28800', '2016-02-25 01:12:14');
+INSERT INTO `secsm`.`book_req` (`id`, `account_id`, `title`, `publisher`, `author`, `link`, `imageURL`, `pay`, `regdate`) VALUES ('4', '5', '실무로 배우는 시스템 성능 최적화 : 시스템 동작 분석부터 성능 개선까지', '위키북스', '권문수', 'http://www.yes24.com/24/goods/24206399', 'http://image.yes24.com/momo/TopCate701/MidCate005/70040630.jpg', '37800', '2016-02-25 01:13:31');
+INSERT INTO `secsm`.`book_req` (`id`, `account_id`, `title`, `publisher`, `author`, `link`, `imageURL`, `pay`, `regdate`) VALUES ('5', '5', '인프라 엔지니어의 교과서', '길벗', '사노 유카타', 'http://www.yes24.com/24/goods/13486433', 'http://image.yes24.com/momo/TopCate380/MidCate006/37954316.jpg', '12420', '2016-02-25 01:15:41');
+INSERT INTO `secsm`.`book_req` (`id`, `account_id`, `title`, `publisher`, `author`, `link`, `imageURL`, `pay`, `regdate`) VALUES ('6', '4', 'Gradle 그레이들 철저 입문 : 안드로이드 공식 빌드 시스템', '길벗', '와타비키 타쿠마 외', 'http://www.yes24.com/24/goods/23449551', 'http://image.yes24.com/momo/TopCate673/MidCate006/67254730.jpg', '38700', '2016-02-25 01:19:16');
+INSERT INTO `secsm`.`book_req` (`id`, `account_id`, `title`, `publisher`, `author`, `link`, `imageURL`, `pay`, `regdate`) VALUES ('7', '4', '초보자를 위한 안드로이드 스튜디오 : Hello World부터 채팅 앱과 벽돌깨기 게임까지', '한빛미디어', '마츠오카 겐지', 'http://www.yes24.com/24/goods/24089785', 'http://image.yes24.com/momo/TopCate697/MidCate003/69625843.jpg', '25200', '2016-02-25 01:20:14');
+INSERT INTO `secsm`.`book_req` (`id`, `account_id`, `title`, `publisher`, `author`, `link`, `imageURL`, `pay`, `regdate`) VALUES ('8', '4', '저전력 블루투스(BLE) : 저전력 무선 네트워킹을 위한 툴과 테크닉', 'BJ퍼블릭', '케빈 타운젠드 외', 'http://www.yes24.com/24/goods/24315270', 'http://image.yes24.com/momo/TopCate704/MidCate007/70365771.jpg', '19800', '2016-02-25 01:22:20');
+
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('1', '9791155321379', '3D 프린팅 스타트업', '라온북', '김영준', 'http://image.yes24.com/momo/TopCate450/MidCate010/44990644.jpg', '3', '2016-02-25 01:42:45', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('2', '9788962620719', '한권으로 끝내는 실전 활용과 성공 창업 3D 프린터의 모든것', '라온북', '김영준', 'http://image.yes24.com/momo/TopCate403/MidCate006/29402430.jpg', '3', '2016-02-25 01:43:44', '2', '2');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('3', '9791185553085', '무한상상 DIY 아두이노와 안드로이드로 45개 프로젝트 만들기', '앤써북', '서민우', 'http://image.yes24.com/momo/TopCate402/MidCate006/40151645.jpg', '3', '2016-02-25 01:45:01', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('4', '9788960777743', '일러스트레이터로 배우는 UI 디자인', '에이콘', '럭 무어', 'http://image.yes24.com/momo/TopCate647/MidCate010/64106118.jpg', '4', '2016-02-25 01:45:50', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('5', '9780763782504', 'Foundations of Algorithms', 'jbpub', 'Richard Neapolitan 외', 'http://image.yes24.com/momo/TopCate12/MidCate09/1180823.jpg', '2', '2016-02-25 01:46:49', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('6', '9788960778092', 'The C++ Programming Language Fourth Edition ', '에이콘', '박지유 옮김', 'http://image.yes24.com/momo/TopCate673/MidCate003/67221580.jpg', '2', '2016-02-25 01:48:56', '2', '2');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('7', '9788997390755', 'DO IT! 웹 표준 코딩으로 시작하는 프런트엔드 웹 디자인 입문', '이지스퍼블리싱', '고경희', 'http://image.yes24.com/momo/TopCate593/MidCate008/59271795.jpg', '4', '2016-02-25 01:50:25', '2', '2');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('8', '9788989975861', '리눅스 디버깅과 성능 튜닝', '에이콘', '스티브 베스트', 'http://image.yes24.com/momo/TopCate48/MidCate08/4771580.jpg', '2', '2016-02-25 01:51:04', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('9', '9791158390044', 'DBA를 위한 MySQL 운영 기술', '위키북스', '조영재', 'http://image.yes24.com/momo/TopCate542/MidCate010/54193035.jpg', '2', '2016-02-25 02:01:30', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('10', '9788997390144', 'DO IT! 직접 해보는 하둡 프로그래밍', '이지스퍼블리싱', '한기용', 'http://image.yes24.com/momo/TopCate236/MidCate001/23508215.jpg', '2', '2016-02-25 02:33:13', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('11', '9788996276586', '실전 SQL Server MVP 53', 'Manning', 'MVP 커뮤니티', 'http://image.yes24.com/momo/TopCate95/MidCate03/9426932.jpg', '2', '2016-02-25 02:34:09', '2', '2');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('12', '9788997945016', '이장래와 함께하는 SQL Server 2012', 'ITForum', '이장래', 'http://image.yes24.com/momo/TopCate205/MidCate002/20198638.jpg', '2', '2016-02-25 02:34:52', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('13', '9788965400783', 'D3.js 입문', '프리렉', '후루하타 카즈히로', 'http://image.yes24.com/momo/TopCate401/MidCate010/40093394.jpg', '2', '2016-02-25 02:35:30', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('14', '9788960772960', '윈도우폰 7 게임 프로그래밍', '에이콘', '애덤 도즈', 'http://image.yes24.com/momo/TopCate180/MidCate03/17922994.jpg', '2', '2016-02-25 02:36:10', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('15', '9788991268494', '컴퓨터 프로그램의 구조와 해석 1', '인사이트', '해럴드 애빌슨 외', 'http://image.yes24.com/momo/TopCate81/MidCate09/8083552.jpg', '2', '2016-02-25 02:36:50', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('16', '9788991268500', '컴퓨터 프로그램의 구조와 해석 2', '인사이트', '해럴드 애빌슨 외', 'http://image.yes24.com/momo/TopCate81/MidCate09/8083552.jpg', '2', '2016-02-25 02:37:27', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('17', '9788956743998', 'More Effective C++', '정보문화사', '스캇 마이어스', 'http://image.yes24.com/momo/TopCate59/MidCate06/5854056.jpg', '2', '2016-02-25 02:38:00', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('18', '9788960773202', '리눅스 API의 모든 것 고급 리눅스 API', '에이콘', '마이클 커리스크', 'http://image.yes24.com/momo/TopCate192/MidCate002/19112330.jpg', '2', '2016-02-25 02:39:07', '2', '2');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('19', '9788968481796', '자바 8 인 액션', 'Manning', '라울-게이브리얼 우르마 외', 'http://image.yes24.com/momo/TopCate479/MidCate007/47865434.jpg', '2', '2016-02-25 02:40:40', '2', '2');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('20', '9788966187270', '가장 빨리 만나는 자바 8', '길벗', '카이 호스트만', 'http://image.yes24.com/momo/TopCate357/MidCate010/35692169.jpg', '2', '2016-02-25 02:41:13', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('21', '9788960773318', '리눅스 커널 심층 분석 (개정 3판)', '에이콘', '로버트 러브', 'http://image.yes24.com/momo/TopCate198/MidCate002/19714574.jpg', '2', '2016-02-25 02:41:48', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('22', '9788966189908', '가장 빨리 만나는 GO언어', '길벗', '이재홍', 'http://image.yes24.com/momo/TopCate505/MidCate010/50496034.jpg', '2', '2016-02-25 02:42:17', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('23', '9791185475035', 'UNIX 고급 프로그래밍', '퍼스트북', '리처드 스티븐스 외', 'http://image.yes24.com/momo/TopCate406/MidCate002/40511119.jpg', '2', '2016-02-25 02:43:04', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('24', '9788959134366', '도리언 그레이의 초상', '예담', '오스카 와일드', 'http://image.yes24.com/momo/TopCate530/MidCate002/52913182.jpg', '5', '2016-02-25 02:43:47', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('25', '9788994506449', '모바일 게임 플랫폼, 모바게를 지탱하는 기술', '제이펍', '디엔에이(DeNA)', 'http://image.yes24.com/momo/TopCate239/MidCate004/23835216.jpg', '2', '2016-02-25 02:44:33', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('26', '9788965700036', '아프니까 청춘이다', '썸 앤 파커스', '김난도', 'http://image.yes24.com/momo/TopCate172/MidCate04/17134549.jpg', '5', '2016-02-25 02:52:08', '1', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('27', '9788960771499', '코드로 읽는 리눅스 디바이스 드라이버', '에이콘', '스리크슈난 벤카테스와란', 'http://image.yes24.com/momo/TopCate89/MidCate05/8840994.jpg', '2', '2016-02-25 02:52:43', '0', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('28', '9791185890210', '상세한 설명과 복습으로 마스터하는 Swift 쉽게, 더 쉽게', '제이펍', '마크 소라프 외', 'http://image.yes24.com/momo/TopCate492/MidCate006/49154596.jpg', '2', '2016-02-25 02:53:31', '0', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('29', '9788992561259', '3D 프린터 시스템설계', '도서출판 명진', '양해경', 'http://image.yes24.com/momo/TopCate520/MidCate005/51943097.JPG', '3', '2016-02-25 02:54:02', '0', '1');
+INSERT INTO `secsm`.`book_items` (`id`, `code`, `name`, `publisher`, `author`, `imageURL`, `type`, `regDate`, `count`, `totalCount`) VALUES ('30', '9788956744452', 'Microsoft Windows Workflow Foundation', '정보문화사', 'Kenn Scribner', 'http://image.yes24.com/momo/TopCate66/MidCate06/6550139.jpg', '2', '2016-02-25 03:30:09', '1', '2');
+
+INSERT INTO `secsm`.`book_log` (`id`, `account_id`, `book_items_id`, `startDate`, `endDate`, `status`) VALUES ('1', '8', '30', '2016-01-03 00:00:00', '2016-02-02 00:00:00', '1');
+INSERT INTO `secsm`.`book_log` (`id`, `account_id`, `book_items_id`, `startDate`, `endDate`, `status`) VALUES ('2', '8', '29', '2016-01-15 00:00:00', '2016-01-25 00:00:00', '1');
+INSERT INTO `secsm`.`book_log` (`id`, `account_id`, `book_items_id`, `startDate`, `endDate`, `status`) VALUES ('3', '8', '28', '2016-01-27 00:00:00', '2016-02-13 00:00:00', '1');
+INSERT INTO `secsm`.`book_log` (`id`, `account_id`, `book_items_id`, `startDate`, `endDate`, `status`) VALUES ('4', '8', '27', '2016-02-02 00:00:00', '2016-03-12 00:00:00', '1');
+
+INSERT INTO `secsm`.`equipment_category` (`id`, `name`) VALUES ('1', 'ALL');
+INSERT INTO `secsm`.`equipment_category` (`id`, `name`) VALUES ('2', '컴퓨터');
+INSERT INTO `secsm`.`equipment_category` (`id`, `name`) VALUES ('3', '스마트폰');
+INSERT INTO `secsm`.`equipment_category` (`id`, `name`) VALUES ('4', '기타');
+
+INSERT INTO `secsm`.`equipment_req` (`id`, `account_id`, `project_id`, `typeKr`, `typeEn`, `titleKr`, `titleEn`, `brand`, `link`, `pay`, `count`, `content`, `regdate`) VALUES ('1', '8', '2', '개발보드', 'Development_board', '라즈베리파이2_스타트_키트', 'Raspberry_pi2_start_kit', '엘레파츠', 'https://www.eleparts.co.kr/EPXDVLAD', '80740', '3', 'Wallson_몸체에_들어갈_메인보드', '2016-02-25 05:44:53');
+
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('1', '10001', '컴퓨터1', '삼성', '2', '2016-02-25 05:29:05', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('2', '10002', '컴퓨터2', '삼성', '2', '2016-02-25 05:30:11', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('3', '10003', '컴퓨터3', '삼성', '2', '2016-02-25 05:30:19', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('4', '10004', '컴퓨터4', '삼성', '2', '2016-02-25 05:30:25', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('5', '10005', '컴퓨터5', '삼성', '2', '2016-02-25 05:30:31', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('6', '10006', '컴퓨터6', '삼성', '2', '2016-02-25 05:30:36', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('7', '10007', '컴퓨터7', '삼성', '2', '2016-02-25 05:30:57', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('8', '10008', '컴퓨터8', '삼성', '2', '2016-02-25 05:31:13', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('9', '20001', '갤럭시S1', '삼성', '3', '2016-02-25 05:31:52', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('10', '20002', '갤럭시S2', '삼성', '3', '2016-02-25 05:32:17', '2', '2');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('11', '20003', '갤럭시S3', '삼성', '3', '2016-02-25 05:32:31', '3', '3');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('12', '20004', '갤럭시S4', '삼성', '3', '2016-02-25 05:32:44', '2', '2');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('13', '20005', '갤럭시S6', '삼성', '3', '2016-02-25 05:33:03', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('14', '20006', '갤럭시 탭 프로', '삼성', '3', '2016-02-25 05:35:55', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('15', '20007', '갤럭시 노트3', '삼성', '3', '2016-02-25 05:38:58', '2', '2');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('16', '20008', '갤럭시 노트5', '삼성', '3', '2016-02-25 05:39:07', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('17', '30001', '오큘러스', '구글', '4', '2016-02-25 05:39:12', '2', '2');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('18', '30002', 'iptime 공유기', 'iptime', '4', '2016-02-25 05:39:14', '3', '3');
+
+INSERT INTO `secsm`.`equipment_log` (`ID`, `Account_id`, `Equipment_items_id`, `StartDate`, `EndDate`, `status`) VALUES ('1', '8', '16', '2016-01-03 00:00:00', '2016-02-02 00:00:00', '1');
+INSERT INTO `secsm`.`equipment_log` (`ID`, `Account_id`, `Equipment_items_id`, `StartDate`, `EndDate`, `status`) VALUES ('2', '8', '14', '2016-01-15 00:00:00', '2016-01-25 00:00:00', '1');
+INSERT INTO `secsm`.`equipment_log` (`ID`, `Account_id`, `Equipment_items_id`, `StartDate`, `EndDate`, `status`) VALUES ('3', '8', '18', '2016-01-27 00:00:00', '2016-02-13 00:00:00', '1');
+INSERT INTO `secsm`.`equipment_log` (`ID`, `Account_id`, `Equipment_items_id`, `StartDate`, `EndDate`, `status`) VALUES ('4', '8', '17', '2016-02-02 00:00:00', '2016-03-12 00:00:00', '1');
+=======
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('PX부장', 'PX부장', '1234', '999999', '0000', '4', '0');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자산관리부장', '자산관리부장', '1234', '0', '0000', '5', '0');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('기획부장', '기획부장', '1234', '0', '0000', '6', '0');
@@ -423,3 +511,4 @@ INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Gra
 ALTER TABLE `secsm`.`attendance` 
 ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT AFTER `RegDate`,
 ADD PRIMARY KEY (`id`);
+>>>>>>> e95ff5659ef4f5209ad7ca97100a484b699b3edd

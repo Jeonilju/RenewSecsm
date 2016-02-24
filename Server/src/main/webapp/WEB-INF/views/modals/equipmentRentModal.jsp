@@ -67,7 +67,7 @@
 
 </script>
 
-<!-- 자동당직생성 모달-->
+<!-- 장비 대여 모달-->
 <div class="modal fade" id="equipmentRentModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
@@ -78,7 +78,7 @@
 				<div class="modal-body" >
 					<div class="form-group">
 					 	<input type="hidden" name="rentId" id="rentId" value=""/>
-						<label for="rentEndDate" cond="">반납일</label> 
+						<label for="rentEndDate" >반납일</label> 
 						<input name="rentEndDate" id="rentEndDate" type="text" class="form-control"/>
 					</div>
 				</div>

@@ -31,6 +31,10 @@
 					alert('로그인을 하세요.');
 					location.reload();
 				}
+				else if(response=='402')
+				{
+					alert('권한이 없습니다.');
+				}
 				else
 				{
 				}
@@ -63,8 +67,16 @@
 			alert("출판사를 입력하세요.");
 			return;
 		}
+		else if($("#modifyAuthor").val()==""){
+			alert("저자를 입력하세요.");
+			return;
+		}
 		else if($("#modifyCount").val()==""){
 			alert("수량을 입력하세요.");
+			return;
+		}
+		else if(0>=$("#modifyCount").val() || $("#modifyCount").val()>100){
+			alert("수량 범위를 초과하였습니다.");
 			return;
 		}
 		
@@ -110,6 +122,10 @@
 			{
 				alert('같은 코드의 도서가 존재합니다.');	
 			}
+			else if(response=='407')
+			{
+				alert('권한이 없습니다.');
+			}
 			else
 			{
 			}
@@ -129,7 +145,7 @@
 	ArrayList<BookCategoryInfo> bookCategory = (ArrayList<BookCategoryInfo>) request.getAttribute("bookCategory");
 %>
 
-<!-- 자동당직생성 모달-->
+<!-- 도서 수정 모달-->
 <div class="modal fade" id="bookModifyModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -140,7 +156,7 @@
 				<div class="modal-body" >
 					<input type="hidden" name="modifyId" id="modifyId" value=""/>
 					<div class="form-group">
-						<label for="modifyType" cond="">분류</label> 
+						<label for="modifyType">분류</label> 
 						<select class="form-control" name="modifyType" id="modifyType">
               				<%	
               					for (BookCategoryInfo info : bookCategory){
@@ -151,32 +167,32 @@
          			 	
 					</div>
 						<div class="form-group">
-						<label for="modifyCode" cond="">코드</label> 
-						<input name="modifyCode" id="modifyCode" type="text" class="form-control"/>
+						<label for="modifyCode" >코드</label> 
+						<input name="modifyCode" id="modifyCode" type="text" class="form-control"  maxlength="25"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="modifyTitle" cond="">도서명</label> 
-						<input name="modifyTitle" id="modifyTitle" type="text" class="form-control"/>
+						<label for="modifyTitle" >도서명</label> 
+						<input name="modifyTitle" id="modifyTitle" type="text" class="form-control"  maxlength="50"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="modifyPublisher" cond="">출판사</label> 
-						<input name="modifyPublisher" id="modifyPublisher" type="text" class="form-control"/>
+						<label for="modifyPublisher" >출판사</label> 
+						<input name="modifyPublisher" id="modifyPublisher" type="text" class="form-control" maxlength="25"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="modifyAuthor" cond="">저자</label> 
-						<input name="modifyAuthor" id="modifyAuthor" type="text" class="form-control"/>
+						<label for="modifyAuthor" >저자</label> 
+						<input name="modifyAuthor" id="modifyAuthor" type="text" class="form-control"  maxlength="25"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="modifyImageURL" cond="">이미지 URL</label> 
-						<input name="modifyImageURL" id="modifyImageURL" type="text" class="form-control"/>
+						<label for="modifyImageURL" >이미지 URL</label> 
+						<input name="modifyImageURL" id="modifyImageURL" type="text" class="form-control"  maxlength="100"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="modifyCount" cond="">수량</label> 
+						<label for="modifyCount" >수량</label> 
 						<input name="modifyCount" id="modifyCount" type="number" class="form-control"/>
 					</div>
 

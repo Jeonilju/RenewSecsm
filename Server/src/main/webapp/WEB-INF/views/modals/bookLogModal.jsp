@@ -22,7 +22,7 @@
 					"bookItemsId" + "=" + bookItemsId;
 		
 		$.ajax({
-		url : "/Secsm/api_rentBack",
+		url : "/Secsm/api_rentBackBook",
 		type : "POST",
 		data : param,
 		cache : false,
@@ -139,6 +139,7 @@
 	
 </script>
 
+<!-- 도서 로그 모달-->
 <div class="modal fade" id="bookLogModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -164,7 +165,7 @@
            	  			<option value="1">ID</option>
          			 </select>
          			
-         			<label for="logSearch" cond=""></label> 
+         			<label for="logSearch"></label> 
          			<button type="button" class="btn" onclick="logBook(1);" style="float:left;" >이전</button>
 					<button type="button" class="btn" onclick="logBook(2);" style="margin-left:5px; float:left;">다음</button>
 					<input name="logSearch" id="logSearch" type="text" class="form-control" style="width: 30%"/>

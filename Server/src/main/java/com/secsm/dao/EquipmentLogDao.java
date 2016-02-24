@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.secsm.idao.EquipmentLogIDao;
-import com.secsm.info.BookLogInfo;
 import com.secsm.info.EquipmentLogInfo;
 
 public class EquipmentLogDao implements EquipmentLogIDao {
@@ -182,7 +181,7 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 
 	public List<EquipmentLogInfo> selectOverDate(Timestamp now, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.equipment_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where status=1 and endDate<=? order by  endDate desc limit ?,7"
+				+ " inner join secsm.equipment_items c on a.equipment_items_id=c.id where status=1 and endDate<=? order by endDate limit ?,7"
 				, new Object[] {now, logPage },
 				new RowMapper<EquipmentLogInfo>() {
 					public EquipmentLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -197,8 +196,4 @@ public class EquipmentLogDao implements EquipmentLogIDao {
 	public void delete(int id){
 		jdbcTemplate.update("delete from equipment_log where equipment_items_id = ?", new Object[]{id});
 	}
-//	
-//	public void deleteAll(){
-//		jdbcTemplate.update("delete from equipment_log");
-//	}
 }

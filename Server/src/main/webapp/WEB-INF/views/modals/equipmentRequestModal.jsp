@@ -8,7 +8,9 @@
 
 	function requestEquipment(){
 
-		var param = {reqTypeKr: $("#reqTypeKr").val(), 
+		var param = {reqProject: $("#reqProject").val(),
+					reqTypeKr: $("#reqTypeKr").val(), 
+					reqTypeKr: $("#reqTypeKr").val(), 
 					reqTypeEn: $("#reqTypeEn").val(),
 					reqTitleKr: $("#reqTitleKr").val(),
 					reqTitleEn: $("#reqTitleEn").val(),
@@ -18,7 +20,15 @@
 					reqPay: $("#reqPay").val(),
 					reqCount: $("#reqCount").val()};
 		
-		if($("#reqTypeKr").val()==""){
+		if($("#reqProject").val()==""){
+			alert("프로젝트 입력하세요.");
+			return;
+		}
+		else if(0>=$("#reqProject").val() || $("#reqProject").val()>10000){
+			alert("프로젝트 번호 범위를 초과하였습니다.");
+			return;
+		}
+		else if($("#reqTypeKr").val()==""){
 			alert("분류(한글)를 입력하세요.");
 			return;
 		}
@@ -54,6 +64,14 @@
 			alert("수량을 입력하세요.");
 			return;
 		}
+		else if(0>=$("#reqPay").val() || $("#reqPay").val()>1000000){
+			alert("단가 범위를 초과하였습니다.");
+			return;
+		}
+		else if(0>=$("#reqCount").val() || $("#reqCount").val()>100){
+			alert("수량 범위를 초과하였습니다.");
+			return;
+		}
 		else{}
 		
 		$.ajax({
@@ -74,6 +92,10 @@
 			{
 				alert('수량을 확인해주세요.');	
 			}
+			else if(response=='403')
+			{
+				alert('해당 프로젝트는 존재하지 않습니다.');
+			}
 			else
 			{
 				alert('신청이 완료되었습니다.');
@@ -91,7 +113,7 @@
 
 </script>
 
-<!-- 자동당직생성 모달-->
+<!-- 장비 신청 모달-->
 <div class="modal fade" id="equipmentRequestModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -101,34 +123,38 @@
 				</div>
 				<div class="modal-body" >
 					<div class="form-group">
-						<label for="reqType" cond="">분류(한글/영어)</label>
-						<input name="reqType" id="reqTypeKr" type="text" class="form-control"/>
-						<input name="reqType" id="reqTypeEn" type="text" class="form-control"/>
+						<label for="reqProject" >프로젝트 번호</label> 
+						<input name="reqProject" id="reqProject" type="number" class="form-control"/>
+					</div>
+					<div class="form-group">
+						<label for="reqType" >분류(한글/영어)</label>
+						<input name="reqType" id="reqTypeKr" type="text" class="form-control" maxlength="25"/>
+						<input name="reqType" id="reqTypeEn" type="text" class="form-control" maxlength="50"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="reqTitle" cond="">장비명(한글/영어)</label>
-						<input name="reqTitle" id="reqTitleKr" type="text" class="form-control"/>
-						<input name="reqTitle" id="reqTitleEn" type="text" class="form-control"/>
+						<label for="reqTitle" >장비명(한글/영어)</label>
+						<input name="reqTitle" id="reqTitleKr" type="text" class="form-control" maxlength="50"/>
+						<input name="reqTitle" id="reqTitleEn" type="text" class="form-control" maxlength="100"/>
 					</div>
 					<div class="form-group">
-						<label for="reqBrand" cond="">브랜드</label> 
-						<input name="reqBrand" id="reqBrand" type="text" class="form-control"/>
+						<label for="reqBrand" >브랜드</label> 
+						<input name="reqBrand" id="reqBrand" type="text" class="form-control" maxlength="25"/>
 					</div>
 					<div class="form-group">
-						<label for="reqLink" cond="">참고링크</label> 
-						<input name="reqLink" id="reqLink" type="text" class="form-control"/>
+						<label for="reqLink" >참고링크</label> 
+						<input name="reqLink" id="reqLink" type="text" class="form-control" maxlength="100"/>
 					</div>
 					<div class="form-group">
-						<label for="reqContent" cond="">사유내역</label> 
-						<input name="reqContent" id="reqContent" type="text" class="form-control"/>
+						<label for="reqContent" >사유내역</label> 
+						<input name="reqContent" id="reqContent" type="text" class="form-control" maxlength="75"/>
 					</div>
 					<div class="form-group">
-						<label for="reqPay" cond="">단가</label> 
+						<label for="reqPay" >단가</label> 
 						<input name="reqPay" id="reqPay" type="number" class="form-control"/>
 					</div>
 					<div class="form-group">
-						<label for="reqCount" cond="">수량</label> 
+						<label for="reqCount" >수량</label> 
 						<input name="reqCount" id="reqCount" type="number" class="form-control"/>
 					</div>
 				</div>

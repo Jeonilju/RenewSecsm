@@ -34,6 +34,10 @@
 			alert("수량을 입력하세요.");
 			return;
 		}
+		else if(0>=$("#addCount").val() || $("#addCount").val()>100){
+			alert("수량 범위를 초과하였습니다.");
+			return;
+		}
 		
 		$.ajax({
 		url : "/Secsm/api_addBook",
@@ -73,6 +77,10 @@
 			{
 				alert('같은 코드의 도서가 존재합니다.');	
 			}
+			else if(response=='405')
+			{
+				alert('권한이 없습니다.');
+			}
 			else
 			{
 			}
@@ -99,7 +107,7 @@
 	ArrayList<BookCategoryInfo> bookCategory = (ArrayList<BookCategoryInfo>) request.getAttribute("bookCategory");
 %>
 
-<!-- 자동당직생성 모달-->
+<!-- 도서 추가 모달-->
 <div class="modal fade" id="bookAddModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -109,7 +117,7 @@
 				</div>
 				<div class="modal-body" >
 					<div class="form-group">
-						<label for="addType" cond="">분류</label> 
+						<label for="addType">분류</label> 
 						<select class="form-control" name="addType" id="addType">
               				<%
               					int i=0;
@@ -121,32 +129,32 @@
          			 	
 					</div>
 						<div class="form-group">
-						<label for="addCode" cond="">코드</label> 
-						<input name="addCode" id="addCode" type="text" class="form-control"/>
+						<label for="addCode">코드</label> 
+						<input name="addCode" id="addCode" type="text" class="form-control" maxlength="25"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="addTitle" cond="">도서명</label> 
-						<input name="addTitle" id="addTitle" type="text" class="form-control"/>
+						<label for="addTitle">도서명</label> 
+						<input name="addTitle" id="addTitle" type="text" class="form-control"  maxlength="50"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="addPublisher" cond="">출판사</label> 
-						<input name="addPublisher" id="addPublisher" type="text" class="form-control"/>
+						<label for="addPublisher">출판사</label> 
+						<input name="addPublisher" id="addPublisher" type="text" class="form-control"  maxlength="25"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="addAuthor" cond="">저자</label> 
-						<input name="addAuthor" id="addAuthor" type="text" class="form-control"/>
+						<label for="addAuthor">저자</label> 
+						<input name="addAuthor" id="addAuthor" type="text" class="form-control"  maxlength="25"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="addImageURL" cond="">이미지 URL</label> 
-						<input name="addImageURL" id="addImageURL" type="text" class="form-control"/>
+						<label for="addImageURL" >이미지 URL</label> 
+						<input name="addImageURL" id="addImageURL" type="text" class="form-control"  maxlength="100"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="addCount" cond="">수량</label> 
+						<label for="addCount" >수량</label> 
 						<input name="addCount" id="addCount" type="number" class="form-control"/>
 					</div>
 

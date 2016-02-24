@@ -44,7 +44,7 @@
 				</li>
 				
 				<li class="dropdown">
-					<a id="equipmentDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">기자재<b class="caret"></b></a>
+					<a id="equipmentDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">자산<b class="caret"></b></a>
 						
 					<ul class="dropdown-menu" role="menu" aria-labelledby="equipmentDrop">
 						<li role="presentation"><a role="menuitem" href="/Secsm/book">도서</a></li>
@@ -62,13 +62,17 @@
 				
 				<%
 					if(accountInfo_nav != null){
-						out.println("<li style='margin-left: 20px'>");
-						out.println("<a href='/Secsm/logout' role='button' >로그아웃<b class='caret'></b></a>");
+						out.println("<li class='dropdown' style='margin-left: 20px'>");
+						out.println("<a id='userDrop' href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' >User<b class='caret'></b></a>");
+						out.println("<ul class='dropdown-menu' role='menu' aria-labelledby='userDrop'>");
+						out.println("<li role='presentation'><a role='menuitem' data-toggle='modal' href='#' onclick ='goModify();' data-target='#account_SignUp' >정보수정</a></li>");
+						out.println("<li role='presentation'><a role='menuitem' href='/Secsm/logout'>로그아웃</a></li>");
+						out.println("</ul>");
 						out.println("</li>");
 					}
 					else{
 						out.println("<li style='margin-left: 20px'>");
-						out.println("<a data-toggle= 'modal' onclick = 'inputreset(5);' data-target='#account_SignUp' >SIGN UP<b class='caret'></b></a>");
+						out.println("<a data-toggle='modal' href='#' onclick = 'inputreset(5);' data-target='#account_SignUp' >SIGN UP<b class='caret'></b></a>");
 						out.println("</li>");
 					}
 				%>

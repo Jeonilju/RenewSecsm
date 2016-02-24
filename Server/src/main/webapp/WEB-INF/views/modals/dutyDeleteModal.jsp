@@ -10,7 +10,7 @@
 		   			"date" + "=" + deleteDate;
 		   
 		 $.ajax({
-		    url : "/Secsm/dutyDelete",
+		    url : "/Secsm/api_dutyDelete",
 		    type : "POST",
 		    data : param,
 		    cache : false,
@@ -18,7 +18,6 @@
 		    dataType : "text",
 
 	    	success : function(response) {   
-	    		alert(response);
 	       		if(response=='0')
 	       		{
 	       		  	alert($('#dutyDeleteName').text() + '님의 당직일정이 삭제 되었습니다.');
@@ -46,7 +45,7 @@
 
 </script>
 	
-<!-- 자동당직생성 모달-->
+<!-- 당직삭제 모달-->
 <div class="modal fade" id="dutyDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
