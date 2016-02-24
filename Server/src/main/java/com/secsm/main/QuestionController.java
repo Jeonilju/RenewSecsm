@@ -448,7 +448,11 @@ public class QuestionController {
 						}
 						else{
 							logger.info("답변 완료(객관식): " + qInfo.getId());
-							answerChoiceDao.create(accountId, qInfo.getId(), Integer.parseInt(answerInfo.qanswer));
+							try{
+								answerChoiceDao.create(accountId, qInfo.getId(), Integer.parseInt(answerInfo.qanswer));
+							}catch(Exception e){
+								logger.error("에러 발생");
+							}
 						}
 						break;
 					}
@@ -464,7 +468,11 @@ public class QuestionController {
 						}
 						else{
 							logger.info("답변 완료(주관식): " + qInfo.getId());
-							answerEssayDao.create(accountId, qInfo.getId(), answerInfo.qanswer);
+							try{
+								answerEssayDao.create(accountId, qInfo.getId(), answerInfo.qanswer);
+							}catch(Exception e){
+								logger.error("에러 발생");
+							}
 						}
 						break;
 					}
@@ -480,7 +488,11 @@ public class QuestionController {
 						}
 						else{
 							logger.info("답변 완료(날짜): " + qInfo.getId());
-							answerDateDao.create(accountId, qInfo.getId(), answerInfo.qanswer);
+							try{
+								answerDateDao.create(accountId, qInfo.getId(), answerInfo.qanswer);
+							}catch(Exception e){
+								logger.error("에러 발생");
+							}
 						}
 						break;
 					}
@@ -496,7 +508,11 @@ public class QuestionController {
 						}
 						else{
 							logger.info("답변 완료(시간): " + qInfo.getId());
-							answerTimeDao.create(accountId, qInfo.getId(), answerInfo.qanswer);
+							try{
+								answerTimeDao.create(accountId, qInfo.getId(), answerInfo.qanswer);
+							}catch(Exception e){
+								logger.error("에러 발생");
+							}
 						}
 						break;
 					}
@@ -511,8 +527,12 @@ public class QuestionController {
 							logger.info("이미 설문에 참여한 유저");
 						}
 						else{
-							logger.info("답변 완료(점수): " + qInfo.getId());
-							answerScoreDao.create(accountId, qInfo.getId(), Integer.parseInt(answerInfo.qanswer));
+							logger.info("답변 완료(점수): " + qInfo.getId()); 
+							try{
+								answerScoreDao.create(accountId, qInfo.getId(), Integer.parseInt(answerInfo.qanswer));
+							}catch(Exception e){
+								logger.error("에러 발생");
+							}
 						}
 						break;
 					}

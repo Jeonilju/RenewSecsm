@@ -131,6 +131,42 @@
 	}
 	
 </script>
+<style>
+		.bootstrap-datetimepicker-widget table td a[data-action="incrementHours"]:before {
+		            content: '▲'; 
+		        }
+		
+		.bootstrap-datetimepicker-widget table td a[data-action="incrementMinutes"]:before { 
+		            content: '▲'; 
+		        }
+        .bootstrap-datetimepicker-widget table td a[data-action="incrementSeconds"]:before { 
+            content: '▲'; 
+        }
+        
+        .bootstrap-datetimepicker-widget table td a[data-action="decrementHours"]:before { 
+            content: '▼'; 
+        }
+        .bootstrap-datetimepicker-widget table td a[data-action="decrementMinutes"]:before { 
+            content: '▼'; 
+        }
+        .bootstrap-datetimepicker-widget table td a[data-action="decrementSeconds"]:before { 
+            content: '▼'; 
+        }
+
+.bootstrap-datetimepicker-widget table td a[data-action="incrementHours"]:before,
+.bootstrap-datetimepicker-widget table td a[data-action="incrementMinutes"]:before,
+.bootstrap-datetimepicker-widget table td a[data-action="incrementSeconds"]:before,
+.bootstrap-datetimepicker-widget table td a[data-action="decrementHours"]:before,
+.bootstrap-datetimepicker-widget table td a[data-action="decrementMinutes"]:before,
+.bootstrap-datetimepicker-widget table td a[data-action="decrementSeconds"]:before, { 
+            text-align: center;
+            text-transform: uppercase;
+            color: #6a696f;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+</style>
 
 <div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
@@ -150,14 +186,14 @@
 
 					<hr />
 					
-					<table id="qrTable" name="qrTable">
+					<table id="qrTable" name="qrTable" style="width: 500px;">
 						<tbody></tbody>
 					</table>
 					
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick="responsQuestion();">완료</button>
+					<button type="button" class="btn btn-primary" onclick="responsQuestion();">완료</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</form>

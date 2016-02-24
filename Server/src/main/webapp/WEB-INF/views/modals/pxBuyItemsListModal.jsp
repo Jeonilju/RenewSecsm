@@ -165,7 +165,7 @@
 					<button type="button" class="btn btn-sm" onclick="log_detail(2);" style="margin: 5px; margin-left:0px;">다음</button>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+				<button type="button" onclick = "getPxAmount();" class="btn btn-danger" data-dismiss="modal">닫기</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->

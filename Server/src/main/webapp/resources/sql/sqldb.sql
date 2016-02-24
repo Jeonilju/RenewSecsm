@@ -100,6 +100,7 @@ CREATE TABLE `px_log` (
   CONSTRAINT `px_log_px_items_id` FOREIGN KEY (`Px_Items_id`) REFERENCES `px_items` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='PX 상품 구매 기록';
 
+
 CREATE TABLE `px_req` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Account_id` int(11) DEFAULT NULL,
@@ -414,6 +415,7 @@ CHANGE COLUMN `Description` `Description` TEXT NULL DEFAULT NULL COMMENT '' ;
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('교육부장', '교육부장', '1234', '10000', '0000', '3', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자치회장', '자치회상', '1234', '0', '0000', '1', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('생활부장', '생활부장', '1234', '0', '0000', '2', '0');
+<<<<<<< HEAD
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('PX부장', 'PX부장', '1234', '999999', '0000', '4', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자산관리부장', '자산관리부장', '1234', '0', '0000', '5', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('기획부장', '기획부장', '1234', '0', '0000', '6', '1');
@@ -500,3 +502,13 @@ INSERT INTO `secsm`.`equipment_log` (`ID`, `Account_id`, `Equipment_items_id`, `
 INSERT INTO `secsm`.`equipment_log` (`ID`, `Account_id`, `Equipment_items_id`, `StartDate`, `EndDate`, `status`) VALUES ('2', '8', '14', '2016-01-15 00:00:00', '2016-01-25 00:00:00', '1');
 INSERT INTO `secsm`.`equipment_log` (`ID`, `Account_id`, `Equipment_items_id`, `StartDate`, `EndDate`, `status`) VALUES ('3', '8', '18', '2016-01-27 00:00:00', '2016-02-13 00:00:00', '1');
 INSERT INTO `secsm`.`equipment_log` (`ID`, `Account_id`, `Equipment_items_id`, `StartDate`, `EndDate`, `status`) VALUES ('4', '8', '17', '2016-02-02 00:00:00', '2016-03-12 00:00:00', '1');
+=======
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('PX부장', 'PX부장', '1234', '999999', '0000', '4', '0');
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자산관리부장', '자산관리부장', '1234', '0', '0000', '5', '0');
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('기획부장', '기획부장', '1234', '0', '0000', '6', '0');
+
+
+ALTER TABLE `secsm`.`attendance` 
+ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT AFTER `RegDate`,
+ADD PRIMARY KEY (`id`);
+>>>>>>> e95ff5659ef4f5209ad7ca97100a484b699b3edd
