@@ -27,7 +27,7 @@ function modifyImageEquipment(){
 		if(response=='200')
 		{
 			alert('변경 되었습니다.');
-			$("#modifyImageURLRap").html('<label for="modifyImageURL" cond="">이미지</label>' 
+			$("#modifyImageURLRap").html('<label for="modifyImageURL" >이미지</label>' 
 					+ '<input name="modifyImageURL" id="modifyImageURL" type="file" class="form-control"/>');
 			location.reload();
 		}
@@ -45,6 +45,10 @@ function modifyImageEquipment(){
 		{
 			alert('파일업로드 에러');
 			location.reload();
+		}
+		else if(response=='404')
+		{
+			alert('권한이 없습니다.');	
 		}
 		else{}
 	},
@@ -65,7 +69,7 @@ function modifyImageEquipment(){
 	}
 </style>
 
-<!-- 자동당직생성 모달-->
+<!-- 장비 이미지 수정 모달-->
 <div class="modal fade" id="equipmentImageModifyModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
@@ -75,7 +79,7 @@ function modifyImageEquipment(){
 				</div>
 				<div class="modal-body">
 					<div class="form-group" id="modifyImageURLRap">
-						<label for="modifyImageURL" cond="">이미지</label> 
+						<label for="modifyImageURL" >이미지</label> 
 						<input name="modifyImageURL" id="modifyImageURL" type="file" class="form-control"/>
 					</div>
 					

@@ -2,28 +2,21 @@ package com.secsm.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.secsm.idao.EquipmentItemsIDao;
-import com.secsm.info.BookItemsInfo;
 import com.secsm.info.EquipmentItemsInfo;
-import com.secsm.info.EquipmentLogInfo;
 
 public class EquipmentItemsDao implements EquipmentItemsIDao {
 	private static final Logger logger = LoggerFactory.getLogger(EquipmentItemsDao.class);
 
-	@Autowired
-	private EquipmentLogDao equipmentLogDao;
 	
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;

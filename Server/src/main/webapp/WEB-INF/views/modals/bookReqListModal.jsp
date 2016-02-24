@@ -19,8 +19,6 @@
 	);
 	
 	function goAddBook(title,publisher,author,imageURL){
-		var check = confirm("동일한 도서가 등록되어 있는지 확인했나요?");
-		if(!check) return;
 		$('select[name=addType]').val(0);
 		$("#addCode").val("");
 		$("#addTitle").val(title);
@@ -32,7 +30,12 @@
 	}
 	
 	function goExcel(){
-		if($("#reqListStartDate").val()==""){
+		
+		if(grade!=0 && grade!=5){
+			alert("권한이 없습니다.");
+			return
+		}
+		else if($("#reqListStartDate").val()==""){
 			alert("시작일을 입력하세요.");
 			return;
 		}
@@ -54,6 +57,8 @@
 	
 	function myReqList(option){
 		if(option ==0){
+			$("#reqListStartDate").val("");
+			$("#reqListEndDate").val("");
 			reqPage = 0;
 			isMy= true;
 		}
@@ -111,7 +116,11 @@
 	}
 	
 	function reqList(option){
-		if(option==0){
+		if(grade!=0 && grade!=5){
+			alert("권한이 없습니다.");
+			return
+		}
+		else if(option==0){
 			reqListStartDateVar = $("#reqListStartDate").val(); 
 			reqListEndDateVar = $("#reqListEndDate").val();
 			reqPage = 0;
@@ -136,7 +145,7 @@
 		else{}
 		
 		$.ajax({
-		url : "/Secsm/api_reqList",
+		url : "/Secsm/api_bookReqList",
 		type : "POST",
 		data : param,
 		cache : false,
@@ -148,6 +157,10 @@
 			{
 				alert('로그인을 하세요.');
 				location.reload();
+			}
+			else if(response=='402')
+			{
+				alert('권한이 없습니다.');
 			}
 			else
 			{
@@ -185,7 +198,7 @@
 
 </script>
 
-<!-- 자동당직생성 모달-->
+<!-- 도서 요청 리스트 모달-->
 <div class="modal fade" id="bookReqListModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-dialog modal-lg" >
 		<div class="modal-content">

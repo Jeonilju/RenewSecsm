@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import com.secsm.info.BookCategoryInfo;
 import com.secsm.info.EquipmentCategoryInfo;
 
 public class EquipmentCategoryDao {
@@ -60,32 +59,7 @@ public class EquipmentCategoryDao {
 				});
 	}
 	
-//	public List<EquipmentCategoryInfo> selectById(int id){
-//		return jdbcTemplate.query("select * from equipment_category where id = ?", new Object[] {id},
-//				new RowMapper<EquipmentCategoryInfo>() {
-//					public EquipmentCategoryInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-//						return new EquipmentCategoryInfo(resultSet.getInt("id"), resultSet.getString("name")
-//								, resultSet.getInt("isBook"));
-//					}
-//				});
-//	}
-//	
-//	public List<EquipmentCategoryInfo> selectIsBook(int isBook){
-//		return jdbcTemplate.query("select * from equipment_category where isBook=?", new Object[] {isBook},
-//				new RowMapper<EquipmentCategoryInfo>() {
-//					public EquipmentCategoryInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-//						return new EquipmentCategoryInfo(resultSet.getInt("id"), resultSet.getString("name")
-//								, resultSet.getInt("isBook"));
-//					}
-//				});
-//	}
-	
-	
 	public void delete(int id){
 		jdbcTemplate.update("delete from equipment_category where id = ?", new Object[] {id});
 	}
-
-//	public void deleteAll(){
-//		jdbcTemplate.update("delete from equipment_category");
-//	}
 }

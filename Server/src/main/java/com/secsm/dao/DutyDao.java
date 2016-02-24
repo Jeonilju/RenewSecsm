@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.secsm.idao.DutyIDao;
-import com.secsm.info.AttendanceInfo;
 import com.secsm.info.DutyInfo;
 
 public class DutyDao implements DutyIDao {
@@ -29,11 +28,6 @@ public class DutyDao implements DutyIDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 	
-//	public void create(DutyInfo info){
-//		jdbcTemplate.update("insert into duty (dutyDate, accountId1, accountId2, accountId3) values (?, ?, ?, ?)"
-//				, new Object[]{info.getDutyDate(), info.getAccountId1(), info.getAccountId2(), info.getAccountId3()});
-//	}
-//	
 	public void create1(Timestamp dutyDate, int accountId1){
 		jdbcTemplate.update("insert into duty (dutyDate, account_Id1) values (?, ?)"
 				, new Object[]{dutyDate, accountId1});
@@ -48,41 +42,6 @@ public class DutyDao implements DutyIDao {
 		jdbcTemplate.update("insert into duty (dutyDate, account_Id1, account_Id2, account_Id3) values (?, ?, ?, ?)"
 				, new Object[]{dutyDate, accountId1, accountId2, accountId3});
 	}
-
-//	
-//	public List<DutyInfo> selectAll(){
-//		return jdbcTemplate.query("select * from duty",
-//				new RowMapper<DutyInfo>() {
-//					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-//						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
-//								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
-//								, resultSet.getInt("accountId3"));
-//					}
-//				});
-//	}
-//	
-//	public List<DutyInfo> select(int id){
-//		return jdbcTemplate.query("select * from duty where id = ?", new Object[id],
-//				new RowMapper<DutyInfo>() {
-//					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-//						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
-//								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
-//								, resultSet.getInt("accountId3"));
-//					}
-//				});
-//	}
-	
-	// TODO 날짜 Where 문 채우
-//	public List<DutyInfo> select(Timestamp date){
-//		return jdbcTemplate.query("select * from duty where dutyDate = ?",
-//				new RowMapper<DutyInfo>() {
-//					public DutyInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-//						return new DutyInfo(resultSet.getInt("id"), resultSet.getTimestamp("dytyDate")
-//								, resultSet.getInt("accountId1"), resultSet.getInt("accountId2")
-//								, resultSet.getInt("accountId3"));
-//					}
-//				});
-//	}
 	
 	public List<DutyInfo> selectTimeName(Timestamp startDate, Timestamp endDate){
 		return jdbcTemplate.query("select duty.id, duty.dutyDate, a1.name, a2.name, a3.name from duty "
@@ -151,12 +110,4 @@ public class DutyDao implements DutyIDao {
 		jdbcTemplate.update("delete from duty where dutydate>=? AND dutydate<?", new Object[] {startDate, endDate });
 	}
 	
-//	public void delete(int id){
-//		jdbcTemplate.update("delete from duty where id = ?", new Object[id]);
-//	}
-//	
-//	public void deleteAll(){
-//		jdbcTemplate.update("delete from duty");
-//	}
-
 }

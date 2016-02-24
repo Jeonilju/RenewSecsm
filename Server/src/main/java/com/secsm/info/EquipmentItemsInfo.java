@@ -41,12 +41,13 @@ public class EquipmentItemsInfo {
 
 	
 	public EquipmentItemsInfo(int id, String code, String name, String manufacturer, int type,
-			int count, int totalCount) {
+			Timestamp regDate, int count, int totalCount) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.manufacturer = manufacturer;
 		this.type = type;
+		this.regDate = regDate;
 		this.count = count;
 		this.totalCount = totalCount;
 	}

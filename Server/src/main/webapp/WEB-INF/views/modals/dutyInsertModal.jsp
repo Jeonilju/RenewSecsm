@@ -11,7 +11,7 @@
 					"date" + "=" + insertDate;
 		
 		$.ajax({
-			url : "/Secsm/dutyInsert",
+			url : "/Secsm/api_dutyInsert",
 			type : "POST",
 			data : param,
 			cache : false,
@@ -53,7 +53,7 @@
 
 </script>
 	
-<!-- 자동당직생성 모달-->
+<!-- 당직추가 모달-->
 <div class="modal fade" id="dutyInsertModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
@@ -62,7 +62,7 @@
 					<h4 class="modal-title">당직추가</h4>
 				</div>
 				<div class="modal-body" >
-					<label for="insertTitle" cond="">이름</label> 
+					<label for="insertTitle">이름</label> 
 					<input name="insertTitle" id="insertTitle" type="text" class="form-control"/>
 				</div>
 

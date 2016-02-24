@@ -18,8 +18,19 @@
 		}
 	);
 	
+	function goProject(projectId){
+		var tempURL = window.location.href;
+		tempURL = tempURL.substring(0,tempURL.length-9);
+		var projectURL = tempURL + 'detailProject/' + projectId;
+		window.open(projectURL);
+	}
+	
 	function goExcel(){
-		if($("#reqListStartDate").val()==""){
+		if(grade!=0 && grade!=5){
+			alert("권한이 없습니다.");
+			return
+		}
+		else if($("#reqListStartDate").val()==""){
 			alert("시작일을 입력하세요.");
 			return;
 		}
@@ -41,6 +52,8 @@
 	
 	function myReqList(option){
 		if(option ==0){
+			$("#reqListStartDate").val("");
+			$("#reqListEndDate").val("");
 			reqPage = 0;
 			isMy= true;
 		}
@@ -76,14 +89,14 @@
 				var tableContent = '<tbody>';
 				var i;
 				for(i=0;i<Object.keys(obj).length;i++){
-					tableContent = tableContent + '<tr> <td class="col-md-2">' + obj[i].typeKr 
-					+ '</td> <td class="col-md-4" style="cursor:pointer;" onClick="reqSearchEquipment(' + obj[i].id + ')" data-toggle="modal" data-target="#equipmentReqModifyModal">'
-					+ obj[i].titleKr + '</td> <td class="col-md-2">' + obj[i].brand + '</td> <td class="col-md-1">' 
+					tableContent = tableContent + '<tr> <td class="col-md-2"> <button type="button" class="btn btn-info" onclick="goProject(\'' + obj[i].projectId + '\');">보기</button>'
+					+ '</td> <td class="col-md-4" style="cursor:pointer;" onClick="reqSearchEquipment(' + obj[i].id + ')" data-toggle="modal" data-target="#equipmentReqModifyModal">' + obj[i].titleKr
+					+ '</td> <td class="col-md-2">' + obj[i].brand + '</td> <td class="col-md-1">' 
 					+ obj[i].count + '</td> <td class="col-md-1">' + obj[i].accountName + '</td> <td class="col-md-2">' + obj[i].strRegDate  + '</td> </tr>';	
 				}
 				tableContent = tableContent + '</tbody> </table>'
 				var tableHeader = '<table class="table" style="table-layout:fixed;"> <thead> <tr>'
-			      					+'<th class="col-md-2">분류</th> <th class="col-md-4">장비명</th> <th class="col-md-2">브랜드</th> <th class="col-md-1">수량</th> <th class="col-md-1">신청자</th> <th class="col-md-2">신청일</th> </tr> </thead>';
+			      					+'<th class="col-md-2">프로젝트</th> <th class="col-md-4">장비명</th> <th class="col-md-2">브랜드</th> <th class="col-md-1">수량</th> <th class="col-md-1">신청자</th> <th class="col-md-2">신청일</th> </tr> </thead>';
 			    var table = tableHeader + tableContent;
 				$("#equipmentReqListTable").html(table);
 			}
@@ -98,7 +111,11 @@
 	}
 	
 	function reqList(option){
-		if(option==0){
+		if(grade!=0 && grade!=5){
+			alert("권한이 없습니다.");
+			return
+		}
+		else if(option==0){
 			reqListStartDateVar = $("#reqListStartDate").val(); 
 			reqListEndDateVar = $("#reqListEndDate").val();
 			reqPage = 0;
@@ -112,7 +129,11 @@
 					"reqListEndDate" + "=" + reqListEndDateVar  + "&" + 
 					"reqPage" + "=" + reqPage;
  		
-		if($("#reqListStartDate").val()==""){
+		if(grade!=0 && grade!=5){
+			alert("권한이 없습니다.");
+			return
+		}
+		else if($("#reqListStartDate").val()==""){
 			alert("시작일을 입력하세요.");
 			return;
 		}
@@ -136,6 +157,10 @@
 				alert('로그인을 하세요.');
 				location.reload();
 			}
+			else if(response=='402')
+			{
+				alert('권한이 없습니다.');
+			}
 			else
 			{
 				var obj = JSON.parse(response);
@@ -148,13 +173,14 @@
 				var tableContent = '<tbody>';
 				var i;
 				for(i=0;i<Object.keys(obj).length;i++){
-					tableContent = tableContent + '<tr> <td class="col-md-2">' + obj[i].typeKr + '</td> <td class="col-md-4">'
-								+ obj[i].titleKr + '</td> <td class="col-md-2">' + obj[i].brand + '</td> <td class="col-md-1">' 
-								+ obj[i].count + '</td> <td class="col-md-1">' + obj[i].accountName + '</td> <td class="col-md-2">' + obj[i].strRegDate  + '</td> </tr>';	
+					tableContent = tableContent + '<tr> <td class="col-md-2"> <button type="button" class="btn btn-info" onclick="goProject(\'' + obj[i].projectId + '\');">보기</button>'
+					+ '</td> <td class="col-md-4" >' + obj[i].titleKr
+					+ '</td> <td class="col-md-2">' + obj[i].brand + '</td> <td class="col-md-1">' 
+					+ obj[i].count + '</td> <td class="col-md-1">' + obj[i].accountName + '</td> <td class="col-md-2">' + obj[i].strRegDate  + '</td> </tr>';	
 				}
 				tableContent = tableContent + '</tbody> </table>'
 				var tableHeader = '<table class="table" style="table-layout:fixed;"> <thead> <tr>'
-			      					+'<th class="col-md-2">분류</th> <th class="col-md-4">장비명</th> <th class="col-md-2">브랜드</th> <th class="col-md-1">수량</th> <th class="col-md-1">신청자</th> <th class="col-md-2">신청일</th> </tr> </thead>';
+			      					+'<th class="col-md-2">프로젝트</th> <th class="col-md-4">장비명</th> <th class="col-md-2">브랜드</th> <th class="col-md-1">수량</th> <th class="col-md-1">신청자</th> <th class="col-md-2">신청일</th> </tr> </thead>';
 			    var table = tableHeader + tableContent;
 				$("#equipmentReqListTable").html(table);
 			}
@@ -171,6 +197,7 @@
 
 </script>
 
+<!-- 장비 요청 리스트 모달-->
 <div class="modal fade" id="equipmentReqListModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-dialog modal-lg" >
 		<div class="modal-content">
@@ -188,7 +215,7 @@
 					<button type="button" class="btn" onclick="reqListCheck(1);" style="float:left;" >이전</button>
 					<button type="button" class="btn" onclick="reqListCheck(2);" style="margin-left:5px; float:left;">다음</button>
 					<label for="reqListStartDate" style="margin-right:4px">기간:</label>
-					<input name="reqListStartDate" id="reqListStartDate" type="text" class="form-control" style="width: 15%; margin-right:5px"/>~ 
+					<input name="reqListStartDate" id="reqListStartDate" type="text" class="form-control" style="width: 15%; margin-right:5px"/>~
 					<input name="reqListEndDate" id="reqListEndDate" type="text" class="form-control" style="width: 15%"/>
 					<button type="button" class="btn btn-default" onclick="reqList(0);">검색</button>
 					<button type="button" class="btn btn-success" onclick="goExcel();">Excel</button>

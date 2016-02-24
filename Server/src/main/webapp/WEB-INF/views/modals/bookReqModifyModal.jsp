@@ -119,6 +119,10 @@ function requestModify(){
 		alert("가격을 입력하세요.");
 		return;
 	}
+	else if(0>=$("#reqModifyPay").val() || $("#reqModifyPay").val()>1000000){
+		alert("가격 범위를 초과하였습니다.");
+		return;
+	}
 	else{}
 	
 	$.ajax({
@@ -165,6 +169,7 @@ function requestModify(){
 	}
 </style>	
 
+<!-- 도서 요청 수정 모달-->
 <div class="modal fade" id="bookReqModifyModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -175,32 +180,32 @@ function requestModify(){
 				<input type="hidden" name="reqModifyId" id="reqModifyId" value=""/>
 				<div class="modal-body" >
 					<div class="form-group">
-						<label for="reqModifyTitle" cond="">도서명</label> 
-						<input name="reqModifyTitle" id="reqModifyTitle" type="text" class="form-control"/>
+						<label for="reqModifyTitle">도서명</label> 
+						<input name="reqModifyTitle" id="reqModifyTitle" type="text" class="form-control" maxlength="50"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="reqModifyPublisher" cond="">출판사</label> 
-						<input name="reqModifyPublisher" id="reqModifyPublisher" type="text" class="form-control"/>
+						<label for="reqModifyPublisher">출판사</label> 
+						<input name="reqModifyPublisher" id="reqModifyPublisher" type="text" class="form-control" maxlength="25"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="reqModifyAuthor" cond="">저자</label> 
-						<input name="reqModifyAuthor" id="reqModifyAuthor" type="text" class="form-control"/>
+						<label for="reqModifyAuthor">저자</label> 
+						<input name="reqModifyAuthor" id="reqModifyAuthor" type="text" class="form-control" maxlength="25"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="reqModifyLink" cond="">링크</label> 
-						<input name="reqModifyLink" id="reqModifyLink" type="text" class="form-control"/>
+						<label for="reqModifyLink">링크</label> 
+						<input name="reqModifyLink" id="reqModifyLink" type="text" class="form-control" maxlength="100"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="reqModifyImageURL" cond="">이미지 URL</label> 
-						<input name="reqModifyImageURL" id="reqModifyImageURL" type="text" class="form-control"/>
+						<label for="reqModifyImageURL">이미지 URL</label> 
+						<input name="reqModifyImageURL" id="reqModifyImageURL" type="text" class="form-control" maxlength="100"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="reqModifyPay" cond="">가격</label> 
+						<label for="reqModifyPay">가격</label> 
 						<input name="reqModifyPay" id="reqModifyPay" type="number" class="form-control"/>
 					</div>
 

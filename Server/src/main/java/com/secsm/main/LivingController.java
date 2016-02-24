@@ -43,7 +43,6 @@ public class LivingController {
 		logger.info("attendance Page");
 		AccountInfo info = Util.getLoginedUser(request);
 		
-		//비로그인시 메인페이지로
 		if(info == null){
 			return SecsmController.resultIndex(request);
 		}
@@ -121,7 +120,7 @@ public class LivingController {
 
 	
 	@ResponseBody
-	@RequestMapping(value = "/dutyInsert", method = RequestMethod.POST)
+	@RequestMapping(value = "/api_dutyInsert", method = RequestMethod.POST)
 	public String duty_insert(HttpServletRequest request,
 			@RequestParam("title") String title,
 			@RequestParam("date") long date) {
@@ -159,7 +158,7 @@ public class LivingController {
 			}
 		}
 		else if(dutyList.size() == 0){
-			if(info.getGrade()==0 || info.getGrade()==3){
+			if(info.getGrade()==0 || info.getGrade()==2){
 				dutyDao.create1(start, accountList.get(0).getId());
 				return "0";
 			}
@@ -171,7 +170,7 @@ public class LivingController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/dutyDelete", method = RequestMethod.POST)
+	@RequestMapping(value = "/api_dutyDelete", method = RequestMethod.POST)
 	public String duty_Delete(HttpServletRequest request,
 			@RequestParam("title") String title,
 			@RequestParam("date") long date) {
@@ -209,7 +208,7 @@ public class LivingController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/dutyAutoCreate", method = RequestMethod.POST)
+	@RequestMapping(value = "/api_dutyAutoCreate", method = RequestMethod.POST)
 	public String dutyAuto_Create(HttpServletRequest request,
 			@RequestParam("weekdayStart") String weekdayStart,
 			@RequestParam("weekendStart") String weekendStart,
@@ -225,30 +224,30 @@ public class LivingController {
 		if(info == null){
 			return "5";
 		}
+		if(info.getGrade()!=0 && info.getGrade()!=2){
+			return "6";
+		}
 		
 	    String[] exceptionPersonArray = exceptionPerson.split("/");
 	    String[] exceptionDayArray = exceptionDay.split("/");
-	    System.out.println(exceptionPersonArray.length);
+	    
 	    String query="";
 	    for(String person:exceptionPersonArray){
 	    	query = query + " name !='" + person + "' AND";
 	    }
 		query = query + " gender=1";
-		System.out.println(query);
 		
 		List<AccountInfo> accountList = null;
 		try{
 			accountList = accountDao.selectAllException(query);
 		}
 		catch(Exception e){
-			System.out.println(e);
 			return "4";
 		}
 		
 		String[] member = new String[accountList.size()];
 		int weekdayIndex=-1, weekendIndex=-1;
 		for(int i=0;i<accountList.size();i++){
-			System.out.println(accountList.get(i).getName());
 			if(weekdayStart.equals(accountList.get(i).getName())) weekdayIndex = i;
 			if(weekendStart.equals(accountList.get(i).getName())) weekendIndex = i;
 		}
@@ -278,7 +277,6 @@ public class LivingController {
 			try{
 				exception = Integer.parseInt(exceptionDayArray[i]);
 			}catch(NumberFormatException e){
-				System.out.println(e);
 				if(i==0 && exceptionDayArray[0].equals(""));
 				else return "3";
 			}

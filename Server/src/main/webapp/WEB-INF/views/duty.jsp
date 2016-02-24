@@ -79,7 +79,7 @@
     			var info = '<%=obj%>';
     			var obj = JSON.parse(info);
     			
-   				if(grade==0 || grade==3) $('#createDuty').css('display', 'block'); 
+   				if(grade==0 || grade==2) $('#createDuty').css('display', 'block'); 
     			
     			$('#calendar').fullCalendar({
     				header : {

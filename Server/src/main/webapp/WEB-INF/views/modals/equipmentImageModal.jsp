@@ -8,7 +8,7 @@
 
 </script>
 
-<!-- 자동당직생성 모달-->
+<!-- 장비 이미지 모달-->
 <div class="modal fade" id="equipmentImageModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">

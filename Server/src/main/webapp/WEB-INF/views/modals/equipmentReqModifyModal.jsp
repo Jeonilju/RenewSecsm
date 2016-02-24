@@ -33,6 +33,7 @@
 				{
 					var obj = JSON.parse(response);
 					
+					$("#reqModifyProject").val(obj[0].projectId);
 					$("#reqModifyTypeKr").val(obj[0].typeKr);
 					$("#reqModifyTypeEn").val(obj[0].typeEn);
 					$("#reqModifyTitleKr").val(obj[0].titleKr);
@@ -90,6 +91,7 @@
 
 		var param = {
 					reqModifyId: $("#reqModifyId").val(),
+					reqModifyProject: $("#reqModifyProject").val(),
 					reqModifyTypeKr: $("#reqModifyTypeKr").val(), 
 					reqModifyTypeEn: $("#reqModifyTypeEn").val(),
 					reqModifyTitleKr: $("#reqModifyTitleKr").val(),
@@ -100,7 +102,15 @@
 					reqModifyPay: $("#reqModifyPay").val(),
 					reqModifyCount: $("#reqModifyCount").val()};
 		
-		if($("#reqModifyTypeKr").val()==""){
+		if($("#reqModifyProject").val()==""){
+			alert("프로젝트 번호를 입력하세요.");
+			return;
+		}
+		else if(0>=$("#reqModifyProject").val() || $("#reqModifyProject").val()>10000){
+			alert("프로젝트 번호 범위를 초과하였습니다.");
+			return;
+		}
+		else if($("#reqModifyTypeKr").val()==""){
 			alert("분류(한글)를 입력하세요.");
 			return;
 		}
@@ -136,6 +146,14 @@
 			alert("수량을 입력하세요.");
 			return;
 		}
+		else if(0>=$("#reqModifyPay").val() || $("#reqModifyPay").val()>1000000){
+			alert("단가 범위르 초과하였습니다.");
+			return;
+		}
+		else if(0>=$("#reqModifyCount").val() || $("#reqModifyCount").val()>100){
+			alert("수량 범위를 초과하였습니다.");
+			return;
+		}
 		else{}
 		
 		$.ajax({
@@ -157,7 +175,10 @@
 			{
 				alert('수량을 확인해주세요.');
 			}
-			
+			else if(response=='403')
+			{
+				alert("해당 프로젝트는 존재하지 않습니다.");
+			}
 			else
 			{
 				alert('수정이 완료되었습니다.');
@@ -181,6 +202,7 @@
 	}
 </style>
 
+<!-- 장비 신청 수정 모달-->
 <div class="modal fade" id="equipmentReqModifyModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -191,34 +213,38 @@
 				<input type="hidden" name="reqModifyId" id="reqModifyId" value=""/>
 				<div class="modal-body" >
 					<div class="form-group">
-						<label for="reqModifyType" cond="">분류(한글/영어)</label>
-						<input name="reqModifyType" id="reqModifyTypeKr" type="text" class="form-control"/>
-						<input name="reqModifyType" id="reqModifyTypeEn" type="text" class="form-control"/>
+						<label for="reqModifyProject" >프로젝트 번호</label> 
+						<input name="reqModifyProject" id="reqModifyProject" type="number" class="form-control"/>
+					</div>
+					<div class="form-group">
+						<label for="reqModifyType" >분류(한글/영어)</label>
+						<input name="reqModifyType" id="reqModifyTypeKr" type="text" class="form-control" maxlength="25"/>
+						<input name="reqModifyType" id="reqModifyTypeEn" type="text" class="form-control" maxlength="50"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="reqModifyTitle" cond="">장비명(한글/영어)</label>
-						<input name="reqModifyTitle" id="reqModifyTitleKr" type="text" class="form-control"/>
-						<input name="reqModifyTitle" id="reqModifyTitleEn" type="text" class="form-control"/>
+						<label for="reqModifyTitle" >장비명(한글/영어)</label>
+						<input name="reqModifyTitle" id="reqModifyTitleKr" type="text" class="form-control" maxlength="50"/>
+						<input name="reqModifyTitle" id="reqModifyTitleEn" type="text" class="form-control" maxlength="100"/>
 					</div>
 					<div class="form-group">
-						<label for="reqModifyBrand" cond="">브랜드</label> 
-						<input name="reqModifyBrand" id="reqModifyBrand" type="text" class="form-control"/>
+						<label for="reqModifyBrand" >브랜드</label> 
+						<input name="reqModifyBrand" id="reqModifyBrand" type="text" class="form-control" maxlength="25"/>
 					</div>
 					<div class="form-group">
-						<label for="reqModifyLink" cond="">참고링크</label> 
-						<input name="reqModifyLink" id="reqModifyLink" type="text" class="form-control"/>
+						<label for="reqModifyLink" >참고링크</label> 
+						<input name="reqModifyLink" id="reqModifyLink" type="text" class="form-control" maxlength="100"/>
 					</div>
 					<div class="form-group">
-						<label for="reqModifyContent" cond="">사유내역</label> 
-						<input name="reqModifyContent" id="reqModifyContent" type="text" class="form-control"/>
+						<label for="reqModifyContent" >사유내역</label> 
+						<input name="reqModifyContent" id="reqModifyContent" type="text" class="form-control" maxlength="75"/>
 					</div>
 					<div class="form-group">
-						<label for="reqModifyPay" cond="">단가</label> 
+						<label for="reqModifyPay" >단가</label> 
 						<input name="reqModifyPay" id="reqModifyPay" type="number" class="form-control"/>
 					</div>
 					<div class="form-group">
-						<label for="reqModifyCount" cond="">수량</label> 
+						<label for="reqModifyCount">수량</label> 
 						<input name="reqModifyCount" id="reqModifyCount" type="number" class="form-control"/>
 					</div>
 				</div>

@@ -31,6 +31,10 @@
 					alert('로그인을 하세요.');
 					location.reload();
 				}
+				else if(response=='402')
+				{
+					alert('권한이 없습니다.');
+				}
 				else
 				{
 				}
@@ -65,10 +69,11 @@
 			alert("수량을 입력하세요.");
 			return;
 		}
-		else if($("#modifyCount").val()==0){
-			alert("0개의 수량은 허용되지 않습니다.");
+		else if(0>=$("#modifyCount").val() || $("#modifyCount").val()>100){
+			alert("수량 범위를 초과하였습니다.");
 			return;
 		}
+		
 		
 		$.ajax({
 		url : "/Secsm/api_modifyEquipment",
@@ -112,6 +117,10 @@
 			{
 				alert('같은 코드의 장비가 존재합니다.');	
 			}
+			else if(response=='407')
+			{
+				alert('권한이 없습니다.');	
+			}
 			else
 			{
 			}
@@ -131,7 +140,7 @@
 	ArrayList<EquipmentCategoryInfo> equipmentCategory = (ArrayList<EquipmentCategoryInfo>) request.getAttribute("equipmentCategory");
 %>
 
-<!-- 자동당직생성 모달-->
+<!-- 장비 수정 모달-->
 <div class="modal fade" id="equipmentModifyModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -142,7 +151,7 @@
 				<div class="modal-body" >
 					<input type="hidden" name="modifyId" id="modifyId" value=""/>
 					<div class="form-group">
-						<label for="modifyType" cond="">분류</label> 
+						<label for="modifyType" >분류</label> 
 						<select class="form-control" name="modifyType" id="modifyType">
               				<%	
               					for (EquipmentCategoryInfo info : equipmentCategory){
@@ -153,22 +162,22 @@
          			 	
 					</div>
 						<div class="form-group">
-						<label for="modifyCode" cond="">코드</label> 
-						<input name="modifyCode" id="modifyCode" type="text" class="form-control"/>
+						<label for="modifyCode" >코드</label> 
+						<input name="modifyCode" id="modifyCode" type="text" class="form-control" maxlength="25"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="modifyTitle" cond="">장비명</label> 
-						<input name="modifyTitle" id="modifyTitle" type="text" class="form-control"/>
+						<label for="modifyTitle" >장비명</label> 
+						<input name="modifyTitle" id="modifyTitle" type="text" class="form-control" maxlength="50"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="modifyManufacturer" cond="">제조사</label> 
-						<input name="modifyManufacturer" id="modifyManufacturer" type="text" class="form-control"/>
+						<label for="modifyManufacturer" >제조사</label> 
+						<input name="modifyManufacturer" id="modifyManufacturer" type="text" class="form-control" maxlength="25"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="modifyCount" cond="">수량</label> 
+						<label for="modifyCount" >수량</label> 
 						<input name="modifyCount" id="modifyCount" type="number" class="form-control"/>
 					</div>
 

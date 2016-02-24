@@ -25,11 +25,7 @@
 	  	formData.append("addCount", $("input[name=addCount]").val());
 
 
-		if($("#addCode").val()==""){
-			alert("코드명을 입력하세요.");
-			return;
-		}
-		else if($("#addTitle").val()==""){
+		if($("#addTitle").val()==""){
 			alert("장비명을 입력하세요.");
 			return;
 		}
@@ -39,6 +35,10 @@
 		}
 		else if($("#addCount").val()==""){
 			alert("수량을 입력하세요.");
+			return;
+		}
+		else if(0>=$("#addCount").val() || $("#addCount").val()>100){
+			alert("수량 범위를 초과하였습니다.");
 			return;
 		}
 		
@@ -57,7 +57,7 @@
 				$("#addCode").val("");
 				$("#addTitle").val("");
 				$("#addManufacturer").val("");
-				$("#addImageURLRap").html('<label for="addImageURL" cond="">이미지</label>' 
+				$("#addImageURLRap").html('<label for="addImageURL">이미지</label>' 
 						+ '<input name="addImageURL" id="addImageURL" type="file" class="form-control"/>');
 				$("#addCount").val("");
 			}
@@ -83,6 +83,10 @@
 			else if(response=='405')
 			{
 				alert('같은 코드의 장비가 존재합니다.');	
+			}
+			else if(response=='406')
+			{
+				alert('권한이 없습니다.');	
 			}
 			else{}
 		},
@@ -115,6 +119,10 @@
 			alert("수량을 입력하세요.");
 			return;
 		}
+		else if(0>=$("#addCount").val() || $("#addCount").val()>100){
+			alert("수량 범위를 초과하였습니다.");
+			return;
+		}
 		
 		$.ajax({
 		url : "/Secsm/api_addEquipmentNoFile",
@@ -131,7 +139,7 @@
 				$("#addCode").val("");
 				$("#addTitle").val("");
 				$("#addManufacturer").val("");
-				$("#addImageURLRap").html('<label for="addImageURL" cond="">이미지</label>' 
+				$("#addImageURLRap").html('<label for="addImageURL">이미지</label>' 
 						+ '<input name="addImageURL" id="addImageURL" type="file" class="form-control"/>');
 				$("#addCount").val("");
 			}
@@ -148,11 +156,14 @@
 			else if(response=='403')
 			{
 				alert('수량을 확인해주세요.');	
-				location.reload();
 			}
 			else if(response=='404')
 			{
 				alert('같은 코드의 장비가 존재합니다.');	
+			}
+			else if(response=='405')
+			{
+				alert('권한이 없습니다.');	
 			}
 			else{}
 		},
@@ -173,7 +184,7 @@
 	ArrayList<EquipmentCategoryInfo> equipmentCategory = (ArrayList<EquipmentCategoryInfo>) request.getAttribute("equipmentCategory");
 %>
 
-<!-- 자동당직생성 모달-->
+<!-- 장비등록 모달-->
 <div class="modal fade" id="equipmentAddModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -183,7 +194,7 @@
 				</div>
 				<div class="modal-body" >
 					<div class="form-group">
-						<label for="addType" cond="">분류</label> 
+						<label for="addType">분류</label> 
 						<select class="form-control" name="addType" id="addType">
               				<%
               					int i=0;
@@ -195,27 +206,27 @@
          			 	
 					</div>
 						<div class="form-group">
-						<label for="addCode" cond="">코드</label> 
-						<input name="addCode" id="addCode" type="text" class="form-control"/>
+						<label for="addCode">코드</label> 
+						<input name="addCode" id="addCode" type="text" class="form-control" maxlength="25"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="addTitle" cond="">장비명</label> 
-						<input name="addTitle" id="addTitle" type="text" class="form-control"/>
+						<label for="addTitle">장비명</label> 
+						<input name="addTitle" id="addTitle" type="text" class="form-control" maxlength="50"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="addManufacturer" cond="">제조사</label> 
-						<input name="addManufacturer" id="addManufacturer" type="text" class="form-control"/>
+						<label for="addManufacturer">제조사</label> 
+						<input name="addManufacturer" id="addManufacturer" type="text" class="form-control" maxlength="25"/>
 					</div>
 					
 					<div class="form-group" id="addImageURLRap">
-						<label for="addImageURL" cond="">이미지</label> 
+						<label for="addImageURL">이미지</label> 
 						<input name="addImageURL" id="addImageURL" type="file" class="form-control"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="addCount" cond="">수량</label> 
+						<label for="addCount">수량</label> 
 						<input name="addCount" id="addCount" type="number" class="form-control"/>
 					</div>
 

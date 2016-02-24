@@ -14,7 +14,7 @@
 	}
 </style>
 
-<!-- 자동당직생성 모달-->
+<!-- 도서 이미지 모달-->
 <div class="modal fade" id="bookImageModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">

@@ -22,7 +22,7 @@
 					"exceptionPerson" + "=" + $("#exceptionPerson").val();
 		
 		$.ajax({
-		url : "/Secsm/dutyAutoCreate",
+		url : "/Secsm/api_dutyAutoCreate",
 		type : "POST",
 		data : param,
 		cache : false,
@@ -51,6 +51,9 @@
 			else if(response=='5'){
 				alert('로그인을 하세요.');
 			}
+			else if(response=='6'){
+				alert('권한이 없습니다.');
+			}
 			else{}
 		},
 		error : function(request, status, error) {
@@ -65,13 +68,13 @@
 
 </script>
 
-<!-- 자동당직생성 모달-->
+<!--당직 자동생성 모달-->
 <div class="modal fade" id="dutyCreateModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form name="autoDutyCreate" id="autoDutyCreate" action="/dutyAutoCreate">
 				<div class="modal-header">
-					<h4 class="modal-title">자동당직생성</h4>
+					<h4 class="modal-title">당직 자동생성</h4>
 				</div>
 				<div class="modal-body" >
 					<div class="form-group">
@@ -96,21 +99,21 @@
 					</div>
 					
 					<div class="form-group">
-						<label for="exceptionDay" cond="">제외날짜 ex)15/16/17</label> 
+						<label for="exceptionDay">제외날짜 ex)15/16/17</label> 
 						<input name="exceptionDay" id="exceptionDay" type="text" class="form-control"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="exceptionPerson" cond="">제외인원 ex)조규현/전일주</label> 
+						<label for="exceptionPerson">제외인원 ex)조규현/전일주</label> 
 						<input name="exceptionPerson" id="exceptionPerson" type="text" class="form-control"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="weekdayStart" cond="">평일시작</label> 
+						<label for="weekdayStart">평일시작</label> 
 						<input name="weekdayStart" id="weekdayStart" type="text" class="form-control"/>
 					</div>
 					<div class="form-group">
-						<label for="weekendStart" cond="">주말시작</label> 
+						<label for="weekendStart">주말시작</label> 
 						<input name="weekendStart" id="weekendStart" type="text" class="form-control"/>
 					</div>
 

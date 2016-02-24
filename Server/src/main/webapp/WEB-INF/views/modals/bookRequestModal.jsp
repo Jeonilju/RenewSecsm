@@ -39,6 +39,10 @@
 			alert("가격을 입력하세요.");
 			return;
 		}
+		else if(0>=$("#reqPay").val() || $("#reqPay").val()>1000000){
+			alert("가격 범위를 초과하였습니다.");
+			return;
+		}
 		else{}
 		
 		$.ajax({
@@ -72,7 +76,7 @@
 
 </script>
 
-<!-- 자동당직생성 모달-->
+<!-- 도서 요청 모달-->
 <div class="modal fade" id="bookRequestModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -82,29 +86,29 @@
 				</div>
 				<div class="modal-body" >
 					<div class="form-group">
-						<label for="reqTitle" cond="">도서명</label> 
-						<input name="reqTitle" id="reqTitle" type="text" class="form-control"/>
+						<label for="reqTitle">도서명</label> 
+						<input name="reqTitle" id="reqTitle" type="text" class="form-control"  maxlength="50"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="reqPublisher" cond="">출판사</label> 
-						<input name="reqPublisher" id="reqPublisher" type="text" class="form-control"/>
+						<label for="reqPublisher">출판사</label> 
+						<input name="reqPublisher" id="reqPublisher" type="text" class="form-control"  maxlength="25"/>
 					</div>
 					
 					<div class="form-group">
-						<label for="reqAuthor" cond="">저자</label> 
-						<input name="reqAuthor" id="reqAuthor" type="text" class="form-control"/>
+						<label for="reqAuthor">저자</label> 
+						<input name="reqAuthor" id="reqAuthor" type="text" class="form-control"  maxlength="25"/>
 					</div>
 					<div class="form-group">
-						<label for="reqLink" cond="">링크</label> 
-						<input name="reqLink" id="reqLink" type="text" class="form-control"/>
+						<label for="reqLink">링크</label> 
+						<input name="reqLink" id="reqLink" type="text" class="form-control"  maxlength="100"/>
 					</div>
 					<div class="form-group">
-						<label for="reqImageURL" cond="">이미지 URL</label> 
-						<input name="reqImageURL" id="reqImageURL" type="text" class="form-control"/>
+						<label for="reqImageURL">이미지 URL</label> 
+						<input name="reqImageURL" id="reqImageURL" type="text" class="form-control" maxlength="100"/>
 					</div>
 					<div class="form-group">
-						<label for="reqPay" cond="">가격</label> 
+						<label for="reqPay">가격</label> 
 						<input name="reqPay" id="reqPay" type="number" class="form-control"/>
 					</div>
 				</div>

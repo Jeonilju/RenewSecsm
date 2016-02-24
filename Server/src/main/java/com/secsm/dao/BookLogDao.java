@@ -3,7 +3,6 @@ package com.secsm.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import com.secsm.info.AccountInfo;
 import com.secsm.info.BookLogInfo;
 
 public class BookLogDao {
@@ -183,7 +181,7 @@ public class BookLogDao {
 	
 	public List<BookLogInfo> selectOverDate(Timestamp now, int logPage) {
 		return jdbcTemplate.query("select a.*, b.name, c.name from secsm.book_log a inner join secsm.account b on a.account_id=b.id "
-				+ " inner join secsm.book_items c on a.book_items_id=c.id where status=1 and endDate<=? order by endDate desc limit ?,7",
+				+ " inner join secsm.book_items c on a.book_items_id=c.id where status=1 and endDate<=? order by endDate limit ?,7",
 				new Object[] { now, logPage },
 				new RowMapper<BookLogInfo>() {
 					public BookLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {

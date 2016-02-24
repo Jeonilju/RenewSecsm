@@ -1,6 +1,5 @@
 package com.secsm.main;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import java.io.BufferedOutputStream;
@@ -31,6 +30,7 @@ import com.secsm.dao.EquipmentCategoryDao;
 import com.secsm.dao.EquipmentItemsDao;
 import com.secsm.dao.EquipmentLogDao;
 import com.secsm.dao.EquipmentReqDao;
+import com.secsm.dao.ProjectDao;
 import com.secsm.info.AccountInfo;
 import com.secsm.info.BookCategoryInfo;
 import com.secsm.info.BookItemsInfo;
@@ -40,6 +40,7 @@ import com.secsm.info.EquipmentCategoryInfo;
 import com.secsm.info.EquipmentItemsInfo;
 import com.secsm.info.EquipmentLogInfo;
 import com.secsm.info.EquipmentReqInfo;
+import com.secsm.info.ProjectInfo;
 
 @Controller
 public class EquipmentController {
@@ -66,9 +67,11 @@ public class EquipmentController {
 	
 	@Autowired
 	private BookLogDao bookLogDao;	
-	
 	@Autowired
 	private BookCategoryDao bookCategoryDao;
+	
+	@Autowired
+	private ProjectDao projectDao;
 	
 	@RequestMapping(value = "/equipment", method = RequestMethod.GET)
 	public String MainController_equipment_index(HttpServletRequest request) {
@@ -115,7 +118,7 @@ public class EquipmentController {
 			return "index";
 		}
 		else if(info.getGrade() == 0 || 
-				info.getGrade() == 4){
+				info.getGrade() == 5){
 			Timestamp startDate = Util.getTimestamp(reqListStartDate);
 			Timestamp endDate = Util.getTimestamp(reqListEndDate);
 			endDate.setDate(endDate.getDate()+1);
@@ -147,7 +150,7 @@ public class EquipmentController {
 			return "index";
 		}
 		else if(info.getGrade() == 0 || 
-				info.getGrade() == 4){
+				info.getGrade() == 5){
 			Timestamp startDate = Util.getTimestamp(reqListStartDate);
 			Timestamp endDate = Util.getTimestamp(reqListEndDate);
 			endDate.setDate(endDate.getDate()+1);
@@ -177,6 +180,7 @@ public class EquipmentController {
 	@ResponseBody
 	@RequestMapping(value = "/api_reqEquipment", method = RequestMethod.POST)
 	public String EquipmentController_reqEquipment(HttpServletRequest request,
+			@RequestParam("reqProject") int reqProject,
 			@RequestParam("reqTypeKr") String reqTypeKr,
 			@RequestParam("reqTypeEn") String reqTypeEn,
 			@RequestParam("reqTitleKr") String reqTitleKr,
@@ -201,8 +205,14 @@ public class EquipmentController {
 		Date date = new Date();
 		Timestamp regDate = new Timestamp(date.getTime());
 		
-		EquipmentReqInfo equipmentReqInfo = new EquipmentReqInfo(info.getId(),reqTypeKr, reqTypeEn,reqTitleKr,
+		ProjectInfo projectInfo = projectDao.selectById(reqProject);
+		if(projectInfo==null){
+			return "403";
+		}
+		
+		EquipmentReqInfo equipmentReqInfo = new EquipmentReqInfo(info.getId(), reqProject, reqTypeKr, reqTypeEn,reqTitleKr,
 				reqTitleEn,reqBrand,reqLink,reqPay,reqCount,reqContent,regDate); 
+		
 		equipmentReqDao.create(equipmentReqInfo);
 
 		return "200";
@@ -234,6 +244,7 @@ public class EquipmentController {
 	@RequestMapping(value = "/api_reqModifyEquipment", method = RequestMethod.POST)
 	public String EquipmentController_reqModifyEquipment(HttpServletRequest request,
 			@RequestParam("reqModifyId") int reqModifyId,
+			@RequestParam("reqModifyProject") int reqModifyProject,
 			@RequestParam("reqModifyTypeKr") String reqModifyTypeKr,
 			@RequestParam("reqModifyTypeEn") String reqModifyTypeEn,
 			@RequestParam("reqModifyTitleKr") String reqModifyTitleKr,
@@ -258,7 +269,12 @@ public class EquipmentController {
 		Date date = new Date();
 		Timestamp regDate = new Timestamp(date.getTime());
 		
-		EquipmentReqInfo equipmentReqInfo = new EquipmentReqInfo(reqModifyId,info.getId(),reqModifyTypeKr,reqModifyTypeEn,reqModifyTitleKr,
+		ProjectInfo projectInfo = projectDao.selectById(reqModifyProject);
+		if(projectInfo==null){
+			return "403";
+		}
+		
+		EquipmentReqInfo equipmentReqInfo = new EquipmentReqInfo(reqModifyId,info.getId(),reqModifyProject,reqModifyTypeKr,reqModifyTypeEn,reqModifyTitleKr,
 				reqModifyTitleEn,reqModifyBrand,reqModifyLink,reqModifyPay,reqModifyCount,reqModifyContent,regDate); 
 		equipmentReqDao.modify(equipmentReqInfo);
 
@@ -304,7 +320,6 @@ public class EquipmentController {
 		}
 		Gson obj = new Gson();
 		String result = obj.toJson(equipmentReqList);
-		System.out.println(result);
 		
 		return result;
 	}
@@ -324,6 +339,10 @@ public class EquipmentController {
 			return "401";
 		}
 		
+		if(info.getGrade()!=0 && info.getGrade()!=5){
+			return "402";
+		}
+		
 		Timestamp startDate = Util.getTimestamp(reqListStartDate);
 		Timestamp endDate = Util.getTimestamp(reqListEndDate);
 		endDate.setDate(endDate.getDate()+1);
@@ -335,7 +354,6 @@ public class EquipmentController {
 		}
 		Gson obj = new Gson();
 		String result = obj.toJson(equipmentReqList);
-		System.out.println(result);
 		
 		return result;
 	}
@@ -366,6 +384,10 @@ public class EquipmentController {
 			return "405";
 		}
 		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "406";
+		}
+		
 		List<EquipmentCategoryInfo> categoryInfo = equipmentCategoryDao.select(addType);
 		
 		if(categoryInfo.size() == 0){ return "402";}
@@ -381,7 +403,6 @@ public class EquipmentController {
 				String saveDir = "";
 	 			String tempSavePath = request.getRealPath(File.separator) + "\\resources\\equipmentImage\\";
 	 			String savePath = tempSavePath.replace('\\', '/'); 
-	 			System.out.println(savePath);
 	 			File targetDir = new File(savePath);
 	 			if (!targetDir.exists()) 
 	 			{
@@ -437,6 +458,10 @@ public class EquipmentController {
 			return "404";
 		}
 		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "405";
+		}
+		
 		List<EquipmentCategoryInfo> categoryInfo = equipmentCategoryDao.select(addType);
 		
 		if(categoryInfo.size() == 0){ return "402";}
@@ -461,6 +486,10 @@ public class EquipmentController {
 			return "401";
 		}
 		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "403";
+		}
+		
 		List<EquipmentCategoryInfo> info = equipmentCategoryDao.select(addCategoryName);
 		if(info.size()!=0){
 			return "402";
@@ -482,6 +511,10 @@ public class EquipmentController {
 		AccountInfo accountInfo = Util.getLoginedUser(request);
 		if (accountInfo == null) {
 			return "401";
+		}
+		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "405";
 		}
 		
 		List<EquipmentCategoryInfo> info = equipmentCategoryDao.select(categoryOption);
@@ -648,7 +681,6 @@ public class EquipmentController {
 		Gson obj = new Gson();
 		String result = obj.toJson(info);
 		
-		System.out.println(result);
 		return result;
 	}
 	
@@ -666,8 +698,11 @@ public class EquipmentController {
 			return "401";
 		}
 		
-		List<EquipmentItemsInfo> info = equipmentItemsDao.select(searchId);
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "403";
+		}
 		
+		List<EquipmentItemsInfo> info = equipmentItemsDao.select(searchId);
 		if(info.size()==0){
 			return "402";
 		}
@@ -695,12 +730,17 @@ public class EquipmentController {
 			return "401";
 		}
 		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "407";
+		}
+		
 		if(modifyCount<=0){
 			return "405";
 		}
 		
+		
 		List<EquipmentItemsInfo> equipmentList = equipmentItemsDao.selectByCodeNoCategory(modifyCode, 0);
-		if(equipmentList.size()>0 && !modifyCode.equals("") && equipmentList.get(0).getCode().equals(modifyCode)){
+		if(equipmentList.size()>0 && !modifyCode.equals("") && equipmentList.get(0).getId()!=modifyId){
 			return "406";
 		}
 		
@@ -718,7 +758,9 @@ public class EquipmentController {
 			return "402";
 		}
 		
-		EquipmentItemsInfo info = new EquipmentItemsInfo(modifyId, modifyCode, modifyTitle, modifyManufacturer, categoryInfo.get(0).getId(), modifyCount, modifyCount);
+		Date date = new Date();
+		Timestamp now = new Timestamp(date.getTime());
+		EquipmentItemsInfo info = new EquipmentItemsInfo(modifyId, modifyCode, modifyTitle, modifyManufacturer, categoryInfo.get(0).getId(), now, modifyCount, modifyCount);
 		equipmentItemsDao.modify(info);
 		return "200";
 	}
@@ -734,6 +776,10 @@ public class EquipmentController {
 		AccountInfo accountInfo = Util.getLoginedUser(request);
 		if (accountInfo == null) {
 			return "401";
+		}
+		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "404";
 		}
 		
 		List<EquipmentItemsInfo> countTest = equipmentItemsDao.select(modifyId);
@@ -755,7 +801,6 @@ public class EquipmentController {
 				String saveDir = "";
 	 			String tempSavePath = request.getRealPath(File.separator) + "\\resources\\equipmentImage\\";
 	 			String savePath = tempSavePath.replace('\\', '/'); 
-	 			System.out.println(savePath);
 	 			File targetDir = new File(savePath);
 	 			if (!targetDir.exists()) 
 	 			{
@@ -794,6 +839,10 @@ public class EquipmentController {
 		AccountInfo accountInfo = Util.getLoginedUser(request);
 		if (accountInfo == null) {
 			return "401";
+		}
+		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "402";
 		}
 		
 		equipmentLogDao.delete(modifyId);
@@ -1000,15 +1049,14 @@ public class EquipmentController {
 		}
 		Gson obj = new Gson();
 		String result = obj.toJson(bookReqList);
-		System.out.println(result);
 		
 		return result;
 	}
 	
 	/** 도서 요청 리스트 */
 	@ResponseBody
-	@RequestMapping(value = "/api_reqList", method = RequestMethod.POST , produces = "text/plain;charset=UTF-8")
-	public String EquipmentController_reqList(HttpServletRequest request,
+	@RequestMapping(value = "/api_bookReqList", method = RequestMethod.POST , produces = "text/plain;charset=UTF-8")
+	public String EquipmentController_bookReqList(HttpServletRequest request,
 			@RequestParam("reqListStartDate") String reqListStartDate,
 			@RequestParam("reqListEndDate") String reqListEndDate,
 			@RequestParam("reqPage") int reqPage
@@ -1018,6 +1066,10 @@ public class EquipmentController {
 		AccountInfo info = Util.getLoginedUser(request);
 		if (info == null) {
 			return "401";
+		}
+		
+		if(info.getGrade()!=0 && info.getGrade()!=5){
+			return "402";
 		}
 		
 		Timestamp startDate = Util.getTimestamp(reqListStartDate);
@@ -1031,7 +1083,6 @@ public class EquipmentController {
 		}
 		Gson obj = new Gson();
 		String result = obj.toJson(bookReqList);
-		System.out.println(result);
 		
 		return result;
 	}
@@ -1054,6 +1105,10 @@ public class EquipmentController {
 			return "401";
 		}
 		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "405";
+		}
+		
 		List<BookItemsInfo> bookList = bookItemsDao.selectByCodeNoCategory(addCode, 0);
 		if(bookList.size()>0 && !addCode.equals("") && bookList.get(0).getCode().equals(addCode)){
 			return "404";
@@ -1065,7 +1120,6 @@ public class EquipmentController {
 		
 		Date date = new Date();
 		Timestamp regDate = new Timestamp(date.getTime());
-		System.out.println(addType);
 		List<BookCategoryInfo> categoryInfo = bookCategoryDao.select(addType);
 		
 		if(categoryInfo.size() == 0){ return "402";}
@@ -1077,8 +1131,8 @@ public class EquipmentController {
 	
 	/** 도서 카테고리 추가*/
 	@ResponseBody
-	@RequestMapping(value = "/api_addCategory", method = RequestMethod.POST)
-	public String EquipmentController_addCategory(HttpServletRequest request,
+	@RequestMapping(value = "/api_bookAddCategory", method = RequestMethod.POST)
+	public String EquipmentController_bookAddCategory(HttpServletRequest request,
 			@RequestParam("addCategoryName") String addCategoryName
 			){
 		logger.info("api addCategory book");
@@ -1086,6 +1140,10 @@ public class EquipmentController {
 		AccountInfo accountInfo = Util.getLoginedUser(request);
 		if (accountInfo == null) {
 			return "401";
+		}
+		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "403";
 		}
 		
 		List<BookCategoryInfo> info = bookCategoryDao.select(addCategoryName);
@@ -1100,8 +1158,8 @@ public class EquipmentController {
 	
 	/** 도서 카테고리 삭제*/
 	@ResponseBody
-	@RequestMapping(value = "/api_deleteCategory", method = RequestMethod.POST)
-	public String EquipmentController_deleteCategory(HttpServletRequest request,
+	@RequestMapping(value = "/api_bookDeleteCategory", method = RequestMethod.POST)
+	public String EquipmentController_bookDeleteCategory(HttpServletRequest request,
 			@RequestParam("categoryOption") String categoryOption
 			){
 		logger.info("api deleteCategory book");
@@ -1109,6 +1167,10 @@ public class EquipmentController {
 		AccountInfo accountInfo = Util.getLoginedUser(request);
 		if (accountInfo == null) {
 			return "401";
+		}
+		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "405";
 		}
 		
 		List<BookCategoryInfo> info = bookCategoryDao.select(categoryOption);
@@ -1273,8 +1335,7 @@ public class EquipmentController {
 			
 		Gson obj = new Gson();
 		String result = obj.toJson(info);
-		
-		System.out.println(result);
+
 		return result;
 	}
 	
@@ -1290,6 +1351,11 @@ public class EquipmentController {
 		if (accountInfo == null) {
 			return "401";
 		}
+		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "403";
+		}
+		
 		
 		List<BookItemsInfo> info = bookItemsDao.select(searchId);
 		
@@ -1322,12 +1388,16 @@ public class EquipmentController {
 			return "401";
 		}
 		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "407";
+		}
+		
 		if(modifyCount<=0){
 			return "405";
 		}
 		
 		List<BookItemsInfo> bookList = bookItemsDao.selectByCodeNoCategory(modifyCode, 0);
-		if(bookList.size()>0 && !modifyCode.equals("") && bookList.get(0).getCode().equals(modifyCode)){
+		if(bookList.size()>0 && !modifyCode.equals("") && bookList.get(0).getId()!=modifyId){
 			return "406";
 		}
 		
@@ -1345,7 +1415,9 @@ public class EquipmentController {
 			return "402";
 		}
 		
-		BookItemsInfo info = new BookItemsInfo(modifyId, modifyCode, modifyTitle, modifyPublisher, modifyAuthor, modifyImageURL, categoryInfo.get(0).getId(), modifyCount, modifyCount);
+		Date date = new Date();
+		Timestamp now = new Timestamp(date.getTime());
+		BookItemsInfo info = new BookItemsInfo(modifyId, modifyCode, modifyTitle, modifyPublisher, modifyAuthor, modifyImageURL, categoryInfo.get(0).getId(),  now, modifyCount, modifyCount);
 		bookItemsDao.modify(info);
 		return "200";
 	}
@@ -1361,6 +1433,10 @@ public class EquipmentController {
 		AccountInfo accountInfo = Util.getLoginedUser(request);
 		if (accountInfo == null) {
 			return "401";
+		}
+		
+		if(accountInfo.getGrade()!=0 && accountInfo.getGrade()!=5){
+			return "402";
 		}
 		
 		bookLogDao.delete(modifyId);
@@ -1413,8 +1489,8 @@ public class EquipmentController {
 	
 	/** 도서 반납*/
 	@ResponseBody
-	@RequestMapping(value = "/api_rentBack", method = RequestMethod.POST)
-	public String EquipmentController_rentBack(HttpServletRequest request,
+	@RequestMapping(value = "/api_rentBackBook", method = RequestMethod.POST)
+	public String EquipmentController_rentBackBook(HttpServletRequest request,
 			@RequestParam("logId") int logId,
 			@RequestParam("accountId") int accountId,
 			@RequestParam("bookItemsId") int bookItemsId

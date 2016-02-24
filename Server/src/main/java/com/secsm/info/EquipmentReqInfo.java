@@ -6,6 +6,7 @@ public class EquipmentReqInfo {
 	private int id;
 	private String accountName;
 	private int accountId;
+	private int projectId;
 	private String typeKr;
 	private String typeEn;
 	private String titleKr;
@@ -18,9 +19,10 @@ public class EquipmentReqInfo {
 	private Timestamp regDate;
 	private String strRegDate;
 	
-	public EquipmentReqInfo(int accountId, String typeKr, String typeEn, String titleKr, String titleEn, String brand,
+	public EquipmentReqInfo(int accountId, int projectId, String typeKr, String typeEn, String titleKr, String titleEn, String brand,
 			String link, int pay, int count, String content, Timestamp regDate) {
 		this.accountId = accountId;
+		this.projectId = projectId;
 		this.typeKr = typeKr;
 		this.typeEn = typeEn;
 		this.titleKr = titleKr;
@@ -33,10 +35,11 @@ public class EquipmentReqInfo {
 		this.regDate = regDate;
 	}
 	
-	public EquipmentReqInfo(int id, String accountName, String typeKr, String typeEn, String titleKr, String titleEn, String brand,
+	public EquipmentReqInfo(int id, String accountName, int projectId, String typeKr, String typeEn, String titleKr, String titleEn, String brand,
 			String link, int pay, int count, String content, Timestamp regDate) {
 		this.id = id;
 		this.accountName = accountName;
+		this.projectId = projectId;
 		this.typeKr = typeKr;
 		this.typeEn = typeEn;
 		this.titleKr = titleKr;
@@ -49,10 +52,11 @@ public class EquipmentReqInfo {
 		this.regDate = regDate;
 	}
 
-	public EquipmentReqInfo(int id, int accountId, String typeKr, String typeEn, String titleKr, String titleEn, String brand,
+	public EquipmentReqInfo(int id, int accountId, int projectId, String typeKr, String typeEn, String titleKr, String titleEn, String brand,
 			String link, int pay, int count, String content, Timestamp regDate) {
 		this.id = id;
 		this.accountId = accountId;
+		this.projectId = projectId;
 		this.typeKr = typeKr;
 		this.typeEn = typeEn;
 		this.titleKr = titleKr;
@@ -65,6 +69,15 @@ public class EquipmentReqInfo {
 		this.regDate = regDate;
 	}
 	
+	
+	public int getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
+	}
+
 	public int getId() {
 		return id;
 	}

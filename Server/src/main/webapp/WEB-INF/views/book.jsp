@@ -27,7 +27,7 @@
     		
     		$(document).ready(function(){
     			bookSearch(0);
-    			if(grade==0 || grade==4){
+    			if(grade==0 || grade==5){
     				$('.adminButton').css('display', 'block'); 
     			}
     			
@@ -116,7 +116,7 @@
     										+ '<td class="col-md-1">' + obj[i].id + '</td>'
     										+ '<td class="col-md-1">' + '<button type="button" class="btn btn-info" onclick="goImage(\'' + obj[i].imageURL
     										+ '\');" data-toggle="modal" data-target="#bookImageModal">보기</button> </td>';
-    						if(grade==0 ||grade==4){
+    						if(grade==0 ||grade==5){
     							tableContent = tableContent + '<td class="col-md-5" style="cursor:pointer;" onClick="modifyBook(' + obj[i].id + ')" data-toggle="modal" data-target="#bookModifyModal">' + obj[i].name + '</td>';
     						}
     						else {
@@ -176,6 +176,10 @@
         					alert("해당 책정보가 없습니다.");
         					location.reload();
         				}
+        				else if(response=='403')
+        				{
+        					alert('권한이 없습니다.');
+        				}
         				else
         				{
         					var obj = JSON.parse(response);
@@ -217,6 +221,9 @@
     		    else if($('#bookRentModal').is(':visible')){
     		    	rentBook();
     		    }
+    		    else if($('#bookReqModifyModal').is(':visible')){
+    		    	requestModify()
+    		    }
     		    else if($('#bookReqListModal').is(':visible')){
     		    	reqList(0);
     		    }
@@ -254,7 +261,6 @@
 	</head>
 	
 	<%
-		ArrayList<BookItemsInfo> bookItemsList = (ArrayList<BookItemsInfo>) request.getAttribute("bookItemsList");
 		ArrayList<BookCategoryInfo> bookCategory = (ArrayList<BookCategoryInfo>) request.getAttribute("bookCategory");
 	%>
 	
@@ -273,7 +279,7 @@
 					<button type="button" class="btn" onclick="bookSearch(0);" style="margin: 5px;">검색</button>
 				</div>
 				<div class="pull-right">
-					<input type="text" class="form-control" id="searchKeyword">
+					<input type="text" class="form-control" id="searchKeyword" maxlength="30">
 				</div>
 				<div class="pull-right">
 					<select class="form-control" name="searchCategory" id="searchCategory" style="width:10em; margin-top:6px">

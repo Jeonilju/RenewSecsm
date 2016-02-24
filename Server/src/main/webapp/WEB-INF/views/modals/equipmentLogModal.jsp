@@ -139,6 +139,7 @@
 	
 </script>
 
+<!-- 장비 로그 모달-->
 <div class="modal fade" id="equipmentLogModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -164,7 +165,7 @@
            	  			<option value="1">ID</option>
          			 </select>
          			
-         			<label for="logSearch" cond=""></label> 
+         			<label for="logSearch"></label> 
          			<button type="button" class="btn" onclick="logEquipment(1);" style="float:left;" >이전</button>
 					<button type="button" class="btn" onclick="logEquipment(2);" style="margin-left:5px; float:left;">다음</button>
 					<input name="logSearch" id="logSearch" type="text" class="form-control" style="width: 30%"/>
