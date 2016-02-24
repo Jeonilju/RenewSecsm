@@ -11,32 +11,55 @@
 					"pxItemsPrice" + "=" + $("#pxItemsPrice").val() + "&" +
 					"pxItemsCount" + "="+ $("#pxItemsCount").val() + "&" +
 					"pxItemsDescription" + "=" + $("#pxItemsDescription").val();
-		$.ajax({
-		url : "/Secsm/api_pxAddItem",
-		type : "POST",
-		data : param,
-		cache : false,
-		async : false,
-		dataType : "text",
 		
-		success : function(response) {	
-			if(response=='200')
-			{
-				// 정상 구매
-				alert('정상 추가되었습니다.');
-			}
-			else{
-				alert('알수없음');
+		var form = document.add_form;
+		
+		if(form.pxItemsName.value == ""){
+			alert("상품명을 입력해주세요.");
+		}
+		else if(form.pxItemsPrice.value == ""){
+			alert("상품 가격을 입력해주세요.");
+		}
+		else if(form.pxItemsCount.value == ""){
+			alert("상품 수량을 입력해주세요.");
+		}
+		else if(form.pxItemsName.value.length>=100){
+			alert("상품명이은 100자를 넘을 수 없습니다.");
+		}
+		else if(form.pxItemsPrice.value.length>=10){
+			alert("가격 제한이 초과되었습니다.");
+		}
+		else if(form.pxItemsCount.value.length>=10){
+			alert("상품 수량이 초과되었습니다.");
+		}
+		else{
+			$.ajax({
+			url : "/Secsm/api_pxAddItem",
+			type : "POST",
+			data : param,
+			cache : false,
+			async : false,
+			dataType : "text",
+			
+			success : function(response) {	
+				if(response=='200')
+				{
+					// 정상 구매
+					alert('정상 추가되었습니다.');
+				}
+				else{
+					alert('알수없음');
+				}
+				
+			},
+			error : function(request, status, error) {
+				if (request.status != '0') {
+					alert("code10 : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+				}
 			}
 			
-		},
-		error : function(request, status, error) {
-			if (request.status != '0') {
-				alert("code10 : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-			}
+			});
 		}
-		
-		});
 	}
 
 
@@ -51,7 +74,7 @@
 					<h4 class="modal-title">상품 등록</h4>
 				</div>
 				<div class="modal-body" >
-				<form id= "add_form" onsubmit="addItem();inputreset(2);return false">
+				<form id= "add_form" name= "add_form" onsubmit="addItem();inputreset(2);return false">
 					<div class="form-group">
 						<label for="pxItemsName" cond="">상품 명</label> 
 						<input name="pxItemsName" id="pxItemsName" type="text" class="form-control" />

@@ -21,7 +21,7 @@
 <script type="text/javascript">
 
 	var num = 0;
-
+	
 	// 아이템 구매
 	function buyItem(){
 		var param = "type" + "=" + $("#slItemType").val() + "&" + 
@@ -29,41 +29,57 @@
 					"cnt" + "=" + $("#item_cnt").val() + "&" +
 					"isForcibly" + "="+ "0";
 		
-		$.ajax({
-		url : "/Secsm/api_pxBuyItem",
-		type : "POST",
-		data : param,
-		cache : false,
-		async : false,
-		dataType : "text",
-		
-		success : function(response) {
-			if(response=='0')
-			{
-				// 정상 구매 by 바코드
-				num++;
-				semi_List(num);
-				
-			}
-			else if(response == '1')
-			{
-				// 해당 상품 없음
-				alert('해당 상품이 존재하지 않습니다.');
-			}
-			else if(response == '2'){
-				alert('재고가 없습니다. 상품신청을 해주세요.');
-			}
-			else{
-				alert('알수없음');
-			}
-		},
-		error : function(request, status, error) {
-			if (request.status != '0') {
-				alert("code1 : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
-			}
+		var form = document.buy_form;
+		if(form.etItemCode.value == ""){
+			alert("삼풍명 혹은 바코드를 입력하지 않앗습니다.");	
 		}
-		
-		});
+		else if(form.item_cnt.value == ""){
+			alert("수량을 입력하지 않앗습니다.");	
+		}
+		else if(form.etItemCode.value.length >=100){
+			alert("삼풍명 혹은 바코드의 길이는 100자를 넘을 수 없습니다.");	
+		}
+		else if(form.item_cnt.value.length >= 1000000){
+			alert("입력할 수 있는 수량이 초과되었습니다.");
+		}
+		else{
+			$.ajax({
+			url : "/Secsm/api_pxBuyItem",
+			type : "POST",
+			data : param,
+			cache : false,
+			async : false,
+			dataType : "text",
+			
+			success : function(response) {
+				if(response=='0')
+				{
+					// 정상 구매 by 바코드
+					num++;
+					view_buylist();
+					semi_List(num);
+					
+				}
+				else if(response == '1')
+				{
+					// 해당 상품 없음
+					alert('해당 상품이 존재하지 않습니다.');
+				}
+				else if(response == '2'){
+					alert('수량이 부족합니다. 상품신청을 해주세요.');
+				}
+				else{
+					alert('알수없음');
+				}
+			},
+			error : function(request, status, error) {
+				if (request.status != '0') {
+					alert("code1 : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+				}
+			}
+			
+			});
+		}
 	}
 	
 	function semi_List(num){
@@ -203,60 +219,18 @@
 				<div class="modal-body" >
 					<div class="row-fluid">
 		  	
-					<table class="table table-hover" style = "margin-bottom : 0px">
-						<thead>
-						<tr>
-							<th style = "widhth : 66px; padding-left : 50px">분류</th>
-				   	     	<th style = "padding-left:140px">상품명</th>
-				   	     	<th style="padding-left:62px width : 133px;padding-left: 120px;">내 잔액 :</th> 
-				   	     	<th><label id="amount" style="padding-right: 0px;margin-bottom : 0px;">-18777원</label></th>
-				   	     </tr> 
-				   	     </thead>
-					</table>
+					
 	
 					</div>
 					
-					<form id= "buy_form" onsubmit="buyItem();getPxAmount();inputreset(0);return false">
-					<div  class="row-fluid">
-						<div class="col-md-3">
-							<select id="slItemType" name="slItemType" class = "form-control" style="width: 100%; ">
-								<option value="0"> 바코드 </option>
-								<option value="1"> 상품 명 </option>
-							</select>
-						</div>
-						<div id = "box2" class="col-md-4">
-							<input id="etItemCode" name="etItemCode" class="form-control" type="text" onkeypress="auto_list();" style = "width :202.222px">
-						</div>
-						
-						<div class="col-md-5">
-							<input type="submit" class="btn btn-default" value = "구입" style = "margin-left : 60px;">
-						</div>
-					</div>
-				</form>
+					
 					
 					<div style="height: 40px;"></div>
 				</div>
 				
-				<div>
-					<table class="table table-hover" id = "currentbuyTable" style = "margin-left : 50px">
-				 	   <thead>
-				   	   <tr>
-				   	     <th style = "width:216px">날짜</th>
-				   	     <th>상품명</th>
-				   	     <th>금액</th>
-				   	     <th>  </th>
-				   	   </tr>
-				  	  </thead>
-				   		 <tbody id = "pxCurrentbuyTbody">
-		
-				    	</tbody>
-				 	 </table>
-				</div>
 				
-				<div class="modal-footer">
-					<button onclick= "end()" type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
-					
-				</div>
+				
+				
 		</div>
 	</div>
 </div>

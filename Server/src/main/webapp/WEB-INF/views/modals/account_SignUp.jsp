@@ -4,7 +4,9 @@
 
 <script type="text/javascript">
 
-
+	var btn_check = "";
+	var regExp = /[0-9a-zA-Z][_0-9a-zA-Z-]*@[_0-9a-zA-Z-]+(\.[_0-9a-zA-Z-]+){1,2}$/;
+	
 	function NewUser_SignUp(){
 		var param = "User_mail" + "=" + $("#User_mail").val() + "&" + 
 					"User_password" + "=" + $("#User_password").val() + "&" + 
@@ -19,6 +21,10 @@
 	
 		if(form.User_mail.value== ""){
 			alert("E-mail을 입력하지 않았습니다.");
+			return;
+		}
+		else if(btn_check == ""){
+			alert("E-mail 중복검사를 해주세요.");
 			return;
 		}
 		else if(form.User_password.value != form.re_User_password.value){
@@ -37,8 +43,36 @@
 			alert("비밀번호 길이가 짧습니다.");
 			return;
 		}
-		else if(form.User_name.value.length == ""){
-			alert("이름을 입력하지 않았습니다..");
+		else if(form.User_password.value.length >= 50){
+			alert("비밀번호 길이는 50글자를 넘을 수 없습니다.");
+			return;
+		}
+		else if(form.User_name.value== ""){
+			alert("이름을 입력하지 않았습니다.");
+			return;
+		}
+		else if(form.User_name.value.length >=50){
+			alert("이름은 50글자를 넘을 수 없습니다.");
+			return;
+		}
+		else if(form.User_name.value.length >=50){
+			alert("이름은 50글자를 넘을 수 없습니다.");
+			return;
+		}
+		else if(form.User_name.value.length >=50){
+			alert("이름은 50글자를 넘을 수 없습니다.");
+			return;
+		}
+		else if(form.User_name.value.length >=50){
+			alert("이름은 50글자를 넘을 수 없습니다.");
+			return;
+		}
+		else if(form.User_mail.value.length >=100){
+			alert("email은 100글자를 넘을 수 없습니다.");
+			return;
+		}
+		else if(form.User_phone.value.length >=45){
+			alert("핸드폰 번호는 45글자를 넘을 수 없습니다.");
 			return;
 		}
 		else{
@@ -71,7 +105,10 @@
 		var param = "User_mail" + "=" + $("#User_mail").val();
 		//alert(param);
 		
-		
+		if(!$("#User_mail").val().match(regExp)){
+			alert("E-mail 형식을 맞춰주세요.");
+			return;
+		}
 		$.ajax({
 			url : "/Secsm/api_duplicate_check",
 			type : "POST",
@@ -84,7 +121,8 @@
 				if(response=='200')
 				{
 					// 정상 수정
-					alert("E_mail이 중복되지 않습니다.");
+					alert("E_mail이 중복되지 않습니다.사용하셔도 됩니다.");
+					btn_check = "1";
 				}
 				else if(response == '400'){
 					alert("E_mail이 중복됩니다. 다른 e_mail을 사용해 주세요.");
@@ -97,6 +135,10 @@
 			}
 		});
 		
+	}
+	
+	function btn_reset(){
+		btn_check = "";
 	}
 </script>
 
@@ -112,9 +154,9 @@
 				</div>
 				
 				<div class="modal-body">
-					<div class="form-group">
-						<label for="User_mail">E-mail</label> 
-						<input name="User_mail" id="User_mail" type="text" class="form-control" placeholder = "E-mail"/>
+					<div class="form-inline">
+						<label for="email">Email address:</label>
+						<input type="email" name="User_mail" id="User_mail" class="form-control" placeholder="E-mail" onkeypress = "btn_reset();" style="width: 332.22222px;">
 						<button type = "button" class = "btn btn-default" id = "check_email" onclick = "check_duplicate_email()" >중복확인</button>						
 					</div>
 					<div class="form-group">

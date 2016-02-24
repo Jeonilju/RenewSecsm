@@ -15,8 +15,16 @@
 		var param = "pxApplyTitle" + "=" + $("#pxApplyTitle").val() + "&" + 
 				"pxApplyContent" + "="+ $("#pxApplyContent").val();
 		
+		var form = document.apply_form;
+		
 		if($("#pxApplyTitle").val() == ""){
 			alert("상품명을 입력해주세요.");
+		}
+		else if(form.pxApplyTitle.value.length>50){
+			alert("상품명이 은 50자를 넘을 수 없습니다.");
+		}
+		else if(form.pxApplyContent.value.length>200){
+			alert("설명은 200자를 넘을 수 없습니다.");
 		}
 		else{
 		$.ajax({
@@ -219,7 +227,7 @@
 				</div>
 				
 				<!-- 상품 요청 form -->
-				<form id= "apply_form" onsubmit="pxApplyReq();inputreset(3);return false">
+				<form id= "apply_form" name= "apply_form" onsubmit="pxApplyReq();inputreset(3);return false">
 				<div id="pxReqDivForm" name="pxReqDivForm" style="display: ;">
 					상품명
 					<input type="text" id="pxApplyTitle" class = "form-control" name="pxApplyTitle">

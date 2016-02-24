@@ -62,7 +62,7 @@
 		dataType : "text",
 		
 		success : function(response) {	
-			if(response==0)
+			if(response==-1)
 			{
 				alert('실패');
 				

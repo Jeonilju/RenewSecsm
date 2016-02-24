@@ -70,7 +70,7 @@
 					<div class="row-fluid" style="height: 40px;">
 					<div class="col-md-9"></div>
 						내 잔액 : 
-				   	     	<label id="amount" style="padding-right: 0px;margin-bottom : 0px;width: 70px;margin-left: 20px;">36877원</label>
+				   	     	<label id="amount" style="padding-right: 0px;margin-bottom : 0px;width: 70px;margin-left: 20px;"></label>
 				   	     	<button onclick="getPxAmount();inputreset(1);" type="button" class="btn" style="margin: 5px; " data-toggle="modal" data-target="#pxChargemoneyModal">금액 충전</button>
 					</div>
 					
@@ -90,7 +90,7 @@
 	
 					</div>
 					
-					<form id= "buy_form" onsubmit="buyItem();getPxAmount();inputreset(0); view_buylist(); return false">
+					<form id= "buy_form" name = "buy_form" onsubmit="buyItem();getPxAmount();inputreset(0); return false">
 					<div  class="row-fluid">
 						<div class="col-md-1"></div>
 						<div class="col-md-3" style="width: 180px;">
@@ -115,12 +115,13 @@
 					
 					<div style="height: 60px;"></div>
 				</div>
-				
-				<div id = "cur_list" name = "cur_list" style="display: none;">
+			
+				<div id = "cur_list" name = "cur_list" style="display: none; margin-left: 130px;">
 				<div style="height: 40px;"></div>
-					<div class="col-md-1"></div>
+					
 					<h4>최근 구매내역</h4>
 					<div style="height: 30px;"></div>
+					
 					<table class="table table-hover" id = "currentbuyTable" style = "margin-left : 50px">
 				 	   <thead>
 				   	   <tr>
@@ -141,10 +142,11 @@
 				<div id = "empty_list" name = "empty_list" style="display: ;">
 					<div style="height: 150px;"></div>
 				</div>
+				
 			</div>
 			
 			<div class="row-fluid">
-					<div class="col-md-1"></div>
+					<div class="col-md-1" style = "width : 130px;"></div>
 					<button onclick = "log_detail(0);" type="button" class="btn" style="margin: 5px; " data-toggle="modal" data-target="#pxBuyItemsListModal" >내역 조회</button>
 					<%
 						if(accountInfo.getGrade() == 4 || accountInfo.getGrade() == 0){
