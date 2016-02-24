@@ -23,6 +23,14 @@
 			alert("E-mail을 입력하지 않았습니다.");
 			return;
 		}
+		else if(form.User_gender.value== "-1"){
+			alert("성별을 선택해주세요.");
+			return;
+		}
+		else if(form.User_grade.value== "-1"){
+			alert("직급을 선택해주세요.");
+			return;
+		}
 		else if(btn_check == ""){
 			alert("E-mail 중복검사를 해주세요.");
 			return;
@@ -154,9 +162,9 @@
 				</div>
 				
 				<div class="modal-body">
+					<label for="email">E-mail</label>
 					<div class="form-inline">
-						<label for="email">Email address:</label>
-						<input type="email" name="User_mail" id="User_mail" class="form-control" placeholder="E-mail" onkeypress = "btn_reset();" style="width: 332.22222px;">
+						<input type="email" name="User_mail" id="User_mail" class="form-control" placeholder="E-mail" onkeypress = "btn_reset();" style="width: 459.22222px;" autofocus>
 						<button type = "button" class = "btn btn-default" id = "check_email" onclick = "check_duplicate_email()" >중복확인</button>						
 					</div>
 					<div class="form-group">
@@ -179,6 +187,7 @@
 					<div class="form-group">
 						<label for="User_gender">성별</label> 
 						<select name="User_gender" id="User_gender" class="form-control" style = "width:100%" >
+							<option value = "-1">선택</option>
 							<option value = "0">남자</option>
 							<option value = "1">여자</option>
 						</select>
@@ -192,6 +201,7 @@
 					<div class="form-group">
 						<label for="User_grade">직급</label> 
 						<select name="User_grade" id="User_grade" class="form-control" style = "width">
+							<option value = "-1">선택</option>
 							<option value = "0">운영자</option>
 							<option value = "1">자치회장</option>
 							<option value = "2">생활부장</option>

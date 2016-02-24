@@ -100,7 +100,7 @@
 							</select>
 						</div>
 						<div id="box2" class="col-md-3">
-							<input id="etItemCode" name="etItemCode" class="form-control ui-autocomplete-input" type="text" onkeypress="auto_list();" style="width: 302.22222px;" autocomplete="off">
+							<input id="etItemCode" name="etItemCode" class="form-control ui-autocomplete-input" type="text" autofocus onkeypress="auto_list();" style="width: 302.22222px;" autocomplete="off">
 						</div>
 						
 						<div class="col-md-1">

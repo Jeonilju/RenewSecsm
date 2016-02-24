@@ -230,7 +230,7 @@
 				<form id= "apply_form" name= "apply_form" onsubmit="pxApplyReq();inputreset(3);return false">
 				<div id="pxReqDivForm" name="pxReqDivForm" style="display: ;">
 					상품명
-					<input type="text" id="pxApplyTitle" class = "form-control" name="pxApplyTitle">
+					<input type="text" id="pxApplyTitle" class = "form-control" name="pxApplyTitle" autofocus>
 					
 					내용
 					<input type="text" id="pxApplyContent" class = "form-control" name="pxApplyContent">

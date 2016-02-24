@@ -30,16 +30,7 @@
 		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver"/>
 		<beans:property name="url" value="jdbc:mysql://localhost:3306/secsm?useUnicode=true&amp;characterEncoding=utf-8"/>
 		<beans:property name="username" value="root"/>
-<<<<<<< HEAD
 		<beans:property name="password" value="sogang"/>
-
-
-
-
-
-=======
-		<beans:property name="password" value="Wjsdlfwn8520!"/>
->>>>>>> 8f0f0d4f72ec846ed76440d0fb848c2efa4725a1
 	</beans:bean>
 	
 	<beans:bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
