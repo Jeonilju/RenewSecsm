@@ -8,12 +8,21 @@
 
 <script type="text/javascript">
 	var pagenum = 10;
+	
 	function pxApplyReq2(){
 		var param = "pxApplyTitle" + "=" + $("#pxApplyTitle2").val() + "&" + 
 				"pxApplyContent" + "="+ $("#pxApplyContent2").val();
 		
-		if($("#pxApplyTitle2").val() == ""){
+		var form = document.apply2_form;
+		
+		if(form.pxApplyTitle2.value == ""){
 			alert("상품명을 입력해주세요.");
+		}
+		else if(form.pxApplyTitle2.value.length>50){
+			alert("상품명이 은 50자를 넘을 수 없습니다.");
+		}
+		else if(form.pxApplyContent2.value.length>200){
+			alert("설명은 200자를 넘을 수 없습니다.");
 		}
 		else{
 			$.ajax({
@@ -283,10 +292,10 @@
 				</div>
 				
 				<!-- 상품 요청 form -->
-			<form id= "apply2_form" onsubmit="pxApplyReq2();inputreset(4);return false">
+			<form id= "apply2_form" name= "apply2_form" onsubmit="pxApplyReq2();inputreset(4);return false">
 				<div id="pxReqDivForm2" name="pxReqDivForm2" style="display: none;">
 					상품명
-					<input type="text" id="pxApplyTitle2" class = "form-control" name="pxApplyTitle2">
+					<input type="text" id="pxApplyTitle2" class = "form-control" name="pxApplyTitle2" autofocus >
 					
 					내용
 					<input type="text" id="pxApplyContent2" class = "form-control" name="pxApplyContent2">

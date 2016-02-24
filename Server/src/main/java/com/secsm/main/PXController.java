@@ -98,7 +98,7 @@ public class PXController {
 		if(result.size() == 1){
 			// 정상
 			
-			if(result.get(0).getCount()==0){
+			if(result.get(0).getCount() - cnt <= 0){
 				return "2";
 			}
 			else{
@@ -141,8 +141,9 @@ public class PXController {
 		logger.info("api_PxGetAmount");
 		
 		AccountInfo info = Util.getLoginedUser(request);
+		
 		if(info == null){
-			return 0;
+			return -1;
 		}
 		
 		int amount = accountDao.CheckAmount(info.getId());

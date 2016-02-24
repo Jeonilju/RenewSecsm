@@ -100,6 +100,7 @@ CREATE TABLE `px_log` (
   CONSTRAINT `px_log_px_items_id` FOREIGN KEY (`Px_Items_id`) REFERENCES `px_items` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='PX 상품 구매 기록';
 
+
 CREATE TABLE `px_req` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Account_id` int(11) DEFAULT NULL,
