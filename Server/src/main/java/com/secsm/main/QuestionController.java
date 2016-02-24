@@ -275,7 +275,6 @@ public class QuestionController {
 		return result;
 	}
 	
-	
 	private ArrayList<QuestionContentInfo> getQuestionList(QuestionInfo info, boolean isAnswer, ArrayList<QuestionContentInfo> totalQuestionList){
 		
 		List<QuestionChoiceInfo> choiceList = questionChoiceDao.selectByQuestionId(info.getId());
