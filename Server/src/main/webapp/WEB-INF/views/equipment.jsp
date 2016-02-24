@@ -40,6 +40,12 @@
     	   		}); 	   		
     		});
     		
+    		function goImage(imageURL){
+    			var imageSrc = '<img src="./resources/equipmentImage/'+ imageURL + '" class="img-thumbnail" alt="No Image">';
+    			$("#equipmentImageBody").html(imageSrc)
+    			$("#equipmentImageBody").css("text-align","center");
+    		}
+    		
     		function recentLog(){
     			$('#allLog').removeAttr("checked");
     			$('select[name=logOption]').val(0);
@@ -176,7 +182,6 @@
         					$("#modifyCode").val(obj[0].code);
         					$("#modifyTitle").val(obj[0].name);
         					$("#modifyManufacturer").val(obj[0].manufacturer);
-        					$("#modifyImageURL").val(obj[0].imageURL);
         					$("#modifyCount").val(obj[0].totalCount);
         					$('select[name=modifyType]').val(parseInt(obj[0].type));
         				}
@@ -209,11 +214,17 @@
     		    else if($('#equipmentRentModal').is(':visible')){
     		    	rentEquipment();
     		    }
+    		    else if($('#equipmentReqModifyModal').is(':visible')){
+    		    	requestModify();
+    		    }
     		    else if($('#equipmentReqListModal').is(':visible')){
     		    	reqList(0);
     		    }
     		    else if($('#equipmentRequestModal').is(':visible')){
     		    	requestEquipment();
+    		    }
+    		    else if($('#equipmentImageModifyModal').is(':visible')){
+    		    	modifyImageEquipment();
     		    }
     		    else{
     		    	equipmentSearch(0);
@@ -303,7 +314,7 @@
 					<button type="button" class="btn adminButton" data-toggle="modal" data-target="#equipmentAddModal" style="margin: 5px;">장비등록</button>
 				</div>
 				<div class="pull-right">
-					<button type="button" class="btn adminButton" data-toggle="modal" data-target="#equipmentReqListModal" style="margin: 5px;">신청목록</button>
+					<button type="button" class="btn" data-toggle="modal" data-target="#equipmentReqListModal" style="margin: 5px;" onclick="myReqList(0);">신청목록</button>
 				</div>
 				<div class="pull-right">
 					<button type="button" class="btn btn-danger adminButton" data-toggle="modal" data-target="#equipmentLogModal" onclick="logEquipment(4);" style="margin: 5px;">미납자</button>
@@ -314,7 +325,8 @@
 
 		<jsp:include page="base/foot.jsp" flush="false" />
 	</body>
-	
+	<jsp:include page="modals/equipmentReqModifyModal.jsp" flush="false" />
+	<jsp:include page="modals/equipmentImageModifyModal.jsp" flush="false" />
 	<jsp:include page="modals/equipmentModifyModal.jsp" flush="false" />
 	<jsp:include page="modals/equipmentImageModal.jsp" flush="false" />
 	<jsp:include page="modals/equipmentCategoryModal.jsp" flush="false" />

@@ -6,8 +6,6 @@
 
 <script type="text/javascript">
 	
-	// 아이템 구매
-	
 	function requestBook(){
 
 		var param = {reqTitle: $("#reqTitle").val(),
@@ -38,7 +36,7 @@
 			return;
 		}
 		else if($("#reqPay").val()==""){
-			alert("링크를 입력하세요.");
+			alert("가격을 입력하세요.");
 			return;
 		}
 		else{}

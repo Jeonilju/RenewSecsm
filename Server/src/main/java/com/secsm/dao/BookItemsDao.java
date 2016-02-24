@@ -61,7 +61,7 @@ public class BookItemsDao {
 	}
 	
 	public List<BookItemsInfo> selectByPage(int searchPage){
-		return jdbcTemplate.query("select * from secsm.book_items order by regDate limit ?, 7", new Object[] {searchPage},
+		return jdbcTemplate.query("select * from secsm.book_items order by regDate desc limit ?, 7", new Object[] {searchPage},
 				new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new BookItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
@@ -74,7 +74,7 @@ public class BookItemsDao {
 	
 	public List<BookItemsInfo> selectById(String category, String keyword, int searchPage){
 		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
-								+ "where b.name = ? and a.id = ? order by regDate limit ?, 7"
+								+ "where b.name = ? and a.id = ? order by regDate desc limit ?, 7"
 				, new Object[] {category, keyword,searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -88,7 +88,7 @@ public class BookItemsDao {
 	
 	public List<BookItemsInfo> selectByName(String category, String keyword, int searchPage){
 		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
-								+ "where b.name = ? and a.name regexp ? order by regDate limit ?, 7"
+								+ "where b.name = ? and a.name regexp ? order by regDate desc limit ?, 7"
 				, new Object[] {category, keyword, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -102,7 +102,7 @@ public class BookItemsDao {
 	
 	public List<BookItemsInfo> selectByCode(String category, String keyword, int searchPage){
 		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
-								+ "where b.name = ? and a.code = ? order by regDate limit ?, 7"
+								+ "where b.name = ? and a.code = ? order by regDate desc limit ?, 7"
 				, new Object[] {category, keyword, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -116,7 +116,7 @@ public class BookItemsDao {
 	
 	public List<BookItemsInfo> selectByCategory(String category, int searchPage){
 		return jdbcTemplate.query("select * from secsm.book_items a inner join secsm.book_category b on a.type=b.id "
-								+ "where b.name = ? order by regDate limit ?, 7"
+								+ "where b.name = ? order by regDate desc limit ?, 7"
 				, new Object[] {category, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -129,7 +129,7 @@ public class BookItemsDao {
 	}
 	
 	public List<BookItemsInfo> selectByIdNoCategory(String keyword, int searchPage){
-		return jdbcTemplate.query("select * from secsm.book_items where id = ? order by regDate limit ?, 7"
+		return jdbcTemplate.query("select * from secsm.book_items where id = ? order by regDate desc limit ?, 7"
 				, new Object[] {keyword, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -142,7 +142,7 @@ public class BookItemsDao {
 	}
 	
 	public List<BookItemsInfo> selectByNameNoCategory(String keyword, int searchPage){
-		return jdbcTemplate.query("select * from secsm.book_items where name regexp ? order by regDate limit ?, 7"
+		return jdbcTemplate.query("select * from secsm.book_items where name regexp ? order by regDate desc limit ?, 7"
 				, new Object[] {keyword, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -155,7 +155,7 @@ public class BookItemsDao {
 	}
 	
 	public List<BookItemsInfo> selectByCodeNoCategory(String keyword, int searchPage){
-		return jdbcTemplate.query("select * from secsm.book_items where code = ? order by regDate limit ?, 7"
+		return jdbcTemplate.query("select * from secsm.book_items where code = ? order by regDate desc limit ?, 7"
 				, new Object[] {keyword, searchPage}
 				, new RowMapper<BookItemsInfo>() {
 					public BookItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {

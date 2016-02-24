@@ -43,9 +43,14 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 	
 	
 	public void modify(EquipmentItemsInfo info){
-		jdbcTemplate.update("update equipment_items set code=?, name=?, manufacturer=?, imageURL=?, type=?, regDate=?, count=?, totalCount=? where id=?", 
-				new Object[] {info.getCode(),info.getName(),info.getManufacturer(),info.getImageURL(),info.getType(),info.getRegDate()
+		jdbcTemplate.update("update equipment_items set code=?, name=?, manufacturer=?, type=?, regDate=?, count=?, totalCount=? where id=?", 
+				new Object[] {info.getCode(),info.getName(),info.getManufacturer(),info.getType(),info.getRegDate()
 						,info.getCount(),info.getTotalCount(),info.getId()});
+	}
+	
+	public void modifyImage(int id, String url){
+		jdbcTemplate.update("update equipment_items set imageURL=? where id=?", 
+				new Object[] {url, id});
 	}
 	
 	public void downCount(String id){
@@ -69,7 +74,7 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 	}
 	
 	public List<EquipmentItemsInfo> selectByPage(int searchPage){
-		return jdbcTemplate.query("select * from secsm.equipment_items order by regDate limit ?, 7", new Object[] {searchPage},
+		return jdbcTemplate.query("select * from secsm.equipment_items order by regDate desc limit ?, 7", new Object[] {searchPage},
 				new RowMapper<EquipmentItemsInfo>() {
 					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new EquipmentItemsInfo(resultSet.getInt("id"), resultSet.getString("code"),
@@ -82,7 +87,7 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 	
 	public List<EquipmentItemsInfo> selectById(String category, String keyword, int searchPage){
 		return jdbcTemplate.query("select * from secsm.equipment_items a inner join secsm.equipment_category b on a.type=b.id "
-								+ "where b.name = ? and a.id = ? order by regDate limit ?, 7"
+								+ "where b.name = ? and a.id = ? order by regDate desc limit ?, 7"
 				, new Object[] {category, keyword,searchPage}
 				, new RowMapper<EquipmentItemsInfo>() {
 					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -96,7 +101,7 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 	
 	public List<EquipmentItemsInfo> selectByName(String category, String keyword, int searchPage){
 		return jdbcTemplate.query("select * from secsm.equipment_items a inner join secsm.equipment_category b on a.type=b.id "
-								+ "where b.name = ? and a.name regexp ? order by regDate limit ?, 7"
+								+ "where b.name = ? and a.name regexp ? order by regDate desc limit ?, 7"
 				, new Object[] {category, keyword,searchPage}
 				, new RowMapper<EquipmentItemsInfo>() {
 					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -110,7 +115,7 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 	
 	public List<EquipmentItemsInfo> selectByCode(String category, String keyword, int searchPage){
 		return jdbcTemplate.query("select * from secsm.equipment_items a inner join secsm.equipment_category b on a.type=b.id "
-								+ "where b.name = ? and a.code = ? order by regDate limit ?, 7"
+								+ "where b.name = ? and a.code = ? order by regDate desc limit ?, 7"
 				, new Object[] {category, keyword,searchPage}
 				, new RowMapper<EquipmentItemsInfo>() {
 					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -124,7 +129,7 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 	
 	public List<EquipmentItemsInfo> selectByCategory(String category, int searchPage){
 		return jdbcTemplate.query("select * from secsm.equipment_items a inner join secsm.equipment_category b on a.type=b.id "
-								+ "where b.name = ? order by regDate limit ?, 7"
+								+ "where b.name = ? order by regDate desc limit ?, 7"
 				, new Object[] {category, searchPage}
 				, new RowMapper<EquipmentItemsInfo>() {
 					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -138,7 +143,7 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 	
 	
 	public List<EquipmentItemsInfo> selectByIdNoCategory(String keyword, int searchPage){
-		return jdbcTemplate.query("select * from secsm.equipment_items where id = ? order by regDate limit ?, 7"
+		return jdbcTemplate.query("select * from secsm.equipment_items where id = ? order by regDate desc limit ?, 7"
 				, new Object[] {keyword, searchPage}
 				, new RowMapper<EquipmentItemsInfo>() {
 					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -151,7 +156,7 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 	}
 	
 	public List<EquipmentItemsInfo> selectByNameNoCategory(String keyword, int searchPage){
-		return jdbcTemplate.query("select * from secsm.equipment_items where name regexp ? order by regDate limit ?, 7"
+		return jdbcTemplate.query("select * from secsm.equipment_items where name regexp ? order by regDate desc limit ?, 7"
 				, new Object[] {keyword, searchPage}
 				, new RowMapper<EquipmentItemsInfo>() {
 					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -164,7 +169,7 @@ public class EquipmentItemsDao implements EquipmentItemsIDao {
 	}
 	
 	public List<EquipmentItemsInfo> selectByCodeNoCategory(String keyword, int searchPage){
-		return jdbcTemplate.query("select * from secsm.equipment_items where code = ? order by regDate limit ?, 7"
+		return jdbcTemplate.query("select * from secsm.equipment_items where code = ? order by regDate desc limit ?, 7"
 				, new Object[] {keyword, searchPage}
 				, new RowMapper<EquipmentItemsInfo>() {
 					public EquipmentItemsInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {

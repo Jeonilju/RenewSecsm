@@ -55,11 +55,7 @@
 					modifyImageURL: $("#modifyImageURL").val(),
 					modifyCount: $("#modifyCount").val()};
 		
-		if($("#modifyCode").val()==""){
-			alert("코드명을 입력하세요.");
-			return;
-		}
-		else if($("#modifyTitle").val()==""){
+		if($("#modifyTitle").val()==""){
 			alert("도서명을 입력하세요.");
 			return;
 		}
@@ -69,10 +65,6 @@
 		}
 		else if($("#modifyCount").val()==""){
 			alert("수량을 입력하세요.");
-			return;
-		}
-		else if($("#modifyCount").val()==0){
-			alert("0개의 수량은 허용되지 않습니다.");
 			return;
 		}
 		
@@ -109,6 +101,14 @@
 			{
 				alert('분류가 존재하지 않습니다.');
 				location.reload();
+			}
+			else if(response=='405')
+			{
+				alert('수량을 확인해주세요.');	
+			}
+			else if(response=='406')
+			{
+				alert('같은 코드의 도서가 존재합니다.');	
 			}
 			else
 			{

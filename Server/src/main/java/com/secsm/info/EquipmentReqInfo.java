@@ -49,6 +49,22 @@ public class EquipmentReqInfo {
 		this.regDate = regDate;
 	}
 
+	public EquipmentReqInfo(int id, int accountId, String typeKr, String typeEn, String titleKr, String titleEn, String brand,
+			String link, int pay, int count, String content, Timestamp regDate) {
+		this.id = id;
+		this.accountId = accountId;
+		this.typeKr = typeKr;
+		this.typeEn = typeEn;
+		this.titleKr = titleKr;
+		this.titleEn = titleEn;
+		this.brand = brand;
+		this.link = link;
+		this.pay = pay;
+		this.count = count;
+		this.content = content;
+		this.regDate = regDate;
+	}
+	
 	public int getId() {
 		return id;
 	}

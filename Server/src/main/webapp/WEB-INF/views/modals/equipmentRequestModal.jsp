@@ -70,6 +70,10 @@
 				alert('로그인을 하세요.');	
 				location.reload();
 			}
+			else if(response=='402')
+			{
+				alert('수량을 확인해주세요.');	
+			}
 			else
 			{
 				alert('신청이 완료되었습니다.');

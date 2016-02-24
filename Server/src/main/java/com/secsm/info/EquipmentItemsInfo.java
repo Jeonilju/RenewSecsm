@@ -38,18 +38,20 @@ public class EquipmentItemsInfo {
 		this.count = count;
 		this.totalCount = totalCount;
 	}
+
 	
-	public EquipmentItemsInfo(int id, String code, String name, String manufacturer, String imageURL, int type,
+	public EquipmentItemsInfo(int id, String code, String name, String manufacturer, int type,
 			int count, int totalCount) {
 		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.manufacturer = manufacturer;
-		this.imageURL = imageURL;
 		this.type = type;
 		this.count = count;
 		this.totalCount = totalCount;
 	}
+	
+
 
 	public int getId() {
 		return id;

@@ -74,7 +74,8 @@ public class PXController {
 	@RequestMapping(value = "/api_pxBuyItem", method = RequestMethod.POST)
 	public String PXController_buyItem(HttpServletRequest request
 			, @RequestParam("type") int type
-			, @RequestParam("code") String code){
+			, @RequestParam("code") String code
+			, @RequestParam("cnt") int cnt){
 		
 		logger.info("api_pxBuyItem");
 		System.out.println(code);
@@ -101,9 +102,9 @@ public class PXController {
 				return "2";
 			}
 			else{
-			accountDao.usePxAmount(info.getId(), result.get(0).getPrice());
-			pxLogDao.create(info.getId(), result.get(0).getId(), 0, 1,result.get(0).getName(),result.get(0).getPrice());
-			pxItemsDao.useItems(result.get(0).getId(),1);
+			accountDao.usePxAmount(info.getId(), result.get(0).getPrice()*cnt);
+			pxLogDao.create(info.getId(), result.get(0).getId(), 0, cnt,result.get(0).getName(),result.get(0).getPrice()*cnt);
+			pxItemsDao.useItems(result.get(0).getId(),cnt);
 			
 			return "0";
 			}
@@ -206,7 +207,7 @@ public class PXController {
 	
 	/** PX 상품 신청 리스트 조회 */
 	@ResponseBody
-	@RequestMapping(value = "/api_applyReqList", method = RequestMethod.POST)
+	@RequestMapping(value = "/api_applyReqList", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public String PXController_api_applyReqList(HttpServletRequest request
 			,@RequestParam("pagenum") int pagenum){
 		logger.info("api_applyReqList");
@@ -230,8 +231,9 @@ public class PXController {
 		}
 	}
 	
+	/**자동완성*/
 	@ResponseBody
-	@RequestMapping(value = "/api_px_Autocomplete", method = RequestMethod.POST)
+	@RequestMapping(value = "/api_px_Autocomplete", method = RequestMethod.POST ,produces = "application/text; charset=utf8")
 	public String PXController_Px_Auto(HttpServletRequest request){
 	
 		List<PxItemsInfo> px_autoList = pxItemsDao.selectAll();
@@ -245,7 +247,7 @@ public class PXController {
 	
 	/** 구매 내역 조회 */
 	@ResponseBody
-	@RequestMapping(value = "/api_getPxLog", method = RequestMethod.POST)
+	@RequestMapping(value = "/api_getPxLog", method = RequestMethod.POST,produces = "application/text; charset=utf8")
 	public String PXController_logItem(HttpServletRequest request,
 			@RequestParam("opt") int opt,
 			@RequestParam("pagenum") int pagenum)
@@ -276,7 +278,7 @@ public class PXController {
 	
 	/** Semi 구매 내역 조회 */
 	@ResponseBody
-	@RequestMapping(value = "/api_current_buyList", method = RequestMethod.POST)
+	@RequestMapping(value = "/api_current_buyList", method = RequestMethod.POST,produces = "application/text; charset=utf8")
 	public String PXController_Semi_list(HttpServletRequest request,
 			 @RequestParam("num") int num)
 	{
@@ -292,8 +294,24 @@ public class PXController {
 		logger.info(result);
 		return result;
 	}
-
-
+	
+	/** 전체 상품내역 조회 */
+	@ResponseBody
+	@RequestMapping(value = "/api_total_list", method = RequestMethod.POST,produces = "application/text; charset=utf8")
+	public String PXController_total_list(HttpServletRequest request)
+	{
+		logger.info("api_total_item_list");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		
+		List<PxItemsInfo> pxiteminfo= pxItemsDao.selectAll();
+		Gson gson = new Gson();
+		String result = gson.toJson(pxiteminfo);
+		logger.info(result);
+		return result;
+	}
+	
+	
 	/** PX 상품 신청 */
 	@ResponseBody
 	@RequestMapping(value = "/api_applyReq", method = RequestMethod.POST)
