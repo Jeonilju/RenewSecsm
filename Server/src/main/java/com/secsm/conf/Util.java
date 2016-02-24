@@ -41,13 +41,13 @@ public class Util {
 			if(isStart)
 				result = new Timestamp(mDate.getTime());
 			else
-				result = new Timestamp(mDate.getTime() +  24 * 3600);
+				result = new Timestamp(mDate.getTime() +  6 * 3600 * 1000);
 		}
 		catch(Exception e){
 			if(isStart)
 				result = new Timestamp(System.currentTimeMillis());
 			else
-				result = new Timestamp(System.currentTimeMillis() +  24 * 3600);
+				result = new Timestamp(System.currentTimeMillis() +  24 * 3600 * 1000);
 		}
 
 		
