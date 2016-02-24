@@ -63,12 +63,12 @@
 					}
 					out.println("" + index + ". " + qType + ": " + info.qTitle + "<br/>");
 					
-					out.println("<table class='table table-hover'>");
+					out.println("<table class='table table-hover' style='width: 500px;'>");
 					
 					out.println("<thead>");
 					out.println("<tr>");
-					out.println("<td>" + "이름" + "</td>");
-					out.println("<td>" + "답변" + "</td>");
+					out.println("<td style='width: 200px;'>" + "이름" + "</td>");
+					out.println("<td style='width: 300px;'>" + "답변" + "</td>");
 					out.println("</tr>");
 					out.println("</thead>");
 					
@@ -77,8 +77,8 @@
 							
 							out.println("<tbody>");
 							out.println("<tr>");
-							out.println("<td>" + answerInfo.getName() + "</td>");
-							out.println("<td>" + answerInfo.getAnswer() + "</td>");
+							out.println("<td style='width: 200px;'>" + answerInfo.getName() + "</td>");
+							out.println("<td style='width: 300px;'>" + answerInfo.getAnswer() + "</td>");
 							out.println("</tr>");
 							out.println("</tbody>");
 						}
@@ -86,7 +86,7 @@
 					
 					out.println("</table>");
 					out.println("</div>");
-					
+					out.println("<hr/>");
 					index++;
 				}
 			%>

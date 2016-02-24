@@ -30,8 +30,11 @@ public class AnswerChoiceDao {
 	}
 
 	public void create(int accountId, int questionId, int answer){
-		jdbcTemplate.update("insert into answer_score (account_id, question_id, answer) values (?, ?, ?)"
-				, new Object[] {accountId, questionId, answer});
+		if(answer > 5 || answer < 1){
+		}else{
+			jdbcTemplate.update("insert into answer_score (account_id, question_id, answer) values (?, ?, ?)"
+					, new Object[] {accountId, questionId, answer});	
+		}
 	}
 	
 	public List<AnswerChoiceInfo> selectAll(){

@@ -47,12 +47,19 @@ public class ProjectController {
 		if(accountInfo == null){
 			return "index";
 		}
-
+		else{
+			return resultProject(request, projectDao, page);
+		}
+	}
+	
+	public String resultProject(HttpServletRequest request, ProjectDao projectDao, int page){
+		AccountInfo accountInfo = Util.getLoginedUser(request);
+		
 		request.setAttribute("projectList", projectDao.selectByPage(page, 10));
 		request.setAttribute("accountInfo", accountInfo);
 		return "project";
 	}
-				
+	
 	@RequestMapping(value = "/detailProject/{id}", method = RequestMethod.GET)
 	public String ProjectController_detail(HttpServletRequest request
 			, @PathVariable(value="id") int id) {
@@ -80,6 +87,15 @@ public class ProjectController {
 ///////////////					APIs				////////////////////
 ///////////////										////////////////////
 ////////////////////////////////////////////////////////////////////////
+	
+	@ResponseBody
+	@RequestMapping(value = "/api_getProjectList", method = RequestMethod.GET)
+	public String ProjectController_index(HttpServletRequest request
+			, @RequestParam("page") String page) {
+		logger.info("api_getProjectList");
+		
+		return "200";
+	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/api_createProject", method = RequestMethod.POST)
@@ -121,7 +137,7 @@ public class ProjectController {
 		
 		if(!attachedFile.isEmpty())
 		{
-			String fileLocation = "projectId_" + attachedFile.getOriginalFilename();
+			String fileLocation = projectId + "_tag" + "_" + attachedFile.getOriginalFilename();
 			
 			try 
 			{

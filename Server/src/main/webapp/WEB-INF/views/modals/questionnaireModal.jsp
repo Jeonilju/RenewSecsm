@@ -150,7 +150,7 @@
 
 					<hr />
 					
-					<table id="qrTable" name="qrTable">
+					<table id="qrTable" name="qrTable" style="width: 500px;">
 						<tbody></tbody>
 					</table>
 					
