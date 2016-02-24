@@ -131,6 +131,42 @@
 	}
 	
 </script>
+<style>
+		.bootstrap-datetimepicker-widget table td a[data-action="incrementHours"]:before {
+		            content: '▲'; 
+		        }
+		
+		.bootstrap-datetimepicker-widget table td a[data-action="incrementMinutes"]:before { 
+		            content: '▲'; 
+		        }
+        .bootstrap-datetimepicker-widget table td a[data-action="incrementSeconds"]:before { 
+            content: '▲'; 
+        }
+        
+        .bootstrap-datetimepicker-widget table td a[data-action="decrementHours"]:before { 
+            content: '▼'; 
+        }
+        .bootstrap-datetimepicker-widget table td a[data-action="decrementMinutes"]:before { 
+            content: '▼'; 
+        }
+        .bootstrap-datetimepicker-widget table td a[data-action="decrementSeconds"]:before { 
+            content: '▼'; 
+        }
+
+.bootstrap-datetimepicker-widget table td a[data-action="incrementHours"]:before,
+.bootstrap-datetimepicker-widget table td a[data-action="incrementMinutes"]:before,
+.bootstrap-datetimepicker-widget table td a[data-action="incrementSeconds"]:before,
+.bootstrap-datetimepicker-widget table td a[data-action="decrementHours"]:before,
+.bootstrap-datetimepicker-widget table td a[data-action="decrementMinutes"]:before,
+.bootstrap-datetimepicker-widget table td a[data-action="decrementSeconds"]:before, { 
+            text-align: center;
+            text-transform: uppercase;
+            color: #6a696f;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+</style>
 
 <div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">

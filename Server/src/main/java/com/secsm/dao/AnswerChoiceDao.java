@@ -32,13 +32,13 @@ public class AnswerChoiceDao {
 	public void create(int accountId, int questionId, int answer){
 		if(answer > 5 || answer < 1){
 		}else{
-			jdbcTemplate.update("insert into answer_score (account_id, question_id, answer) values (?, ?, ?)"
+			jdbcTemplate.update("insert into answer_choice (account_id, question_id, answer) values (?, ?, ?)"
 					, new Object[] {accountId, questionId, answer});	
 		}
 	}
 	
 	public List<AnswerChoiceInfo> selectAll(){
-		return jdbcTemplate.query("select * from answer_score",
+		return jdbcTemplate.query("select * from answer_choice",
 				new RowMapper<AnswerChoiceInfo>() {
 					public AnswerChoiceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AnswerChoiceInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
@@ -48,7 +48,7 @@ public class AnswerChoiceDao {
 	}
 	
 	public List<AnswerChoiceInfo> select(int id){
-		return jdbcTemplate.query("select * from answer_score where id = ?", new Object[] {id},
+		return jdbcTemplate.query("select * from answer_choice where id = ?", new Object[] {id},
 				new RowMapper<AnswerChoiceInfo>() {
 					public AnswerChoiceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AnswerChoiceInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
@@ -58,7 +58,7 @@ public class AnswerChoiceDao {
 	}
 	
 	public List<AnswerChoiceInfo> selectByQuestionId(int question_id){
-		return jdbcTemplate.query("select * from answer_score where question_id = ?", new Object[] {question_id},
+		return jdbcTemplate.query("select * from answer_choice where question_id = ?", new Object[] {question_id},
 				new RowMapper<AnswerChoiceInfo>() {
 					public AnswerChoiceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AnswerChoiceInfo(resultSet.getInt("id"), resultSet.getInt("account_id")
@@ -68,7 +68,7 @@ public class AnswerChoiceDao {
 	}
 	
 	public List<AnswerContentInfo> selectByQuestionIdToContent(int question_id){
-		return jdbcTemplate.query("select * from answer_score, account where question_id = ? and answer_score.account_id = account.id", new Object[] {question_id},
+		return jdbcTemplate.query("select * from answer_choice, account where question_id = ? and answer_choice.account_id = account.id", new Object[] {question_id},
 				new RowMapper<AnswerContentInfo>() {
 					public AnswerContentInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AnswerContentInfo(resultSet.getInt("id"), resultSet.getInt("question_id")
@@ -78,7 +78,7 @@ public class AnswerChoiceDao {
 	}
 
 	public boolean isExistAnswer(int id, int accountId){
-		List<AnswerChoiceInfo> result = jdbcTemplate.query("select * from answer_score where "
+		List<AnswerChoiceInfo> result = jdbcTemplate.query("select * from answer_choice where "
 				+ "question_id = ?"
 				+ " and account_id = ? ", new Object[] {id, accountId},
 				new RowMapper<AnswerChoiceInfo>() {
@@ -97,10 +97,10 @@ public class AnswerChoiceDao {
 	}
 	
 	public void delete(int id){
-		jdbcTemplate.update("delete from answer_score where id = ?", new Object[] {id});
+		jdbcTemplate.update("delete from answer_choice where id = ?", new Object[] {id});
 	}
 	
 	public void deleteAll(){
-		jdbcTemplate.update("delete from answer_score");
+		jdbcTemplate.update("delete from answer_choice");
 	}
 }

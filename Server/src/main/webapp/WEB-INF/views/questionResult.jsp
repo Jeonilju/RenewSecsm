@@ -71,17 +71,69 @@
 					out.println("<td style='width: 300px;'>" + "답변" + "</td>");
 					out.println("</tr>");
 					out.println("</thead>");
-					
+
 					if(info.answerList != null){
+						out.println("<tbody>");
+						
+						int q1 = 0, q2 = 0, q3 = 0, q4 = 0, q5 = 0;
+						int total = 0, count = 0;
+						
 						for(AnswerContentInfo answerInfo : info.answerList){
 							
-							out.println("<tbody>");
 							out.println("<tr>");
 							out.println("<td style='width: 200px;'>" + answerInfo.getName() + "</td>");
 							out.println("<td style='width: 300px;'>" + answerInfo.getAnswer() + "</td>");
 							out.println("</tr>");
-							out.println("</tbody>");
+							
+							if(info.qType == 0){
+								// 객관식
+								if(answerInfo.getAnswer().equals("1"))
+									q1++;
+								else if(answerInfo.getAnswer().equals("2"))
+									q2++;
+								else if(answerInfo.getAnswer().equals("3"))
+									q3++;
+								else if(answerInfo.getAnswer().equals("4"))
+									q4++;
+								else if(answerInfo.getAnswer().equals("5"))
+									q5++;
+							}
+							else if(info.qType == 4){
+								// 점수
+								try{
+									total += Integer.parseInt(answerInfo.getAnswer());	
+									count++;
+								}
+								catch(Exception e){
+									
+								}
+
+							}
 						}
+						
+						if(info.qType == 0){
+							// 객관식
+							out.println("<tr>");
+							out.println("<td colspan='2'>" 
+									+ "1번: " + q1
+									+ ", 2번: " + q2
+									+ ", 3번: " + q3
+									+ ", 4번: " + q4
+									+ ", 5번: " + q5
+									+ "</td>");
+							out.println("</tr>");
+						}
+						else if(info.qType == 4){
+							// 점수
+							out.println("<tr>");
+							out.println("<td colspan='2'>" 
+									+ "총점: " + total
+									+ ", 평균: " + (total / count) 
+									+ "</td>");
+							out.println("</tr>");
+						}
+						
+						out.println("</tbody>");
 					}
 					
 					out.println("</table>");

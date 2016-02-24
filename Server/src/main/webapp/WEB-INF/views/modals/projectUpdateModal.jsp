@@ -16,7 +16,6 @@
 					"updateProjectDiscription" + "=" + $("#updateProjectDiscription").val() + "&" + 
 					"updateProjectPL" + "=" + $("#updateProjectPL").val() + "&" + 
 					"updateProjectTeam" + "="+ $("#updateProjectTeam").val();
-		alert(param);
 		$.ajax({
 			url : "/Secsm/api_updateProject",
 			type : "POST",
