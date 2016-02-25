@@ -14,6 +14,7 @@
 					"User_name" + "=" + $("#User_name").val() + "&" + 
 					"User_gender" + "=" + $("#User_gender").val() + "&" + 
 					"User_phone" + "="+ $("#User_phone").val() + "&" + 
+					"User_cardnum" + "="+ $("#User_cardnum").val() + "&" + 
 					"User_grade" + "="+ $("#User_grade").val();
 	//	alert(param);
 		
@@ -195,7 +196,7 @@
 					
 					<div class="form-group">
 						<label for="User_phone">핸드폰 번호</label> 
-						<input name="User_phone" id="User_phone" class="form-control"/ placeholder = "010-1234-5678">
+						<input name="User_phone" id="User_phone" class="form-control" placeholder = "010-1234-5678"/>
 					</div>
 					
 					<div class="form-group">
@@ -212,6 +213,11 @@
 							<option value = "8">기존회원</option>
 							<option value = "9">신입회원</option>
 						</select>
+					</div>
+					
+					<div class="form-group">
+						<label for="User_cardnum">고유 식별 번호</label> 
+						<input name="User_cardnum" id="User_cardnum" class="form-control"/>
 					</div>
 					
 				</div>

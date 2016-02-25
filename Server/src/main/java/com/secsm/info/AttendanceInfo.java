@@ -4,24 +4,27 @@ import java.sql.Timestamp;
 
 public class AttendanceInfo {
 
-	private int accountId;
 	private Timestamp regDate;
+	private int cardnum;
 	
-	public AttendanceInfo(int accountId, Timestamp regDate){
-		this.accountId = accountId;
+	public AttendanceInfo(Timestamp regDate, int cardnum){
 		this.regDate = regDate;
+		this.cardnum = cardnum;
 	}
 	
-	public int getAccountId() {
-		return accountId;
-	}
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
-	}
 	public Timestamp getRegDate() {
 		return regDate;
 	}
 	public void setRegDate(Timestamp regDate) {
 		this.regDate = regDate;
 	}
+
+	public int getCardnum() {
+		return cardnum;
+	}
+
+	public void setCardnum(int cardnum) {
+		this.cardnum = cardnum;
+	}
+	
 }

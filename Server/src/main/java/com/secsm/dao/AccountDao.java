@@ -27,8 +27,8 @@ public class AccountDao implements AccountIDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
-	public void create(String name, String email, String pw, String phone,int grade,int gender){
-		jdbcTemplate.update("insert into account (name, email, pw, phone,Grade,gender) values (?, ?, ?, ?,?,?)", new Object[] { name, email, pw, phone,grade,gender });
+	public void create(String name, String email, String pw, String phone,int grade,int gender, int cardnum){
+		jdbcTemplate.update("insert into account (name, email, pw, phone,Grade,gender, cardnum) values (?, ?, ?, ?, ?, ?, ?)", new Object[] { name, email, pw, phone,grade,gender, cardnum });
 	}
 	
 	public int duplicate_check(String email){
@@ -42,7 +42,8 @@ public class AccountDao implements AccountIDao {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
-								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"));
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender")
+								, resultSet.getInt("cardnum"));
 					}
 				});
 	}
@@ -78,7 +79,8 @@ public class AccountDao implements AccountIDao {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
-								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"));
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender")
+								, resultSet.getInt("cardnum"));
 					}
 				});
 	}
@@ -91,7 +93,8 @@ public class AccountDao implements AccountIDao {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
-								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"));
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender")
+								, resultSet.getInt("cardnum"));
 					}
 				});
 	}
@@ -104,7 +107,8 @@ public class AccountDao implements AccountIDao {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
-								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"));
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender")
+								, resultSet.getInt("cardnum"));
 					}
 				});
 	}
