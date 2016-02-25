@@ -71,20 +71,12 @@
 				newCell2.appendChild(chkbox);
 			}
 			
-	//		var newCell3  = newRow.insertCell(0);
-	//		var button = document.createElement('input');
-	//		button.setAttribute('type','button');
-	//		button.setAttribute('class','btn btn-default');
-	//		button.setAttribute('value','확인');
-	//		button.setAttribute('OnClick','together_list(0)');
-	//		newCell3.appendChild(button);
-			
 		}
 </script>
 
 <!-- 함께 구매할 회원 선택 모달 -->
 <div class="modal fade" id="pxItem_buy_together" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="SignInModalLabel">함께 구매할 회원 선택</h4>
@@ -108,7 +100,7 @@
 				
 				<div class="modal-footer">
 				<input type = "button" class = "btn btn-default" value = "확인" Onclick = "together_list(0)" data-dismiss="modal"/>
-				<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+				<button type="button" onclick = "arr_clear();" class="btn btn-danger" data-dismiss="modal">닫기</button>
 				</div>
 				
 		</div>

@@ -119,7 +119,8 @@
 							var newCell6  = newRow.insertCell(5);
 
 							// Append a text node to the cell
-							var newText  = document.createTextNode('New row')
+							var newText  = document.createTextNode('New row');
+							
 							newCell1.appendChild(document.createTextNode(data.regDate));
 							newCell2.appendChild(document.createTextNode(data.name));
 							newCell3.appendChild(document.createTextNode(data.count));
@@ -140,7 +141,7 @@
 			
 <!-- 내역 조회 -->
 <div class="modal fade" id="pxBuyItemsListModal" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title" id="SignInModalLabel">내역 조회</h4>

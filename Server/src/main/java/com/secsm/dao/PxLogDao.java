@@ -2,6 +2,7 @@ package com.secsm.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -31,9 +32,9 @@ public class PxLogDao implements PxLogIDao {
 		logger.info("Updated DataSource ---> " + ds);
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
-	public void create(int accountId, int pxItemsId, int type, int count,String name, int price,String str){
-		jdbcTemplate.update("insert into px_log (Account_id, Px_Items_id, Type, Count,Name,price,with_buy) values (?, ?, ?, ?,?,?,?)"
-				, new Object[] {accountId, pxItemsId, type, count,name,price,str});
+	public void create(int accountId, int pxItemsId, int type, int count,String name, int price,String str,Timestamp regdate){
+		jdbcTemplate.update("insert into px_log (Account_id, Px_Items_id, Type, Count,Name,price,with_buy,regDate) values (?, ?, ?, ?,?,?,?,?)"
+				, new Object[] {accountId, pxItemsId, type, count,name,price,str,regdate});
 	}
 	
 	public List<PxLogInfo> selectAll(){

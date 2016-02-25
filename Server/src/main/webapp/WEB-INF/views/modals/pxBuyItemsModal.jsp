@@ -94,13 +94,10 @@
 					num++;
 					view_buylist();
 					semi_List(num);
+					arr_clear();
 					var len = templist.length;
 					for(var i = 0; i< len ; i++){templist.pop();}
 					
-					len = together_member.length;
-					for(var i = 0; i< len ; i++){together_member.pop();}
-					
-						
 				}
 				else if(response == '1')
 				{
@@ -124,6 +121,11 @@
 		
 	}
 	
+	function arr_clear(){
+	
+		var len = together_member.length;
+		for(var i = 0; i< len ; i++){together_member.pop();}
+	}
 	function semi_List(num){
 		var param = "num" + "=" + num; 
 		$.ajax({

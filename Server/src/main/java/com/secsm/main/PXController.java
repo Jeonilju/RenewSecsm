@@ -1,10 +1,15 @@
 package com.secsm.main;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.annotations.GenerationTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +30,7 @@ import com.secsm.info.AccountInfo;
 import com.secsm.info.PxItemsInfo;
 import com.secsm.info.PxLogInfo;
 import com.secsm.info.PxReqInfo;
+import com.secsm.conf.*;
 
 @Controller
 public class PXController {
@@ -107,11 +113,15 @@ public class PXController {
 				return "2";
 			}
 			else{
+				Date date = new Date();
+				Timestamp regDate = new Timestamp(date.getTime());
 				
 				//혼자 구매하는경우
 				if(templen == 0 ){
+					
+					
 					accountDao.usePxAmount(info.getId(), result.get(0).getPrice()*cnt);
-					pxLogDao.create(info.getId(), result.get(0).getId(), 0, cnt,result.get(0).getName(),result.get(0).getPrice()*cnt,"-");
+					pxLogDao.create(info.getId(), result.get(0).getId(), 0, cnt,result.get(0).getName(),result.get(0).getPrice()*cnt,"-",regDate);
 					pxItemsDao.useItems(result.get(0).getId(),cnt);
 					return "0";
 				}
@@ -129,13 +139,13 @@ public class PXController {
 					}
 					System.out.println(str);
 					accountDao.usePxAmount(info.getId(), totalprice);
-					pxLogDao.create(info.getId(), result.get(0).getId(), 0, cnt,result.get(0).getName(),totalprice,str);
+					pxLogDao.create(info.getId(), result.get(0).getId(), 0, cnt,result.get(0).getName(),totalprice,str,regDate);
 					pxItemsDao.useItems(result.get(0).getId(),cnt);
 					
 				//	System.out.println(templen);
 					for(int i = 0 ; i < templen ; i++){
 						accountDao.usePxAmount(templist.get(i), totalprice);
-						pxLogDao.create(templist.get(i), result.get(0).getId(), 0, cnt,result.get(0).getName(),totalprice,str);
+						pxLogDao.create(templist.get(i), result.get(0).getId(), 0, cnt,result.get(0).getName(),totalprice,str,regDate);
 						pxItemsDao.useItems(result.get(0).getId(),cnt);
 					}
 					return "0";
