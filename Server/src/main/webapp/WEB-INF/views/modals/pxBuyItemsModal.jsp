@@ -21,15 +21,51 @@
 <script type="text/javascript">
 
 	var num = 0;
+	var together_member = new Array();
+	
+	
+	function unique(tmparray) {
+		
+		var result = [];
+		$.each(tmparray, function(index, element) {          
+			if ($.inArray(element, result) == -1) {  
+				result.push(element);                     
+			}
+		});
+		return result;
+	}
+	
+	function together_list(idx){
+		if(idx==0){ 
+			tmp = document.getElementsByName("together");
+		
+			for(var i = 0 ; i < tmp.length ; i++){
+				if(tmp[i].checked){
+					for(var j=0; j < together_member.length;j++){
+						
+					}
+					together_member.push(tmp[i].value);
+				}
+			}
+			alert("정상 추가되었습니다.");
+		}
+	}
 	
 	// 아이템 구매
 	function buyItem(){
+		
+		var templist = unique(together_member);
+		
 		var param = "type" + "=" + $("#slItemType").val() + "&" + 
 					"code" + "=" + $("#etItemCode").val() + "&" + 
 					"cnt" + "=" + $("#item_cnt").val() + "&" +
+					"templist" + "=" + templist + "&" +
+					"templen" + "=" + templist.length + "&" +
 					"isForcibly" + "="+ "0";
 		
 		var form = document.buy_form;
+		
+
 		if(form.etItemCode.value == ""){
 			alert("삼풍명 혹은 바코드를 입력하지 않앗습니다.");	
 		}
@@ -50,7 +86,7 @@
 			cache : false,
 			async : false,
 			dataType : "text",
-			
+				
 			success : function(response) {
 				if(response=='0')
 				{
@@ -58,6 +94,9 @@
 					num++;
 					view_buylist();
 					semi_List(num);
+					arr_clear();
+					var len = templist.length;
+					for(var i = 0; i< len ; i++){templist.pop();}
 					
 				}
 				else if(response == '1')
@@ -77,11 +116,16 @@
 					alert("code1 : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
 				}
 			}
-			
 			});
 		}
+		
 	}
 	
+	function arr_clear(){
+	
+		var len = together_member.length;
+		for(var i = 0; i< len ; i++){together_member.pop();}
+	}
 	function semi_List(num){
 		var param = "num" + "=" + num; 
 		$.ajax({
@@ -123,20 +167,22 @@
 			var newCell3  = newRow.insertCell(2);
 			var newCell4  = newRow.insertCell(3);
 			var newCell5  = newRow.insertCell(4);
-
+			var newCell6  = newRow.insertCell(5);
+			
 			// Append a text node to the cell
 			var newText  = document.createTextNode('New row')
 			newCell1.appendChild(document.createTextNode(data.regDate));
 			newCell2.appendChild(document.createTextNode(data.name));
 			newCell3.appendChild(document.createTextNode(data.price));
 			newCell4.appendChild(document.createTextNode(data.count));
+			newCell5.appendChild(document.createTextNode(data.with_buy));
 			
 			var button = document.createElement('input');
 			button.setAttribute('type','button');
 			button.setAttribute('class','btn btn-default btn-sm');
 			button.setAttribute('value','환불');
 			button.setAttribute('OnClick','refund(' +data.id + ',1);getPxAmount();');
-			newCell5.appendChild(button);
+			newCell6.appendChild(button);
 		}
 	}
 	

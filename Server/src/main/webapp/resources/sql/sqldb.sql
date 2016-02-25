@@ -414,7 +414,11 @@ CHANGE COLUMN `Description` `Description` TEXT NULL DEFAULT NULL COMMENT '' ;
 
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('교육부장', '교육부장', '1234', '10000', '0000', '3', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자치회장', '자치회상', '1234', '0', '0000', '1', '1');
+<<<<<<< HEAD
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('생활부장', '생활부장', '1234', '0', '0000', '2', '1');
+=======
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('생활부장', '생활부장', '1234', '0', '0000', '2', '0');
+>>>>>>> 86931517e9167fe11764aed73651139c93dfd4ee
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('PX부장', 'PX부장', '1234', '999999', '0000', '4', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자산관리부장', '자산관리부장', '1234', '0', '0000', '5', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('기획부장', '기획부장', '1234', '0', '0000', '6', '1');
@@ -506,3 +510,38 @@ ALTER TABLE `secsm`.`attendance`
 ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT AFTER `RegDate`,
 ADD PRIMARY KEY (`id`);
 
+<<<<<<< HEAD
+=======
+ALTER TABLE `secsm`.`attendance` 
+ADD COLUMN `cardnum` INT NULL AFTER `id`;
+
+ALTER TABLE `secsm`.`account` 
+ADD COLUMN `cardnum` INT NULL AFTER `gender`;
+
+ALTER TABLE `secsm`.`attendance` 
+DROP FOREIGN KEY `attendance_account_id`;
+ALTER TABLE `secsm`.`attendance` 
+DROP COLUMN `Account_id`,
+DROP INDEX `attendance_account_id_idx` ;
+
+ALTER TABLE `secsm``px_log` 
+ADD COLUMN `with_buy` varchar(100);
+
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('마가렛트', '8801062518517', '2000', '17');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('진짬뽕', '8801045522678', '2000', '12');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' Calorie Balance 과일', '8.80102E+12', '2000', '3');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('짜왕', '8801043032131', '1500', '10');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 스파클링 사과', '8801056035570', '2000', '20');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 스파클링 오랜지', '8801056035518', '1500', '12');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' Calorie Balance', '8801019306396', '2000', '4');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 티.오.피', '8801037040029', '1200', '50');
+
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 스팸 마일드', '8801007029641', '2700', '12');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 스팸 클래식', 'FOOD10000068', '3400', '30');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 동원 마일드 참치', '8801047116295', '3000', '50');
+
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 살코기 오뚜기참치', '8801045640204', '2700', '12');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('  동원 참치', 'FOOD10000067', '3400', '30');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 동원 야채참치', '8801047121336', '3000', '50');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 고추 참치', '8801047123736', '3000', '50');
+>>>>>>> 86931517e9167fe11764aed73651139c93dfd4ee

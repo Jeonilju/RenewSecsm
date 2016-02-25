@@ -116,20 +116,23 @@
 							var newCell3  = newRow.insertCell(2);
 							var newCell4  = newRow.insertCell(3);
 							var newCell5  = newRow.insertCell(4);
-				
+							var newCell6  = newRow.insertCell(5);
+
 							// Append a text node to the cell
-							var newText  = document.createTextNode('New row')
+							var newText  = document.createTextNode('New row');
+							
 							newCell1.appendChild(document.createTextNode(data.regDate));
 							newCell2.appendChild(document.createTextNode(data.name));
 							newCell3.appendChild(document.createTextNode(data.count));
 							newCell4.appendChild(document.createTextNode(data.price));
+							newCell5.appendChild(document.createTextNode(data.with_buy));
 							
 							var button = document.createElement('input');
 							button.setAttribute('type','button');
 							button.setAttribute('class','btn btn-default');
 							button.setAttribute('value','환불');
 							button.setAttribute('OnClick','refund(' +data.id + ',0)');
-							newCell5.appendChild(button);
+							newCell6.appendChild(button);
 							
 							
 						}
@@ -138,7 +141,7 @@
 			
 <!-- 내역 조회 -->
 <div class="modal fade" id="pxBuyItemsListModal" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title" id="SignInModalLabel">내역 조회</h4>
@@ -154,6 +157,7 @@
 				   	     <th>내용</th>
 				   	     <th>수량</th>
 				   	     <th>금액</th>
+				   	     <th>함께 구매한 사람</th>
 				   	     <th>비고</th>
 				   	   </tr>
 				  	  </thead>

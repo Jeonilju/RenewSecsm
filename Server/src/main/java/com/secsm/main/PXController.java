@@ -1,10 +1,15 @@
 package com.secsm.main;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.annotations.GenerationTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +30,7 @@ import com.secsm.info.AccountInfo;
 import com.secsm.info.PxItemsInfo;
 import com.secsm.info.PxLogInfo;
 import com.secsm.info.PxReqInfo;
+import com.secsm.conf.*;
 
 @Controller
 public class PXController {
@@ -75,10 +81,15 @@ public class PXController {
 	public String PXController_buyItem(HttpServletRequest request
 			, @RequestParam("type") int type
 			, @RequestParam("code") String code
-			, @RequestParam("cnt") int cnt){
+			, @RequestParam("cnt") int cnt
+			, @RequestParam("templist") List<Integer> templist
+			, @RequestParam("templen") int templen
+			){
 		
 		logger.info("api_pxBuyItem");
-		System.out.println(code);
+	
+		System.out.println(templist);
+		
 		AccountInfo info = Util.getLoginedUser(request);
 		if(info == null){
 			return "index";
@@ -102,11 +113,43 @@ public class PXController {
 				return "2";
 			}
 			else{
-			accountDao.usePxAmount(info.getId(), result.get(0).getPrice()*cnt);
-			pxLogDao.create(info.getId(), result.get(0).getId(), 0, cnt,result.get(0).getName(),result.get(0).getPrice()*cnt);
-			pxItemsDao.useItems(result.get(0).getId(),cnt);
-			
-			return "0";
+				Date date = new Date();
+				Timestamp regDate = new Timestamp(date.getTime());
+				
+				//혼자 구매하는경우
+				if(templen == 0 ){
+					
+					
+					accountDao.usePxAmount(info.getId(), result.get(0).getPrice()*cnt);
+					pxLogDao.create(info.getId(), result.get(0).getId(), 0, cnt,result.get(0).getName(),result.get(0).getPrice()*cnt,"-",regDate);
+					pxItemsDao.useItems(result.get(0).getId(),cnt);
+					return "0";
+				}
+				else{
+					//함께 구매하는 경우
+					int totalprice = (result.get(0).getPrice()*cnt)/(templen+1);
+					String str = "";
+					List<AccountInfo> temp = accountDao.selectById(templist.get(0));
+					str = str.concat(temp.get(0).getName());
+					for(int i = 1 ; i < templen ; i++){
+						temp = accountDao.selectById(templist.get(i));
+						str = str.concat(", ");
+						str = str.concat(temp.get(0).getName());
+						
+					}
+					System.out.println(str);
+					accountDao.usePxAmount(info.getId(), totalprice);
+					pxLogDao.create(info.getId(), result.get(0).getId(), 0, cnt,result.get(0).getName(),totalprice,str,regDate);
+					pxItemsDao.useItems(result.get(0).getId(),cnt);
+					
+				//	System.out.println(templen);
+					for(int i = 0 ; i < templen ; i++){
+						accountDao.usePxAmount(templist.get(i), totalprice);
+						pxLogDao.create(templist.get(i), result.get(0).getId(), 0, cnt,result.get(0).getName(),totalprice,str,regDate);
+						pxItemsDao.useItems(result.get(0).getId(),cnt);
+					}
+					return "0";
+				}
 			}
 		}
 		else if(result.size() < 1){
@@ -232,6 +275,22 @@ public class PXController {
 		}
 	}
 	
+	/** 함께 구매할 회원 선택*/
+	@ResponseBody
+	@RequestMapping(value = "/api_togetherList", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	public String PXController_api_TogetherList(HttpServletRequest request){
+		logger.info("api_togetherList");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+	
+		List<AccountInfo> memberlist = accountDao.selectAll();
+		Gson gson = new Gson();
+		String result = gson.toJson(memberlist);
+		logger.info(result);
+		return result;
+		
+	}
+	
 	/**자동완성*/
 	@ResponseBody
 	@RequestMapping(value = "/api_px_Autocomplete", method = RequestMethod.POST ,produces = "application/text; charset=utf8")
@@ -271,10 +330,7 @@ public class PXController {
 			Gson gson = new Gson();
 			String result = gson.toJson(pxLogList);
 			return result;
-	
 		}
-		
-
 	}
 	
 	/** Semi 구매 내역 조회 */
@@ -289,12 +345,34 @@ public class PXController {
 		
 		AccountInfo info = Util.getLoginedUser(request);
 		System.out.println(info.getId());
-		List<PxLogInfo> pxLogList = pxLogDao.selectBydate(num);
+		List<PxLogInfo> pxLogList = pxLogDao.selectBydate(info.getId(),num);
 		Gson gson = new Gson();
 		String result = gson.toJson(pxLogList);
 		logger.info(result);
 		return result;
 	}
+	
+	
+	
+	/** 미정산자 명단 조회 */
+	@ResponseBody
+	@RequestMapping(value = "/api_not_paid_list", method = RequestMethod.POST,produces = "application/text; charset=utf8")
+	public String PXController_not_paid_list(HttpServletRequest request)
+	{
+		logger.info("api_not_paid_Px");
+		
+		AccountInfo info = Util.getLoginedUser(request);
+		
+		
+		List<AccountInfo> notpaidList = accountDao.selectByMoney();
+		Gson gson = new Gson();
+		String result = gson.toJson(notpaidList);
+		logger.info(result);
+		return result;
+	}
+	
+	
+	
 	
 	/** 전체 상품내역 조회 */
 	@ResponseBody

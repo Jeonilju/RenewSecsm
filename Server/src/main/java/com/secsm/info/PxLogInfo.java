@@ -15,6 +15,7 @@ public class PxLogInfo {
 	
 	private String name;
 	private int price;
+	private String with_buy;
 	
 	public PxLogInfo(int id, int accountId, int pxItemsId, Timestamp regDate, int type, int count) {
 		super();
@@ -27,7 +28,7 @@ public class PxLogInfo {
 	}
 	
 	public PxLogInfo(int id, int accountId, int pxItemsId, Timestamp regDate, int type, int count, String name,
-			int price) {
+			int price, String with_buy) {
 		super();
 		this.id = id;
 		this.accountId = accountId;
@@ -37,9 +38,19 @@ public class PxLogInfo {
 		this.count = count;
 		this.name = name;
 		this.price = price;
+		this.with_buy = with_buy;
 	}
 
 	
+	
+	public String getWith_buy() {
+		return with_buy;
+	}
+
+	public void setWith_buy(String with_buy) {
+		this.with_buy = with_buy;
+	}
+
 	public String getName() {
 		return name;
 	}

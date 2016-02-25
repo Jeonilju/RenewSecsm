@@ -61,7 +61,6 @@ public class SecsmController {
 		return resultIndex(request);
 	}
 	
-	
 	public static String resultIndex(HttpServletRequest request){
 		AccountInfo info = Util.getLoginedUser(request);
 		if(info == null){
@@ -124,10 +123,18 @@ public class SecsmController {
 			, @RequestParam("User_name") String User_name
 			, @RequestParam("User_gender") int User_gender
 			, @RequestParam("User_phone") String User_phone
+<<<<<<< HEAD
 			) {
 		logger.info("api_signup");
 		
 		accountDao.create(User_name, User_mail, User_password, User_phone, -1, User_gender);
+=======
+			, @RequestParam("User_grade") int User_grade
+			, @RequestParam("User_cardnum") int User_cardnum
+			) {
+		logger.info("api_signup");
+		accountDao.create(User_name, User_mail, User_password, User_phone, User_grade, User_gender, User_cardnum);
+>>>>>>> 86931517e9167fe11764aed73651139c93dfd4ee
 		
 		return "200";
 		

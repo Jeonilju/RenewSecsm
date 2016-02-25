@@ -14,7 +14,14 @@
 					"re_User_password" + "=" + $("#re_User_password").val() + "&" + 
 					"User_name" + "=" + $("#User_name").val() + "&" + 
 					"User_gender" + "=" + $("#User_gender").val() + "&" + 
+<<<<<<< HEAD
 					"User_phone" + "="+ $("#User_phone").val();
+=======
+					"User_phone" + "="+ $("#User_phone").val() + "&" + 
+					"User_cardnum" + "="+ $("#User_cardnum").val() + "&" + 
+					"User_grade" + "="+ $("#User_grade").val();
+	//	alert(param);
+>>>>>>> 86931517e9167fe11764aed73651139c93dfd4ee
 		
 		var form = document.accountSignUpForm;
 	
@@ -219,9 +226,18 @@
 					
 					<div class="form-group">
 						<label for="User_phone">핸드폰 번호</label> 
+<<<<<<< HEAD
 						<input name="User_phone" id="User_phone" class="form-control" placeholder = "010-1234-5678">
+=======
+						<input name="User_phone" id="User_phone" class="form-control" placeholder = "010-1234-5678"/>
+>>>>>>> 86931517e9167fe11764aed73651139c93dfd4ee
 					</div>
 					
+					
+					<div class="form-group">
+						<label for="User_cardnum">고유 식별 번호</label> 
+						<input name="User_cardnum" id="User_cardnum" class="form-control"/>
+					</div>
 					
 				</div>
 				<div class="modal-footer">
