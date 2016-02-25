@@ -55,7 +55,7 @@ public class AccountDao implements AccountIDao {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
-								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"));
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"), resultSet.getInt("cardnum"));
 					}
 				});
 	}
@@ -67,7 +67,7 @@ public class AccountDao implements AccountIDao {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
-								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"));
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"), resultSet.getInt("cardnum"));
 					}
 				});
 	}
