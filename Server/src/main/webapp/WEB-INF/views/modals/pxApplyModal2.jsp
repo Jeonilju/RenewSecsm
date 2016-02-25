@@ -106,10 +106,10 @@
 		for(var index = 0;index < jsonArr.length;index++){
 			var data = jsonArr[index];
 			var tableRef = document.getElementById('pxReqTable2').getElementsByTagName('tbody')[0];
-
+			
+			
 			// Insert a row in the table at the last row
 			var newRow   = tableRef.insertRow(tableRef.rows.length);
-
 			// Insert a cell in the row at index 0
 			var newCell1  = newRow.insertCell(0);
 			var newCell2  = newRow.insertCell(1);
@@ -118,7 +118,7 @@
 
 			// Append a text node to the cell
 			var newText  = document.createTextNode('New row')
-			newCell1.appendChild(document.createTextNode(data.id));
+			newCell1.appendChild(document.createTextNode(index+1));
 			newCell2.appendChild(document.createTextNode(data.title));
 			newCell3.appendChild(document.createTextNode(data.context));
 			

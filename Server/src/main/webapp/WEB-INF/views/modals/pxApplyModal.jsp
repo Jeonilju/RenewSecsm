@@ -109,6 +109,7 @@
 			var data = jsonArr[index];
 			var tableRef = document.getElementById('pxReqTable').getElementsByTagName('tbody')[0];
 
+		
 			// Insert a row in the table at the last row
 			var newRow   = tableRef.insertRow(tableRef.rows.length);
 			 
@@ -121,7 +122,7 @@
 			
 			// Append a text node to the cell
 			var newText  = document.createTextNode('New row')
-			newCell1.appendChild(document.createTextNode(data.id));
+			newCell1.appendChild(document.createTextNode(index+1));
 			newCell2.appendChild(document.createTextNode(data.title));
 			newCell3.appendChild(document.createTextNode(data.context));
 			

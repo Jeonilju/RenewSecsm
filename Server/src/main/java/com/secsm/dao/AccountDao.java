@@ -46,7 +46,31 @@ public class AccountDao implements AccountIDao {
 					}
 				});
 	}
-
+	
+	public List<AccountInfo> selectByMoney() {
+		return jdbcTemplate.query("select * from account order by Px_amount asc", new Object[] {  },
+				new RowMapper<AccountInfo>() {
+					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
+								resultSet.getString("email"), resultSet.getString("pw"),
+								resultSet.getString("phone"), resultSet.getInt("grade")
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"));
+					}
+				});
+	}
+	
+	public List<AccountInfo> selectById(int id) {
+		return jdbcTemplate.query("select * from account where id = ?", new Object[] { id },
+				new RowMapper<AccountInfo>() {
+					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
+								resultSet.getString("email"), resultSet.getString("pw"),
+								resultSet.getString("phone"), resultSet.getInt("grade")
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"));
+					}
+				});
+	}
+	
 	public List<AccountInfo> select(String email) {
 		return jdbcTemplate.query("select * from account where email = ?", new Object[] { email },
 				new RowMapper<AccountInfo>() {

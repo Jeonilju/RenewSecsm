@@ -17,7 +17,6 @@
     	
     	<script type="text/javascript">
     	
-    	
     		/** 아이템 구매 */
     		function buyItemss(){
     				
@@ -52,10 +51,13 @@
     	</script>
     	
 	</head>
+	
 	<jsp:include page="base/nav.jsp" flush="true" />
-	<body onload="onLoad();getPxAmount();">
-
+	
+		<body onload="onLoad();getPxAmount();">
+		
 		<div class="container body-content" style="margin-top: 150px;">
+			
 			<div class="row-fluid">
 				<h1 style="
 				height: 10px;
@@ -65,7 +67,8 @@
 			
 			
 			<div class = "buy_item">
-				<div class="modal-body" >
+				 <div class="modal-body" >
+				
 				
 					<div class="row-fluid" style="height: 40px;">
 					<div class="col-md-9"></div>
@@ -91,7 +94,8 @@
 					</div>
 					
 					<form id= "buy_form" name = "buy_form" onsubmit="buyItem();getPxAmount();inputreset(0); return false">
-					<div  class="row-fluid">
+					<div  class="row-fluid" >
+						<div  class="form-inline">
 						<div class="col-md-1"></div>
 						<div class="col-md-3" style="width: 180px;">
 							<select id="slItemType" name="slItemType" class="form-control" style="width: 132.22222px;">
@@ -107,15 +111,21 @@
 							<input id="item_cnt" name="item_cnt" class="form-control" type="text" style="margin-left: 50px;width: 82.22222px;">
 						</div>
 						
-						<div class="col-md-5">
-							<input type="submit" class="btn btn-default" value="구입" style="margin-left: 50px;">
+						<div class="col-md-2">
+							<button type="button" onclick="member_select();" class="btn" data-toggle="modal" data-target="#pxItem_buy_together" style="margin-left: 60px;">함께 구매</button>
+						</div>
+						
+						<div class="col-md-1">
+							<input type="submit" class="btn btn-default" value="구입" style="margin-left: 0px;">
 						</div>
 					</div>
+					</div>
+					
 				</form>
 					
 					<div style="height: 60px;"></div>
 				</div>
-			
+				
 				<div id = "cur_list" name = "cur_list" style="display: none; margin-left: 130px;">
 				<div style="height: 40px;"></div>
 					
@@ -130,6 +140,7 @@
 				   	     <td style="width: 166px;">상품명</td>
 				   	     <td style="width: 166px;">금액</td>
 				   	     <td style="width: 86px;">수량</td>
+				   	     <td style="width: 166px;">함께구매한 사람</td>
 				   	   </tr>
 				  	  </thead>
 				   		 <tbody id = "pxCurrentbuyTbody">
@@ -142,7 +153,7 @@
 				<div id = "empty_list" name = "empty_list" style="display: ;">
 					<div style="height: 150px;"></div>
 				</div>
-				
+
 			</div>
 			
 			<div class="row-fluid">
@@ -152,6 +163,8 @@
 						if(accountInfo.getGrade() == 4 || accountInfo.getGrade() == 0){
 							out.println("<button onclick= \"refreshReqTable2(0);inputreset(4);\" type=\"button\" class=\"btn\" style=\"margin: 5px; \" data-toggle=\"modal\" data-target=\"#pxApplyModal2\" >상품 요청</button>");
 							out.println("<button onclick= \"inputreset(2);\" type=\"button\" class=\"btn\" style=\"margin: 5px;\" data-toggle=\"modal\" data-target=\"#pxAddModal\" >상품 추가</button>");
+							out.println("<button onclick= \"not_paid_list();\" type=\"button\" class=\"btn\" style=\"margin: 5px;\" data-toggle=\"modal\" data-target=\"#view_Not_paidList\" >미정산 회원 보기</button>");
+
 						}
 						else{
 							out.println("<button onclick= \"refreshReqTable(0);inputreset(3);\" type=\"button\" class=\"btn\" style=\"margin: 5px; \" data-toggle=\"modal\" data-target=\"#pxApplyModal\" >상품 요청</button>");
@@ -160,9 +173,11 @@
 					<button type="button" onclick = "total_item_list();" class="btn" style="margin: 5px; " data-toggle="modal" data-target="#pxItem_list" >전체 상품목록</button>
 					
 					
+					
 			</div>
 			
-		</div>
+		 </div>
+		
 		<jsp:include page="modals/pxBuyItemsModal.jsp" flush="false" />
 		<jsp:include page="modals/pxBuyItemsListModal.jsp" flush="false" />
 		<jsp:include page="modals/pxApplyModal.jsp" flush="false" />
@@ -170,6 +185,8 @@
 		<jsp:include page="modals/pxApplyModal2.jsp" flush="false" />
 		<jsp:include page="modals/pxChargemoneyModal.jsp" flush="false" />	
 		<jsp:include page="modals/pxItem_list.jsp" flush="false" />
+		<jsp:include page="modals/pxItem_buy_together.jsp" flush="false" />
+		<jsp:include page="modals/view_Not_paidList.jsp" flush="false" />
 		<jsp:include page="base/foot.jsp" flush="false"/>
 	</body>
 </html>

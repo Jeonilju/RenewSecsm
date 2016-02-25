@@ -68,7 +68,7 @@
 			
 			<div class="modal-body">
 			
-				<div id="total_item_list" name="total_item_list">
+				<div id="total_item_list" name="total_item_list" style = "overflow : scroll; height : 500px;">
 					<table class="table table-hover" id="item_list_table">
 					    <thead>
 					      <tr>
