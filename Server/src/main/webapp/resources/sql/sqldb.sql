@@ -517,3 +517,6 @@ DROP FOREIGN KEY `attendance_account_id`;
 ALTER TABLE `secsm`.`attendance` 
 DROP COLUMN `Account_id`,
 DROP INDEX `attendance_account_id_idx` ;
+
+ALTER TABLE `secsm``px_log` 
+ADD COLUMN `with_buy` varchar(100);
