@@ -29,34 +29,41 @@ public class AttendanceDao implements AttendanceIDao {
 	}
 	
 	public void create(int accountId){
-		jdbcTemplate.update("insert into attendance (accountId) values (?)", new Object[] { accountId });
+		jdbcTemplate.update("insert into attendance (cardnum, account_id) values ( (select cardnum from account where id = ?),?)", new Object[] { accountId, accountId });
+	}
+	
+	public void createByCardNum(int cardnum){
+		jdbcTemplate.update("insert into attendance (cardnum, account_id) values (?, (select id from account where cardnum = ?))", new Object[] { cardnum , cardnum });
 	}
 	
 	public List<AttendanceInfo> selectAll(){
 		return jdbcTemplate.query("select * from attendance",
 				new RowMapper<AttendanceInfo>() {
 					public AttendanceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new AttendanceInfo(resultSet.getInt("accountId"), resultSet.getTimestamp("regDate"));
+						return new AttendanceInfo(resultSet.getTimestamp("regDate")
+								, resultSet.getInt("cardnum"));
 					}
 				});
 	}
 
-	public List<AttendanceInfo> select(int accountId){
-		return jdbcTemplate.query("select * from attendance where account_Id = ?", new Object[] { accountId },
+	public List<AttendanceInfo> select(int cardnum){
+		return jdbcTemplate.query("select * from attendance where cardnum = ?", new Object[] { cardnum },
 				new RowMapper<AttendanceInfo>() {
 					public AttendanceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new AttendanceInfo(resultSet.getInt("account_Id"), resultSet.getTimestamp("regDate"));
+						return new AttendanceInfo(resultSet.getTimestamp("regDate")
+								, resultSet.getInt("cardnum"));
 					}
 				});
 		
 	}
 	
-	public List<AttendanceInfo> selectTime(int accountId,Timestamp startDate, Timestamp endDate){
-		return jdbcTemplate.query("select * from attendance where account_Id = ? AND regDate >=  ? AND regDate < ?", 
-				new Object[] { accountId, startDate, endDate },
+	public List<AttendanceInfo> selectTime(int cardnum,Timestamp startDate, Timestamp endDate){
+		return jdbcTemplate.query("select * from attendance where cardnum = ? AND regDate >=  ? AND regDate < ?", 
+				new Object[] { cardnum, startDate, endDate },
 				new RowMapper<AttendanceInfo>() {
 					public AttendanceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new AttendanceInfo(resultSet.getInt("account_Id"), resultSet.getTimestamp("regDate"));
+						return new AttendanceInfo(resultSet.getTimestamp("regDate")
+								, resultSet.getInt("cardnum"));
 					}
 				});
 		

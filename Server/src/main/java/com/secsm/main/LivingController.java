@@ -62,7 +62,7 @@ public class LivingController {
 		Timestamp start = new Timestamp(past.getTime());
 		Timestamp end = new Timestamp(current.getTime());
 		
-		List<AttendanceInfo> attendanceList = attendanceDao.selectTime(info.getId(),start,end);
+		List<AttendanceInfo> attendanceList = attendanceDao.selectTime(info.getCardnum(), start, end);
 		
 		//출석률 계산
 		int[] attendanceRate={0,0,0,0,0,0,0,0,0,0,0,0};
