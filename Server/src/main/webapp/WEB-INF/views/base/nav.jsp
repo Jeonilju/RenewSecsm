@@ -65,7 +65,13 @@
 						out.println("<li class='dropdown' style='margin-left: 20px'>");
 						out.println("<a id='userDrop' href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' >User<b class='caret'></b></a>");
 						out.println("<ul class='dropdown-menu' role='menu' aria-labelledby='userDrop'>");
-						out.println("<li role='presentation'><a role='menuitem' data-toggle='modal' href='#' onclick ='goModify();' data-target='#account_SignUp' >정보수정</a></li>");
+						if(accountInfo_nav.getGrade()==0 || accountInfo_nav.getGrade()==1){
+							out.println("<li role='presentation'><a role='menuitem' data-toggle='modal' href='#' onclick ='adminAccountList(0);' data-target='#accountAdminModal' >회원관리</a></li>");
+						}
+						else{
+							out.println("<li role='presentation'><a role='menuitem' data-toggle='modal' href='#' onclick ='accountList(0);' data-target='#accountInfoModal' >회원정보</a></li>");
+						}
+						out.println("<li role='presentation'><a role='menuitem' data-toggle='modal' href='#' onclick ='accountForModify();' data-target='#accountModifyModal' >정보수정</a></li>");
 						out.println("<li role='presentation'><a role='menuitem' href='/Secsm/logout'>로그아웃</a></li>");
 						out.println("</ul>");
 						out.println("</li>");
@@ -77,8 +83,8 @@
 					}
 				%>
 				
-				
 			</ul>
 		</div>
 	</div>
 </nav>
+

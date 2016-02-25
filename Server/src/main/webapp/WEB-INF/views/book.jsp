@@ -276,10 +276,10 @@
 					<button type="button" class="btn" data-toggle="modal" data-target="#bookRequestModal" style="margin: 5px; margin-right: 0px;">도서신청</button>
 				</div>
 				<div class="pull-right">
-					<button type="button" class="btn" onclick="bookSearch(0);" style="margin: 5px;">검색</button>
+					<button type="button" class="btn" onclick="bookSearch(0);" style="margin: 5px; ">검색</button>
 				</div>
 				<div class="pull-right">
-					<input type="text" class="form-control" id="searchKeyword" maxlength="30">
+					<input type="text" class="form-control" id="searchKeyword" maxlength="30" autofocus>
 				</div>
 				<div class="pull-right">
 					<select class="form-control" name="searchCategory" id="searchCategory" style="width:10em; margin-top:6px">
@@ -330,6 +330,9 @@
 
 		<jsp:include page="base/foot.jsp" flush="false" />
 	</body>
+	<jsp:include page="modals/accountAdminModal.jsp" flush="false" />
+   	<jsp:include page="modals/accountInfoModal.jsp" flush="false" />
+	<jsp:include page="modals/accountModifyModal.jsp" flush="false" />
 	<jsp:include page="modals/bookReqModifyModal.jsp" flush="false" />
 	<jsp:include page="modals/bookModifyModal.jsp" flush="false" />
 	<jsp:include page="modals/bookImageModal.jsp" flush="false" />
