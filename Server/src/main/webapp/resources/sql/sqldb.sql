@@ -520,3 +520,21 @@ DROP INDEX `attendance_account_id_idx` ;
 
 ALTER TABLE `secsm``px_log` 
 ADD COLUMN `with_buy` varchar(100);
+
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('마가렛트', '8801062518517', '2000', '17');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('진짬뽕', '8801045522678', '2000', '12');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' Calorie Balance 과일', '8.80102E+12', '2000', '3');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('짜왕', '8801043032131', '1500', '10');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 스파클링 사과', '8801056035570', '2000', '20');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 스파클링 오랜지', '8801056035518', '1500', '12');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' Calorie Balance', '8801019306396', '2000', '4');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 티.오.피', '8801037040029', '1200', '50');
+
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 스팸 마일드', '8801007029641', '2700', '12');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 스팸 클래식', 'FOOD10000068', '3400', '30');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 동원 마일드 참치', '8801047116295', '3000', '50');
+
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 살코기 오뚜기참치', '8801045640204', '2700', '12');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('  동원 참치', 'FOOD10000067', '3400', '30');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 동원 야채참치', '8801047121336', '3000', '50');
+INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 고추 참치', '8801047123736', '3000', '50');
