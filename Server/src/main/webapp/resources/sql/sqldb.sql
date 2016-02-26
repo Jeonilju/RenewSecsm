@@ -414,11 +414,7 @@ CHANGE COLUMN `Description` `Description` TEXT NULL DEFAULT NULL COMMENT '' ;
 
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('교육부장', '교육부장', '1234', '10000', '0000', '3', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자치회장', '자치회상', '1234', '0', '0000', '1', '1');
-<<<<<<< HEAD
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('생활부장', '생활부장', '1234', '0', '0000', '2', '1');
-=======
-INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('생활부장', '생활부장', '1234', '0', '0000', '2', '0');
->>>>>>> 86931517e9167fe11764aed73651139c93dfd4ee
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('PX부장', 'PX부장', '1234', '999999', '0000', '4', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자산관리부장', '자산관리부장', '1234', '0', '0000', '5', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('기획부장', '기획부장', '1234', '0', '0000', '6', '1');
@@ -480,7 +476,7 @@ INSERT INTO `secsm`.`equipment_category` (`id`, `name`) VALUES ('2', '컴퓨터'
 INSERT INTO `secsm`.`equipment_category` (`id`, `name`) VALUES ('3', '스마트폰');
 INSERT INTO `secsm`.`equipment_category` (`id`, `name`) VALUES ('4', '기타');
 
-INSERT INTO `secsm`.`equipment_req` (`id`, `account_id`, `project_id`, `typeKr`, `typeEn`, `titleKr`, `titleEn`, `brand`, `link`, `pay`, `count`, `content`, `regdate`) VALUES ('1', '8', '2', '개발보드', 'Development_board', '라즈베리파이2_스타트_키트', 'Raspberry_pi2_start_kit', '엘레파츠', 'https://www.eleparts.co.kr/EPXDVLAD', '80740', '3', 'Wallson_몸체에_들어갈_메인보드', '2016-02-25 05:44:53');
+#INSERT INTO `secsm`.`equipment_req` (`id`, `account_id`, `project_id`, `typeKr`, `typeEn`, `titleKr`, `titleEn`, `brand`, `link`, `pay`, `count`, `content`, `regdate`) VALUES ('1', '8', '2', '개발보드', 'Development_board', '라즈베리파이2_스타트_키트', 'Raspberry_pi2_start_kit', '엘레파츠', 'https://www.eleparts.co.kr/EPXDVLAD', '80740', '3', 'Wallson_몸체에_들어갈_메인보드', '2016-02-25 05:44:53');
 
 INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('1', '10001', '컴퓨터1', '삼성', '2', '2016-02-25 05:29:05', '1', '1');
 INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('2', '10002', '컴퓨터2', '삼성', '2', '2016-02-25 05:30:11', '1', '1');
@@ -510,8 +506,6 @@ ALTER TABLE `secsm`.`attendance`
 ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT AFTER `RegDate`,
 ADD PRIMARY KEY (`id`);
 
-<<<<<<< HEAD
-=======
 ALTER TABLE `secsm`.`attendance` 
 ADD COLUMN `cardnum` INT NULL AFTER `id`;
 
@@ -524,8 +518,8 @@ ALTER TABLE `secsm`.`attendance`
 DROP COLUMN `Account_id`,
 DROP INDEX `attendance_account_id_idx` ;
 
-ALTER TABLE `secsm``px_log` 
-ADD COLUMN `with_buy` varchar(100);
+#ALTER TABLE `secsm``px_log` 
+#ADD COLUMN `with_buy` varchar(100);
 
 INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('마가렛트', '8801062518517', '2000', '17');
 INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('진짬뽕', '8801045522678', '2000', '12');
@@ -544,4 +538,10 @@ INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 살�
 INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('  동원 참치', 'FOOD10000067', '3400', '30');
 INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 동원 야채참치', '8801047121336', '3000', '50');
 INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 고추 참치', '8801047123736', '3000', '50');
->>>>>>> 86931517e9167fe11764aed73651139c93dfd4ee
+
+ALTER TABLE `secsm`.`account` 
+ADD UNIQUE INDEX `Email_UNIQUE` (`Email` ASC);
+
+ALTER TABLE `secsm`.`question` 
+ADD COLUMN `code` VARCHAR(50) NULL DEFAULT '`|#' AFTER `startDate`;
+

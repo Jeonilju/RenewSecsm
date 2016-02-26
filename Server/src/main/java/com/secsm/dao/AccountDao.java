@@ -27,9 +27,12 @@ public class AccountDao implements AccountIDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
+<<<<<<< HEAD
 	public void create(String name, String email, String pw, String phone,int grade,int gender, int cardnum){
 		jdbcTemplate.update("insert into account (name, email, pw, phone,Grade,gender, cardnum) values (?, ?, ?, ?, ?, ?, ?)", new Object[] { name, email, pw, phone,grade,gender, cardnum });
 	}
+=======
+>>>>>>> 05c0c31a60e383bb558a47a66108f2d47587b59c
 	public void modifyGrade(int id, int grade){
 		jdbcTemplate.update("update account set grade=? where id=?", 
 				new Object[] {grade, id});
@@ -38,6 +41,13 @@ public class AccountDao implements AccountIDao {
 	public void modify(int id, String pw, String name, String gender, String phone){
 		jdbcTemplate.update("update account set pw=?, name=?, gender=?, phone=? where id=?", 
 				new Object[] {pw, name, gender, phone, id});
+<<<<<<< HEAD
+=======
+	}
+	
+	public void create(String name, String email, String pw, String phone,int grade,int gender, int cardnum){
+		jdbcTemplate.update("insert into account (name, email, pw, phone,Grade,gender, cardnum) values (?, ?, ?, ?, ?, ?, ?)", new Object[] { name, email, pw, phone,grade,gender, cardnum });
+>>>>>>> 05c0c31a60e383bb558a47a66108f2d47587b59c
 	}
 
 	
@@ -65,6 +75,7 @@ public class AccountDao implements AccountIDao {
 				});
 	}
 	
+<<<<<<< HEAD
 
 	public List<AccountInfo> selectByPage(int page) {
 		return jdbcTemplate.query("select * from account where grade!=10 order by grade limit ?,7",
@@ -89,6 +100,32 @@ public class AccountDao implements AccountIDao {
 		});
 		}
 	
+=======
+	public List<AccountInfo> selectByPage(int page) {
+		return jdbcTemplate.query("select * from account where grade!=10 order by grade limit ?,7", new Object[] { page },
+				new RowMapper<AccountInfo>() {
+					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
+								resultSet.getString("email"), resultSet.getString("pw"),
+								resultSet.getString("phone"), resultSet.getInt("grade")
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"), resultSet.getInt("cardnum"));
+					}
+				});
+}
+				
+	public List<AccountInfo> selectByMoney() {
+		return jdbcTemplate.query("select * from account order by Px_amount asc", new Object[] {  },
+				new RowMapper<AccountInfo>() {
+					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
+								resultSet.getString("email"), resultSet.getString("pw"),
+								resultSet.getString("phone"), resultSet.getInt("grade")
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"), resultSet.getInt("cardnum"));
+					}
+				});
+	}
+
+>>>>>>> 05c0c31a60e383bb558a47a66108f2d47587b59c
 	public List<AccountInfo> selectById(int id) {
 		return jdbcTemplate.query("select * from account where id = ?", new Object[] { id },
 				new RowMapper<AccountInfo>() {
@@ -100,9 +137,26 @@ public class AccountDao implements AccountIDao {
 					}
 				});
 	}
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> 05c0c31a60e383bb558a47a66108f2d47587b59c
 	public List<AccountInfo> select(String email) {
 		return jdbcTemplate.query("select * from account where email = ? and grade!=10 and grade!=-1", new Object[] { email },
+				new RowMapper<AccountInfo>() {
+					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
+								resultSet.getString("email"), resultSet.getString("pw"),
+								resultSet.getString("phone"), resultSet.getInt("grade")
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender")
+								, resultSet.getInt("cardnum"));
+					}
+				});
+	}
+	
+	public List<AccountInfo> selectByEmailNGrade(String email, int grade) {
+		return jdbcTemplate.query("select * from account where email = ? and grade =?", new Object[] { email, grade },
 				new RowMapper<AccountInfo>() {
 					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),

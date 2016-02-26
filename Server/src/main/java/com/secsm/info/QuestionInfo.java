@@ -12,8 +12,10 @@ public class QuestionInfo {
 	private Timestamp startDate;
 	private Timestamp endDate;
 	
+	private String code;
+	
 	public QuestionInfo(int id, int accountId, String title, String content, Timestamp regDate, Timestamp startDate,
-			Timestamp endDate) {
+			Timestamp endDate, String code) {
 		super();
 		this.id = id;
 		this.accountId = accountId;
@@ -22,6 +24,7 @@ public class QuestionInfo {
 		this.regDate = regDate;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.code = code;
 	}
 	public int getId() {
 		return id;
@@ -64,5 +67,11 @@ public class QuestionInfo {
 	}
 	public void setEndDate(Timestamp endDate) {
 		this.endDate = endDate;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
 	}
 }
