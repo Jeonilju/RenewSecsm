@@ -126,9 +126,11 @@ public class PXController {
 				else{
 					//함께 구매하는 경우
 					int totalprice = (result.get(0).getPrice()*cnt)/(templen+1);
+					
+					//구매하는 사람 본인 with_buy str
 					String str = "";
-					List<AccountInfo> temp = accountDao.selectById(templist.get(0));
-					str = str.concat(temp.get(0).getName());
+				//	List<AccountInfo> temp = accountDao.selectById(templist.get(0));
+					str = str.concat(info.getName());
 					
 					int random_type = (int)(Math.random()*100000000);
 					
@@ -136,8 +138,8 @@ public class PXController {
 						random_type = (int)(Math.random()*100000000);
 					}
 					
-					for(int i = 1 ; i < templen ; i++){
-						temp = accountDao.selectById(templist.get(i));
+					for(int i = 0 ; i < templen ; i++){
+						List<AccountInfo> temp = accountDao.selectById(templist.get(i));
 						str = str.concat(",");
 						str = str.concat(temp.get(0).getName());
 						
@@ -234,20 +236,25 @@ public class PXController {
 			accountDao.refund_usePxAmount(result.get(0).getAccountId(), result.get(0).getPrice());
 			pxLogDao.delete(idx);
 			pxItemsDao.refund_useItems(result.get(0).getPxItemsId(), result.get(0).getCount());
-			System.out.println(with_name[0]);
+		//	System.out.println(with_name[0]);
 			
 			if(with_name[0].equals("-")){
 				return "200";
 			}
 			else{
+				
+				List<AccountInfo> duplicate_user = accountDao.selectById(result.get(0).getAccountId());
+				
 				for(int i = 0 ; i < with_name.length ; i++){
 					System.out.println(with_name[i]);
-					int find_type = result.get(0).getType();
-					List<AccountInfo> refund_member = accountDao.selectByName(with_name[i]);
-					List<PxLogInfo> result1 = pxLogDao.selectByType(find_type,refund_member.get(0).getId());
-					
-					accountDao.refund_usePxAmount(result1.get(0).getAccountId(), result1.get(0).getPrice());
-					pxLogDao.delete(result1.get(0).getId());
+					if(!duplicate_user.get(0).getName().equals(with_name[i])){
+						int find_type = result.get(0).getType();
+						List<AccountInfo> refund_member = accountDao.selectByName(with_name[i]);
+						List<PxLogInfo> result1 = pxLogDao.selectByType(find_type,refund_member.get(0).getId());
+						
+						accountDao.refund_usePxAmount(result1.get(0).getAccountId(), result1.get(0).getPrice());
+						pxLogDao.delete(result1.get(0).getId());
+					}
 				}
 				return "200";
 			}

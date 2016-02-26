@@ -68,15 +68,27 @@
 
 		if(form.etItemCode.value == ""){
 			alert("삼풍명 혹은 바코드를 입력하지 않앗습니다.");	
+			arr_clear();
+			var len = templist.length;
+			for(var i = 0; i< len ; i++){templist.pop();}
 		}
 		else if(form.item_cnt.value == ""){
 			alert("수량을 입력하지 않앗습니다.");	
+			arr_clear();
+			var len = templist.length;
+			for(var i = 0; i< len ; i++){templist.pop();}
 		}
 		else if(form.etItemCode.value.length >=100){
 			alert("삼풍명 혹은 바코드의 길이는 100자를 넘을 수 없습니다.");	
+			arr_clear();
+			var len = templist.length;
+			for(var i = 0; i< len ; i++){templist.pop();}
 		}
 		else if(form.item_cnt.value.length >= 1000000){
 			alert("입력할 수 있는 수량이 초과되었습니다.");
+			arr_clear();
+			var len = templist.length;
+			for(var i = 0; i< len ; i++){templist.pop();}
 		}
 		else{
 			$.ajax({
@@ -103,9 +115,15 @@
 				{
 					// 해당 상품 없음
 					alert('해당 상품이 존재하지 않습니다.');
+					arr_clear();
+					var len = templist.length;
+					for(var i = 0; i< len ; i++){templist.pop();}
 				}
 				else if(response == '2'){
 					alert('수량이 부족합니다. 상품신청을 해주세요.');
+					arr_clear();
+					var len = templist.length;
+					for(var i = 0; i< len ; i++){templist.pop();}
 				}
 				else{
 					alert('알수없음');
