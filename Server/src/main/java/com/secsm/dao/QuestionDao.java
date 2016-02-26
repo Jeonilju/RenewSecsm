@@ -41,6 +41,19 @@ public class QuestionDao {
 		
 		return questionId;
 	}
+
+	public int create(int accountId, String title, String content, Timestamp startDate, Timestamp endDate, String code){
+		jdbcTemplate.update("insert into question (accountId, title, content, startDate, endDate, code) values (?, ?, ?, ?, ?, ?)"
+				, new Object[] {accountId, title, content, startDate, endDate, code});
+		
+		int questionId = jdbcTemplate.queryForInt("select id from question where "
+				+ "accountId = " + accountId + " and " 
+				+ "title = '" + title + "' and " 
+				+ "content = '" + content + "';");
+		
+		return questionId;
+	}
+
 	
 	public List<QuestionInfo> selectAll(){
 		return jdbcTemplate.query("select * from question",
@@ -49,7 +62,7 @@ public class QuestionDao {
 						return new QuestionInfo(resultSet.getInt("id"), resultSet.getInt("accountId")
 								, resultSet.getString("title"), resultSet.getString("content")
 								, resultSet.getTimestamp("regDate"), resultSet.getTimestamp("startDate")
-								, resultSet.getTimestamp("endDate"));
+								, resultSet.getTimestamp("endDate"), resultSet.getString("code"));
 					}
 				});
 	}
@@ -61,7 +74,7 @@ public class QuestionDao {
 						return new QuestionInfo(resultSet.getInt("id"), resultSet.getInt("accountId")
 								, resultSet.getString("title"), resultSet.getString("content")
 								, resultSet.getTimestamp("regDate"), resultSet.getTimestamp("startDate")
-								, resultSet.getTimestamp("endDate"));
+								, resultSet.getTimestamp("endDate"), resultSet.getString("code"));
 					}
 				});
 	}
@@ -73,7 +86,7 @@ public class QuestionDao {
 						return new QuestionInfo(resultSet.getInt("id"), resultSet.getInt("accountId")
 								, resultSet.getString("title"), resultSet.getString("content")
 								, resultSet.getTimestamp("regDate"), resultSet.getTimestamp("startDate")
-								, resultSet.getTimestamp("endDate"));
+								, resultSet.getTimestamp("endDate"), resultSet.getString("code"));
 					}
 				});
 	}
@@ -86,7 +99,7 @@ public class QuestionDao {
 				return new QuestionInfo(resultSet.getInt("id"), resultSet.getInt("accountId")
 						, resultSet.getString("title"), resultSet.getString("content")
 						, resultSet.getTimestamp("regDate"), resultSet.getTimestamp("startDate")
-						, resultSet.getTimestamp("endDate"));
+						, resultSet.getTimestamp("endDate"), resultSet.getString("code"));
 			}
 		});
 		
@@ -115,7 +128,7 @@ public class QuestionDao {
 				return new QuestionInfo(resultSet.getInt("id"), resultSet.getInt("accountId")
 						, resultSet.getString("title"), resultSet.getString("content")
 						, resultSet.getTimestamp("regDate"), resultSet.getTimestamp("startDate")
-						, resultSet.getTimestamp("endDate"));
+						, resultSet.getTimestamp("endDate"), resultSet.getString("code"));
 			}
 		});
 		

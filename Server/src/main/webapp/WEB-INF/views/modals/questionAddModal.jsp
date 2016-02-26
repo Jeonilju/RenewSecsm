@@ -60,10 +60,21 @@
 		    qContentList.push(qInfo);
 		 });
 		
+		var isChecked = document.getElementById("questionAddIdCode").checked;
+		var questionAddCode = "";
+		if(isChecked){
+			questionAddCode = $("#questionAddCode").val()
+		}
+		else{
+			
+		}
+		
 		var param = "questionAddTitle" + "=" + $("#questionAddTitle").val() + "&" + 
 					"questionAddContent" + "=" + $("#questionAddContent").val() + "&" +
 					"questionAddStartDate" + "=" + $("#questionAddStartDate").val() + "&" +
 					"questionAddEndDate" + "=" + $("#questionAddEndDate").val() + "&" +
+					"questionAddIdCode" + "=" + $("#questionAddIdCode").val() + "&" +
+					"questionAddCode" + "=" + $("#questionAddCode").val() + "&" +
 					"questionAddQuestions" + "=" + JSON.stringify(qContentList);
 		
 		$.ajax({
@@ -180,6 +191,12 @@
 					<div class="form-group">
 						마감날짜
 						<input name="questionAddEndDate" id="questionAddEndDate" type="text" class="form-control"/>
+					</div>
+					
+					<div class="form-group">
+						비공개
+						<input name='questionAddIdCode' id='questionAddIdCode' type="checkbox"/>
+						<input name="questionAddCode" id="questionAddCode" type="text" class="form-control"/>
 					</div>
 					
 					<div class="form-group">
