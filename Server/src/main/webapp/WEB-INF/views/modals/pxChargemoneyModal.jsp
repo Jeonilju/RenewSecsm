@@ -98,6 +98,19 @@
 		}
 	}
 	
+	function showKeyCode1(event) {
+		event = event || window.event;
+		var keyID = (event.which) ? event.which : event.keyCode;
+		if(  keyID == 13 )
+		{
+			return false;
+		}
+		else
+		{
+			return;
+		}
+	}
+	
 </script>
 
 <!-- 금액 충전 모달 -->
