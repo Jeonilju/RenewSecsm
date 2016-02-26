@@ -453,6 +453,9 @@ INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Gra
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자산관리부장', '자산관리부장', '1234', '0', '0000', '5', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('기획부장', '기획부장', '1234', '0', '0000', '6', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('기존회원', '기존회원', '1234', '0', '0000', '8', '1');
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('운영자', '운영자', '1234', '0', '0000', '0', '1');
+
+
 
 INSERT INTO `secsm`.`book_category` (`id`, `name`) VALUES ('1', 'ALL');
 INSERT INTO `secsm`.`book_category` (`id`, `name`) VALUES ('2', '소프트웨어');
@@ -525,11 +528,11 @@ INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `ty
 INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('11', '20003', '갤럭시S3', '삼성', '3', '2016-02-25 05:32:31', '3', '3');
 INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('12', '20004', '갤럭시S4', '삼성', '3', '2016-02-25 05:32:44', '2', '2');
 INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('13', '20005', '갤럭시S6', '삼성', '3', '2016-02-25 05:33:03', '1', '1');
-INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('14', '20006', '갤럭시 탭 프로', '삼성', '3', '2016-02-25 05:35:55', '1', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('14', '20006', '갤럭시 탭 프로', '삼성', '3', '2016-02-25 05:35:55', '0', '1');
 INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('15', '20007', '갤럭시 노트3', '삼성', '3', '2016-02-25 05:38:58', '2', '2');
-INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('16', '20008', '갤럭시 노트5', '삼성', '3', '2016-02-25 05:39:07', '1', '1');
-INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('17', '30001', '오큘러스', '구글', '4', '2016-02-25 05:39:12', '2', '2');
-INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('18', '30002', 'iptime 공유기', 'iptime', '4', '2016-02-25 05:39:14', '3', '3');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('16', '20008', '갤럭시 노트5', '삼성', '3', '2016-02-25 05:39:07', '0', '1');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('17', '30001', '오큘러스', '구글', '4', '2016-02-25 05:39:12', '1', '2');
+INSERT INTO `secsm`.`equipment_items` (`id`, `code`, `name`, `manufacturer`, `type`, `regDate`, `count`, `totalCount`) VALUES ('18', '30002', 'iptime 공유기', 'iptime', '4', '2016-02-25 05:39:14', '2', '3');
 
 INSERT INTO `secsm`.`equipment_log` (`ID`, `Account_id`, `Equipment_items_id`, `StartDate`, `EndDate`, `status`) VALUES ('1', '8', '16', '2016-01-03 00:00:00', '2016-02-02 00:00:00', '1');
 INSERT INTO `secsm`.`equipment_log` (`ID`, `Account_id`, `Equipment_items_id`, `StartDate`, `EndDate`, `status`) VALUES ('2', '8', '14', '2016-01-15 00:00:00', '2016-01-25 00:00:00', '1');

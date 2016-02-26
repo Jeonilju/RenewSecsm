@@ -193,6 +193,67 @@
 			}
 			});
 		}	
+    	
+    	
+
+		var page = 0;
+		
+		function nextProject(){
+			page+=10;
+			var param = "page" + "="+ page;
+			$.ajax({
+				url : "/Secsm/api_getQuestionPage",
+				type : "POST",
+				data : param,
+				cache : false,
+				async : false,
+				dataType : "text",
+		
+				success : function(response) {	
+					
+					$("#questionTableBody").empty();
+					if(response == ""){
+						page -= 10;
+					}
+					$('#questionTable > tbody:last').append(response);
+				},
+				error : function(request, status, error) {
+					if (request.status != '0') {
+						alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+					}
+				}
+		
+			});
+		}
+		
+		function preProject(){
+			if(page > 0)
+				page-=10;	
+			else
+				page = 0;
+			
+			var param = "page" + "="+ page;
+			$.ajax({
+				url : "/Secsm/api_getQuestionPage",
+				type : "POST",
+				data : param,
+				cache : false,
+				async : false,
+				dataType : "text",
+		
+				success : function(response) {	
+					$("#questionTableBody").empty();
+					$('#questionTable > tbody:last').append(response);
+				},
+				error : function(request, status, error) {
+					if (request.status != '0') {
+						alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+					}
+				}
+		
+			});
+		}
+    	
     	</script>
     	
 	</head>
@@ -209,7 +270,7 @@
 			</div>
 			
 			<div>
-				<table class="table table-hover">
+				<table class="table table-hover" name="questionTable" id="questionTable">
 				    <thead>
 				      <tr>
 				        <th>No.</th>
@@ -219,7 +280,7 @@
 				        <th>비고</th>
 				      </tr>
 				    </thead>
-				    <tbody>
+				    <tbody name="questionTableBody" id="questionTableBody">
 				    	<%
 				    		for(QuestionInfo info : questionList){
 				    			if(info.getCode().equals("`|#")){
@@ -244,6 +305,12 @@
 				    	%>
 				    </tbody>
 				  </table>
+				  
+				  <div>
+					<button type="button" class="btn" onclick="preProject();">이전</button>
+					<button type="button" class="btn" onclick="nextProject();">다음</button>
+				</div>
+			
 			</div>
 			
 			<jsp:include page="base/foot.jsp" flush="false" />
