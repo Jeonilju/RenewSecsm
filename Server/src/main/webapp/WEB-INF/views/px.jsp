@@ -48,6 +48,11 @@
     			temp_list.style.display = "none";
     		}
     		
+    		function captureReturnKey(e) { 
+    		    if(e.keyCode==13 && e.srcElement.type != 'textarea') 
+    		    return false; 
+    		} 
+    		
     	</script>
     	
 	</head>
@@ -93,7 +98,7 @@
 	
 					</div>
 					
-					<form id= "buy_form" name = "buy_form" onsubmit="buyItem();getPxAmount();inputreset(0); return false">
+					<form id= "buy_form" name = "buy_form" onkeydown="return captureReturnKey(event)" onsubmit="buyItem();getPxAmount();inputreset(0); return false">
 					<div  class="row-fluid" >
 						<div  class="form-inline">
 						<div class="col-md-1"></div>
@@ -106,13 +111,12 @@
 						<div id="box2" class="col-md-3">
 							<input id="etItemCode" name="etItemCode" class="form-control ui-autocomplete-input" type="text" autofocus onkeypress="auto_list();" style="width: 302.22222px;" autocomplete="off">
 						</div>
-						
 						<div class="col-md-1">
 							<input id="item_cnt" name="item_cnt" class="form-control" type="text" style="margin-left: 50px;width: 82.22222px;">
 						</div>
 						
 						<div class="col-md-2">
-							<button type="button" onclick="member_select();" class="btn" data-toggle="modal" data-target="#pxItem_buy_together" style="margin-left: 60px;">함께 구매</button>
+							<input type="button" id = "check_together" onclick="member_select();" class="btn" data-toggle="modal"  value = "함께 구매" data-target="#pxItem_buy_together" style="margin-left: 60px;"/>
 						</div>
 						
 						<div class="col-md-1">
@@ -176,15 +180,13 @@
 					
 			</div>
 			
-<<<<<<< HEAD
-		</div>
-		<jsp:include page="modals/accountAdminModal.jsp" flush="false" />
+
+		
+  		<jsp:include page="modals/accountAdminModal.jsp" flush="false" />
 	   	<jsp:include page="modals/accountInfoModal.jsp" flush="false" />
 		<jsp:include page="modals/accountModifyModal.jsp" flush="false" />
-=======
-		 </div>
 		
->>>>>>> 86931517e9167fe11764aed73651139c93dfd4ee
+
 		<jsp:include page="modals/pxBuyItemsModal.jsp" flush="false" />
 		<jsp:include page="modals/pxBuyItemsListModal.jsp" flush="false" />
 		<jsp:include page="modals/pxApplyModal.jsp" flush="false" />

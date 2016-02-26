@@ -205,7 +205,7 @@
 	</div>
 
 
-	<jsp:include page="modals/accountAdminModal.jsp" flush="false" />
-   	<jsp:include page="modals/accountInfoModal.jsp" flush="false" />
-	<jsp:include page="modals/accountModifyModal.jsp" flush="false" />
+ <jsp:include page="modals/accountAdminModal.jsp" flush="false" />
+	   	<jsp:include page="modals/accountInfoModal.jsp" flush="false" />
+		<jsp:include page="modals/accountModifyModal.jsp" flush="false" />	
 </html>

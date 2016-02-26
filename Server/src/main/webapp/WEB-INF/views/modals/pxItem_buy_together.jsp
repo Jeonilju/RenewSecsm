@@ -72,6 +72,8 @@
 			}
 			
 		}
+	
+	
 </script>
 
 <!-- 함께 구매할 회원 선택 모달 -->
@@ -99,7 +101,7 @@
 				</div>
 				
 				<div class="modal-footer">
-				<input type = "button" class = "btn btn-default" value = "확인" Onclick = "together_list(0)" data-dismiss="modal"/>
+				<input type = "button" class = "btn btn-default" value = "확인" Onclick = "together_list(0);" data-dismiss="modal"/>
 				<button type="button" onclick = "arr_clear();" class="btn btn-danger" data-dismiss="modal">닫기</button>
 				</div>
 				

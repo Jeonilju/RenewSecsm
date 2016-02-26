@@ -64,6 +64,22 @@ public class AccountDao implements AccountIDao {
 				});
 	}
 
+	
+	public List<AccountInfo> selectNotIn(int id) {
+		return jdbcTemplate.query("select * from account where id not in (?)", new Object[] { id },
+				new RowMapper<AccountInfo>() {
+					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
+								resultSet.getString("email"), resultSet.getString("pw"),
+								resultSet.getString("phone"), resultSet.getInt("grade")
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender")
+								, resultSet.getInt("cardnum"));
+					}
+				});
+	}
+	
+	
+
 	public List<AccountInfo> selectByPage(int page) {
 		return jdbcTemplate.query("select * from account where grade!=10 order by grade limit ?,7",
 				new Object[] { page }, 
@@ -98,7 +114,19 @@ public class AccountDao implements AccountIDao {
 					}
 				});
 	}
-
+	
+	public List<AccountInfo> selectByName(String name) {
+		return jdbcTemplate.query("select * from account where name = ?", new Object[] { name },
+				new RowMapper<AccountInfo>() {
+					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
+								resultSet.getString("email"), resultSet.getString("pw"),
+								resultSet.getString("phone"), resultSet.getInt("grade")
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"), resultSet.getInt("cardnum"));
+					}
+				});
+	}
+	
 	public List<AccountInfo> select(String email) {
 		return jdbcTemplate.query("select * from account where email = ? and grade!=10 and grade!=-1", new Object[] { email },
 				new RowMapper<AccountInfo>() {
@@ -164,8 +192,6 @@ public class AccountDao implements AccountIDao {
 	}
 	
 	public void refund_usePxAmount(int id, int price){
-		System.out.println(id);
-		System.out.println(price);
 		jdbcTemplate.update("update account set "
 				+ " Px_amount = Px_amount + ?"
 			+ " where id = ?", 

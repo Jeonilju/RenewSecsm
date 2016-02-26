@@ -118,8 +118,6 @@ public class PXController {
 				
 				//혼자 구매하는경우
 				if(templen == 0 ){
-					
-					
 					accountDao.usePxAmount(info.getId(), result.get(0).getPrice()*cnt);
 					pxLogDao.create(info.getId(), result.get(0).getId(), 0, cnt,result.get(0).getName(),result.get(0).getPrice()*cnt,"-",regDate);
 					pxItemsDao.useItems(result.get(0).getId(),cnt);
@@ -131,22 +129,29 @@ public class PXController {
 					String str = "";
 					List<AccountInfo> temp = accountDao.selectById(templist.get(0));
 					str = str.concat(temp.get(0).getName());
+					
+					int random_type = (int)(Math.random()*100000000);
+					
+					while(pxLogDao.check_equal_type(random_type)>0){
+						random_type = (int)(Math.random()*100000000);
+					}
+					
 					for(int i = 1 ; i < templen ; i++){
 						temp = accountDao.selectById(templist.get(i));
-						str = str.concat(", ");
+						str = str.concat(",");
 						str = str.concat(temp.get(0).getName());
 						
 					}
+					
 					System.out.println(str);
 					accountDao.usePxAmount(info.getId(), totalprice);
-					pxLogDao.create(info.getId(), result.get(0).getId(), 0, cnt,result.get(0).getName(),totalprice,str,regDate);
+					pxLogDao.create(info.getId(), result.get(0).getId(), random_type, cnt,result.get(0).getName(),totalprice,str,regDate);
 					pxItemsDao.useItems(result.get(0).getId(),cnt);
 					
-				//	System.out.println(templen);
+				
 					for(int i = 0 ; i < templen ; i++){
 						accountDao.usePxAmount(templist.get(i), totalprice);
-						pxLogDao.create(templist.get(i), result.get(0).getId(), 0, cnt,result.get(0).getName(),totalprice,str,regDate);
-						pxItemsDao.useItems(result.get(0).getId(),cnt);
+						pxLogDao.create(templist.get(i), result.get(0).getId(), random_type, cnt,result.get(0).getName(),totalprice,str,regDate);
 					}
 					return "0";
 				}
@@ -170,7 +175,7 @@ public class PXController {
 	public String PXController_Accept(HttpServletRequest request
 			, @RequestParam("idx") int idx){
 		logger.info("api_Accept");
-		System.out.println(idx);
+	//	System.out.println(idx);
 		AccountInfo info = Util.getLoginedUser(request);
 		pxReqDao.Accept(idx);
 		
@@ -221,14 +226,31 @@ public class PXController {
 		AccountInfo info = Util.getLoginedUser(request);
 		
 		List<PxLogInfo> result = pxLogDao.selectById(idx);
-		List<PxItemsInfo> result1 = pxItemsDao.select(result.get(0).getPxItemsId());
+		String[] with_name = result.get(0).getWith_buy().split(",");
 		
 		if(result.size() == 1){
 			// 정상
-			accountDao.refund_usePxAmount(result.get(0).getAccountId(), result1.get(0).getPrice());
+			
+			accountDao.refund_usePxAmount(result.get(0).getAccountId(), result.get(0).getPrice());
 			pxLogDao.delete(idx);
 			pxItemsDao.refund_useItems(result.get(0).getPxItemsId(), result.get(0).getCount());
-			return "200";
+			System.out.println(with_name[0]);
+			
+			if(with_name[0].equals("-")){
+				return "200";
+			}
+			else{
+				for(int i = 0 ; i < with_name.length ; i++){
+					System.out.println(with_name[i]);
+					int find_type = result.get(0).getType();
+					List<AccountInfo> refund_member = accountDao.selectByName(with_name[i]);
+					List<PxLogInfo> result1 = pxLogDao.selectByType(find_type,refund_member.get(0).getId());
+					
+					accountDao.refund_usePxAmount(result1.get(0).getAccountId(), result1.get(0).getPrice());
+					pxLogDao.delete(result1.get(0).getId());
+				}
+				return "200";
+			}
 		}
 		else{
 			// 비정상
@@ -283,7 +305,7 @@ public class PXController {
 		
 		AccountInfo info = Util.getLoginedUser(request);
 	
-		List<AccountInfo> memberlist = accountDao.selectAll();
+		List<AccountInfo> memberlist = accountDao.selectNotIn(info.getId());
 		Gson gson = new Gson();
 		String result = gson.toJson(memberlist);
 		logger.info(result);

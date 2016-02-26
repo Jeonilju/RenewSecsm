@@ -17,6 +17,7 @@ CREATE TABLE `account` (
   UNIQUE KEY `ID_UNIQUE` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='사용자 정보';
 
+
 CREATE TABLE `attendance` (
   `Account_id` int(11) DEFAULT NULL,
   `cardnum` varchar(50) NULL,
@@ -24,6 +25,7 @@ CREATE TABLE `attendance` (
   KEY `attendance_account_id_idx` (`Account_id`),
   CONSTRAINT `attendance_account_id` FOREIGN KEY (`Account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='출석 관리';
+
 
 CREATE TABLE `duty` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -40,6 +42,7 @@ CREATE TABLE `duty` (
   CONSTRAINT `duty_account_id3` FOREIGN KEY (`Account_id3`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='당직';
 
+
 CREATE TABLE `notice` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `RegDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -50,6 +53,7 @@ CREATE TABLE `notice` (
   KEY `notice_account_id_idx` (`Account_id`),
   CONSTRAINT `notice_account_id` FOREIGN KEY (`Account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='공지사항';
+
 
 CREATE TABLE `project` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -68,6 +72,7 @@ CREATE TABLE `project` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='프로젝트';
 
+
 CREATE TABLE `px_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
@@ -84,6 +89,7 @@ CREATE TABLE `px_items` (
   UNIQUE KEY (`Code`),
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='PX 상품';
+
 
 CREATE TABLE `px_log` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -128,6 +134,7 @@ CREATE TABLE `question` (
   CONSTRAINT `account_question_id` FOREIGN KEY (`accountId`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='설문지';
 
+
 CREATE TABLE `question_choice` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) DEFAULT NULL,
@@ -143,6 +150,7 @@ CREATE TABLE `question_choice` (
   CONSTRAINT `question_choice` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='객관식';
 
+
 CREATE TABLE `question_date` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) DEFAULT NULL,
@@ -152,6 +160,7 @@ CREATE TABLE `question_date` (
   KEY `question_date_id_idx` (`question_id`),
   CONSTRAINT `question_date_id` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='날짜';
+
 
 CREATE TABLE `question_essay` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -173,6 +182,7 @@ CREATE TABLE `question_score` (
   CONSTRAINT `question_score_id` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='점수 평가';
 
+
 CREATE TABLE `question_time` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) DEFAULT NULL,
@@ -188,6 +198,7 @@ CREATE TABLE `book_category` (
   `name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='도서 카테고리';
+
 
 CREATE TABLE `book_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -205,6 +216,7 @@ CREATE TABLE `book_items` (
   CONSTRAINT `book_category_items` FOREIGN KEY (`type`) REFERENCES `book_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='도서';
 
+
 CREATE TABLE `book_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) DEFAULT NULL,
@@ -218,6 +230,7 @@ CREATE TABLE `book_log` (
   CONSTRAINT `account_book_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `book_items_id` FOREIGN KEY (`book_items_id`) REFERENCES `book_items` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `book_req` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -234,11 +247,15 @@ CREATE TABLE `book_req` (
   CONSTRAINT `account_book_log_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+
 CREATE TABLE `equipment_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='장비 분류 카테고리';
+
+
 
 CREATE TABLE `equipment_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -255,6 +272,8 @@ CREATE TABLE `equipment_items` (
   CONSTRAINT `equipment_category_items` FOREIGN KEY (`type`) REFERENCES `equipment_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='장비';
 
+
+
 CREATE TABLE `equipment_log` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Account_id` int(11) DEFAULT NULL,
@@ -268,6 +287,8 @@ CREATE TABLE `equipment_log` (
   CONSTRAINT `equipment_log_account_id` FOREIGN KEY (`Account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `equipment_log_equipment_items_id` FOREIGN KEY (`Equipment_items_id`) REFERENCES `equipment_items` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='장비 대여 기록';
+
+
 
 CREATE TABLE `equipment_req` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -290,6 +311,8 @@ CREATE TABLE `equipment_req` (
   CONSTRAINT `equipment_req_project_id` FOREIGN KEY (`project_id`) REFERENCES `project` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='장비 신청';
 
+
+
 CREATE TABLE `secsm`.`attach` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `projectId` INT NULL,
@@ -302,6 +325,8 @@ CREATE TABLE `secsm`.`attach` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 COMMENT = '첨부파일 목록';
+
+
 
 CREATE TABLE `answer_choice` (
   `id` int(11) NOT NULL,
@@ -316,6 +341,7 @@ CREATE TABLE `answer_choice` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='객관식 답';
 
 
+
 CREATE TABLE `answer_date` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) DEFAULT NULL,
@@ -327,6 +353,8 @@ CREATE TABLE `answer_date` (
   CONSTRAINT `account_date_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `answer_date_id` FOREIGN KEY (`question_id`) REFERENCES `question_date` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='날짜 답';
+
+
 
 CREATE TABLE `answer_essay` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -340,6 +368,8 @@ CREATE TABLE `answer_essay` (
   CONSTRAINT `answer_essay_id` FOREIGN KEY (`question_id`) REFERENCES `question_essay` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='주관식 답';
 
+
+
 CREATE TABLE `answer_score` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) DEFAULT NULL,
@@ -351,6 +381,8 @@ CREATE TABLE `answer_score` (
   CONSTRAINT `account_score_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `answer_score_id` FOREIGN KEY (`question_id`) REFERENCES `question_score` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='점수 답';
+
+
 
 CREATE TABLE `answer_time` (
   `id` int(11) NOT NULL,
@@ -510,12 +542,14 @@ ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `secsm`.`attendance` 
 DROP FOREIGN KEY `attendance_account_id`;
+
 ALTER TABLE `secsm`.`attendance` 
 DROP COLUMN `Account_id`,
 DROP INDEX `attendance_account_id_idx` ;
 
-#ALTER TABLE `secsm``px_log` 
-#ADD COLUMN `with_buy` varchar(100);
+
+ALTER TABLE `secsm`.`px_log` 
+ADD COLUMN `with_buy` varchar(100) AFTER `price`;
 
 INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('마가렛트', '8801062518517', '2000', '17');
 INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('진짬뽕', '8801045522678', '2000', '12');
