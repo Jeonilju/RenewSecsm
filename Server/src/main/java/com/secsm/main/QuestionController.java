@@ -137,7 +137,7 @@ public class QuestionController {
 			}
 			else{
 				// 비정상 접근 
-				return "";
+				return getQuestionIndex(request);
 			}
 		}
 
