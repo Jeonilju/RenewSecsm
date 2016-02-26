@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.Gson;
 import com.secsm.conf.Util;
 import com.secsm.dao.AttachDao;
 import com.secsm.dao.ProjectDao;
@@ -237,4 +238,20 @@ public class ProjectController {
 			return "200";
 		}
 	}
+	
+	/** 프로젝트 페이징 */
+	@ResponseBody
+	@RequestMapping(value = "/api_getProjectPage", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	public String ProjectController_getProjectPage(HttpServletRequest request
+			, @RequestParam("page") int page) {
+		logger.info("Project Page: " + page);
+		
+		List<ProjectInfo> projectList = projectDao.selectByPage(page, 10);
+		
+		Gson obj = new Gson();
+		String result = obj.toJson(projectList);
+		logger.info("result: " + result);
+		return result;
+	}
+	
 }

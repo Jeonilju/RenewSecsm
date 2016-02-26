@@ -71,6 +71,119 @@
     		function showDetailProject(projectId){
     			location.href= "/Secsm/detailProject/" + projectId;
     		}
+    		
+    		var page = 0;
+    		
+    		function nextProject(){
+    			page+=10;
+    			var param = "page" + "="+ page;
+				$.ajax({
+					url : "/Secsm/api_getProjectPage",
+					type : "POST",
+					data : param,
+					cache : false,
+					async : false,
+					dataType : "text",
+			
+					success : function(response) {	
+						
+						$("#projectTableBody").empty();
+						var obj = JSON.parse(response);
+
+						if(obj.length == 0)
+							page -= 10;
+						
+						for(var i = 0;i<obj.length;i++){
+							
+							var type = "알수없음";
+							if(obj[i].status == 0){
+								type = "미승인";
+							}
+							else if(obj[i].status == 1){
+								type = "진행중";					
+							}
+							else if(obj[i].status == 2){
+								type = "완료";
+							}
+							else if(obj[i].status == -1){
+								type = "드랍";
+							}
+							
+							$('#projectTable > tbody:last').append("<tr style=\"cursor:pointer;\" onClick=\"showDetailProject(" + obj[i].id  + ")\">"
+																+ "<td>" + obj[i].id + "</td>"
+																+ "<td>" + obj[i].name + "</td>"
+																+ "<td>" + obj[i].startDate 
+																+ " ~ " + obj[i].endDate + "</td>"
+																+ "<td>" + obj[i].pl + "</td>"
+																+ "<td>" + type + "</td>" + "</tr>"
+							);
+						} 
+					},
+					error : function(request, status, error) {
+						if (request.status != '0') {
+							alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+						}
+					}
+			
+				});
+    		}
+    		
+    		function preProject(){
+    			if(page > 0)
+    				page-=10;
+    			else
+    				page = 0;
+    			
+    			var param = "page" + "="+ page;
+				$.ajax({
+					url : "/Secsm/api_getProjectPage",
+					type : "POST",
+					data : param,
+					cache : false,
+					async : false,
+					dataType : "text",
+			
+					success : function(response) {	
+						
+						$("#projectTableBody").empty();
+						
+						var obj = JSON.parse(response);
+						
+						for(var i = 0;i<obj.length;i++){
+							
+							var type = "알수없음";
+							if(obj[i].status == 0){
+								type = "미승인";
+							}
+							else if(obj[i].status == 1){
+								type = "진행중";					
+							}
+							else if(obj[i].status == 2){
+								type = "완료";
+							}
+							else if(obj[i].status == -1){
+								type = "드랍";
+							}
+							
+							$('#projectTable > tbody:last').append("<tr style=\"cursor:pointer;\" onClick=\"showDetailProject(" + obj[i].id  + ")\">"
+																+ "<td>" + obj[i].id + "</td>"
+																+ "<td>" + obj[i].name + "</td>"
+																+ "<td>" + obj[i].startDate 
+																+ " ~ " + obj[i].endDate + "</td>"
+																+ "<td>" + obj[i].pl + "</td>"
+																+ "<td>" + type + "</td>" + "</tr>"
+							);
+						} 
+					},
+					error : function(request, status, error) {
+						if (request.status != '0') {
+							alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+						}
+					}
+			
+				});
+    		}
+    		
     	</script>
     	
     	<style>
@@ -95,7 +208,7 @@
 				<button type="button" class="btn" data-toggle="modal" data-target="#createProjectModal" style="margin: 5px;">프로젝트 등록</button>
 			</div>
 			
-			<table class="table table-hover">
+			<table class="table table-hover" name="projectTable" id="projectTable">
 			    <thead>
 			      <tr>
 			        <th>No.</th>
@@ -105,7 +218,7 @@
 			        <th>상태</th>
 			      </tr>
 			    </thead>
-			    <tbody>
+			    <tbody name="projectTableBody" id="projectTableBody">
 					<%
 						for (ProjectInfo info : projectList){
 							out.println("<tr style=\"cursor:pointer;\" onClick=\"showDetailProject(" + info.getId() + ")\">");
@@ -143,8 +256,8 @@
 			</table>
 			
 			<div>
-				<button type="button" class="btn" >이전</button>
-				<button type="button" class="btn" >다음</button>
+				<button type="button" class="btn" onclick="preProject();">이전</button>
+				<button type="button" class="btn" onclick="nextProject();">다음</button>
 			</div>
 			
 		</div>	

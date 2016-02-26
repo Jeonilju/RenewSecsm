@@ -37,6 +37,7 @@ import com.secsm.dao.QuestionScoreDao;
 import com.secsm.dao.QuestionTimeDao;
 import com.secsm.info.AccountInfo;
 import com.secsm.info.AnswerInfo;
+import com.secsm.info.ProjectInfo;
 import com.secsm.info.QuestionChoiceInfo;
 import com.secsm.info.QuestionContentInfo;
 import com.secsm.info.QuestionDateInfo;
@@ -640,6 +641,42 @@ public class QuestionController {
 			break;
 		default:
 			break;
+		}
+		
+		return result;
+	}
+	
+	
+	/** 설문 페이징 */
+	@ResponseBody
+	@RequestMapping(value = "/api_getQuestionPage", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	public String QuestionController_getQuestionPage(HttpServletRequest request
+			, @RequestParam("page") int page) {
+		logger.info("Project Page: " + page);
+		
+		AccountInfo accountInfo = Util.getLoginedUser(request);
+		List<QuestionInfo> questionList = questionDao.selectByPage(page, 10);
+		
+		Gson obj = new Gson();
+		//String result = obj.toJson(questionList);
+		
+		String result = "";
+		for(QuestionInfo info : questionList){
+			if(info.getCode().equals("`|#")){
+				result += "<tr style=\"cursor:pointer;\" onClick=\"loadQuestion(" + info.getId() + ")\" >";
+			}
+			else{
+				result += "<tr style=\"cursor:pointer;\" onClick=\"showPWModal(" + info.getId() + ")\">";
+			}
+
+			result += "<td>" + info.getId() + "</td>";
+			result += "<td>" + info.getTitle() + "</td>";
+			result += "<td>" + info.getAccountId() + "</td>";
+			result += "<td>" + Util.getTimestempStr(info.getStartDate()) 
+			+ " ~ " + Util.getTimestempStr(info.getEndDate()) + "</td>";
+			if(info.getAccountId() == accountInfo.getId()){
+				result += ("<td>" + "<button type='button' class='btn' onclick='event.cancelBubble=true; resultQuestion(" + info.getId() + ");'>결과 조회</button>" + "</td>");
+			}
 		}
 		
 		return result;

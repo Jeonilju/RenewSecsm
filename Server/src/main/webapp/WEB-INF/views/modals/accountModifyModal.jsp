@@ -88,8 +88,8 @@
 			alert("핸드폰 번호는 45글자를 넘을 수 없습니다.");
 			return;
 		}
-		else if(form.User_cardnum.value.length >6){
-			alert("고유식별번호는 6자를 넘지 않습니다.");
+		else if(form.User_cardnum.value.length > 30){
+			alert("고유식별번호는 30자를 넘지 않습니다.");
 			return;
 		}
 		else{
