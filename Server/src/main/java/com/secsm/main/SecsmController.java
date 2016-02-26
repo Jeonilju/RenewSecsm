@@ -132,10 +132,17 @@ public class SecsmController {
 			, @RequestParam("User_name") String User_name
 			, @RequestParam("User_gender") int User_gender
 			, @RequestParam("User_phone") String User_phone
+<<<<<<< HEAD
+			, @RequestParam("User_cardnum") int User_cardnum
+			) {
+		logger.info("api_signup");
+=======
 			, @RequestParam("User_cardnum") int User_cardnum) {
 		logger.info("api_signup");
 		accountDao.create(User_name, User_mail, User_password, User_phone, -1, User_gender, User_cardnum);
+>>>>>>> 05c0c31a60e383bb558a47a66108f2d47587b59c
 		
+		accountDao.create(User_name, User_mail, User_password, User_phone, -1, User_gender, User_cardnum);
 		return "200";
 		
 	}
