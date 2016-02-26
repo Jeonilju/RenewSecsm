@@ -137,7 +137,7 @@ public class QuestionController {
 			}
 			else{
 				// 비정상 접근 
-				return "";
+				return getQuestionIndex(request);
 			}
 		}
 
@@ -186,6 +186,8 @@ public class QuestionController {
 			, @RequestParam("questionAddContent") String questionAddContent
 			, @RequestParam("questionAddStartDate") String questionAddStartDate
 			, @RequestParam("questionAddEndDate") String questionAddEndDate
+			, @RequestParam("questionAddIdCode") String questionAddIdCode
+			, @RequestParam("questionAddCode") String questionAddCode
 			, @RequestParam("questionAddQuestions") String questionAddQuestions) {
 		logger.info("api add Question");
 		
@@ -214,7 +216,13 @@ public class QuestionController {
 	    		e.printStackTrace();
 	    	}
 			
-			int questionId =questionDao.create(info.getId(), questionAddTitle, questionAddContent, startDate, endDate);
+			int questionId = 0;
+			if(questionAddIdCode == "true"){
+				questionId = questionDao.create(info.getId(), questionAddTitle, questionAddContent, startDate, endDate);	
+			}else{
+				questionId = questionDao.create(info.getId(), questionAddTitle, questionAddContent, startDate, endDate, questionAddCode);
+			}
+			
 			createQuestionContents(questionContentList, questionId);
 		}		
 		return "200";
@@ -266,12 +274,40 @@ public class QuestionController {
 		logger.info("api get Question (설문지 조회)");
 		
 		QuestionInfo info = questionDao.selectById(id);
-		ArrayList<QuestionContentInfo> totalQuestionList = new ArrayList<QuestionContentInfo>();
+		String result = "";
+		if(info.getCode().equals("`|#")){
+			result = "-1";
+		}
+		else{
+			ArrayList<QuestionContentInfo> totalQuestionList = new ArrayList<QuestionContentInfo>();
+			getQuestionList(info, false, totalQuestionList);
+			Gson gson = new Gson();
+			result = gson.toJson(totalQuestionList);	
+		}
 		
-		getQuestionList(info, false, totalQuestionList);
+		return result;
+	}
+	
+	/** 설문지 조회 */
+	@ResponseBody
+	@RequestMapping(value = "/api_questionGetPW", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	public String QuestionController_getQuestion(HttpServletRequest request, HttpServletResponse response 
+			, @RequestParam("qId") int id
+			, @RequestParam("code") String code) {
+		logger.info("api get Question (설문지 조회)");
 		
-		Gson gson = new Gson();
-		String result = gson.toJson(totalQuestionList);
+		QuestionInfo info = questionDao.selectById(id);
+		String result = "";
+		if(info.getCode().equals(code)){
+			ArrayList<QuestionContentInfo> totalQuestionList = new ArrayList<QuestionContentInfo>();
+			getQuestionList(info, false, totalQuestionList);
+			Gson gson = new Gson();
+			result = gson.toJson(totalQuestionList);	
+		}
+		else{
+			result = "-2";
+		}
+		
 		return result;
 	}
 	

@@ -576,3 +576,6 @@ INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' ê³ ì
 ALTER TABLE `secsm`.`account` 
 ADD UNIQUE INDEX `Email_UNIQUE` (`Email` ASC);
 
+ALTER TABLE `secsm`.`question` 
+ADD COLUMN `code` VARCHAR(50) NULL DEFAULT '`|#' AFTER `startDate`;
+
