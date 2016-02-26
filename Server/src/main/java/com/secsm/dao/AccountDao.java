@@ -27,7 +27,7 @@ public class AccountDao implements AccountIDao {
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
 
-	public void create(String name, String email, String pw, String phone,int grade,int gender, int cardnum){
+	public void create(String name, String email, String pw, String phone,int grade,int gender, String cardnum){
 		jdbcTemplate.update("insert into account (name, email, pw, phone,Grade,gender, cardnum) values (?, ?, ?, ?, ?, ?, ?)", new Object[] { name, email, pw, phone,grade,gender, cardnum });
 	}
 
@@ -36,9 +36,9 @@ public class AccountDao implements AccountIDao {
 				new Object[] {grade, id});
 	}
 	
-	public void modify(int id, String pw, String name, String gender, String phone){
-		jdbcTemplate.update("update account set pw=?, name=?, gender=?, phone=? where id=?", 
-				new Object[] {pw, name, gender, phone, id});
+	public void modify(int id, String pw, String name, String gender, String phone, String cardnum){
+		jdbcTemplate.update("update account set pw=?, name=?, gender=?, phone=?, cardnum=? where id=?", 
+				new Object[] {pw, name, gender, phone, cardnum, id});
 	}
 	
 	public int duplicate_check(String email){
@@ -59,7 +59,7 @@ public class AccountDao implements AccountIDao {
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
 								, resultSet.getInt("Px_amount"), resultSet.getInt("gender")
-								, resultSet.getInt("cardnum"));
+								, resultSet.getString("cardnum"));
 					}
 				});
 	}
@@ -71,7 +71,7 @@ public class AccountDao implements AccountIDao {
 					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("email"), resultSet.getString("pw"), resultSet.getString("phone"),
-								resultSet.getInt("grade"), resultSet.getInt("Px_amount"), resultSet.getInt("gender"), resultSet.getInt("cardnum"));
+								resultSet.getInt("grade"), resultSet.getInt("Px_amount"), resultSet.getInt("gender"), resultSet.getString("cardnum"));
 					}
 				});
 	}
@@ -82,7 +82,7 @@ public class AccountDao implements AccountIDao {
 				public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 				return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 						resultSet.getString("email"), resultSet.getString("pw"), resultSet.getString("phone"),
-						resultSet.getInt("grade"), resultSet.getInt("Px_amount"), resultSet.getInt("gender"), resultSet.getInt("cardnum"));
+						resultSet.getInt("grade"), resultSet.getInt("Px_amount"), resultSet.getInt("gender"), resultSet.getString("cardnum"));
 			}
 		});
 		}
@@ -94,7 +94,7 @@ public class AccountDao implements AccountIDao {
 						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
-								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"), resultSet.getInt("cardnum"));
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender"), resultSet.getString("cardnum"));
 					}
 				});
 	}
@@ -107,7 +107,7 @@ public class AccountDao implements AccountIDao {
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
 								, resultSet.getInt("Px_amount"), resultSet.getInt("gender")
-								, resultSet.getInt("cardnum"));
+								, resultSet.getString("cardnum"));
 					}
 				});
 	}
@@ -120,7 +120,7 @@ public class AccountDao implements AccountIDao {
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
 								, resultSet.getInt("Px_amount"), resultSet.getInt("gender")
-								, resultSet.getInt("cardnum"));
+								, resultSet.getString("cardnum"));
 					}
 				});
 	}
@@ -134,7 +134,7 @@ public class AccountDao implements AccountIDao {
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
 								, resultSet.getInt("Px_amount"), resultSet.getInt("gender")
-								, resultSet.getInt("cardnum"));
+								, resultSet.getString("cardnum"));
 					}
 				});
 	}
@@ -148,7 +148,7 @@ public class AccountDao implements AccountIDao {
 								resultSet.getString("email"), resultSet.getString("pw"),
 								resultSet.getString("phone"), resultSet.getInt("grade")
 								, resultSet.getInt("Px_amount"), resultSet.getInt("gender")
-								, resultSet.getInt("cardnum"));
+								, resultSet.getString("cardnum"));
 					}
 				});
 	}

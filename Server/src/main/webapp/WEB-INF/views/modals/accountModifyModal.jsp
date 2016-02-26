@@ -27,6 +27,7 @@
 					$("#User_name").val(obj.name);
 					$("#User_gender").val(obj.gender);
 					$("#User_phone").val(obj.phone);
+					$("#User_cardnum").val(obj.cardnum);
 				}
 			},
 			error : function(request, status, error) {
@@ -42,7 +43,8 @@
 					"re_User_password" + "=" + $("#re_User_password").val() + "&" + 
 					"User_name" + "=" + $("#User_name").val() + "&" + 
 					"User_gender" + "=" + $("#User_gender").val() + "&" + 
-					"User_phone" + "="+ $("#User_phone").val();
+					"User_phone" + "="+ $("#User_phone").val() + "&" + 
+					"User_cardnum" + "="+ $("#User_cardnum").val();
 		
 		var form = document.accountModify;
 	
@@ -84,6 +86,10 @@
 		}
 		else if(form.User_phone.value.length >=45){
 			alert("핸드폰 번호는 45글자를 넘을 수 없습니다.");
+			return;
+		}
+		else if(form.User_cardnum.value.length >6){
+			alert("고유식별번호는 6자를 넘지 않습니다.");
 			return;
 		}
 		else{
@@ -204,6 +210,11 @@
 					<div class="form-group">
 						<label for="User_phone">핸드폰 번호</label> 
 						<input name="User_phone" id="User_phone" class="form-control" placeholder = "010-1234-5678">
+					</div>
+					
+					<div class="form-group">
+						<label for="User_cardnum">고유 식별 번호</label> 
+						<input name="User_cardnum" id="User_cardnum" class="form-control"/>
 					</div>
 				</div>
 				<div class="modal-footer">

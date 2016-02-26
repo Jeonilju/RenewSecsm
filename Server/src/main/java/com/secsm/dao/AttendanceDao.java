@@ -41,29 +41,29 @@ public class AttendanceDao implements AttendanceIDao {
 				new RowMapper<AttendanceInfo>() {
 					public AttendanceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AttendanceInfo(resultSet.getTimestamp("regDate")
-								, resultSet.getInt("cardnum"));
+								, resultSet.getString("cardnum"));
 					}
 				});
 	}
 
-	public List<AttendanceInfo> select(int cardnum){
+	public List<AttendanceInfo> select(String cardnum){
 		return jdbcTemplate.query("select * from attendance where cardnum = ?", new Object[] { cardnum },
 				new RowMapper<AttendanceInfo>() {
 					public AttendanceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AttendanceInfo(resultSet.getTimestamp("regDate")
-								, resultSet.getInt("cardnum"));
+								, resultSet.getString("cardnum"));
 					}
 				});
 		
 	}
 	
-	public List<AttendanceInfo> selectTime(int cardnum,Timestamp startDate, Timestamp endDate){
+	public List<AttendanceInfo> selectTime(String cardnum,Timestamp startDate, Timestamp endDate){
 		return jdbcTemplate.query("select * from attendance where cardnum = ? AND regDate >=  ? AND regDate < ?", 
 				new Object[] { cardnum, startDate, endDate },
 				new RowMapper<AttendanceInfo>() {
 					public AttendanceInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 						return new AttendanceInfo(resultSet.getTimestamp("regDate")
-								, resultSet.getInt("cardnum"));
+								, resultSet.getString("cardnum"));
 					}
 				});
 		

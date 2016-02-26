@@ -12,12 +12,14 @@ CREATE TABLE `account` (
   `Phone` varchar(45) NOT NULL,
   `Grade` int(11) DEFAULT NULL,
   `gender` int(11) DEFAULT NULL,
+  `cardnum` varchar(50) NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='사용자 정보';
 
 CREATE TABLE `attendance` (
   `Account_id` int(11) DEFAULT NULL,
+  `cardnum` varchar(50) NULL,
   `RegDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   KEY `attendance_account_id_idx` (`Account_id`),
   CONSTRAINT `attendance_account_id` FOREIGN KEY (`Account_id`) REFERENCES `account` (`ID`) ON DELETE NO ACTION ON UPDATE CASCADE
@@ -505,12 +507,6 @@ INSERT INTO `secsm`.`equipment_log` (`ID`, `Account_id`, `Equipment_items_id`, `
 ALTER TABLE `secsm`.`attendance` 
 ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT AFTER `RegDate`,
 ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `secsm`.`attendance` 
-ADD COLUMN `cardnum` INT NULL AFTER `id`;
-
-ALTER TABLE `secsm`.`account` 
-ADD COLUMN `cardnum` INT NULL AFTER `gender`;
 
 ALTER TABLE `secsm`.`attendance` 
 DROP FOREIGN KEY `attendance_account_id`;

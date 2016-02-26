@@ -5,9 +5,9 @@ import java.sql.Timestamp;
 public class AttendanceInfo {
 
 	private Timestamp regDate;
-	private int cardnum;
+	private String cardnum;
 	
-	public AttendanceInfo(Timestamp regDate, int cardnum){
+	public AttendanceInfo(Timestamp regDate, String cardnum){
 		this.regDate = regDate;
 		this.cardnum = cardnum;
 	}
@@ -19,11 +19,11 @@ public class AttendanceInfo {
 		this.regDate = regDate;
 	}
 
-	public int getCardnum() {
+	public String getCardnum() {
 		return cardnum;
 	}
 
-	public void setCardnum(int cardnum) {
+	public void setCardnum(String cardnum) {
 		this.cardnum = cardnum;
 	}
 	

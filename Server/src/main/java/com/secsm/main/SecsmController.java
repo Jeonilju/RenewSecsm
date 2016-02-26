@@ -132,7 +132,7 @@ public class SecsmController {
 			, @RequestParam("User_name") String User_name
 			, @RequestParam("User_gender") int User_gender
 			, @RequestParam("User_phone") String User_phone
-			, @RequestParam("User_cardnum") int User_cardnum
+			, @RequestParam("User_cardnum") String User_cardnum
 			) {
 		logger.info("api_signup");
 		accountDao.create(User_name, User_mail, User_password, User_phone, -1, User_gender, User_cardnum);
@@ -199,6 +199,7 @@ public class SecsmController {
 			, @RequestParam("User_name") String name
 			, @RequestParam("User_gender") String gender
 			, @RequestParam("User_phone") String phone
+			, @RequestParam("User_cardnum") String cardnum
 			) {
 		logger.info("api_modifyAccount");
 		
@@ -207,7 +208,7 @@ public class SecsmController {
 			return "401";
 		}
 		
-		accountDao.modify(info.getId(),pw,name,gender,phone);
+		accountDao.modify(info.getId(),pw,name,gender,phone,cardnum);
 		
 		HttpSession session = request.getSession();
 		List<AccountInfo> accountList = accountDao.select(info.getEmail());

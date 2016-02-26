@@ -9,9 +9,9 @@ public class AccountInfo {
 	private int gender;
 	private int grade;
 	private int pxAmount;
-	private int cardnum;
+	private String cardnum;
 	
-	public AccountInfo(int id, String name, String email, String pw, String phone, int grade, int pxAmount, int gender, int cardnum){
+	public AccountInfo(int id, String name, String email, String pw, String phone, int grade, int pxAmount, int gender, String cardnum){
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -75,10 +75,10 @@ public class AccountInfo {
 	public void setGender(int gender) {
 		this.gender = gender;
 	}
-	public int getCardnum() {
+	public String getCardnum() {
 		return cardnum;
 	}
-	public void setCardnum(int cardnum) {
+	public void setCardnum(String cardnum) {
 		this.cardnum = cardnum;
 	}
 }
