@@ -453,6 +453,9 @@ INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Gra
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('자산관리부장', '자산관리부장', '1234', '0', '0000', '5', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('기획부장', '기획부장', '1234', '0', '0000', '6', '1');
 INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('기존회원', '기존회원', '1234', '0', '0000', '8', '1');
+INSERT INTO `secsm`.`account` (`Name`, `Email`, `Pw`, `Px_amount`, `Phone`, `Grade`, `gender`) VALUES ('운영자', '운영자', '1234', '0', '0000', '0', '1');
+
+
 
 INSERT INTO `secsm`.`book_category` (`id`, `name`) VALUES ('1', 'ALL');
 INSERT INTO `secsm`.`book_category` (`id`, `name`) VALUES ('2', '소프트웨어');
