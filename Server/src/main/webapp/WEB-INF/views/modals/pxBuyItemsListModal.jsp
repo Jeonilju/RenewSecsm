@@ -34,6 +34,9 @@
 		    						else if(chk == 1){
 		    							num--;
 		    							semi_List(num);
+		    							if(num ==0){
+		    								view_buylist_remove();
+		    							}
 		    						}
 		    					}
 		    					else

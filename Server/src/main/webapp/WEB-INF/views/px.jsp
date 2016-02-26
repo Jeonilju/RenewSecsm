@@ -48,6 +48,13 @@
     			temp_list.style.display = "none";
     		}
     		
+    		function view_buylist_remove(){
+    			var view_list = document.getElementById("cur_list");
+    			var temp_list = document.getElementById("empty_list");
+    			view_list.style.display = "none";
+    			temp_list.style.display = "";
+    		}
+    		
     		function captureReturnKey(e) { 
     		    if(e.keyCode==13 && e.srcElement.type != 'textarea') 
     		    return false; 
