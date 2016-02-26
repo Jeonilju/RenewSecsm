@@ -112,7 +112,7 @@
 						</div>
 						
 						<div class="col-md-2">
-							<button type="button" onclick="member_select();" class="btn" data-toggle="modal" data-target="#pxItem_buy_together" style="margin-left: 60px;">함께 구매</button>
+							<input type="button" id = "check_together" onclick="member_select();" class="btn" data-toggle="modal"  value = "함께 구매" data-target="#pxItem_buy_together" style="margin-left: 60px;"/>
 						</div>
 						
 						<div class="col-md-1">

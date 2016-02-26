@@ -514,12 +514,13 @@ ADD COLUMN `cardnum` INT NULL AFTER `gender`;
 
 ALTER TABLE `secsm`.`attendance` 
 DROP FOREIGN KEY `attendance_account_id`;
+
 ALTER TABLE `secsm`.`attendance` 
 DROP COLUMN `Account_id`,
 DROP INDEX `attendance_account_id_idx` ;
 
-ALTER TABLE `secsm``px_log` 
-ADD COLUMN `with_buy` varchar(100);
+ALTER TABLE `secsm`.`px_log` 
+ADD COLUMN `with_buy` varchar(100) AFTER `price`;
 
 INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('마가렛트', '8801062518517', '2000', '17');
 INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('진짬뽕', '8801045522678', '2000', '12');
