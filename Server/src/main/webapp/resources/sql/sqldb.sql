@@ -538,3 +538,7 @@ INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 살�
 INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES ('  동원 참치', 'FOOD10000067', '3400', '30');
 INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 동원 야채참치', '8801047121336', '3000', '50');
 INSERT INTO `secsm`.`px_items` (`name`,`code`,  `price`, `count`) VALUES (' 고추 참치', '8801047123736', '3000', '50');
+
+ALTER TABLE `secsm`.`account` 
+ADD UNIQUE INDEX `Email_UNIQUE` (`Email` ASC);
+

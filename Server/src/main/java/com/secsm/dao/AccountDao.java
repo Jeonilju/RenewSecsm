@@ -113,6 +113,19 @@ public class AccountDao implements AccountIDao {
 				});
 	}
 	
+	public List<AccountInfo> selectByEmailNGrade(String email, int grade) {
+		return jdbcTemplate.query("select * from account where email = ? and grade =?", new Object[] { email, grade },
+				new RowMapper<AccountInfo>() {
+					public AccountInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+						return new AccountInfo(resultSet.getInt("id"), resultSet.getString("name"),
+								resultSet.getString("email"), resultSet.getString("pw"),
+								resultSet.getString("phone"), resultSet.getInt("grade")
+								, resultSet.getInt("Px_amount"), resultSet.getInt("gender")
+								, resultSet.getInt("cardnum"));
+					}
+				});
+	}
+	
 	//Duty 구현할때 사용
 	public List<AccountInfo> selectDuty(String name) {
 		return jdbcTemplate.query("select * from account where name = ? and gender = 1", new Object[] { name },

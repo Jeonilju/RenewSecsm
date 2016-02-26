@@ -78,7 +78,7 @@ public class SecsmController {
 	}
 	
 	/** 로그인  */
-	@RequestMapping(value = "/api_login", method = RequestMethod.POST)
+	@RequestMapping(value = "/api_login", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	@ResponseBody
 	public String MainController_api_login(HttpServletRequest request
 			, @RequestParam("login_email") String login_email
@@ -95,10 +95,19 @@ public class SecsmController {
 		// 세션 객체 생성
 		HttpSession session = request.getSession();
 		List<AccountInfo> accountList = accountDao.select(login_email);
-
-		// 이메일이 존재하지 않을 때
-		if (accountList == null || accountList.isEmpty()) {
-			result = "email not found"; // no email
+		List<AccountInfo> confirmAccountList = accountDao.selectByEmailNGrade(login_email, -1);
+		List<AccountInfo> graduateAccountList = accountDao.selectByEmailNGrade(login_email, 10);
+		
+		
+		if(!confirmAccountList.isEmpty()){
+			// 비 인증 유저
+			result = "승인되지 않은 사용자입니다. 승인 후에 사용해주세요.";
+		}
+		else if(!graduateAccountList.isEmpty()){
+			result = "탈퇴 유저입니다. 관리자에게 문의해주세요.";
+		}
+		else if (accountList == null || accountList.isEmpty()) {
+			result = "존재하지 않는 이메일입니다."; // no email
 		}
 		else {
 			if (accountList.get(0).getPw().equals(login_password)) // password unequal
@@ -106,7 +115,7 @@ public class SecsmController {
 				result = "200";
 				session.setAttribute("currentmember", accountList.get(0));
 			} else {
-				result = "password is woung";
+				result = "잘못된 비밀번호 입니다.";
 			}
 		}
 		
