@@ -4,7 +4,8 @@
 
 <script type="text/javascript">
 
-	var btn_check = "";
+	var email_check = "";
+	var name_check = "";
 	var regExp = /[0-9a-zA-Z][_0-9a-zA-Z-]*@[_0-9a-zA-Z-]+(\.[_0-9a-zA-Z-]+){1,2}$/;
 	
 	function NewUser_SignUp(){
@@ -14,8 +15,7 @@
 					"User_name" + "=" + $("#User_name").val() + "&" + 
 					"User_gender" + "=" + $("#User_gender").val() + "&" + 
 					"User_phone" + "="+ $("#User_phone").val() + "&" + 
-					"User_cardnum" + "="+ $("#User_cardnum").val() + "&" + 
-					"User_grade" + "="+ $("#User_grade").val();
+					"User_cardnum" + "="+ $("#User_cardnum").val();
 	//	alert(param);
 		
 		var form = document.accountSignUpForm;
@@ -28,12 +28,12 @@
 			alert("성별을 선택해주세요.");
 			return;
 		}
-		else if(form.User_grade.value== "-1"){
-			alert("직급을 선택해주세요.");
+		else if(email_check == ""){
+			alert("E-mail 중복검사를 해주세요.");
 			return;
 		}
-		else if(btn_check == ""){
-			alert("E-mail 중복검사를 해주세요.");
+		else if(name_check == ""){
+			alert("이름 중복검사를 해주세요.");
 			return;
 		}
 		else if(form.User_password.value != form.re_User_password.value){
@@ -64,24 +64,15 @@
 			alert("이름은 50글자를 넘을 수 없습니다.");
 			return;
 		}
-		else if(form.User_name.value.length >=50){
-			alert("이름은 50글자를 넘을 수 없습니다.");
-			return;
-		}
-		else if(form.User_name.value.length >=50){
-			alert("이름은 50글자를 넘을 수 없습니다.");
-			return;
-		}
-		else if(form.User_name.value.length >=50){
-			alert("이름은 50글자를 넘을 수 없습니다.");
-			return;
-		}
 		else if(form.User_mail.value.length >=100){
 			alert("email은 100글자를 넘을 수 없습니다.");
 			return;
 		}
 		else if(form.User_phone.value.length >=45){
 			alert("핸드폰 번호는 45글자를 넘을 수 없습니다.");
+			return;
+		}else if(form.User_cardnum.value.length >6){
+			alert("고유식별번호는 6자를 넘지 않습니다.");
 			return;
 		}
 		else{
@@ -112,7 +103,6 @@
 	
 	function check_duplicate_email(){
 		var param = "User_mail" + "=" + $("#User_mail").val();
-		//alert(param);
 		
 		if(!$("#User_mail").val().match(regExp)){
 			alert("E-mail 형식을 맞춰주세요.");
@@ -129,9 +119,8 @@
 			success : function(response) {	
 				if(response=='200')
 				{
-					// 정상 수정
-					alert("E_mail이 중복되지 않습니다.사용하셔도 됩니다.");
-					btn_check = "1";
+					alert("E_mail이 중복되지 않습니다. 사용하셔도 됩니다.");
+					email_check = "1";
 				}
 				else if(response == '400'){
 					alert("E_mail이 중복됩니다. 다른 e_mail을 사용해 주세요.");
@@ -146,9 +135,47 @@
 		
 	}
 	
-	function btn_reset(){
-		btn_check = "";
+	function check_duplicate_name(){
+		var param = "User_name" + "=" + $("#User_name").val();
+		
+		if($("#User_name").val()==""){
+			alert("이름을 입력하세요.");
+			return;
+		}
+		$.ajax({
+			url : "/Secsm/api_nameDuplicate_check",
+			type : "POST",
+			data : param,
+			cache : false,
+			async : false,
+			dataType : "text",
+		
+			success : function(response) {	
+				if(response=='200')
+				{
+					alert("이름이 중복되지 않습니다. 사용하셔도 됩니다.");
+					name_check = "1";
+				}
+				else if(response == '400'){
+					alert("이름이 중복됩니다. 이름 뒤에 기수를 명시해주세요.\nex)조규현(25-2)");
+				}
+			},
+			error : function(request, status, error) {
+				if (request.status != '0') {
+					alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+				}
+			}
+		});
+		
 	}
+	
+	function email_reset(){
+		email_check = "";
+	}
+	function name_reset(){
+		name_check = "";
+	}
+	
 </script>
 
 
@@ -165,7 +192,7 @@
 				<div class="modal-body">
 					<label for="email">E-mail</label>
 					<div class="form-inline">
-						<input type="email" name="User_mail" id="User_mail" class="form-control" placeholder="E-mail" onkeypress = "btn_reset();" style="width: 459.22222px;" autofocus>
+						<input type="email" name="User_mail" id="User_mail" class="form-control" placeholder="E-mail" onkeydown = "email_reset();" style="width: 459.22222px;" autofocus>
 						<button type = "button" class = "btn btn-default" id = "check_email" onclick = "check_duplicate_email()" >중복확인</button>						
 					</div>
 					<div class="form-group">
@@ -180,17 +207,18 @@
 						<p><font size = "2" class="help-block">비밀번호 확인을 위해 한번 더 입력해 주세요.</font></p>
 					</div>
 					
-					<div class="form-group">
-						<label for="User_name">이름</label> 
-						<input name="User_name" id="User_name" class="form-control" placeholder = "이름"/>
+					<label for="User_name">이름</label> 
+					<div class="form-inline">
+						<input name="User_name" id="User_name" class="form-control" placeholder = "이름" onkeydown = "name_reset();" style="width: 459.22222px;"/>
+						<button type = "button" class = "btn btn-default" id = "check_name" onclick = "check_duplicate_name()" >중복확인</button>	
 					</div>
 					
 					<div class="form-group">
 						<label for="User_gender">성별</label> 
 						<select name="User_gender" id="User_gender" class="form-control" style = "width:100%" >
 							<option value = "-1">선택</option>
-							<option value = "0">남자</option>
-							<option value = "1">여자</option>
+							<option value = "1">남자</option>
+							<option value = "0">여자</option>
 						</select>
 					</div>
 					
@@ -199,21 +227,6 @@
 						<input name="User_phone" id="User_phone" class="form-control" placeholder = "010-1234-5678"/>
 					</div>
 					
-					<div class="form-group">
-						<label for="User_grade">직급</label> 
-						<select name="User_grade" id="User_grade" class="form-control" style = "width">
-							<option value = "-1">선택</option>
-							<option value = "0">운영자</option>
-							<option value = "1">자치회장</option>
-							<option value = "2">생활부장</option>
-							<option value = "3">교육부장</option>
-							<option value = "4">PX부장</option>
-							<option value = "5">자산관리부장</option>
-							<option value = "6">기획부장</option>
-							<option value = "8">기존회원</option>
-							<option value = "9">신입회원</option>
-						</select>
-					</div>
 					
 					<div class="form-group">
 						<label for="User_cardnum">고유 식별 번호</label> 
@@ -223,7 +236,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-					<button type="button" class="btn btn-primary" onclick='NewUser_SignUp()();'>등록</button>
+					<button type="button" class="btn btn-primary" onclick='NewUser_SignUp();'>등록</button>
 				</div>
 			</form>
 		</div>

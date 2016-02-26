@@ -44,6 +44,12 @@
 		    }
 		});
 		
+		$("#User_phone").keyup(function(event){
+		    if(event.keyCode == 13){
+		    	NewUser_SignUp();
+		    }
+		});
+		
 		<%
 			if(request.getAttribute("isLogined") != null){
 				out.println("location.href=\"/Secsm/attendance\";");
@@ -63,20 +69,32 @@
 	<div class="container" align="center">
 		<div class="row">
 			<div class="col-lg-12">
-				<img src="/Secsm/resources/image/Logo.jpg" width="250px" height="200">
 				<div class="intro-text">
-					<span class="name" style="font-size: 3em; margin: 10px;">Secsm 2016</span> 
+					 
 					<form>
-						<div class="form-inline" style="padding:3px">
-								<label for="loginID"  class="form-inline" style="margin: 10px;">ID</label> 
-								<input name="loginID" id="loginID" type="text" class="form-control" style="width:300px"/>
-							<br>
-						</div>
-						<div class="form-inline" style="padding:3px">
-							<label for="loginPW" style="margin: 10px;">Password</label>
-							<input name="loginPW" id="loginPW" type="password" style="width:300px" class="form-control"/>
-						</div>
-						<input type="button" value ="Login"class="btn" style="width:300px; margin: 10px;" onclick="login();"></input>										
+						<table style="margin-right:50px">
+						<tr>
+								<td></td>
+								<td><img src="/Secsm/resources/image/Logo.jpg" width="270px" height="200"></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><span class="name" style="font-size: 3em; margin: 10px;">Secsm 2016</span></td>
+							</tr>
+							<tr>
+								<td><label for="loginID"  class="form-inline" style="margin: 10px;">ID</label> </td>
+								<td><input name="loginID" id="loginID" type="text" class="form-control" style="width:300px; margin-bottom: 5px; margin-top: 15px;"/></td>
+							</tr>
+
+							<tr>
+								<td><label for="loginPW" style="margin: 10px; padding-right: 14px;">PW</label></td>
+								<td><input name="loginPW" id="loginPW" type="password" style="width:300px; margin-bottom: 5px;" class="form-control"/></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><input type="button" value ="Login" class="btn" style="width:300px;" onclick="login();"></input></td>									
+							</tr>
+						</table>
 					</form>
 				</div>
 			</div>

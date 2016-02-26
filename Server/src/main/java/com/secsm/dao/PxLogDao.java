@@ -32,6 +32,7 @@ public class PxLogDao implements PxLogIDao {
 		logger.info("Updated DataSource ---> " + ds);
 		logger.info("Updated jdbcTemplate ---> " + jdbcTemplate);
 	}
+	
 	public void create(int accountId, int pxItemsId, int type, int count,String name, int price,String str,Timestamp regdate){
 		jdbcTemplate.update("insert into px_log (Account_id, Px_Items_id, Type, Count,Name,price,with_buy,regDate) values (?, ?, ?, ?,?,?,?,?)"
 				, new Object[] {accountId, pxItemsId, type, count,name,price,str,regdate});
@@ -51,11 +52,22 @@ public class PxLogDao implements PxLogIDao {
 	public List<PxLogInfo> selectById(int id){
 		return jdbcTemplate.query("select * from px_log where id = ?", new Object[] {id},
 				new RowMapper<PxLogInfo>() {
-					public PxLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new PxLogInfo(resultSet.getInt("id"), resultSet.getInt("Account_id")
-								, resultSet.getInt("Px_Items_id"), resultSet.getTimestamp("RegDate")
-								, resultSet.getInt("Type"), resultSet.getInt("Count"));
-					}
+			public PxLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+				return new PxLogInfo(resultSet.getInt("id"), resultSet.getInt("Account_id")
+						, resultSet.getInt("Px_Items_id"), resultSet.getTimestamp("RegDate")
+						, resultSet.getInt("Type"), resultSet.getInt("Count"), resultSet.getString("Name"),resultSet.getInt("price"),resultSet.getString("with_buy"));
+				}
+				});
+	}
+	
+	public List<PxLogInfo> selectByType(int type,int id){
+		return jdbcTemplate.query("select * from px_log where type = ? AND Account_id = ?", new Object[] {type,id},
+				new RowMapper<PxLogInfo>() {
+			public PxLogInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+				return new PxLogInfo(resultSet.getInt("id"), resultSet.getInt("Account_id")
+						, resultSet.getInt("Px_Items_id"), resultSet.getTimestamp("RegDate")
+						, resultSet.getInt("Type"), resultSet.getInt("Count"), resultSet.getString("Name"),resultSet.getInt("price"),resultSet.getString("with_buy"));
+				}
 				});
 	}
 	
@@ -83,6 +95,11 @@ public class PxLogDao implements PxLogIDao {
 								, resultSet.getInt("Type"), resultSet.getInt("Count"), resultSet.getString("Name"),resultSet.getInt("price"),resultSet.getString("with_buy"));
 					}
 				});
+	}
+	
+	public int check_equal_type(int typenum){
+		int rowCount = jdbcTemplate.queryForInt("select count(*) from px_log where type = ?",new Object[]{typenum});
+		return rowCount;
 	}
 	
 	public int total_list_num(){

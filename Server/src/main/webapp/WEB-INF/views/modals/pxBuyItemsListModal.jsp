@@ -43,7 +43,7 @@
 		    				},
 							error : function(request, status, error) {
 								if (request.status != '0') {
-									alert("code : " + request.status + "\r\nmessage : "
+									alert("code** : " + request.status + "\r\nmessage : "
 											+ request.reponseText + "\r\nerror : " + error);
 								}
 							}

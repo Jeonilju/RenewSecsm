@@ -7,17 +7,6 @@ public class AccountInfo {
 	private String pw;
 	private String phone;
 	private int gender;
-	/**
-	 * 사용자 권한
-	 * 0: 최고관리자
-	 * 1: 
-	 * 2: 
-	 * 3: 생활부장
-	 * 4: 하드웨어 부장
-	 * 5: PX 부장
-	 * 6: 
-	 * 7: 
-	 * */
 	private int grade;
 	private int pxAmount;
 	private int cardnum;
@@ -33,8 +22,7 @@ public class AccountInfo {
 		this.gender = gender;
 		this.cardnum = cardnum;
 	}
-	
-	
+
 	public int getPxAmount() {
 		return pxAmount;
 	}
