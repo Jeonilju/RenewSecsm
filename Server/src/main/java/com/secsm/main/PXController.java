@@ -111,6 +111,7 @@ public class PXController {
 			// 정상
 			
 			if(result.get(0).getCount() - cnt <= 0){
+			
 				return "2";
 			}
 			else{
