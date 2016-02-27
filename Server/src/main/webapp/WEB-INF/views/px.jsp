@@ -55,10 +55,7 @@
     			temp_list.style.display = "";
     		}
     		
-    		function captureReturnKey(e) { 
-    		    if(e.keyCode==13 && e.srcElement.type != 'textarea') 
-    		    return false; 
-    		} 
+    	
     		
     	</script>
     	
@@ -105,7 +102,7 @@
 	
 					</div>
 					
-					<form id= "buy_form" name = "buy_form" onkeydown="return captureReturnKey(event)" onsubmit="buyItem();getPxAmount();inputreset(0); return false">
+					<form id= "buy_form" name = "buy_form" onsubmit="buyItem();getPxAmount();inputreset(0); return false">
 					<div  class="row-fluid" >
 						<div  class="form-inline">
 						<div class="col-md-1"></div>

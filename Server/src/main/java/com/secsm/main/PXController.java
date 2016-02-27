@@ -90,6 +90,7 @@ public class PXController {
 	
 		System.out.println(templist);
 		
+		
 		AccountInfo info = Util.getLoginedUser(request);
 		if(info == null){
 			return "index";
