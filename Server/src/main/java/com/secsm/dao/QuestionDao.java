@@ -68,13 +68,14 @@ public class QuestionDao {
 	}
 	
 	public List<QuestionInfo> selectByPage(int page, int count){
-		return jdbcTemplate.query("select * from question order by id desc limit ?, ?", new Object[] { page, count },
+		return jdbcTemplate.query("select * from question, account where question.accountID = account.id order by question.id desc limit ?, ?", new Object[] { page, count },
 				new RowMapper<QuestionInfo>() {
 					public QuestionInfo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-						return new QuestionInfo(resultSet.getInt("id"), resultSet.getInt("accountId")
-								, resultSet.getString("title"), resultSet.getString("content")
-								, resultSet.getTimestamp("regDate"), resultSet.getTimestamp("startDate")
-								, resultSet.getTimestamp("endDate"), resultSet.getString("code"));
+						return new QuestionInfo(resultSet.getInt("question.id"), resultSet.getInt("question.accountId")
+								, resultSet.getString("question.title"), resultSet.getString("question.content")
+								, resultSet.getTimestamp("question.regDate"), resultSet.getTimestamp("question.startDate")
+								, resultSet.getTimestamp("question.endDate"), resultSet.getString("question.code")
+								, resultSet.getString("account.name"));
 					}
 				});
 	}

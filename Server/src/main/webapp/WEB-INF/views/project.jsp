@@ -112,8 +112,8 @@
 							$('#projectTable > tbody:last').append("<tr style=\"cursor:pointer;\" onClick=\"showDetailProject(" + obj[i].id  + ")\">"
 																+ "<td>" + obj[i].id + "</td>"
 																+ "<td>" + obj[i].name + "</td>"
-																+ "<td>" + obj[i].startDate 
-																+ " ~ " + obj[i].endDate + "</td>"
+																+ "<td>" + obj[i].startDate_str 
+																+ " ~ " + obj[i].endDate_str + "</td>"
 																+ "<td>" + obj[i].pl + "</td>"
 																+ "<td>" + type + "</td>" + "</tr>"
 							);
@@ -144,36 +144,8 @@
 					dataType : "text",
 			
 					success : function(response) {	
-						
 						$("#projectTableBody").empty();
-						
-						var obj = JSON.parse(response);
-						
-						for(var i = 0;i<obj.length;i++){
-							
-							var type = "알수없음";
-							if(obj[i].status == 0){
-								type = "미승인";
-							}
-							else if(obj[i].status == 1){
-								type = "진행중";					
-							}
-							else if(obj[i].status == 2){
-								type = "완료";
-							}
-							else if(obj[i].status == -1){
-								type = "드랍";
-							}
-							
-							$('#projectTable > tbody:last').append("<tr style=\"cursor:pointer;\" onClick=\"showDetailProject(" + obj[i].id  + ")\">"
-																+ "<td>" + obj[i].id + "</td>"
-																+ "<td>" + obj[i].name + "</td>"
-																+ "<td>" + obj[i].startDate 
-																+ " ~ " + obj[i].endDate + "</td>"
-																+ "<td>" + obj[i].pl + "</td>"
-																+ "<td>" + type + "</td>" + "</tr>"
-							);
-						} 
+						$('#projectTable > tbody:last').append(response);
 					},
 					error : function(request, status, error) {
 						if (request.status != '0') {

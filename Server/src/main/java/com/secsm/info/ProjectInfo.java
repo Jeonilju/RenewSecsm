@@ -2,6 +2,8 @@ package com.secsm.info;
 
 import java.sql.Timestamp;
 
+import com.secsm.conf.Util;
+
 public class ProjectInfo {
 
 	private int id;
@@ -14,6 +16,7 @@ public class ProjectInfo {
 
 	private Timestamp startDate;
 	private Timestamp endDate;
+	
 	private Timestamp regDate;
 	
 	private int status;

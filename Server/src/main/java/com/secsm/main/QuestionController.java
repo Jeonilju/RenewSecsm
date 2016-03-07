@@ -276,7 +276,7 @@ public class QuestionController {
 		
 		QuestionInfo info = questionDao.selectById(id);
 		String result = "";
-		if(info.getCode().equals("`|#")){
+		if(!info.getCode().equals("`|#")){
 			result = "-1";
 		}
 		else{
@@ -671,7 +671,7 @@ public class QuestionController {
 
 			result += "<td>" + info.getId() + "</td>";
 			result += "<td>" + info.getTitle() + "</td>";
-			result += "<td>" + info.getAccountId() + "</td>";
+			result += "<td>" + info.getName() + "</td>";
 			result += "<td>" + Util.getTimestempStr(info.getStartDate()) 
 			+ " ~ " + Util.getTimestempStr(info.getEndDate()) + "</td>";
 			if(info.getAccountId() == accountInfo.getId()){

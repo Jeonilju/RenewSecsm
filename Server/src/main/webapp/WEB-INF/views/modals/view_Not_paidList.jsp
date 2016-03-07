@@ -66,7 +66,7 @@
 		<div class="modal-content">
 			
 			<div class="modal-header">
-				<h4 class="modal-title" id="SignInModalLabel">PX 미정산사 명단</h4>
+				<h4 class="modal-title" id="SignInModalLabel">PX 미정산자 명단</h4>
 			</div>
 			
 			<div class="modal-body">

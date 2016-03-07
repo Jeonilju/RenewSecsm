@@ -20,7 +20,7 @@ public class QuestionContentInfo implements Comparable<QuestionContentInfo> {
 	public int compareTo(QuestionContentInfo arg0) {
 		
 		if(regDate != null && arg0.regDate != null){
-			return regDate.compareTo(arg0.regDate);
+			return arg0.regDate.compareTo(regDate);
 		}
 		
 		return 0;

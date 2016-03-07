@@ -248,9 +248,32 @@ public class ProjectController {
 		
 		List<ProjectInfo> projectList = projectDao.selectByPage(page, 10);
 		
-		Gson obj = new Gson();
-		String result = obj.toJson(projectList);
-		logger.info("result: " + result);
+		String result = "";
+		for(ProjectInfo info : projectList){
+			
+			String type = "알수없음";
+			if(info.getStatus() == 0){
+				type = "미승인";
+			}
+			else if(info.getStatus() == 1){
+				type = "진행중";					
+			}
+			else if(info.getStatus() == 2){
+				type = "완료";
+			}
+			else if(info.getStatus() == -1){
+				type = "드랍";
+			}
+			
+			result += "<tr style=\"cursor:pointer;\" onClick=\"showDetailProject(" + info.getId()  + ")\">"
+					+ "<td>" + info.getId() + "</td>"
+					+ "<td>" + info.getName() + "</td>"
+					+ "<td>" + Util.getTimestempStr(info.getStartDate())
+					+ " ~ " + Util.getTimestempStr(info.getEndDate()) + "</td>"
+					+ "<td>" + info.getPl() + "</td>"
+					+ "<td>" + type + "</td>" + "</tr>";
+		}
+		
 		return result;
 	}
 	
