@@ -1307,6 +1307,7 @@ public class EquipmentController {
 		
 		else{
 			if(searchOption==0){
+				//도서명
 				if(searchKeyword.equals("")){
 					info = bookItemsDao.selectByCategory(searchCategory, searchPage);
 				}
@@ -1315,6 +1316,7 @@ public class EquipmentController {
 				}
 			}
 			else if(searchOption==1){
+				//코드
 				if(searchKeyword.equals("")){
 					info = bookItemsDao.selectByCategory(searchCategory, searchPage);
 				}
@@ -1323,6 +1325,7 @@ public class EquipmentController {
 				}
 			}
 			else if(searchOption==2){
+				//ID
 				if(searchKeyword.equals("")){
 					info = bookItemsDao.selectByCategory(searchCategory, searchPage);
 				}
@@ -1455,7 +1458,7 @@ public class EquipmentController {
 			@RequestParam("rentEndDate") String rentEndDate
 			){
 		logger.info("api rent book");
-
+		System.out.println(rentEndDate);
 		AccountInfo info = Util.getLoginedUser(request);
 		if (info == null) {
 			return "401";

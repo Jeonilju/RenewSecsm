@@ -111,6 +111,12 @@
     					
     					var tableContent = '<tbody>';
     					var i;
+    					if(Object.keys(obj).length == 1){
+    						if(obj[0].count >=1){
+    							DirectRent(obj[0].id);
+    						}
+    					}
+    					
     					for(i=0;i<Object.keys(obj).length;i++){
     						tableContent = tableContent + '<tr>'
     										+ '<td class="col-md-1">' + obj[i].id + '</td>'
