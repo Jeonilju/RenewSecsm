@@ -102,7 +102,6 @@
 	</div>
 	
 	<jsp:include page="modals/account_SignUp.jsp" flush="false" />
-	<jsp:include page="modals/pxBuyItemsModal.jsp" flush="false" />	
 	<jsp:include page="base/foot.jsp" flush="false" />
 	
 </body>
