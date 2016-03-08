@@ -111,9 +111,12 @@
     					
     					var tableContent = '<tbody>';
     					var i;
-    					if(Object.keys(obj).length == 1){
+    					if(Object.keys(obj).length == 1 && searchOptionVar == 1){
     						if(obj[0].count >=1){
     							DirectRent(obj[0].id);
+    						}
+    						else{
+    							DirectlogBook(0,obj[0].id);
     						}
     					}
     					

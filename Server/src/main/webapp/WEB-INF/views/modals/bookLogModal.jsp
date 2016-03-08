@@ -55,6 +55,46 @@
 		});
 	}
 	
+	function DirectRentBack(logId, accountId, bookItemsId){
+
+		var param = "logId" + "=" + logId + "&" + 
+					"accountId" + "=" + accountId + "&" +
+					"bookItemsId" + "=" + bookItemsId;
+		
+		$.ajax({
+		url : "/Secsm/api_rentBackBook",
+		type : "POST",
+		data : param,
+		cache : false,
+		async : false,
+		dataType : "text",
+		
+		success : function(response) {	
+			if(response=='200')
+			{ 
+				alert("반납완료");
+				location.reload();
+			}
+			else if(response=='401')
+			{
+				alert("로그인을 하세요.");
+				location.reload();
+			}
+			else if(response=='402')
+			{
+				//alert("대여자가 아닙니다.");
+			}
+			else{}
+		},
+		error : function(request, status, error) {
+			if (request.status != '0') {
+				alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+			}
+		}
+		
+		});
+	}
+	
 	function logBook(option){
 		if(option==0){
 			logOptionVar = $("#logOption option:selected").text(); 
@@ -73,6 +113,13 @@
 		else if(option==1 && 0>=logPage ) return;
 		else if(option==1) logPage = logPage -7;
 		else if(option==2) logPage = logPage +7;
+		else if(option==10){
+			logOptionVar = $("#logOption option:selected").text(); 
+			logSearchVar = $("#logSearch").val();
+			allLogVar = $('#allLog').is(':checked');
+			overDateVar = false; 
+			logPage = 0;
+		}
 		
 		var param = {logOption: logOptionVar, 
 					logSearch: logSearchVar,
@@ -109,6 +156,19 @@
 				
 				var tableContent = '<tbody>';
 				var i;
+				
+				if(option == 10){
+					alert("hihi");
+					alert(Object.keys(obj).length);
+					if(Object.keys(obj).length == 1){
+						alert("hihi2");
+						if(obj[0].status=="1"){
+							alert("hihi3");
+							DirectRentBack(obj[0].id,obj[0].accountId,obj[0].bookItemsId);
+						}
+					}
+				}
+				
 				for(i=0;i<Object.keys(obj).length;i++){
 					tableContent = tableContent + '<tr> <td class="col-md-1">' + obj[i].bookItemsId + '</td> <td class="col-md-4">' + obj[i].bookItemsName
 									+ '</td> <td class="col-md-2">' + obj[i].strStartDate + '</td> <td class="col-md-2">' + obj[i].strEndDate
@@ -126,6 +186,69 @@
 			        				+'<th class="col-md-1">반납</th></tr> </thead>';
 			    var table = tableHeader + tableContent;
 				$("#bookLogTable").html(table);
+			}
+		},
+		error : function(request, status, error) {
+			if (request.status != '0') {
+				alert("code : " + request.status + "\r\nmessage : " + request.reponseText + "\r\nerror : " + error);
+			}
+		}
+		
+		});
+	}
+	
+	function DirectlogBook(option,id){
+		if(option==0){
+			logOptionVar = $("#logOption option:selected").text(); 
+			logSearchVar = $("#logSearch").val();
+			allLogVar = $('#allLog').is(':checked');
+			overDateVar = false; 
+			logPage = 0;
+		}
+		
+		var param = {logOption: logOptionVar, 
+					logSearch: logSearchVar,
+					allLog: allLogVar,
+					logPage: logPage,
+					overDate: overDateVar};
+		
+		$.ajax({
+		url : "/Secsm/api_logBook",
+		type : "POST",
+		data : param,
+		cache : false,
+		async : false,
+		dataType : "text",
+		
+		success : function(response) {	
+			if(response=='401')
+			{ 
+				alert("로그인을 하세요.");
+				location.reload();
+			}
+			if(response=='402')
+			{ 
+				alert("ID 값은 숫자만 입력하세요.");
+			}
+			else
+			{
+				var obj = JSON.parse(response);
+				
+				if(Object.keys(obj).length==0 && option==2){
+					logPage = logPage -7;
+					return;    					
+				}
+				
+				var i;
+				
+				if(option == 0){
+					for(i = 0 ; i < Object.keys(obj).length ; i++){
+						if(obj[i].bookItemsId == id){
+							DirectRentBack(obj[i].id,obj[i].accountId,obj[i].bookItemsId);
+						}
+					}
+			
+				}
 			}
 		},
 		error : function(request, status, error) {

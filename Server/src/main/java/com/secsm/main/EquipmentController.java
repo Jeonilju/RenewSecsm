@@ -1263,7 +1263,7 @@ public class EquipmentController {
 		}
 		Gson obj = new Gson();
 		String result = obj.toJson(info);
-		
+		logger.info(result);
 		return result;
 	}
 	
@@ -1322,6 +1322,7 @@ public class EquipmentController {
 				}
 				else{
 					info =bookItemsDao.selectByCode(searchCategory, searchKeyword, searchPage);
+					//RENT
 				}
 			}
 			else if(searchOption==2){
