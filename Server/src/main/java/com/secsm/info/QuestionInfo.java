@@ -12,6 +12,7 @@ public class QuestionInfo {
 	private Timestamp startDate;
 	private Timestamp endDate;
 	
+	private String name;
 	private String code;
 	
 	public QuestionInfo(int id, int accountId, String title, String content, Timestamp regDate, Timestamp startDate,
@@ -26,6 +27,21 @@ public class QuestionInfo {
 		this.endDate = endDate;
 		this.code = code;
 	}
+	
+	public QuestionInfo(int id, int accountId, String title, String content, Timestamp regDate, Timestamp startDate,
+			Timestamp endDate, String code, String name) {
+		super();
+		this.id = id;
+		this.accountId = accountId;
+		this.title = title;
+		this.content = content;
+		this.regDate = regDate;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.code = code;
+		this.name = name;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -74,4 +90,13 @@ public class QuestionInfo {
 	public void setCode(String code) {
 		this.code = code;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 }

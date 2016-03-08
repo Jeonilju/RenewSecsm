@@ -190,7 +190,7 @@
 			</div>
 			
 			<div class="row" align="right" style="display: <% 
-				if(accountInfo.getGrade() == 0 || accountInfo.getGrade() == 1)
+				if(accountInfo.getGrade() == 0 || accountInfo.getGrade() == 3)
 					out.print("");
 				else
 					out.print("none");

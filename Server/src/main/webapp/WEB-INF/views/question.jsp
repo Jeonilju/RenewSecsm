@@ -293,7 +293,7 @@
 				    			}
 				    			out.print("<td>" + info.getId() + "</td>");
 				    			out.print("<td>" + info.getTitle() + "</td>");
-				    			out.print("<td>" + info.getAccountId() + "</td>");
+				    			out.print("<td>" + info.getName() + "</td>");
 				    			out.print("<td>" + Util.getTimestempStr(info.getStartDate()) 
 		    						+ " ~ " + Util.getTimestempStr(info.getEndDate()) + "</td>");
 		    					if(info.getAccountId() == accountInfo.getId()){

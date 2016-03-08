@@ -61,7 +61,7 @@
 		 });
 		
 		var isChecked = document.getElementById("questionAddIdCode").checked;
-		var questionAddCode = "";
+		var questionAddCode = "`|#";
 		if(isChecked){
 			questionAddCode = $("#questionAddCode").val()
 		}
@@ -74,7 +74,7 @@
 					"questionAddStartDate" + "=" + $("#questionAddStartDate").val() + "&" +
 					"questionAddEndDate" + "=" + $("#questionAddEndDate").val() + "&" +
 					"questionAddIdCode" + "=" + $("#questionAddIdCode").val() + "&" +
-					"questionAddCode" + "=" + $("#questionAddCode").val() + "&" +
+					"questionAddCode" + "=" + questionAddCode + "&" +
 					"questionAddQuestions" + "=" + JSON.stringify(qContentList);
 		
 		$.ajax({

@@ -93,13 +93,23 @@
     				allDay : false,
     				droppable: false,
     				eventClick: function(calEvent, jsEvent, view) {
-    					$("#dutyDeleteName").text(calEvent.title);
-    					deleteDate = calEvent.start;
-    					$('#dutyDeleteModal').modal();
+    					if(grade==0 || grade==2){
+    						$("#dutyDeleteName").text(calEvent.title);
+    						deleteDate = calEvent.start;
+    						$('#dutyDeleteModal').modal();
+    					}
+    					else{
+    						alert("권한이 없습니다.");
+    					}
     				},
     				dayClick: function(date, allDay, jsEvent, view) {
-    				    insertDate=date;
-    				    $('#dutyInsertModal').modal();
+    				   	if(grade==0 || grade==2){
+    						insertDate=date;
+    				    	$('#dutyInsertModal').modal();
+    				   	}
+    				    else{
+    						alert("권한이 없습니다.");
+    					}
     				}
     			});	
 
