@@ -96,7 +96,7 @@ CREATE TABLE `px_log` (
   `Account_id` int(11) DEFAULT NULL,
   `Px_Items_id` int(11) DEFAULT NULL,
   `RegDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `Type` int(11) DEFAULT NULL,
+  `Type` int(20) DEFAULT NULL,
   `Count` int(11) DEFAULT NULL,
   `Name` varchar(50) DEFAULT NULL,
   `Price` int(11) DEFAULT NULL,

@@ -32,6 +32,7 @@
 		<beans:property name="username" value="root"/>
 		<beans:property name="password" value="1234"/>
 
+
 	</beans:bean>
 	
 	<beans:bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

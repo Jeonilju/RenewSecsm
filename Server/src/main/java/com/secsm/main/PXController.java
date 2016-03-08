@@ -90,6 +90,7 @@ public class PXController {
 	
 		System.out.println(templist);
 		
+		
 		AccountInfo info = Util.getLoginedUser(request);
 		if(info == null){
 			return "index";
@@ -110,6 +111,7 @@ public class PXController {
 			// 정상
 			
 			if(result.get(0).getCount() - cnt <= 0){
+			
 				return "2";
 			}
 			else{

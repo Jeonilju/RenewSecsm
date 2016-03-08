@@ -48,10 +48,14 @@
     			temp_list.style.display = "none";
     		}
     		
-    		function captureReturnKey(e) { 
-    		    if(e.keyCode==13 && e.srcElement.type != 'textarea') 
-    		    return false; 
-    		} 
+    		function view_buylist_remove(){
+    			var view_list = document.getElementById("cur_list");
+    			var temp_list = document.getElementById("empty_list");
+    			view_list.style.display = "none";
+    			temp_list.style.display = "";
+    		}
+    		
+    	
     		
     	</script>
     	
@@ -98,7 +102,7 @@
 	
 					</div>
 					
-					<form id= "buy_form" name = "buy_form" onkeydown="return captureReturnKey(event)" onsubmit="buyItem();getPxAmount();inputreset(0); return false">
+					<form id= "buy_form" name = "buy_form" onsubmit="buyItem();getPxAmount();inputreset(0); return false">
 					<div  class="row-fluid" >
 						<div  class="form-inline">
 						<div class="col-md-1"></div>

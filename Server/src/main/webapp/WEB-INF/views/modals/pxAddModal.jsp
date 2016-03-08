@@ -81,7 +81,7 @@
 					</div>
 					<div class="form-group">
 						<label for="pxItemsCode" cond="">바코드</label> 
-						<input name="pxItemsCode" id="pxItemsCode" type="text" class="form-control"/>
+						<input name="pxItemsCode" id="pxItemsCode" onkeydown="return showKeyCode1(event)" type="text" class="form-control"/>
 					</div>
 					<div class="form-group">
 						<label for="pxItemsPrice" cond="">가격</label> 

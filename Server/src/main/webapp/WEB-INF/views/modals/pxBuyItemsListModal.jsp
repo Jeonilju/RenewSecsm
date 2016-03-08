@@ -34,6 +34,9 @@
 		    						else if(chk == 1){
 		    							num--;
 		    							semi_List(num);
+		    							if(num ==0){
+		    								view_buylist_remove();
+		    							}
 		    						}
 		    					}
 		    					else
@@ -103,7 +106,7 @@
 						
 						document.getElementById('pxLogTbody').innerHTML = "";	// 기존 테이블에 있는 내용 초기화
 						
-						for(var index = 0;index < jsonArr.length;index++){
+						for(var index = jsonArr.length-1;index >=0;index--){
 							var data = jsonArr[index];
 							var tableRef = document.getElementById('pxLogTable').getElementsByTagName('tbody')[0];
 
@@ -120,7 +123,7 @@
 
 							// Append a text node to the cell
 							var newText  = document.createTextNode('New row');
-							
+						//	Util.getTimestempStr
 							newCell1.appendChild(document.createTextNode(data.regDate));
 							newCell2.appendChild(document.createTextNode(data.name));
 							newCell3.appendChild(document.createTextNode(data.count));

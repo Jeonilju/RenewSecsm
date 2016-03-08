@@ -56,6 +56,10 @@
 		
 		var templist = unique(together_member);
 		
+		if($("#item_cnt").val() == ""){
+			document.getElementById("item_cnt").value  = "1";
+		}
+		
 		var param = "type" + "=" + $("#slItemType").val() + "&" + 
 					"code" + "=" + $("#etItemCode").val() + "&" + 
 					"cnt" + "=" + $("#item_cnt").val() + "&" +
@@ -64,16 +68,9 @@
 					"isForcibly" + "="+ "0";
 		
 		var form = document.buy_form;
-		
-
+			
 		if(form.etItemCode.value == ""){
 			alert("삼풍명 혹은 바코드를 입력하지 않앗습니다.");	
-			arr_clear();
-			var len = templist.length;
-			for(var i = 0; i< len ; i++){templist.pop();}
-		}
-		else if(form.item_cnt.value == ""){
-			alert("수량을 입력하지 않앗습니다.");	
 			arr_clear();
 			var len = templist.length;
 			for(var i = 0; i< len ; i++){templist.pop();}
